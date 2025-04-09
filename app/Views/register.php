@@ -5,7 +5,8 @@
   <title>Register with Firebase</title>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="/js/firebase-config.js"></script>
+  <script src="<?= base_url('js/firebase-config.js') ?>"></script>
+
 </head>
 <body>
   <h2>Register</h2>
