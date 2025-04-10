@@ -10,7 +10,114 @@
   <script src="<?= base_url('js/firebase-config.js') ?>"></script>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="<?= base_url('css/register.css') ?>">
+ <!-- Inline CSS -->
+ <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(to bottom right, #ffeaf7, #eaf6ff);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-page {
+  display: flex;
+  width: 90%;
+  max-width: 1200px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.branding {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.signup-logo {
+  height: 40px;
+  margin-bottom: 30px;
+}
+
+.illustration-placeholder {
+  width: 350px;
+  height: 350px;
+  background-color: #d4d4d4;
+  border-radius: 8px;
+}
+
+.signup-card {
+  flex: 1;
+  background: #f3ccf8;
+  padding: 40px;
+  border-radius: 12px;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.signup-card h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input, select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.terms {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.terms input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.terms a {
+  color: #540094;
+  text-decoration: underline;
+}
+
+button {
+  background-color: #d172e6;
+  color: white;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #bb61cf;
+}
+    </style>
 </head>
 <body>
   <div class="container">
