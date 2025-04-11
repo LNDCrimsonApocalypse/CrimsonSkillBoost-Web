@@ -50,4 +50,17 @@ class Auth extends BaseController
             ])->setStatusCode(401);
         }
     }
+
+    public function verifyCodeInput()
+    {
+        $email = $this->request->getGet('email');
+        return view('verify_code', ['email' => $email]);
+    }
+
+    public function setupProfile()
+    {
+        return view('setup_profile');
+    }
+
+
 }

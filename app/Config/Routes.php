@@ -12,6 +12,8 @@ $routes->get('/', 'Auth::login');
 // Manual route definitions
 $routes->get('/login', 'Auth::login');
 $routes->get('/register', 'Auth::register');
+$routes->get('/verify_code', 'Auth::verifyCodeInput');
+$routes->get('/setup_profile', 'Auth::setupProfile');
 $routes->post('/auth/verify', 'Auth::verify');
 
 
