@@ -10,10 +10,10 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Auth::login');
 
 // Manual route definitions
-$routes->get('/login', 'Auth::login');
-$routes->get('/register', 'Auth::register');
-$routes->get('/verify_code', 'Auth::verifyCodeInput');
-$routes->get('/setup_profile', 'Auth::setupProfile');
+$routes->get('/auth/login', 'Auth::login');
+$routes->get('/auth/register', 'Auth::register');
+$routes->get('/auth/verify_code', 'Auth::verifyCodeInput');
+$routes->get('/auth/setup_profile', 'Auth::setupProfile');
 $routes->post('/auth/verify', 'Auth::verify');
 
 
