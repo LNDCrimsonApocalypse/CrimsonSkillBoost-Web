@@ -10,7 +10,7 @@
   <div class="landing-page">
     <header>
       <div class="logo">
-        <img src="logo.svg" alt="CrimsonSkillBoost Logo">
+        <img src="/img/logo.jpg" alt="CrimsonSkillBoost Logo">
         <span>CRIMSONSkillBoost</span>
       </div>
       <nav>

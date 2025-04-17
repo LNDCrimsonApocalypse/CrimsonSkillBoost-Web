@@ -7,7 +7,7 @@
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="<?= base_url('js/firebase-config.js') ?>"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 
   <!-- CSS -->
  <!-- Inline CSS -->
@@ -149,17 +149,17 @@ button:hover {
 <body>
   <div class="container">
     <div class="left-panel">
-      <img src="<?= base_url('images/logo-icon.png') ?>" alt="Logo" class="logo">
+      <img src="<?= base_url('public/img/logo.jpg') ?>" alt="Logo" class="logo">
       <div class="graphic-box"></div>
     </div>
     <div class="right-panel">
       <div class="register-box">
-        <img src="<?= base_url('images/logo-icon.png') ?>" alt="Icon" class="register-logo">
+        <img src="<?= base_url('public/img/logo.jpg') ?>" alt="Icon" class="register-logo">
         <form id="registerForm">
           <input type="email" id="email" placeholder="Username or Email" required>
           <input type="password" id="password" placeholder="Password" required>
           <button type="submit">Sign Up</button>
-          <p>Already have an account? <a href="/login">Log In</a></p>
+          <p>Already have an account? <a href="<?= base_url('login') ?>">Log In</a></p>
         </form>
         <p id="message"></p>
       </div>

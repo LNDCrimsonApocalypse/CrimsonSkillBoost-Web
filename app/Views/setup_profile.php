@@ -131,7 +131,7 @@
 <body>
   <div class="setup-container">
     <div class="left-info">
-      <img src="<?= base_url('images/logo-icon.png') ?>" alt="Logo">
+      <img src="<?= base_url('/img/logo.jpg') ?>" alt="Logo">
       <div class="avatar"></div>
       <div class="display-name">Jao Nicholas Benedicto</div>
       <div class="username">@JaoJaoBen110983</div>

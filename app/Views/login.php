@@ -7,7 +7,7 @@
   <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="<?= base_url('js/firebase-config.js') ?>"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 
  <!-- Inline CSS -->
  <style>
@@ -127,7 +127,7 @@
 <body>
   <div class="login-page">
     <div class="branding">
-      <img src="logo.svg" alt="CrimsonSkillBoost Logo" class="login-logo">
+      <img src="public/img/logo.jpg" alt="CrimsonSkillBoost Logo" class="login-logo">
       <div class="illustration-placeholder"></div>
     </div>
 
@@ -139,7 +139,7 @@
         <button type="submit" id="loginButton">Log In</button>
       </form>
       <p><a href="#">Forgot your password?</a></p>
-      <p>Don't have an account? <a href="/register">Sign Up</a></p>
+      <p>Don't have an account? <a href="<?= base_url('register') ?>">Sign Up</a></p>
       <p id="loadingMessage" class="loading" style="display: none;">Logging in...</p>
       <p id="message"></p>
       <p id="debugMessage"></p>
@@ -166,10 +166,10 @@
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           const user = userCredential.user;
-          debugMsg.textContent = `Logged in as: ${user.email}, UID: ${user.uid}`;
+          debugMsg.textContent = `Logged in as: ${user.email}`;
 
           user.getIdToken().then(token => {
-            fetch("/auth/verify", {
+            fetch("Controllers/auth/verify", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
