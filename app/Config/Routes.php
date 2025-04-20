@@ -14,6 +14,7 @@ $routes->get('/login', 'Auth::login');
 $routes->get('/register', 'Auth::register');
 $routes->get('/verify_code', 'Auth::verifyCodeInput');
 $routes->get('/setup_profile', 'Auth::setupProfile');
+$routes->get('/profile', 'Auth::profile');
 $routes->post('/auth/verify', 'Auth::verify');
 
 

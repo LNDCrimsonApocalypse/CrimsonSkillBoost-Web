@@ -5,7 +5,7 @@
   <title>Set Up Profile</title>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="<?= base_url('js/firebase-config.js') ?>"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 
   <style>
     * {
@@ -141,7 +141,7 @@
       <p>Upload a clear image to help your student recognize you.</p>
 
       <form id="profileForm">
-        <input type="email" id="email" placeholder="Email">
+        <input type="text" id="username" placeholder="Username">
         <div class="input-row">
           <input type="date" id="birthday" placeholder="Birthday">
           <select id="gender">
@@ -158,30 +158,47 @@
   </div>
 
   <script>
-    // Example to autofill Firebase user's email
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        document.getElementById("email").value = user.email;
+        console.log("Firebase UID:", user.uid);
       }
     });
 
-    // Handle form submission
     document.getElementById("profileForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
-      const data = {
-        email: document.getElementById("email").value,
-        birthday: document.getElementById("birthday").value,
-        gender: document.getElementById("gender").value,
-        bio: document.getElementById("bio").value,
-      };
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        alert("User not logged in.");
+        return;
+      }
 
-      // You can use Firestore or send data to CodeIgniter controller via AJAX
-      console.log("User Profile Data:", data);
+      user.getIdToken().then(function(idToken) {
+        const data = {
+          uid: user.uid,
+          idToken: idToken,
+          username: document.getElementById("username").value,
+          birthday: document.getElementById("birthday").value,
+          gender: document.getElementById("gender").value,
+          bio: document.getElementById("bio").value,
+        };
 
-      // TODO: Save to database
-      alert("Profile saved (in console for now)");
+        fetch("<?= base_url('profile.php') ?>", {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(response => {
+          alert(response.message);
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Error saving profile.");
+        });
+      });
     });
   </script>
+
 </body>
 </html>
