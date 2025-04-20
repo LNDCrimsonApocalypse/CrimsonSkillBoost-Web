@@ -62,5 +62,10 @@ class Auth extends BaseController
         return view('setup_profile');
     }
 
+    public function homepage()
+    {
+        return view('homepage');
+    }
+
 
 }
