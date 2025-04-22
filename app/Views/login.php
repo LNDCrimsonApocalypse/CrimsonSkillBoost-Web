@@ -9,8 +9,8 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 
- <!-- Inline CSS -->
- <style>
+  <!-- Inline CSS -->
+  <style>
         * {
             box-sizing: border-box;
             font-family: 'Segoe UI', sans-serif;
@@ -153,6 +153,13 @@
     const loadingMessage = document.getElementById("loadingMessage");
     const loginButton = document.getElementById("loginButton");
 
+    // ✅ CHECK IF USER IS ALREADY LOGGED IN
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        window.location.href = "<?= base_url('homepage') ?>";
+      }
+    });
+
     loginForm.addEventListener("submit", function (e) {
       e.preventDefault();
       const email = document.getElementById("email").value;
@@ -184,6 +191,9 @@
               if (data.status === 'success') {
                 msg.textContent = "Login successful. Welcome, " + data.email;
                 msg.className = "success";
+                setTimeout(() => {
+                  window.location.href = "<?= base_url('homepage') ?>";
+                }, 1000);
               } else {
                 msg.textContent = "Login failed on backend validation.";
                 msg.className = "error";
@@ -194,11 +204,29 @@
         .catch((error) => {
           loadingMessage.style.display = 'none';
           loginButton.disabled = false;
-          msg.textContent = `Error: ${error.message}`;
+
+          let errorMsg = '';
+          switch (error.code) {
+            case 'auth/user-not-found':
+              errorMsg = 'No user found with this email.';
+              break;
+            case 'auth/wrong-password':
+              errorMsg = 'Incorrect password.';
+              break;
+            case 'auth/invalid-email':
+              errorMsg = 'Invalid email format.';
+              break;
+            default:
+              errorMsg = error.message;
+              break;
+          }
+
+          msg.textContent = `Error: ${errorMsg}`;
           msg.className = "error";
           debugMsg.textContent = `Error code: ${error.code}`;
         });
     });
   </script>
+
 </body>
 </html>

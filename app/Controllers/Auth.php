@@ -67,5 +67,9 @@ class Auth extends BaseController
         return view('homepage');
     }
 
+    public function dashboard()
+    {
+        return view('dashboard');
+    }
 
 }

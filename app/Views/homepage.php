@@ -65,6 +65,17 @@
       cursor: pointer;
     }
 
+    #signOutButton {
+      margin-left: 20px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 20px;
+      background-color: #ff4081;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     /* MAIN CONTENT */
     .main-content {
       background-color: #dcdcdc;
@@ -121,7 +132,7 @@
       <img src="<?= base_url('public/img/logo.png') ?>" class="logo" alt="Logo">
     </div>
     <div class="nav-center">
-      <a href="<?= base_url('home') ?>" class="active">HOME</a>
+      <a href="<?= base_url('homepage') ?>" class="active">HOME</a>
       <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
       <a href="<?= base_url('about') ?>">ABOUT</a>
       <a href="<?= base_url('courses') ?>">COURSES</a>
@@ -129,6 +140,7 @@
     <div class="nav-right">
       <img src="<?= base_url('public/img/notification.png') ?>" class="notification" alt="Notifications">
       <img src="<?= base_url('public/img/profile.jpg') ?>" class="profile" alt="User">
+      <button id="signOutButton">Sign Out</button>
     </div>
   </div>
 
@@ -137,5 +149,20 @@
     <div class="image-box">IMAGE<br>SAMPLE</div>
   </div>
 
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+
+  <script>
+    document.getElementById("signOutButton").addEventListener("click", function () {
+      firebase.auth().signOut().then(() => {
+        // Sign-out successful
+        window.location.href = "<?= base_url('login') ?>";
+      }).catch((error) => {
+        alert("Error signing out: " + error.message);
+      });
+    });
+  </script>
 </body>
 </html>
