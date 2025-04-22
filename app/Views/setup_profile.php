@@ -183,7 +183,7 @@
           bio: document.getElementById("bio").value,
         };
 
-        fetch("<?= base_url('profile.php') ?>", {
+        fetch("<?= base_url('profile/save') ?>", {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)

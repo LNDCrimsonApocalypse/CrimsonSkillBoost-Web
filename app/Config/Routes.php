@@ -17,6 +17,8 @@ $routes->get('/setup_profile', 'Auth::setupProfile');
 $routes->get('/profile', 'Auth::profile');
 $routes->get('/homepage', 'Auth::homepage');
 $routes->post('/auth/verify', 'Auth::verify');
+$routes->post('profile/save', 'Profile::save');
+
 
 
 // Enable auto routing (optional but helpful during development)
