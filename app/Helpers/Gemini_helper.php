@@ -8,8 +8,8 @@ function getQuizQuestionFromGemini($topic = 'general knowledge')
     $url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=' . $apiKey;
 
     $headers = [
-        'Content-Type: application/json'
-    ];
+        'Content-Type' => 'application/json'
+    ];    
 
     $postData = [
         'contents' => [[
