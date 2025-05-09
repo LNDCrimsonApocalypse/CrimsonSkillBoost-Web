@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard</title>
+  <title>CrimsonSkillBoost: The Computer Science Learning Hub - Dashboard</title>
   <style>
     * {
       margin: 0;
