@@ -2,6 +2,7 @@
 const firebaseConfig = {
     apiKey: "AIzaSyAQ87eb5RehN6PiJggR711yMfGrY39ulYU",
     authDomain: "csboostcmo.firebaseapp.com",
+    databaseURL: "https://csboostcmo-default-rtdb.firebaseio.com/",
     projectId: "csboostcmo",
     storageBucket: "csboostcmo.firebasestorage.app",
     messagingSenderId: "209462764164",
@@ -10,4 +11,6 @@ const firebaseConfig = {
   };
   
   firebase.initializeApp(firebaseConfig);
+  firebase.firestore();
+
   

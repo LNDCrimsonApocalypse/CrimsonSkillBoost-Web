@@ -5,6 +5,7 @@
   <title>Set Up Profile</title>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 
   <style>
@@ -141,26 +142,32 @@
       <p>Upload a clear image to help your student recognize you.</p>
 
       <form id="profileForm">
-        <input type="text" id="username" placeholder="Username">
+        <input type="text" id="username" placeholder="Username" required>
         <div class="input-row">
-          <input type="date" id="birthday" placeholder="Birthday">
-          <select id="gender">
+          <input type="date" id="birthday" required>
+          <select id="gender" required>
             <option value="">Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
           </select>
         </div>
-        <textarea id="bio" rows="5" placeholder="Your bio"></textarea>
+        <textarea id="bio" rows="5" placeholder="Your bio" required></textarea>
         <button type="submit">Save</button>
       </form>
     </div>
   </div>
 
   <script>
+    // Initialize Firestore
+    const db = firebase.firestore();
+
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         console.log("Firebase UID:", user.uid);
+      } else {
+        alert("You must be logged in to set up your profile.");
+        // Optional: redirect to login
       }
     });
 
@@ -173,32 +180,23 @@
         return;
       }
 
-      user.getIdToken().then(function(idToken) {
-        const data = {
-          uid: user.uid,
-          idToken: idToken,
-          username: document.getElementById("username").value,
-          birthday: document.getElementById("birthday").value,
-          gender: document.getElementById("gender").value,
-          bio: document.getElementById("bio").value,
-        };
+      const profileData = {
+        username: document.getElementById("username").value.trim(),
+        birthday: document.getElementById("birthday").value,
+        gender: document.getElementById("gender").value,
+        bio: document.getElementById("bio").value.trim(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
 
-        fetch("<?= base_url('profile/save') ?>", {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
+      db.collection("users").doc(user.uid).set(profileData, { merge: true })
+        .then(() => {
+          alert("Profile saved to Firestore!");
         })
-        .then(res => res.json())
-        .then(response => {
-          alert(response.message);
-        })
-        .catch(err => {
-          console.error(err);
-          alert("Error saving profile.");
+        .catch((error) => {
+          console.error("Error saving profile to Firestore: ", error);
+          alert("Failed to save profile.");
         });
-      });
     });
   </script>
-
 </body>
 </html>

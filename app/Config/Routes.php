@@ -19,6 +19,7 @@ $routes->get('/homepage', 'Auth::homepage');
 $routes->get('/dashboard', 'Auth::dashboard');
 $routes->post('/auth/verify', 'Auth::verify');
 $routes->post('profile/save', 'Profile::save');
+$routes->post('profile/save', 'Auth::saveProfile');
 
 
 
