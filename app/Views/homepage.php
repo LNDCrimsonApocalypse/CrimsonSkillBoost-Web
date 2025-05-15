@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>CrimsonSkillBoost: The Computer Science Learning Hub - Home</title>
+  <title>CrimsonSkillBoost - Home</title>
   <style>
     /* Reset & Base */
     * {
