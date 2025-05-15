@@ -203,17 +203,21 @@
   <div class="dashboard-container">
     <!-- LEFT PANEL -->
     <div class="left-panel">
-      <div class="section-title">Active Courses</div>
-      <?php for ($i = 0; $i < 3; $i++): ?>
-        <div class="course-card">
-          <div class="course-img"></div>
-          <div class="course-details">
-            <div class="course-title">Title</div>
-            <div class="course-desc">Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.</div>
-            <button class="btn">Button</button>
+      <div class="section-title">Active Lessons</div>
+      <?php if (!empty($lessons)): ?>
+        <?php foreach ($lessons as $lesson): ?>
+          <div class="course-card">
+            <div class="course-img"></div>
+            <div class="course-details">
+              <div class="course-title"><?= esc($lesson['title']) ?></div>
+              <div class="course-desc"><?= esc(word_limiter(strip_tags($lesson['content']), 20)) ?></div>
+              <a class="btn" href="<?= base_url('lessons/view/' . $lesson['id']) ?>">View</a>
+            </div>
           </div>
-        </div>
-      <?php endfor; ?>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p>No lessons found.</p>
+      <?php endif; ?>
     </div>
 
     <!-- RIGHT PANEL -->
@@ -222,7 +226,7 @@
       <div class="enroll-card">
         <div>
           <div class="enroll-title">Title</div>
-          <div class="enroll-desc">Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.</div>
+          <div class="enroll-desc">This section will show student requests.</div>
           <button class="btn view-btn">View</button>
         </div>
       </div>
@@ -246,7 +250,7 @@
     </div>
   </div>
 
-  <!-- Firebase Scripts -->
+  <!-- Firebase Scripts (optional) -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
