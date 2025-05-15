@@ -64,8 +64,14 @@ class Auth extends BaseController
 
     public function dashboard()
     {
-        return view('dashboard');
+        helper('text'); // ✅ This loads the helper that contains word_limiter()
+
+        $lessonModel = new \App\Models\LessonModel();
+        $data['lessons'] = $lessonModel->findAll();
+
+        return view('dashboard', $data);
     }
+
 
     public function saveProfile()
     {
