@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>CRIMSONSkillBoost | Sign Up</title>
+  <title>CrimsonSkillBoost: The Computer Science Learning Hub - Register</title>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>

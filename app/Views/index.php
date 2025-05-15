@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crimson Skill Boost</title>
+  <title>Welcome to CrimsonSkillBoost</title>
   <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
 </head>
 <body>
@@ -15,9 +15,9 @@
       </div>
       <nav>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Courses ▼</a></li>
-          <li><a href="#">About ▼</a></li>
+          <li><a href="#">Home</a></li> <!-- Where does it redirect? -->
+          <li><a href="#">Courses ▼</a></li> <!-- Where does it redirect? -->
+          <li><a href="#">About ▼</a></li> <!-- Where does it redirect? -->
         </ul>
       </nav>
     </header>
