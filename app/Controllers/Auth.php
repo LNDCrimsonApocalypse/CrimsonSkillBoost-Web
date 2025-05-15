@@ -72,7 +72,14 @@ class Auth extends BaseController
         return view('dashboard', $data);
     }
 
+    public function getCourses()
+    {
+        $lessonModel = new \App\Models\LessonModel();
+        $courses = $lessonModel->findAll();
 
+        return $this->response->setJSON($courses);
+    }
+    
     public function saveProfile()
     {
         $json = $this->request->getJSON(true);

@@ -23,6 +23,7 @@ $routes->post('profile/save', 'Auth::saveProfile');
 $routes->get('lessons-dashboard', 'LessonsController::index');
 $routes->get('lesson/(:num)', 'Lesson::view/$1'); // For viewing a single lesson
 $routes->get('lessons', 'Lesson::index'); // Optional: full lessons list
+$routes->get('/auth/get-courses', 'Auth::getCourses');
 
 
 
