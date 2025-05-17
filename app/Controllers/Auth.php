@@ -74,21 +74,11 @@ class Auth extends BaseController
     public function getCourses()
     {
         $lessonModel = new \App\Models\LessonModel();
-        $courses = $lessonModel->findAll();
+        $lessons = $lessonModel->findAll();
 
-        $formatted = array_map(function ($course) {
-            return [
-                'id' => $course['id'],
-                'title' => $course['title'],
-                'overview' => word_limiter(strip_tags($course['content']), 20),
-                'progress' => 0,
-                'pending' => false,
-                'icon' => 'default_icon' // you can match with drawable resource
-            ];
-        }, $courses);
-
-        return $this->response->setJSON($formatted);
+        return $this->response->setJSON($lessons);
     }
+
 
     
     public function saveProfile()
