@@ -145,59 +145,66 @@ class Auth extends BaseController
 
     public function uploadLesson()
     {
-        $json = $this->request->getJSON(true);
+        try {
+            $json = $this->request->getJSON(true);
 
-        if (!$json || !isset($json['idToken']) || !isset($json['title']) || !isset($json['content'])) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Missing required fields'
-            ])->setStatusCode(400);
-        }
+            if (!$json || !isset($json['idToken']) || !isset($json['title']) || !isset($json['content'])) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Missing required fields'
+                ])->setStatusCode(400);
+            }
 
-        // Firebase ID token verification
-        $FIREBASE_API_KEY = "AIzaSyAQ87eb5RehN6PiJggR711yMfGrY39ulYU";
-        $verifyUrl = "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={$FIREBASE_API_KEY}";
+            // Firebase ID token verification
+            $FIREBASE_API_KEY = "AIzaSyAQ87eb5RehN6PiJggR711yMfGrY39ulYU";
+            $verifyUrl = "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={$FIREBASE_API_KEY}";
 
-        $client = \Config\Services::curlrequest();
-
-        $response = $client->post($verifyUrl, [
-            'headers' => ['Content-Type' => 'application/json'],
-            'body' => json_encode(['idToken' => $json['idToken']])
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        if (!isset($data['users'][0]['localId'])) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Invalid token'
-            ])->setStatusCode(401);
-        }
-
-        $uid = $data['users'][0]['localId'];
-
-        // Save lesson to DB
-        $lessonModel = new \App\Models\LessonModel();
-        $lessonData = [
-            'uid'        => $uid,
-            'title'      => $json['title'],
-            'description'=> $json['description'] ?? '',
-            'content'    => $json['content'],
-            'created_at' => date('Y-m-d H:i:s')
-        ];
-
-        if ($lessonModel->insert($lessonData)) {
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Lesson uploaded successfully'
+            $client = \Config\Services::curlrequest();
+            $response = $client->post($verifyUrl, [
+                'headers' => ['Content-Type' => 'application/json'],
+                'body' => json_encode(['idToken' => $json['idToken']])
             ]);
-        } else {
+
+            $data = json_decode($response->getBody(), true);
+
+            if (!isset($data['users'][0]['localId'])) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Invalid token'
+                ])->setStatusCode(401);
+            }
+
+            $uid = $data['users'][0]['localId'];
+
+            // Save lesson to DB
+            $lessonModel = new \App\Models\LessonModel();
+            $lessonData = [
+                'uid'        => $uid,
+                'title'      => $json['title'],
+                'description'=> $json['description'] ?? '',
+                'content'    => $json['content'],
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+
+            if ($lessonModel->insert($lessonData)) {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'Lesson uploaded successfully'
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Failed to upload lesson'
+                ])->setStatusCode(500);
+            }
+        } catch (\Throwable $e) {
             return $this->response->setJSON([
                 'status' => 'error',
-                'message' => 'Failed to upload lesson'
+                'message' => 'Server error: ' . $e->getMessage()
             ])->setStatusCode(500);
         }
     }
+
 
     public function calculateGrade()
     {

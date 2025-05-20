@@ -1,0 +1,98 @@
+CRITICAL - 2025-05-20 05:07:25 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "upload_lesson.php"
+[Method: GET, Route: test/upload-lesson]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('upload_lesson.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('upload_lesson', [], true)
+ 3 APPPATH\Config\Routes.php(30): view('upload_lesson')
+ 4 SYSTEMPATH\CodeIgniter.php(875): CodeIgniter\Router\RouteCollection->{closure}()
+ 5 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-20 05:07:28 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "upload_lesson.php"
+[Method: GET, Route: test/upload-lesson]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('upload_lesson.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('upload_lesson', [], true)
+ 3 APPPATH\Config\Routes.php(30): view('upload_lesson')
+ 4 SYSTEMPATH\CodeIgniter.php(875): CodeIgniter\Router\RouteCollection->{closure}()
+ 5 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-20 05:08:35 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "upload_lesson.php"
+[Method: GET, Route: upload-lesson]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('upload_lesson.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('upload_lesson', [], true)
+ 3 APPPATH\Config\Routes.php(30): view('upload_lesson')
+ 4 SYSTEMPATH\CodeIgniter.php(875): CodeIgniter\Router\RouteCollection->{closure}()
+ 5 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-20 05:10:26 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "upload_lesson.php"
+[Method: GET, Route: test/upload-lesson]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('upload_lesson.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('upload_lesson', [], true)
+ 3 APPPATH\Controllers\TestPages.php(12): view('upload_lesson')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\TestPages->uploadLesson()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestPages))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-20 05:10:27 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "upload_lesson.php"
+[Method: GET, Route: test/upload-lesson]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('upload_lesson.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('upload_lesson', [], true)
+ 3 APPPATH\Controllers\TestPages.php(12): view('upload_lesson')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\TestPages->uploadLesson()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestPages))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-20 05:10:51 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "upload_lesson.php"
+[Method: GET, Route: test/upload_lesson]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('upload_lesson.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('upload_lesson', [], true)
+ 3 APPPATH\Controllers\TestPages.php(12): view('upload_lesson')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\TestPages->uploadLesson()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestPages))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-20 05:11:05 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "upload_lesson.php"
+[Method: GET, Route: test/upload_lessons]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('upload_lesson.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('upload_lesson', [], true)
+ 3 APPPATH\Controllers\TestPages.php(12): view('upload_lesson')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\TestPages->uploadLesson()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestPages))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-20 06:03:57 --> CodeIgniter\HTTP\Exceptions\HTTPException: 22 : The requested URL returned error: 400
+[Method: POST, Route: auth/upload-lesson]
+in SYSTEMPATH\HTTP\CURLRequest.php on line 709.
+ 1 SYSTEMPATH\HTTP\CURLRequest.php(709): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested URL returned error: 400')
+ 2 SYSTEMPATH\HTTP\CURLRequest.php(383): CodeIgniter\HTTP\CURLRequest->sendRequest([...])
+ 3 SYSTEMPATH\HTTP\CURLRequest.php(152): CodeIgniter\HTTP\CURLRequest->send('POST', 'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyAQ87eb5RehN6PiJggR711yMfGrY39ulYU')
+ 4 SYSTEMPATH\HTTP\CURLRequest.php(227): CodeIgniter\HTTP\CURLRequest->request('POST', 'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyAQ87eb5RehN6PiJggR711yMfGrY39ulYU', [...])
+ 5 APPPATH\Controllers\Auth.php(163): CodeIgniter\HTTP\CURLRequest->post('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyAQ87eb5RehN6PiJggR711yMfGrY39ulYU', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->uploadLesson()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

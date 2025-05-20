@@ -33,7 +33,7 @@
             const description = document.getElementById('description').value;
             const content = document.getElementById('content').value;
 
-            const response = await fetch('/auth/upload-lesson', {
+            const response = await fetch('<?= base_url('auth/upload-lesson') ?>', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idToken, title, description, content })

@@ -26,13 +26,9 @@ $routes->get('lessons', 'Lesson::index'); // Optional: full lessons list
 $routes->get('/auth/get-courses', 'Auth::getCourses');
 $routes->post('/auth/upload-lesson', 'Auth::uploadLesson');
 $routes->post('/grades/calculate', 'Auth::calculateGrade'); // or 'GradesController::calculateGrade'
-$routes->get('/test/upload-lesson', function () {
-    return view('upload_lesson');
-});
+$routes->get('/test/upload_lessons', 'TestPages::uploadLesson');
+$routes->get('/test/calculate_grade', 'TestPages::calculateGrade');
 
-$routes->get('/test/calculate-grade', function () {
-    return view('calculate_grade');
-});
 
 
 
