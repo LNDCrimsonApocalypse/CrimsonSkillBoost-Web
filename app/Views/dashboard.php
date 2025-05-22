@@ -203,20 +203,24 @@
   <div class="dashboard-container">
     <!-- LEFT PANEL -->
     <div class="left-panel">
-      <div class="section-title">Active Lessons</div>
-      <?php if (!empty($lessons)): ?>
-        <?php foreach ($lessons as $lesson): ?>
+      <div class="section-title">Active Courses</div>
+      <?php if (!empty($courses)): ?>
+        <?php foreach ($courses as $course): ?>
           <div class="course-card">
             <div class="course-img"></div>
             <div class="course-details">
-              <div class="course-title"><?= esc($lesson['title']) ?></div>
-              <div class="course-desc"><?= esc(word_limiter(strip_tags($lesson['content']), 20)) ?></div>
-              <a class="btn" href="<?= base_url('lessons/view/' . $lesson['id']) ?>">View</a>
+              <div class="course-title"><?= esc($course['course_name']) ?></div>
+              <div class="course-desc">Created on <?= date('F j, Y', strtotime($course['created_at'])) ?></div>
+              <a href="<?= base_url('course/edit/' . $course['id']) ?>" class="btn">Edit</a>
+              <form action="<?= base_url('course/delete/' . $course['id']) ?>" method="post" style="display:inline;">
+                <?= csrf_field() ?>
+                <button type="submit" class="btn">Delete</button>
+              </form>
             </div>
           </div>
         <?php endforeach; ?>
       <?php else: ?>
-        <p>No lessons found.</p>
+        <p>No courses found.</p>
       <?php endif; ?>
     </div>
 

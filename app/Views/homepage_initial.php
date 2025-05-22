@@ -6,7 +6,7 @@
   <style>
     body {
       margin: 0;
-      padding: 0;
+      padding: 10px;
       font-family: 'Segoe UI', sans-serif;
       background: radial-gradient(50% 50% at 50% 50%, #FFE8EC 25%, #F7D5EF 50%, #F4E3F9 100%);
     }
@@ -20,20 +20,11 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    .logo-section {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo-section img.logo {
-      height: 40px;
-      margin-right: 10px;
-    }
-
     .name {
       font-size: 1.2rem;
       font-weight: bold;
       color: #000;
+      margin-left: 25px;
     }
 
     .nav-links {
@@ -42,45 +33,15 @@
       gap: 30px;
     }
 
-    .nav-links li a, .dropbtn {
+    .nav-links li a {
       text-decoration: none;
       color: #000;
       font-size: 1.1rem;
       position: relative;
-      background: none;
-      border: none;
-      cursor: pointer;
     }
 
-    .nav-links li a:hover,
-    .dropbtn:hover {
+    .nav-links li a:hover {
       color: #aa00ff;
-    }
-
-    .dropdown {
-      position: relative;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #fff;
-      min-width: 200px;
-      padding: 10px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      z-index: 1;
-      border-radius: 6px;
-    }
-
-    .dropdown-content select {
-      width: 100%;
-      padding: 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
     }
 
     .hero {
@@ -163,23 +124,54 @@
       border-radius: 8px;
     }
 
-    #signOutButton {
-      margin-left: 20px;
-      padding: 8px 16px;
+    .dropdown {
+      position: relative;
+    }
+
+    .dropbtn {
+      background: none;
       border: none;
-      border-radius: 20px;
-      background-color: #ff4081;
-      color: white;
-      font-weight: bold;
+      font-size: 1rem;
       cursor: pointer;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      min-width: 150px;
+      padding: 10px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+      border-radius: 6px;
+    }
+
+    .dropdown-content a,
+    .dropdown-content label,
+    .dropdown-content select {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      text-align: left;
+      font-size: 0.9rem;
+      padding: 10px;
+    }
+
+    .dropdown-content select {
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
     }
   </style>
 </head>
 <body>
-
   <nav class="navbar">
     <div class="logo-section">
-      <img src="<?= base_url('public/img/logo.png') ?>" class="logo" alt="Logo" />
+      <img src="<?= base_url('public/img/logo.png') ?>" alt="Logo" class="logo" />
       <span class="name">CRIMSONSkillBoost</span>
     </div>
     <ul class="nav-links">
@@ -188,9 +180,9 @@
         <button class="dropbtn">Courses</button>
         <div class="dropdown-content">
           <select id="course-select">
-            <option value="web">Computer Programming 1</option>
-            <option value="data">Computer Programming 2</option>
-            <option value="ai">Information Management</option>
+            <option value="cp1">Computer Programming 1</option>
+            <option value="cp2">Computer Programming 2</option>
+            <option value="im">Information Management</option>
             <option value="ic">Introduction to Computing</option>
             <option value="wbt">Web Development Tools</option>
             <option value="wbd">Web Applications Development</option>
@@ -200,10 +192,8 @@
         </div>
       </li>
       <li><a href="<?= base_url('about') ?>">About</a></li>
-      <li><button id="signOutButton">Sign Out</button></li>
     </ul>
   </nav>
-
   <section class="hero">
     <div class="hero-text">
       <h1>
@@ -221,21 +211,5 @@
       <div class="image-placeholder"></div>
     </div>
   </section>
-
-  <!-- Firebase Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
-
-  <script>
-    document.getElementById("signOutButton").addEventListener("click", function () {
-      firebase.auth().signOut().then(() => {
-        window.location.href = "<?= base_url('login') ?>";
-      }).catch((error) => {
-        alert("Error signing out: " + error.message);
-      });
-    });
-  </script>
-
 </body>
 </html>

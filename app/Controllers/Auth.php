@@ -66,8 +66,8 @@ class Auth extends BaseController
     {
         helper('text'); // ✅ This loads the helper that contains word_limiter()
 
-        $lessonModel = new \App\Models\LessonModel();
-        $data['lessons'] = $lessonModel->findAll();
+        $courseModel = new \App\Models\CourseModel();
+        $data['courses'] = $courseModel->findAll();
 
         return view('dashboard', $data);
     }
@@ -269,5 +269,14 @@ class Auth extends BaseController
         }
     }
 
+    public function terms()
+    {
+        return view('terms_conditions');
+    }
+
+    public function initial()
+    {
+        return view('homepage_initial');
+    }
 
 }

@@ -1,102 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>CrimsonSkillBoost: The Computer Science Learning Hub - Register</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CrimsonSkillBoost - Register</title>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 
-  <!-- CSS -->
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
     body {
-      height: 100vh;
-      background: linear-gradient(to bottom right, #ffeaf7, #eaf6ff);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #ffeef5, #e6f4ff);
     }
 
     .container {
       display: flex;
-      width: 90%;
-      max-width: 1200px;
-      background-color: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      height: 100vh;
     }
 
-    .left-panel {
+    .left-section {
       flex: 1;
-      padding: 40px;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
     }
 
     .logo {
-      height: 40px;
-      margin-bottom: 30px;
+      width: 50px;
+      margin-bottom: 20px;
     }
 
-    .graphic-box {
-      width: 350px;
-      height: 350px;
-      background-color: #d4d4d4;
-      border-radius: 8px;
+    .image-placeholder {
+      width: 100%;
+      max-width: 400px;
+      height: 400px;
+      background: #ccc;
     }
 
-    .right-panel {
+    .right-section {
       flex: 1;
-      background-color: #f3ccf8;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px;
     }
 
-    .register-box {
+    .form-box {
+      background: linear-gradient(to bottom right, #fce4ff, #e5e9ff);
+      padding: 40px;
+      border-radius: 16px;
       width: 100%;
       max-width: 400px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+    .form-box h2 {
+      margin-bottom: 20px;
+      text-align: center;
     }
 
-    input {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
+    form input,
+    form select {
       width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: flex-start;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+    }
+
+    .checkbox-container input {
+      margin-right: 10px;
+      margin-top: 4px;
+      width: 18px;
+      height: 18px;
+    }
+
+    .checkbox-container a {
+      color: #888;
+      text-decoration: none;
     }
 
     button {
-      background-color: #d172e6;
-      color: white;
+      width: 100%;
       padding: 12px;
-      font-size: 1rem;
+      background: #dd5cd2;
+      color: white;
       border: none;
-      border-radius: 999px;
+      border-radius: 9999px;
+      font-size: 1rem;
       cursor: pointer;
-      transition: background 0.3s;
     }
 
     button:hover {
-      background-color: #bb61cf;
+      background: #c94ac1;
     }
 
     #message {
@@ -115,64 +128,97 @@
 </head>
 <body>
   <div class="container">
-    <div class="left-panel">
-      <img src="<?= base_url('public/img/logo.jpg') ?>" alt="Logo" class="logo">
-      <div class="graphic-box"></div>
+    <div class="left-section">
+      <img src="<?= base_url('public/img/logo.jpg') ?>" alt="Logo" class="logo" />
+      <div class="image-placeholder"></div>
     </div>
-    <div class="right-panel">
-      <div class="register-box">
+
+    <div class="right-section">
+      <div class="form-box">
+        <h2>Create An Account</h2>
         <form id="registerForm">
-          <input type="email" id="email" placeholder="Username or Email" required>
-          <input type="password" id="password" placeholder="Password" required>
+          <input type="text" id="fullname" placeholder="Full name" required />
+          <input type="email" id="email" placeholder="Email Address" required />
+          <div class="row">
+            <input type="date" id="birthday" placeholder="Birthday" required />
+            <select id="gender" required>
+              <option value="">Gender</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="row">
+            <input type="password" id="password" placeholder="Password" required />
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+          </div>
+          <label class="checkbox-container">
+            <input type="checkbox" id="terms" required />
+            <span>
+              By clicking here, I state that I have read and understood the 
+              <a href="<?= base_url('terms') ?>" target="_blank">Terms and Conditions</a>.
+            </span>
+          </label>
           <button type="submit">Sign Up</button>
           <p id="message"></p>
-          <p>Already have an account? <a href="<?= base_url('login') ?>">Log In</a></p>
+          <p style="text-align:center">Already have an account? <a href="<?= base_url('login') ?>">Log In</a></p>
         </form>
-        <p id="message"></p>
       </div>
     </div>
   </div>
 
   <script>
-  const registerForm = document.getElementById("registerForm");
-  const msg = document.getElementById("message");
+    const registerForm = document.getElementById("registerForm");
+    const msg = document.getElementById("message");
 
-  registerForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
+    registerForm.addEventListener("submit", function (e) {
+      e.preventDefault();
 
-    msg.textContent = "";
-    msg.className = "";
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+      const fullname = document.getElementById("fullname").value.trim();
+      const birthday = document.getElementById("birthday").value;
+      const gender = document.getElementById("gender").value;
+      const termsAccepted = document.getElementById("terms").checked;
 
-    if (email === "" || password === "") {
-      msg.textContent = "⚠ Please fill in all fields.";
-      msg.classList.add("error");
-      setTimeout(() => {
-        msg.textContent = "";
-        msg.className = "";
-      }, 3000);
-      return;
-    }
+      msg.textContent = "";
+      msg.className = "";
 
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        msg.textContent = "✅ Registration successful! Redirecting...";
-        msg.classList.add("success");
-        setTimeout(() => {
-          window.location.href = "<?= base_url('setup_profile') ?>";
-        }, 1500);
-      })
-      .catch((error) => {
-        msg.textContent = "❌ " + error.message;
+      if (!email || !password || !confirmPassword || !fullname || !birthday || !gender) {
+        msg.textContent = "⚠ Please fill in all fields.";
         msg.classList.add("error");
-        setTimeout(() => {
-          msg.textContent = "";
-          msg.className = "";
-        }, 5000);
-      });
-  });
-</script>
+        return;
+      }
 
+      if (password !== confirmPassword) {
+        msg.textContent = "❌ Passwords do not match.";
+        msg.classList.add("error");
+        return;
+      }
+
+      if (!termsAccepted) {
+        msg.textContent = "❌ You must accept the terms and conditions.";
+        msg.classList.add("error");
+        return;
+      }
+
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          msg.textContent = "✅ Registration successful! Redirecting...";
+          msg.classList.add("success");
+
+          // You can save additional info to Firestore here if needed
+
+          setTimeout(() => {
+            window.location.href = "<?= base_url('setup_profile') ?>";
+          }, 1500);
+        })
+        .catch((error) => {
+          msg.textContent = "❌ " + error.message;
+          msg.classList.add("error");
+        });
+    });
+  </script>
 </body>
 </html>

@@ -7,7 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 // Optional: Default route (redirect to login)
-$routes->get('/', 'Auth::login');
+$routes->get('/', 'Auth::initial');
 
 // Manual route definitions
 $routes->get('/login', 'Auth::login');
@@ -28,6 +28,11 @@ $routes->post('/auth/upload-lesson', 'Auth::uploadLesson');
 $routes->post('/grades/calculate', 'Auth::calculateGrade'); // or 'GradesController::calculateGrade'
 $routes->get('/test/upload_lessons', 'TestPages::uploadLesson');
 $routes->get('/test/calculate_grade', 'TestPages::calculateGrade');
+$routes->get('/course', 'Course::index');
+$routes->get('/course/edit/(:num)', 'Course::edit/$1');
+$routes->post('/course/update/(:num)', 'Course::update/$1');
+$routes->post('/course/delete/(:num)', 'Course::delete/$1');
+$routes->get('terms', 'Auth::terms');
 
 
 
