@@ -15,7 +15,7 @@ class Lesson extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Lesson not found");
         }
 
-        return view('lesson_view', ['lesson' => $lesson]);
+        return view('lessons/view', ['lesson' => $lesson]);
     }
 
     public function index()

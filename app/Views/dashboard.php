@@ -211,7 +211,8 @@
             <div class="course-details">
               <div class="course-title"><?= esc($lesson['title']) ?></div>
               <div class="course-desc"><?= esc(word_limiter(strip_tags($lesson['content']), 20)) ?></div>
-              <a class="btn" href="<?= base_url('lessons/view/' . $lesson['id']) ?>">View</a>
+              <a class="btn" href="<?= base_url('lesson/' . $lesson['id']) ?>">View</a>
+              <a class="btn" href="<?= base_url('lessons/edit/' . $lesson['id']) ?>">Edit</a>
             </div>
           </div>
         <?php endforeach; ?>
