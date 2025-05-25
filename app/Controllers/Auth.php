@@ -279,4 +279,19 @@ class Auth extends BaseController
         return view('homepage_initial');
     }
 
+    public function topics()
+    {
+        return view('topics');
+    }
+
+    public function aboutus()
+    {
+        return view('aboutus');
+    }
+
+    public function loggedin()
+    {
+        return view('loggedin');
+    }
+
 }

@@ -237,7 +237,7 @@
                 msg.textContent = "Login successful. Welcome, " + data.email;
                 msg.className = "success";
                 setTimeout(() => {
-                  window.location.href = "<?= base_url('homepage') ?>";
+                  window.location.href = "<?= base_url('loggedin') ?>";
                 }, 1000);
               } else {
                 msg.textContent = "Login failed on backend validation.";

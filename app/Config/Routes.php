@@ -33,6 +33,9 @@ $routes->get('/course/edit/(:num)', 'Course::edit/$1');
 $routes->post('/course/update/(:num)', 'Course::update/$1');
 $routes->post('/course/delete/(:num)', 'Course::delete/$1');
 $routes->get('terms', 'Auth::terms');
+$routes->get('topics', to: 'Auth::topics');
+$routes->get(from: 'aboutus', to: 'Auth::aboutus');
+$routes->get(from: 'loggedin', to: 'Auth::loggedin');
 
 
 

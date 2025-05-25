@@ -4,261 +4,318 @@
   <meta charset="UTF-8">
   <title>CrimsonSkillBoost - Dashboard</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
     body {
-      background-color: #f2f2f2;
+      margin: 0;
+      font-family: 'Inter', Arial, sans-serif;
+      background: linear-gradient(to right, #f8eaff, #f3d9ff);
+      color: #222;
     }
 
     .navbar {
-      background-color: #fff;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 15px 30px;
-      border-bottom: 2px solid #ddd;
+      padding: 18px 40px;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
     }
 
-    .nav-left img.logo {
-      height: 40px;
-      margin-right: 20px;
+    .logo img {
+      width: 52px;
     }
 
-    .nav-center a {
-      margin: 0 15px;
-      font-weight: 700;
-      color: #000;
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+      font-size: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li {
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+
+    .active-section {
+      color: black;
+    }
+
+    .dropdown .arrow {
+      font-size: 1rem;
+      margin-left: 4px;
+    }
+
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .dropbtn {
+      text-decoration: none;
+      font-size: 1.5rem;
+      color: black;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      padding: 12px 16px;
+      display: block;
+      color: black;
       text-decoration: none;
     }
 
-    .nav-center a.active {
-      color: #ff00aa;
+    .dropdown-content a:hover {
+      background-color: #eee;
     }
 
-    .nav-right {
-      display: flex;
-      align-items: center;
+    .dropdown:hover .dropdown-content {
+      display: block;
     }
 
-    .nav-right img {
-      height: 35px;
-      width: 35px;
+    .arrow {
+      font-size: 1.2rem;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    .user-img, .notif-img {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
       border-radius: 50%;
-      margin-left: 20px;
+      border: 2px solid #eee;
     }
 
-    #signOutButton {
-      margin-left: 20px;
-      padding: 8px 16px;
-      border: none;
+    .user-img {
+      background: #e636a4;
+    }
+
+    .card {
+      max-width: 1200px;
+      margin: 40px auto;
+      background: #fff;
       border-radius: 20px;
-      background-color: #ff4081;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      padding: 32px 48px;
     }
 
-    .dashboard-container {
+    .container {
       display: flex;
-      justify-content: space-between;
-      padding: 40px;
-      gap: 30px;
+      gap: 32px;
     }
 
     .left-panel {
       flex: 2;
+    }
+
+    .left-panel h2 {
+      font-size: 1.2rem;
+      margin-bottom: 18px;
+    }
+
+    .course-card, .empty-card {
+      display: flex;
+      align-items: flex-start;
       background: #fff;
-      padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+      min-height: 90px;
+    }
+
+    .course-img {
+      width: 64px;
+      height: 64px;
+      background: #eee;
+      border-radius: 8px;
+      margin-right: 18px;
+    }
+
+    .course-info h3 {
+      margin: 0 0 6px 0;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .course-info p {
+      margin: 0 0 10px 0;
+      font-size: 0.97rem;
+      color: #444;
+    }
+
+    .course-info a.btn, .course-info form button {
+      padding: 6px 18px;
+      border: none;
+      background: #e6e6e6;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-right: 10px;
     }
 
     .right-panel {
-      flex: 1;
-      background: #f0f6ff;
-      padding: 30px;
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .right-panel h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .enrollment-requests, .recent-submissions {
+      background: #f2f7fc;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      padding: 18px 16px;
     }
 
-    .section-title {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-
-    .course-card, .enroll-card, .submission-card {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
+    .request-card {
       display: flex;
+      justify-content: space-between;
       align-items: flex-start;
-      gap: 15px;
-    }
-
-    .course-img, .submission-avatar {
-      width: 60px;
-      height: 60px;
-      background: #ddd;
+      background: #fff;
       border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
 
-    .submission-avatar {
-      border-radius: 50%;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #dab6fc;
-      color: #fff;
-      font-weight: 600;
+    .request-info strong {
+      font-size: 1.1rem;
     }
 
-    .course-details,
-    .submission-details {
-      flex: 1;
-    }
-
-    .course-title,
-    .enroll-title,
-    .submission-header {
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-
-    .course-desc,
-    .enroll-desc,
-    .submission-subhead {
-      font-size: 14px;
-      color: #555;
-    }
-
-    .btn {
-      padding: 6px 12px;
-      border: none;
-      background-color: #eee;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 500;
-      margin-top: 10px;
-    }
-
-    .view-btn {
-      background: #e0e0e0;
+    .request-info p {
+      font-size: 0.97rem;
+      margin: 4px 0 0 0;
+      color: #444;
     }
 
     .submission-card {
-      background: #fceeff;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .submission-actions {
       display: flex;
-      flex-direction: column;
-      gap: 8px;
+      align-items: center;
+      background: #fff;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     }
 
-    .submission-actions div {
-      width: 20px;
-      height: 20px;
-      background: #bbb;
-      border-radius: 4px;
-    }
-
-    @media (max-width: 768px) {
-      .dashboard-container {
-        flex-direction: column;
-        padding: 20px;
-      }
+    .submission-icon {
+      width: 36px;
+      height: 36px;
+      background: #e8e1fc;
+      color: #7e51e2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-right: 14px;
     }
   </style>
 </head>
 <body>
-
-  <div class="navbar">
-    <div class="nav-left">
-      <img src="<?= base_url('public/img/logo.png') ?>" class="logo" alt="Logo">
+  <nav class="navbar">
+    <div class="logo">
+      <img src="<?= base_url('public/img/logo.png') ?>" alt="Logo">
     </div>
-    <div class="nav-center">
-      <a href="<?= base_url('homepage') ?>">HOME</a>
-      <a href="<?= base_url('dashboard') ?>" class="active">DASHBOARD</a>
-      <a href="<?= base_url('about') ?>">ABOUT</a>
-      <a href="<?= base_url('courses') ?>">COURSES</a>
-    </div>
-    <div class="nav-right">
-      <img src="<?= base_url('public/img/bell.png') ?>" alt="Notifications">
-      <img src="<?= base_url('public/img/profile.jpg') ?>" alt="Profile">
-      <button id="signOutButton">Sign Out</button>
-    </div>
-  </div>
-
-  <div class="dashboard-container">
-    <!-- LEFT PANEL -->
-    <div class="left-panel">
-      <div class="section-title">Active Courses</div>
-      <?php if (!empty($courses)): ?>
-        <?php foreach ($courses as $course): ?>
-          <div class="course-card">
-            <div class="course-img"></div>
-            <div class="course-details">
-              <div class="course-title"><?= esc($course['course_name']) ?></div>
-              <div class="course-desc">Created on <?= date('F j, Y', strtotime($course['created_at'])) ?></div>
-              <a href="<?= base_url('course/edit/' . $course['id']) ?>" class="btn">Edit</a>
-              <form action="<?= base_url('course/delete/' . $course['id']) ?>" method="post" style="display:inline;">
-                <?= csrf_field() ?>
-                <button type="submit" class="btn">Delete</button>
-              </form>
-            </div>
-          </div>
-        <?php endforeach; ?>
-      <?php else: ?>
-        <p>No courses found.</p>
-      <?php endif; ?>
-    </div>
-
-    <!-- RIGHT PANEL -->
-    <div class="right-panel">
-      <div class="section-title">Enrollment Requests</div>
-      <div class="enroll-card">
-        <div>
-          <div class="enroll-title">Title</div>
-          <div class="enroll-desc">This section will show student requests.</div>
-          <button class="btn view-btn">View</button>
+    <ul class="nav-links">
+      <li><a href="<?= base_url('homepage') ?>">HOME</a></li>
+      <li><span class="active-section">DASHBOARD</span></li>
+      <li><a href="<?= base_url('about') ?>">ABOUT</a></li>
+      <li class="dropdown">
+        <span>COURSES <span class="arrow">&#9660;</span></span>
+        <div class="dropdown-content">
+          <a href="<?= base_url('courses') ?>">ALL COURSES</a>
+          <a href="#">MY COURSES</a>
         </div>
-      </div>
+      </li>
+    </ul>
+    <div class="nav-icons">
+      <img src="<?= base_url('public/img/bell.png') ?>" alt="Notifications" class="notif-img">
+      <img src="<?= base_url('public/img/profile.jpg') ?>" alt="Profile" class="user-img">
+      <button id="signOutButton" class="dropbtn">Sign Out</button>
+    </div>
+  </nav>
 
-      <div class="section-title" style="margin-top: 30px;">Recent Submissions</div>
-      <?php for ($i = 0; $i < 3; $i++): ?>
-        <div class="submission-card">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div class="submission-avatar">A</div>
-            <div class="submission-details">
-              <div class="submission-header">Header</div>
-              <div class="submission-subhead">Subhead</div>
+  <div class="card">
+    <main class="container">
+      <section class="left-panel">
+        <h2>Active Courses</h2>
+        <?php if (!empty($courses)): ?>
+          <?php foreach ($courses as $course): ?>
+            <div class="course-card">
+              <div class="course-img"></div>
+              <div class="course-info">
+                <h3><?= esc($course['course_name']) ?></h3>
+                <p>Created on <?= date('F j, Y', strtotime($course['created_at'])) ?></p>
+                <a href="<?= base_url('course/edit/' . $course['id']) ?>" class="btn">Edit</a>
+                <form action="<?= base_url('course/delete/' . $course['id']) ?>" method="post" style="display:inline;">
+                  <?= csrf_field() ?>
+                  <button type="submit">Delete</button>
+                </form>
+              </div>
             </div>
-          </div>
-          <div class="submission-actions">
-            <div></div>
-            <div></div>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <div class="empty-card">No courses found.</div>
+        <?php endif; ?>
+      </section>
+      <aside class="right-panel">
+        <div class="enrollment-requests">
+          <h2>Enrollment Requests</h2>
+          <div class="request-card">
+            <div class="request-info">
+              <strong>California Magpantay</strong>
+              <p>Requesting for enrollment in Computer programming language 1 and no.256 student in section III-Jacinto.</p>
+            </div>
+            <button>View</button>
           </div>
         </div>
-      <?php endfor; ?>
-    </div>
+
+        <div class="recent-submissions">
+          <h2>Recent Submissions</h2>
+          <?php for ($i = 0; $i < 3; $i++): ?>
+            <div class="submission-card">
+              <div class="submission-icon">A</div>
+              <div>
+                <strong>Student Name</strong>
+                <p>Quiz or Task Info</p>
+              </div>
+            </div>
+          <?php endfor; ?>
+        </div>
+      </aside>
+    </main>
   </div>
 
-  <!-- Firebase Scripts (optional) -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
-
   <script>
     document.getElementById("signOutButton").addEventListener("click", function () {
       firebase.auth().signOut().then(() => {
