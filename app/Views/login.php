@@ -199,11 +199,11 @@
     const loadingMessage = document.getElementById("loadingMessage");
     const loginButton = document.getElementById("loginButton");
 
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        window.location.href = "<?= base_url('homepage') ?>";
-      }
-    });
+    // firebase.auth().onAuthStateChanged(function(user) {
+    //   if (user) {
+    //     window.location.href = "<?= base_url('loggedin') ?>";
+    //   }
+    // });
 
     loginForm.addEventListener("submit", function (e) {
       e.preventDefault();

@@ -246,7 +246,7 @@
     <ul class="nav-links">
       <li><a href="<?= base_url('homepage') ?>">HOME</a></li>
       <li><span class="active-section">DASHBOARD</span></li>
-      <li><a href="<?= base_url('about') ?>">ABOUT</a></li>
+      <li><a href="<?= base_url('aboutus') ?>">ABOUT</a></li>
       <li class="dropdown">
         <span>COURSES <span class="arrow">&#9660;</span></span>
         <div class="dropdown-content">
