@@ -199,11 +199,11 @@
     const loadingMessage = document.getElementById("loadingMessage");
     const loginButton = document.getElementById("loginButton");
 
-    // firebase.auth().onAuthStateChanged(function(user) {
-    //   if (user) {
-    //     window.location.href = "<?= base_url('loggedin') ?>";
-    //   }
-    // });
+      // firebase.auth().onAuthStateChanged(function(user) {
+      //   if (user) {
+      //     window.location.href = "<?= base_url('loggedin') ?>";
+      //   }
+      // });
 
     loginForm.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -221,7 +221,7 @@
           debugMsg.textContent = `Logged in as: ${user.email}`;
 
           user.getIdToken().then(token => {
-            fetch("<?= base_url('Controllers/auth/verify') ?>", {
+            fetch("<?= base_url('/auth/verify') ?>", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

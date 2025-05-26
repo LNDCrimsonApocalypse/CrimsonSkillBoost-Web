@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CrimsonSkillBoost - Register</title>
 
-  <!-- Firebase -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 
   <style>
@@ -205,14 +206,31 @@
 
       firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          msg.textContent = "✅ Registration successful! Redirecting...";
-          msg.classList.add("success");
+          const user = userCredential.user;
+          const uid = user.uid;
 
-          // You can save additional info to Firestore here if needed
+          const userData = {
+            fullName: fullname,
+            email: email,
+            birthday: birthday,
+            gender: gender,
+            role: "educator", // <-- Add this line
+            createdAt: new Date().toISOString()
+          };
 
-          setTimeout(() => {
-            window.location.href = "<?= base_url('setup_profile') ?>";
-          }, 1500);
+          // Save to Firestore
+          firebase.firestore().collection("users").doc(uid).set(userData)
+            .then(() => {
+              msg.textContent = "✅ Registration successful! Redirecting...";
+              msg.classList.add("success");
+              setTimeout(() => {
+                window.location.href = "<?= base_url('setup_profile') ?>";
+              }, 1500);
+            })
+            .catch((error) => {
+              msg.textContent = "❌ Failed to save user data: " + error.message;
+              msg.classList.add("error");
+            });
         })
         .catch((error) => {
           msg.textContent = "❌ " + error.message;

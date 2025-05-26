@@ -18,33 +18,49 @@ class Auth extends BaseController
 
     public function verify()
     {
-        $json = $this->request->getJSON();
-        $idToken = $json->token;
+        $json = $this->request->getJSON(true); // Ensure associative array
+        $idToken = $json['token'] ?? null;
+
+        if (!$idToken) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Missing token'
+            ])->setStatusCode(400);
+        }
 
         $FIREBASE_API_KEY = "AIzaSyAQ87eb5RehN6PiJggR711yMfGrY39ulYU";
         $verifyUrl = "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={$FIREBASE_API_KEY}";
 
         $client = \Config\Services::curlrequest();
 
-        $response = $client->post($verifyUrl, [
-            'headers' => ['Content-Type' => 'application/json'],
-            'body' => json_encode(['idToken' => $idToken])
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        if (isset($data['users'][0])) {
-            return $this->response->setJSON([
-                'status' => 'success',
-                'email' => $data['users'][0]['email']
+        try {
+            $response = $client->post($verifyUrl, [
+                'headers' => ['Content-Type' => 'application/json'],
+                'body'    => json_encode(['idToken' => $idToken])
             ]);
-        } else {
+
+            $data = json_decode($response->getBody(), true);
+
+            if (isset($data['users'][0])) {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'email'  => $data['users'][0]['email']
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'status'  => 'error',
+                    'message' => 'Token verification failed'
+                ])->setStatusCode(401);
+            }
+        } catch (\Exception $e) {
             return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Invalid token'
-            ])->setStatusCode(401);
+                'status'  => 'error',
+                'message' => 'Exception during token verification',
+                'error'   => $e->getMessage()
+            ])->setStatusCode(500);
         }
     }
+
 
     public function verifyCodeInput()
     {

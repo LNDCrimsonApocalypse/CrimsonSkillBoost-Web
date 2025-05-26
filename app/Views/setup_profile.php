@@ -224,8 +224,42 @@
     firebase.auth().onAuthStateChanged(function(user) {
       if (!user) {
         alert("You must be logged in to set up your profile.");
+        return;
       }
+
+      // Fetch user data from Firestore
+      firebase.firestore().collection("users").doc(user.uid).get()
+        .then(doc => {
+          if (doc.exists) {
+            const data = doc.data();
+            
+            // Set Full Name
+            document.querySelector(".profile-name").textContent = data.fullName || "Your Name";
+
+            // Set Username
+            document.querySelector(".profile-username").textContent = "@" + (data.username || "yourusername");
+
+            // Pre-fill form fields (optional)
+            if (data.username) document.getElementById("username").value = data.username;
+            if (data.birthday) document.getElementById("birthday").value = data.birthday;
+            if (data.gender) document.getElementById("gender").value = data.gender;
+            if (data.bio) document.getElementById("bio").value = data.bio;
+
+            // Set avatar preview if avatar URL exists
+            if (data.avatar) {
+              document.getElementById("avatarPreview").style.backgroundImage = `url(${data.avatar})`;
+              document.getElementById("avatarPreview").style.backgroundSize = "cover";
+              document.getElementById("avatarPreview").innerHTML = "";
+            }
+          } else {
+            console.warn("No user document found.");
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching user data:", error);
+        });
     });
+
 
     // Avatar file input change
     document.getElementById("avatarUpload").addEventListener("change", function(e) {
@@ -264,6 +298,7 @@
         db.collection("users").doc(user.uid).set(profileData, { merge: true })
           .then(() => {
             alert("Profile saved to Firestore!");
+            window.location.href = "<?= base_url('loggedin') ?>";
           })
           .catch((error) => {
             console.error("Error saving profile to Firestore: ", error);
@@ -287,6 +322,12 @@
         saveProfile();
       }
     });
+
+    document.getElementById("username").addEventListener("input", function() {
+      const liveUsername = this.value.trim();
+      document.querySelector(".profile-username").textContent = liveUsername ? `@${liveUsername}` : "";
+    });
+    
   </script>
 
 </body>
