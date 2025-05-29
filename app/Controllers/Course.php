@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use App\Models\CourseModel;
-use CodeIgniter\Controller;
+use App\Models\LessonModel;
 
-class Course extends Controller
+class Course extends BaseController
 {
     public function index()
     {
@@ -39,5 +39,23 @@ class Course extends Controller
         $model->delete($id);
 
         return redirect()->to('/course');
+    }
+
+    public function view($id)
+    {
+        $courseModel = new CourseModel();
+        $lessonModel = new LessonModel();
+
+        $course = $courseModel->find($id);
+        if (!$course) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Course not found");
+        }
+
+        $lessons = $lessonModel->where('course_id', $id)->findAll();
+
+        return view('course_view', [
+            'course' => $course,
+            'lessons' => $lessons
+        ]);
     }
 }

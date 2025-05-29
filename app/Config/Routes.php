@@ -36,6 +36,10 @@ $routes->get('terms', 'Auth::terms');
 $routes->get('topics', to: 'Auth::topics');
 $routes->get(from: 'aboutus', to: 'Auth::aboutus');
 $routes->get(from: 'loggedin', to: 'Auth::loggedin');
+$routes->get(from: 'course/view/(:num)', to: 'Course::view/$1');
+$routes->get('lesson/view/(:num)', 'LessonController::view/$1');
+
+
 
 
 

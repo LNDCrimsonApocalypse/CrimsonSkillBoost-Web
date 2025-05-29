@@ -1,0 +1,98 @@
+CRITICAL - 2025-05-29 00:53:28 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: course/view/5]
+in APPPATH\Views\course_view.php on line 5.
+ 1 APPPATH\Views\course_view.php(5): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php', 5)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('course_view', [], true)
+ 5 APPPATH\Controllers\Course.php(56): view('course_view', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view('5')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-29 00:53:28 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: course/view/5]
+in APPPATH\Views\course_view.php on line 5.
+ 1 APPPATH\Views\course_view.php(5): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php', 5)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('course_view', [], true)
+ 5 APPPATH\Controllers\Course.php(56): view('course_view', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view('5')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-29 00:53:29 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: course/view/5]
+in APPPATH\Views\course_view.php on line 5.
+ 1 APPPATH\Views\course_view.php(5): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php', 5)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('course_view', [], true)
+ 5 APPPATH\Controllers\Course.php(56): view('course_view', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view('5')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-29 00:56:18 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: course/view/5]
+in APPPATH\Views\course_view.php on line 5.
+ 1 APPPATH\Views\course_view.php(5): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php', 5)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('course_view', [], true)
+ 5 APPPATH\Controllers\Course.php(56): view('course_view', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view('5')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-29 00:57:37 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: course/view/5]
+in APPPATH\Views\course_view.php on line 5.
+ 1 APPPATH\Views\course_view.php(5): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php', 5)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('course_view', [], true)
+ 5 APPPATH\Controllers\Course.php(56): view('course_view', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view('5')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-29 00:58:32 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: course/view/5]
+in APPPATH\Views\course_view.php on line 5.
+ 1 APPPATH\Views\course_view.php(5): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php', 5)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('course_view', [], true)
+ 5 APPPATH\Controllers\Course.php(56): view('course_view', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view('5')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-29 01:00:53 --> ErrorException: Undefined array key "description"
+[Method: GET, Route: course/view/5]
+in APPPATH\Views\course_view.php on line 67.
+ 1 APPPATH\Views\course_view.php(67): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "description"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php', 67)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\course_view.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('course_view', [], true)
+ 5 APPPATH\Controllers\Course.php(56): view('course_view', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view('5')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

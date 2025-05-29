@@ -273,6 +273,7 @@
               <div class="course-info">
                 <h3><?= esc($course['course_name']) ?></h3>
                 <p>Created on <?= date('F j, Y', strtotime($course['created_at'])) ?></p>
+                <a href="<?= base_url('course/view/' . $course['id']) ?>" class="btn">View</a>
                 <a href="<?= base_url('course/edit/' . $course['id']) ?>" class="btn">Edit</a>
                 <form action="<?= base_url('course/delete/' . $course['id']) ?>" method="post" style="display:inline;">
                   <?= csrf_field() ?>
