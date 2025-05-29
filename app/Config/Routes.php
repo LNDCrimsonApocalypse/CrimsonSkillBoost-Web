@@ -38,9 +38,10 @@ $routes->get(from: 'aboutus', to: 'Auth::aboutus');
 $routes->get(from: 'loggedin', to: 'Auth::loggedin');
 $routes->get(from: 'course/view/(:num)', to: 'Course::view/$1');
 $routes->get('lesson/view/(:num)', 'LessonController::view/$1');
-
-
-
+$routes->get('quiz', 'Quiz::index');
+$routes->match(['get', 'post'], 'quiz/create', 'Quiz::create');
+$routes->get('quiz/edit/(:num)', 'Quiz::edit/$1');
+$routes->match(['get', 'post'], 'quiz/addQuestion/(:num)', 'Quiz::addQuestion/$1');
 
 
 

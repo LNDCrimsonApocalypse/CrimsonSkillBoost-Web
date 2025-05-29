@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>CrimsonSkillBoost: The Computer Science Learning Hub - Confirmation Code</title>
+  <title>CrimsonSkillBoost: Confirmation Code</title>
 
-  <!-- Firebase -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="<?= base_url('js/firebase-config.js') ?>"></script>
 
   <!-- Inline CSS -->
@@ -100,7 +101,7 @@
     <form id="verifyForm">
       <div class="code-inputs">
         <?php for ($i = 0; $i < 6; $i++): ?>
-          <input type="text" maxlength="1" class="code" required>
+          <input type="text" maxlength="1" class="code">
         <?php endfor; ?>
       </div>
       <button type="submit">CONFIRM</button>
@@ -114,40 +115,87 @@
   </div>
 
   <script>
-    // Focus auto jump
-    const inputs = document.querySelectorAll('.code');
-    inputs.forEach((input, i) => {
-      input.addEventListener('input', () => {
-        if (input.value.length === 1 && i < inputs.length - 1) {
-          inputs[i + 1].focus();
+    document.addEventListener("DOMContentLoaded", () => {
+      const message = document.getElementById("message");
+      const form = document.getElementById("verifyForm");
+      const tempData = JSON.parse(sessionStorage.getItem("tempUser"));
+
+      if (!tempData) {
+        message.textContent = "❌ Session expired. Please register again.";
+        message.style.color = "red";
+        return;
+      }
+
+      firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+          message.textContent = "❌ User not authenticated. Please login again.";
+          message.style.color = "red";
+          return;
+        }
+
+        const checkVerification = () => {
+          user.reload().then(() => {
+            if (user.emailVerified) {
+              firebase.firestore().collection("users").doc(user.uid).set({
+                fullName: tempData.fullName,
+                email: tempData.email,
+                birthday: tempData.birthday,
+                gender: tempData.gender,
+                role: "educator",
+                createdAt: new Date().toISOString()
+              }).then(() => {
+                sessionStorage.removeItem("tempUser");
+                message.textContent = "✅ Email verified. Redirecting...";
+                message.style.color = "green";
+                setTimeout(() => {
+                  window.location.href = "<?= base_url('setup_profile') ?>";
+                }, 1500);
+              }).catch((error) => {
+                message.textContent = "❌ Failed to save data: " + error.message;
+                message.style.color = "red";
+              });
+            } else {
+              message.textContent = "📩 Still waiting for email verification...";
+              message.style.color = "orange";
+            }
+          });
+        };
+
+        // Form submit — trigger manual check
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          message.textContent = "🔄 Checking verification status...";
+          message.style.color = "#555";
+          checkVerification();
+        });
+
+        // Auto-check every 3 seconds
+        const intervalId = setInterval(() => {
+          user.reload().then(() => {
+            if (user.emailVerified) {
+              clearInterval(intervalId);
+              checkVerification();
+            }
+          });
+        }, 3000);
+      });
+
+      // Resend link handler
+      document.getElementById("resendLink").addEventListener("click", () => {
+        const user = firebase.auth().currentUser;
+        if (user) {
+          user.sendEmailVerification().then(() => {
+            message.textContent = "📧 Verification email resent.";
+            message.style.color = "blue";
+          }).catch((error) => {
+            message.textContent = "❌ " + error.message;
+            message.style.color = "red";
+          });
+        } else {
+          message.textContent = "❌ User not logged in.";
+          message.style.color = "red";
         }
       });
-    });
-
-    document.getElementById("verifyForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const code = Array.from(inputs).map(input => input.value).join("");
-      const message = document.getElementById("message");
-      message.textContent = "";
-
-      // Firebase verification logic placeholder
-      if (code.length === 6) {
-        // You would validate this code with your backend or Firebase here
-        message.textContent = "Code verified successfully!";
-        message.style.color = "green";
-      } else {
-        message.textContent = "Please enter a 6-digit code.";
-        message.style.color = "red";
-      }
-    });
-
-    // Resend link
-    document.getElementById("resendLink").addEventListener("click", () => {
-      const message = document.getElementById("message");
-      // Firebase sendEmailVerification or your API to resend OTP
-      message.textContent = "Verification code resent!";
-      message.style.color = "blue";
     });
   </script>
 

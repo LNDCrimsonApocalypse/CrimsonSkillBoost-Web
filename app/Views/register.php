@@ -207,28 +207,26 @@
       firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
           const user = userCredential.user;
-          const uid = user.uid;
 
-          const userData = {
-            fullName: fullname,
-            email: email,
-            birthday: birthday,
-            gender: gender,
-            role: "educator", // <-- Add this line
-            createdAt: new Date().toISOString()
-          };
-
-          // Save to Firestore
-          firebase.firestore().collection("users").doc(uid).set(userData)
+          user.sendEmailVerification()
             .then(() => {
-              msg.textContent = "✅ Registration successful! Redirecting...";
+              // Save data to sessionStorage for later use in verify_code.php
+              sessionStorage.setItem("tempUser", JSON.stringify({
+                uid: user.uid,
+                fullName: fullname,
+                email: email,
+                birthday: birthday,
+                gender: gender
+              }));
+
+              msg.textContent = "✅ Verification email sent. Redirecting...";
               msg.classList.add("success");
               setTimeout(() => {
-                window.location.href = "<?= base_url('setup_profile') ?>";
+                window.location.href = "<?= base_url('verify_code') ?>";
               }, 1500);
             })
             .catch((error) => {
-              msg.textContent = "❌ Failed to save user data: " + error.message;
+              msg.textContent = "❌ Failed to send verification email: " + error.message;
               msg.classList.add("error");
             });
         })
