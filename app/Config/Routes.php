@@ -43,6 +43,23 @@ $routes->match(['get', 'post'], 'quiz/create', 'Quiz::create');
 $routes->get('quiz/edit/(:num)', 'Quiz::edit/$1');
 $routes->match(['get', 'post'], 'quiz/addQuestion/(:num)', 'Quiz::addQuestion/$1');
 
+// QUIZ FLOW
+$routes->get('upload', 'Quiz::upload'); // Quiz/task selection
+$routes->get('quiz/upload', 'Quiz::uploadQuiz');
+$routes->post('quiz/upload', 'Quiz::uploadQuiz');
+$routes->get('quiz/options/(:num)', 'Quiz::quizOptions/$1');
+$routes->post('quiz/options/(:num)', 'Quiz::quizOptions/$1');
+$routes->get('quiz/duedate/(:num)', 'Quiz::duedate/$1');
+$routes->post('quiz/duedate/(:num)', 'Quiz::duedate/$1');
+$routes->get('quiz/result/(:num)', 'Quiz::result/$1');
+
+// TASK FLOW
+$routes->get('task/upload', 'Task::uploadTask');
+$routes->post('task/upload', 'Task::uploadTask');
+$routes->get('task/duedate/(:num)', 'Task::duedate/$1');
+$routes->post('task/duedate/(:num)', 'Task::duedate/$1');
+$routes->get('task/result/(:num)', 'Task::result/$1');
+
 
 
 // Enable auto routing (optional but helpful during development)
