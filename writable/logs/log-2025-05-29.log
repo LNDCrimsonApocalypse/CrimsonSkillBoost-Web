@@ -96,3 +96,17 @@ in APPPATH\Views\course_view.php on line 67.
  9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
 10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
 11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-29 06:53:17 --> CodeIgniter\HTTP\Exceptions\HTTPException: 22 : The requested URL returned error: 429
+[Method: GET, Route: Quiz]
+in SYSTEMPATH\HTTP\CURLRequest.php on line 709.
+ 1 SYSTEMPATH\HTTP\CURLRequest.php(709): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested URL returned error: 429')
+ 2 SYSTEMPATH\HTTP\CURLRequest.php(383): CodeIgniter\HTTP\CURLRequest->sendRequest([...])
+ 3 SYSTEMPATH\HTTP\CURLRequest.php(152): CodeIgniter\HTTP\CURLRequest->send('POST', 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=AIzaSyBQcpZt5UaWGR4UpLvSh_kQeH21wzKeMOA')
+ 4 APPPATH\Helpers\Gemini_helper.php(23): CodeIgniter\HTTP\CURLRequest->request('POST', 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=AIzaSyBQcpZt5UaWGR4UpLvSh_kQeH21wzKeMOA', [...])
+ 5 APPPATH\Controllers\Quiz.php(12): getQuizQuestionFromGemini('science')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Quiz->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
