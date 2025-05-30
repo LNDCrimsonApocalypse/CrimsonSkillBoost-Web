@@ -178,7 +178,7 @@
         <input class="login-input" type="password" id="password" placeholder="Password" required>
         <button class="login-button" type="submit" id="loginButton">Log In</button>
         <div class="login-links">
-          <a href="#">Forgot your password?</a>
+          <a href="<?= base_url('password_reset') ?>">Forgot your password?</a>
         </div>
         <p id="loadingMessage" class="loading" style="display: none;">Logging in...</p>
         <p id="message"></p>

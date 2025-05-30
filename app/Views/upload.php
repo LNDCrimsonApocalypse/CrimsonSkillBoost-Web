@@ -275,7 +275,7 @@
         <button type="submit" class="quiz">Create a quiz</button>
     </form>
 
-    <form action="<?= base_url('task/upload') ?>" method="get" style="display:inline;">
+    <form action="<?= base_url('task/assign') ?>" method="get" style="display:inline;">
         <button type="submit" class="task">Create a Task</button>
     </form>
     </div>

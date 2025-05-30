@@ -219,7 +219,16 @@
     <span class="close">✕</span>
     <span class="clear">Clear all</span>
     <h2>Add Content</h2>
-    <form action="<?= base_url('task/upload') ?>" method="post" enctype="multipart/form-data">
+    <form action="<?= base_url('task/uploadTask') ?>" method="post" enctype="multipart/form-data">
+      <!-- Hidden fields for class/course selection -->
+      <input type="hidden" name="year" value="<?= esc($_POST['year'] ?? '') ?>">
+      <input type="hidden" name="section" value="<?= esc($_POST['section'] ?? '') ?>">
+      <input type="hidden" name="semester" value="<?= esc($_POST['semester'] ?? '') ?>">
+      <?php if (!empty($_POST['courses'])): ?>
+        <?php foreach ($_POST['courses'] as $cid): ?>
+          <input type="hidden" name="courses[]" value="<?= esc($cid) ?>">
+        <?php endforeach; ?>
+      <?php endif; ?>
       <label>File Name:</label>
       <input type="text" name="task_name" placeholder="Enter file name" required>
       <div class="import-section">

@@ -233,7 +233,9 @@
     <div class="menu">
       <div class="search-bar">
         <input type="text" placeholder="Search..">
-        <button>+ Add Content</button>
+          <a href="<?= base_url('upload') ?>">
+            <button>+ Add Content</button>
+          </a>
       </div>
       <div class="user">
         <img src="<?= base_url('imgs/profile.png') ?>" alt="User" class="user-icon" />

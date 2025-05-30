@@ -36,6 +36,7 @@ $routes->get('terms', 'Auth::terms');
 $routes->get('topics', to: 'Auth::topics');
 $routes->get(from: 'aboutus', to: 'Auth::aboutus');
 $routes->get(from: 'loggedin', to: 'Auth::loggedin');
+$routes->get(from: 'password_reset', to: 'Auth::forgetPassword');
 $routes->get(from: 'course/view/(:num)', to: 'Course::view/$1');
 $routes->get('lesson/view/(:num)', 'LessonController::view/$1');
 $routes->get('quiz', 'Quiz::index');
@@ -56,8 +57,9 @@ $routes->get('quiz/result/(:num)', 'Quiz::result/$1');
 // TASK FLOW
 $routes->get('task/upload', 'Task::uploadTask');
 $routes->post('task/upload', 'Task::uploadTask');
-$routes->get('task/duedate/(:num)', 'Task::duedate/$1');
-$routes->post('task/duedate/(:num)', 'Task::duedate/$1');
+$routes->match(['get', 'post'], 'task/uploadTask', 'Task::uploadTask');
+$routes->match(['get', 'post'], 'task/assign', 'Task::assign');
+$routes->match(['get', 'post'], 'task/duedate/(:num)', 'Task::duedate/$1');
 $routes->get('task/result/(:num)', 'Task::result/$1');
 
 

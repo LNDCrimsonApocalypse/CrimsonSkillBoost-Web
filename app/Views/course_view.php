@@ -208,7 +208,9 @@
     </div>
     <div class="navbar-right">
       <input class="search-box" type="text" placeholder="Search.." />
-      <button>+ Add Content</button>
+        <a href="<?= base_url('upload') ?>">
+            <button>+ Add Content</button>
+        </a>
       <img src="/imgs/profile.png" alt="profile" class="profile"/>
     </div>
   </div>

@@ -4,163 +4,65 @@
   <meta charset="UTF-8">
   <title>CrimsonSkillBoost - Home</title>
   <style>
-    body {
+    /* Reset & Base */
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
       font-family: 'Segoe UI', sans-serif;
-      background: radial-gradient(50% 50% at 50% 50%, #FFE8EC 25%, #F7D5EF 50%, #F4E3F9 100%);
     }
 
+    body {
+      background-color: #1e1e1e;
+      color: #000;
+    }
+
+    /* NAVBAR */
     .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 40px;
-      background: linear-gradient(to right, #f8eaff, #f3d9ff);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .logo-section {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo-section img.logo {
-      height: 40px;
-      margin-right: 10px;
-    }
-
-    .name {
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #000;
-    }
-
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 30px;
-    }
-
-    .nav-links li a, .dropbtn {
-      text-decoration: none;
-      color: #000;
-      font-size: 1.1rem;
-      position: relative;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    .nav-links li a:hover,
-    .dropbtn:hover {
-      color: #aa00ff;
-    }
-
-    .dropdown {
-      position: relative;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
       background-color: #fff;
-      min-width: 200px;
-      padding: 10px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      z-index: 1;
-      border-radius: 6px;
-    }
-
-    .dropdown-content select {
-      width: 100%;
-      padding: 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    .hero {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      padding: 60px 80px;
-      min-height: 80vh;
-      background: linear-gradient(to bottom right, #f8eaff, #e8ceff);
+      padding: 15px 30px;
+      border-bottom: 2px solid #ddd;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
-    .hero-text {
-      flex: 1;
-      max-width: 50%;
-    }
-
-    .hero-text h1 {
-      font-size: 1.8rem;
-      color: #222;
-      line-height: 1.6;
-    }
-
-    .hero-text .highlight {
-      color: #aa00ff;
-      font-weight: bold;
-    }
-
-    .subtitle {
-      margin-top: 10px;
-      font-size: 0.95rem;
-      color: #555;
-      font-style: italic;
-    }
-
-    .hero-buttons {
-      margin-top: 25px;
+    .nav-left,
+    .nav-center,
+    .nav-right {
       display: flex;
-      gap: 15px;
+      align-items: center;
     }
 
-    .btn {
-      padding: 10px 20px;
-      border-radius: 20px;
+    .nav-left img.logo {
+      height: 40px;
+      margin-right: 20px;
+    }
+
+    .nav-center a {
+      margin: 0 15px;
+      font-weight: 700;
+      color: #000;
       text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.3s ease;
+      transition: color 0.3s ease;
     }
 
-    .btn.login {
-      background: white;
-      color: #7d00b2;
-      border: 1px solid #c077f2;
+    .nav-center a:hover,
+    .nav-center a.active {
+      color: #ff00aa;
     }
 
-    .btn.signup {
-      background: #aa00ff;
-      color: white;
-      border: none;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(170, 0, 255, 0.2);
-    }
-
-    .hero-image {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-    }
-
-    .image-placeholder {
-      width: 300px;
-      height: 200px;
-      background-color: #ccc;
-      border-radius: 8px;
+    .nav-right img.profile,
+    .nav-right img.notification {
+      height: 35px;
+      width: 35px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-left: 20px;
+      cursor: pointer;
     }
 
     #signOutButton {
@@ -173,54 +75,79 @@
       font-weight: bold;
       cursor: pointer;
     }
+
+    /* MAIN CONTENT */
+    .main-content {
+      background-color: #dcdcdc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 60px;
+      height: calc(100vh - 80px);
+    }
+
+    .welcome-text {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #000;
+    }
+
+    .image-box {
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to bottom right, #7baeff, #7a1b8e);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1.8rem;
+      font-weight: bold;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .main-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 20px;
+      }
+
+      .welcome-text {
+        margin-bottom: 30px;
+      }
+
+      .nav-center {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <nav class="navbar">
-    <div class="logo-section">
-      <img src="<?= base_url('public/img/logo.png') ?>" class="logo" alt="Logo" />
-      <span class="name">CRIMSONSkillBoost</span>
+  <div class="navbar">
+    <div class="nav-left">
+      <img src="<?= base_url('public/img/logo.png') ?>" class="logo" alt="Logo">
     </div>
-    <ul class="nav-links">
-      <li><a href="<?= base_url('homepage') ?>">Home</a></li>
-      <li class="dropdown">
-        <button class="dropbtn">Courses</button>
-        <div class="dropdown-content">
-          <select id="course-select">
-            <option value="web">Computer Programming 1</option>
-            <option value="data">Computer Programming 2</option>
-            <option value="ai">Information Management</option>
-            <option value="ic">Introduction to Computing</option>
-            <option value="wbt">Web Development Tools</option>
-            <option value="wbd">Web Applications Development</option>
-            <option value="oop">Object Oriented Programming</option>
-            <option value="mad">Mobile Applications Development</option>
-          </select>
-        </div>
-      </li>
-      <li><a href="<?= base_url('about') ?>">About</a></li>
-      <li><button id="signOutButton">Sign Out</button></li>
-    </ul>
-  </nav>
+    <div class="nav-center">
+      <a href="<?= base_url('homepage') ?>" class="active">HOME</a>
+      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+      <a href="<?= base_url('about') ?>">ABOUT</a>
+      <a href="<?= base_url('courses') ?>">COURSES</a>
+    </div>
+    <div class="nav-right">
+      <img src="<?= base_url('public/img/notification.png') ?>" class="notification" alt="Notifications">
+      <img src="<?= base_url('public/img/profile.jpg') ?>" class="profile" alt="User">
+      <button id="signOutButton">Sign Out</button>
+    </div>
+  </div>
 
-  <section class="hero">
-    <div class="hero-text">
-      <h1>
-        Mastery begins with teaching<br />
-        and learning <strong>empower students</strong>, <strong>enhance skills</strong>,<br />
-        and shape the future with <span class="highlight">CRIMSONSkillBoost</span>.
-      </h1>
-      <p class="subtitle">Crimson Skill Boost <em>Empowering Educators, Elevating Learners.</em></p>
-      <div class="hero-buttons">
-        <a href="<?= base_url('login') ?>" class="btn login">Login</a>
-        <a href="<?= base_url('register') ?>" class="btn signup">Sign Up</a>
-      </div>
-    </div>
-    <div class="hero-image">
-      <div class="image-placeholder"></div>
-    </div>
-  </section>
+  <div class="main-content">
+    <div class="welcome-text">WELCOME</div>
+    <div class="image-box">IMAGE<br>SAMPLE</div>
+  </div>
 
   <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -230,12 +157,12 @@
   <script>
     document.getElementById("signOutButton").addEventListener("click", function () {
       firebase.auth().signOut().then(() => {
+        // Sign-out successful
         window.location.href = "<?= base_url('login') ?>";
       }).catch((error) => {
         alert("Error signing out: " + error.message);
       });
     });
   </script>
-
 </body>
 </html>

@@ -359,23 +359,44 @@
   </div>
 
   <div class="title-bar">
-    Computer Programming 1
+    <?= esc($task['title'] ?? 'Task') ?>
   </div>
     <div class="content">
       <div class="task-card">
         <div class="task-header">
-          ACTIVITY 13.2. Use Ping and Traceroute to Test Network Connectivity
+          <?= esc($task['title'] ?? 'Task Title') ?>
           <span>✎</span>
         </div>
         <div class="task-body">
-          <p>Instruction: Use Ping and Traceroute to Test Network Connectivity. Access File Below for Guidelines</p>
-          <div class="pdf-link">
-            📄 <a href="#">Assignment3_Instructions.pdf</a>
+          <?php
+            $desc = json_decode($task['description'] ?? '', true);
+          ?>
+          <p>
+            <strong>Year:</strong> <?= esc($desc['year'] ?? '') ?><br>
+            <strong>Section:</strong> <?= esc($desc['section'] ?? '') ?><br>
+            <strong>Semester:</strong> <?= esc($desc['semester'] ?? '') ?><br>
+            <strong>Courses:</strong>
+            <?php if (!empty($desc['courses']) && is_array($desc['courses'])): ?>
+              <?= implode(', ', array_map('esc', $desc['courses'])) ?>
+            <?php endif; ?>
+          </p>
+          <?php if (!empty($task['file_path'])): ?>
+            <div class="pdf-link">
+              📄 <a href="<?= base_url('writable/uploads/' . $task['file_path']) ?>" target="_blank">Download Task File</a>
+            </div>
+          <?php endif; ?>
+          <div class="due">
+            🕒 Start: <?= esc($task['start_date'] ?? 'Not set') ?><br>
+            🕒 Due: <?= esc($task['end_date'] ?? 'Not set') ?><br>
+            <strong>Attempts:</strong> <?= esc($task['attempts'] ?? '0') ?><br>
+            <?php if (!empty($task['allow_late'])): ?>
+              <span style="color:green;">Late allowed</span>
+            <?php else: ?>
+              <span style="color:red;">No late submissions</span>
+            <?php endif; ?>
           </div>
-          <div class="due">🕒 Due today at 5:00 PM</div>
         </div>
       </div>
-
       <div class="submission-list">
         <h3>Recent Submission</h3>
         <div class="student-entry">

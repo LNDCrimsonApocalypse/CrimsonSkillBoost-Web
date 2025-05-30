@@ -309,4 +309,9 @@ class Auth extends BaseController
         return view('loggedin');
     }
 
+    public function forgetPassword()
+    {
+        return view('password_reset');
+    }
+
 }
