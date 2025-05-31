@@ -79,9 +79,128 @@
             background: #d4edda;
             color: #155724;
         }
+        /* Navbar */
+     .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .navbar-logo {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-logo .logo {
+      width: 40px;
+    }
+
+    .navbar-center {
+      flex: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .navbar-center a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+      margin: 0 10px;
+    }
+
+    .navbar-center .dropdown {
+      position: relative;
+    }
+
+   
+  
+    .navbar-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 15px; /* space between search, bell, and profile */
+    }
+
+    .navbar-right input[type="text"] {
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      /* Remove margin-right to avoid extra space */
+      margin: 0;
+      width: 140px;
+    }
+
+    .navbar-right img.profile {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .navbar-right img.icon {
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      /* Align vertically with profile */
+      vertical-align: middle;
+    }
+
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 5px 10px;
+    }
+
+    .search-box input {
+      border: none;
+      outline: none;
+      padding: 5px;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+    }
     </style>
 </head>
 <body>
+    <!-- NAVBAR -->
+  <div class="navbar">
+    <div class="navbar-logo">
+      <img src="imgs/Logo.png" alt="logo" class="logo"/>
+    </div>
+    <div class="navbar-center">
+      <a href="#">HOME</a>
+      <a href="#">DASHBOARD</a>
+      <a href="#">ABOUT</a>
+      <li class="dropdown">
+      <span>COURSES <span class="arrow">&#9660;</span></span>
+      <div class="dropdown-content">
+        <select id="course-select">
+          <option value="web">ALL COURSES </option>
+          <option value="data">MY COURSES </option>
+         
+        </select>
+      </div>
+    </li>
+
+    </div>
+    <div class="navbar-right">
+      <input type="text" placeholder="Search.." />
+        <img src="imgs/notifications.png" alt="Notifications" class="icon" />
+      <img src="imgs/profile.png" alt="profile" class="profile"/>
+    </div>
+  </div>
     <div class="container">
         <div class="grading-card">
             <h2>Grading Overview</h2>
