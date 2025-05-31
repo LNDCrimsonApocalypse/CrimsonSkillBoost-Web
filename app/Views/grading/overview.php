@@ -80,7 +80,7 @@
             color: #155724;
         }
         /* Navbar */
-     .navbar {
+    .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -155,26 +155,31 @@
       /* Align vertically with profile */
       vertical-align: middle;
     }
-
-
-    .search-box {
+ .tabbar {
       display: flex;
-      align-items: center;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 5px 10px;
+      justify-content: start;
+      gap: 30px;
+      padding: 10px 50px;
+      background-color: white;
+      border-bottom: 1px solid #ddd;
     }
 
-    .search-box input {
-      border: none;
-      outline: none;
-      padding: 5px;
-      font-family: 'Poppins', 'Segoe UI', sans-serif;
+    .tabbar span {
+      font-weight: 500;
+
+      cursor: pointer;
+    }
+
+    .tabbar .active {
+      color: black;
+      font-weight: bold;
+      border-bottom: 3px solid black;
+      padding-bottom: 5px;
     }
     </style>
 </head>
 <body>
-    <!-- NAVBAR -->
+    <!-- Navbar -->
   <div class="navbar">
     <div class="navbar-logo">
       <img src="imgs/Logo.png" alt="logo" class="logo"/>
@@ -183,7 +188,7 @@
       <a href="#">HOME</a>
       <a href="#">DASHBOARD</a>
       <a href="#">ABOUT</a>
-      <li class="dropdown">
+     <li class="dropdown">
       <span>COURSES <span class="arrow">&#9660;</span></span>
       <div class="dropdown-content">
         <select id="course-select">
@@ -193,14 +198,22 @@
         </select>
       </div>
     </li>
-
     </div>
     <div class="navbar-right">
       <input type="text" placeholder="Search.." />
-        <img src="imgs/notifications.png" alt="Notifications" class="icon" />
-      <img src="imgs/profile.png" alt="profile" class="profile"/>
+      <img src="imgs/notifications.png" alt="Notifications" class="icon" />
+      <img src="imgs/profile.png" alt="profile" class="profile" />
     </div>
   </div>
+
+  <!-- Tab Bar -->
+  <div class="tabbar">
+    <span>Topic</span>
+    <span>Task</span>
+    <span class="active">Quiz</span>
+    <span>Student</span>
+  </div>
+
     <div class="container">
         <div class="grading-card">
             <h2>Grading Overview</h2>
