@@ -80,12 +80,16 @@ class Auth extends BaseController
 
     public function dashboard()
     {
-        helper('text'); // ✅ This loads the helper that contains word_limiter()
-
         $courseModel = new \App\Models\CourseModel();
-        $data['courses'] = $courseModel->findAll();
-
-        return view('dashboard', $data);
+        $submissionModel = new \App\Models\SubmissionModel();
+        
+        // Get recent submissions
+        $recentSubmissions = $submissionModel->getRecentSubmissions(5); // Get last 5 submissions
+        
+        return view('dashboard', [
+            'courses' => $courseModel->findAll(),
+            'submissions' => $recentSubmissions
+        ]);
     }
     
     public function getCourses()

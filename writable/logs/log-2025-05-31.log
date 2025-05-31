@@ -645,3 +645,213 @@ ERROR - 2025-05-31 13:07:41 --> Database Error: Array
 )
 
 ERROR - 2025-05-31 13:07:41 --> Grade error: Failed to update grade
+ERROR - 2025-05-31 13:50:55 --> mysqli_sql_exception: Unknown column 'users.name' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Grading.php(19): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Grading->overview()
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2025-05-31 13:50:55 --> Error: Call to a member function getResult() on bool
+[Method: GET, Route: grading]
+in SYSTEMPATH\Model.php on line 287.
+ 1 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 2 APPPATH\Controllers\Grading.php(19): CodeIgniter\BaseModel->findAll()
+ 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Grading->overview()
+ 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2025-05-31 13:56:20 --> mysqli_sql_exception: Unknown column 'users.name' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(213): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(609): CodeIgniter\Model->doFind(false, NULL)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Models\SubmissionModel.php(30): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Auth.php(87): App\Models\SubmissionModel->getRecentSubmissions(5)
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+CRITICAL - 2025-05-31 13:56:20 --> Error: Call to a member function getResult() on bool
+[Method: GET, Route: dashboard]
+in SYSTEMPATH\Model.php on line 213.
+ 1 SYSTEMPATH\BaseModel.php(609): CodeIgniter\Model->doFind(false, null)
+ 2 APPPATH\Models\SubmissionModel.php(30): CodeIgniter\BaseModel->find()
+ 3 APPPATH\Controllers\Auth.php(87): App\Models\SubmissionModel->getRecentSubmissions(5)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2025-05-31 13:56:21 --> mysqli_sql_exception: Unknown column 'users.name' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(213): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(609): CodeIgniter\Model->doFind(false, NULL)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Models\SubmissionModel.php(30): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Auth.php(87): App\Models\SubmissionModel->getRecentSubmissions(5)
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+CRITICAL - 2025-05-31 13:56:21 --> Error: Call to a member function getResult() on bool
+[Method: GET, Route: dashboard]
+in SYSTEMPATH\Model.php on line 213.
+ 1 SYSTEMPATH\BaseModel.php(609): CodeIgniter\Model->doFind(false, null)
+ 2 APPPATH\Models\SubmissionModel.php(30): CodeIgniter\BaseModel->find()
+ 3 APPPATH\Controllers\Auth.php(87): App\Models\SubmissionModel->getRecentSubmissions(5)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2025-05-31 13:56:23 --> mysqli_sql_exception: Unknown column 'users.name' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(213): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(609): CodeIgniter\Model->doFind(false, NULL)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Models\SubmissionModel.php(30): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Auth.php(87): App\Models\SubmissionModel->getRecentSubmissions(5)
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+CRITICAL - 2025-05-31 13:56:23 --> Error: Call to a member function getResult() on bool
+[Method: GET, Route: dashboard]
+in SYSTEMPATH\Model.php on line 213.
+ 1 SYSTEMPATH\BaseModel.php(609): CodeIgniter\Model->doFind(false, null)
+ 2 APPPATH\Models\SubmissionModel.php(30): CodeIgniter\BaseModel->find()
+ 3 APPPATH\Controllers\Auth.php(87): App\Models\SubmissionModel->getRecentSubmissions(5)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2025-05-31 13:57:52 --> mysqli_sql_exception: Unknown column 'users.name' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Grading.php(19): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Grading->overview()
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2025-05-31 13:57:52 --> Error: Call to a member function getResult() on bool
+[Method: GET, Route: grading]
+in SYSTEMPATH\Model.php on line 287.
+ 1 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 2 APPPATH\Controllers\Grading.php(19): CodeIgniter\BaseModel->findAll()
+ 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Grading->overview()
+ 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2025-05-31 14:00:08 --> mysqli_sql_exception: Unknown column 'users.name' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Grading.php(19): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Grading->overview()
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2025-05-31 14:00:08 --> Error: Call to a member function getResult() on bool
+[Method: GET, Route: grading]
+in SYSTEMPATH\Model.php on line 287.
+ 1 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 2 APPPATH\Controllers\Grading.php(19): CodeIgniter\BaseModel->findAll()
+ 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Grading->overview()
+ 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 14:01:55 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: grading]
+in APPPATH\Views\grading\overview.php on line 92.
+ 1 APPPATH\Views\grading\overview.php(92): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\grading\\overview.php', 92)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\grading\\overview.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('grading/overview', [], true)
+ 5 APPPATH\Controllers\Grading.php(19): view('grading/overview', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Grading->overview()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 14:01:58 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: grading]
+in APPPATH\Views\grading\overview.php on line 92.
+ 1 APPPATH\Views\grading\overview.php(92): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\grading\\overview.php', 92)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\grading\\overview.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('grading/overview', [], true)
+ 5 APPPATH\Controllers\Grading.php(19): view('grading/overview', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Grading->overview()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 14:02:36 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: grading]
+in APPPATH\Views\grading\overview.php on line 92.
+ 1 APPPATH\Views\grading\overview.php(92): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\grading\\overview.php', 92)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\grading\\overview.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('grading/overview', [], true)
+ 5 APPPATH\Controllers\Grading.php(19): view('grading/overview', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Grading->overview()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

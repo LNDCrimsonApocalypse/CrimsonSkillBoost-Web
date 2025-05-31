@@ -74,5 +74,9 @@ $routes->post('task/delete/(:num)', 'Task::delete/$1');
 // Debug route
 $routes->get('task/debug-submissions/(:num)', 'Task::debugSubmissions/$1');
 
-// Enable auto routing (optional but helpful during development)
-$routes->setAutoRoute(false);
+// Grading routes
+$routes->group('grading', ['namespace' => 'App\Controllers'], function($routes) {
+    $routes->get('/', 'Grading::overview');
+    $routes->get('student/(:num)', 'Grading::studentOverview/$1');
+    $routes->post('save/(:num)', 'Grading::save/$1');
+});

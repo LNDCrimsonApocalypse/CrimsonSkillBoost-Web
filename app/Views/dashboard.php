@@ -236,6 +236,21 @@
       font-size: 1.1rem;
       margin-right: 14px;
     }
+
+    .grade-btn {
+      display: inline-block;
+      background: #e636a4;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.8em;
+      margin-left: 10px;
+    }
+
+    .grade-btn:hover {
+      background: #d62894;
+    }
   </style>
 </head>
 <body>
@@ -247,6 +262,7 @@
       <li><a href="<?= base_url('homepage') ?>">HOME</a></li>
       <li><span class="active-section">DASHBOARD</span></li>
       <li><a href="<?= base_url('aboutus') ?>">ABOUT</a></li>
+      <li><a href="<?= base_url('grading') ?>">GRADING</a></li>
       <li class="dropdown">
         <span>COURSES <span class="arrow">&#9660;</span></span>
         <div class="dropdown-content">
@@ -300,15 +316,25 @@
 
         <div class="recent-submissions">
           <h2>Recent Submissions</h2>
-          <?php for ($i = 0; $i < 3; $i++): ?>
-            <div class="submission-card">
-              <div class="submission-icon">A</div>
-              <div>
-                <strong>Student Name</strong>
-                <p>Quiz or Task Info</p>
+          <?php if (!empty($submissions)): ?>
+            <?php foreach ($submissions as $submission): ?>
+              <div class="submission-card">
+                <div class="submission-icon">
+                  <?= substr($submission['student_name'], 0, 1) ?>
+                </div>
+                <div class="submission-details">
+                  <strong><?= esc($submission['student_name']) ?></strong>
+                  <p><?= esc($submission['task_title']) ?></p>
+                  <small><?= date('M d, Y h:i A', strtotime($submission['submitted_at'])) ?></small>
+                  <a href="<?= base_url('grading/student/' . $submission['student_id']) ?>" class="grade-btn">Grade</a>
+                </div>
               </div>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <div class="submission-card">
+              <p>No recent submissions</p>
             </div>
-          <?php endfor; ?>
+          <?php endif; ?>
         </div>
       </aside>
     </main>

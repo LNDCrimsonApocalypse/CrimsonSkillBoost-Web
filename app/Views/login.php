@@ -159,6 +159,26 @@
     .success {
       color: green;
     }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -193,83 +213,71 @@
   </div>
 
   <script>
-    const loginForm = document.getElementById("loginForm");
-    const msg = document.getElementById("message");
-    const debugMsg = document.getElementById("debugMessage");
-    const loadingMessage = document.getElementById("loadingMessage");
-    const loginButton = document.getElementById("loginButton");
+    // Add loading state management
+    let isLoggingIn = false;
+    const loginButton = document.getElementById('loginButton');
+    const loadingSpinner = '<span class="spinner"></span> Signing in...';
+    const originalButtonText = loginButton.innerHTML;
 
-      // firebase.auth().onAuthStateChanged(function(user) {
-      //   if (user) {
-      //     window.location.href = "<?= base_url('loggedin') ?>";
-      //   }
-      // });
+    function showLoading() {
+        loginButton.disabled = true;
+        loginButton.innerHTML = loadingSpinner;
+    }
 
-    loginForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+    function hideLoading() {
+        loginButton.disabled = false;
+        loginButton.innerHTML = originalButtonText;
+    }
 
-      msg.textContent = '';
-      debugMsg.textContent = '';
-      loadingMessage.style.display = 'block';
-      loginButton.disabled = true;
+    loginButton.addEventListener('click', async function(e) {
+        e.preventDefault();
+        if (isLoggingIn) return;
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
 
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          debugMsg.textContent = `Logged in as: ${user.email}`;
+        if (!email || !password) {
+            alert('Please fill in all fields');
+            return;
+        }
 
-          user.getIdToken().then(token => {
-            fetch("<?= base_url('/auth/verify') ?>", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ token })
-            })
-            .then(res => res.json())
-            .then(data => {
-              loadingMessage.style.display = 'none';
-              loginButton.disabled = false;
+        try {
+            isLoggingIn = true;
+            showLoading();
 
-              if (data.status === 'success') {
-                msg.textContent = "Login successful. Welcome, " + data.email;
-                msg.className = "success";
-                setTimeout(() => {
-                  window.location.href = "<?= base_url('loggedin') ?>";
-                }, 1000);
-              } else {
-                msg.textContent = "Login failed on backend validation.";
-                msg.className = "error";
-              }
-            });
-          });
-        })
-        .catch((error) => {
-          loadingMessage.style.display = 'none';
-          loginButton.disabled = false;
+            // Set a timeout for the login attempt
+            const loginPromise = firebase.auth().signInWithEmailAndPassword(email, password);
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Login timeout')), 10000)
+            );
 
-          let errorMsg = '';
-          switch (error.code) {
-            case 'auth/user-not-found':
-              errorMsg = 'No user found with this email.';
-              break;
-            case 'auth/wrong-password':
-              errorMsg = 'Incorrect password.';
-              break;
-            case 'auth/invalid-email':
-              errorMsg = 'Invalid email format.';
-              break;
-            default:
-              errorMsg = error.message;
-              break;
-          }
+            await Promise.race([loginPromise, timeoutPromise]);
+            
+            // Redirect will happen automatically via the auth state observer
+            
+        } catch (error) {
+            console.error('Login error:', error);
+            hideLoading();
+            isLoggingIn = false;
+            
+            let errorMessage = 'Failed to login. Please try again.';
+            if (error.code === 'auth/user-not-found') {
+                errorMessage = 'No account found with this email.';
+            } else if (error.code === 'auth/wrong-password') {
+                errorMessage = 'Invalid password.';
+            } else if (error.message === 'Login timeout') {
+                errorMessage = 'Login is taking too long. Please check your connection and try again.';
+            }
+            
+            alert(errorMessage);
+        }
+    });
 
-          msg.textContent = `Error: ${errorMsg}`;
-          msg.className = "error";
-          debugMsg.textContent = `Error code: ${error.code}`;
-        });
+    // Add auth state observer
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            window.location.href = '<?= base_url('dashboard') ?>';
+        }
     });
   </script>
 </body>
