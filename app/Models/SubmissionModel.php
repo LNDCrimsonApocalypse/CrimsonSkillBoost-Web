@@ -8,7 +8,15 @@ class SubmissionModel extends Model
 {
     protected $table = 'submissions';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['score', 'status'];
+    protected $allowedFields = [
+        'student_id',
+        'task_id',
+        'score',
+        'status',
+        'submitted_at',
+        'graded_at'
+    ];
+    protected $useTimestamps = false;
     protected $returnType = 'array';
 
     public function getTaskSubmissions($taskId)

@@ -303,16 +303,25 @@
         <?php endif; ?>
       </section>
       <aside class="right-panel">
-        <div class="enrollment-requests">
+        <!-- <div class="enrollment-requests">
           <h2>Enrollment Requests</h2>
-          <div class="request-card">
-            <div class="request-info">
-              <strong>California Magpantay</strong>
-              <p>Requesting for enrollment in Computer programming language 1 and no.256 student in section III-Jacinto.</p>
-            </div>
-            <button>View</button>
-          </div>
-        </div>
+          <?php if (!empty($enrollmentRequests)): ?>
+            <?php foreach ($enrollmentRequests as $request): ?>
+              <div class="request-card">
+                <div class="request-info">
+                  <strong><?= esc($request['student_name']) ?></strong>
+                  <p>Requesting for enrollment in <?= esc($request['course_name']) ?> - Section <?= esc($request['section']) ?></p>
+                </div>
+                <div class="request-actions">
+                  <button onclick="updateEnrollment(<?= $request['id'] ?>, 'approved')" class="btn-approve">Approve</button>
+                  <button onclick="updateEnrollment(<?= $request['id'] ?>, 'rejected')" class="btn-reject">Reject</button>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <p>No pending enrollment requests</p>
+          <?php endif; ?>
+        </div> -->
 
         <div class="recent-submissions">
           <h2>Recent Submissions</h2>
@@ -351,6 +360,24 @@
         alert("Error signing out: " + error.message);
       });
     });
+
+    function updateEnrollment(id, status) {
+      fetch(`/enrollment/update/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: status })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          location.reload();
+        } else {
+          alert('Error: ' + data.message);
+        }
+      });
+    }
   </script>
 </body>
 </html>

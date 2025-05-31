@@ -57,9 +57,19 @@ class Quiz extends BaseController
     {
         $quizModel = new QuizModel();
         $questionModel = new QuestionModel();
+        
         $quiz = $quizModel->find($id);
-        $questions = $questionModel->where('quiz_id', $id)->findAll();
-        return view('quiz_edit', ['quiz' => $quiz, 'questions' => $questions]);
+        if (!$quiz) {
+            return redirect()->to('/quiz')->with('error', 'Quiz not found');
+        }
+
+        $questions = $questionModel->where('quiz_id', $id)
+                                 ->findAll();
+
+        return view('quiz_edit', [
+            'quiz' => $quiz,
+            'questions' => $questions
+        ]);
     }
 
     public function addQuestion($quizId)
@@ -386,5 +396,39 @@ class Quiz extends BaseController
             return redirect()->back()
                            ->with('error', 'Database error: ' . $e->getMessage());
         }
+    }
+
+    public function update($id)
+    {
+        $quizModel = new QuizModel();
+        $questionModel = new QuestionModel();
+
+        $quiz = [
+            'title' => $this->request->getPost('title'),
+            'description' => $this->request->getPost('description'),
+            'start_date' => $this->request->getPost('start_date'),
+            'end_date' => $this->request->getPost('end_date'),
+            'passing_score' => $this->request->getPost('passing_score')
+        ];
+
+        if ($quizModel->update($id, $quiz)) {
+            // Update questions
+            $questions = $this->request->getPost('questions');
+            if ($questions) {
+                foreach ($questions as $qId => $question) {
+                    $questionModel->update($qId, [
+                        'question_text' => $question['text'],
+                        'correct_answer' => $question['correct_answer']
+                    ]);
+                }
+            }
+            
+            return redirect()->to('/quiz/result/' . $id)
+                           ->with('success', 'Quiz updated successfully');
+        }
+
+        return redirect()->back()
+                       ->with('error', 'Failed to update quiz')
+                       ->withInput();
     }
 }

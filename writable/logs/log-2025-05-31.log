@@ -855,3 +855,68 @@ in APPPATH\Views\grading\overview.php on line 92.
  9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
 10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
 11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2025-05-31 14:21:48 --> mysqli_sql_exception: Table 'school_db.enrollment_requests' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `enrollm...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `enrollm...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `enrollm...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `enrollm...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Models\EnrollmentModel.php(21): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Auth.php(91): App\Models\EnrollmentModel->getPendingRequests()
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+CRITICAL - 2025-05-31 14:21:48 --> Error: Call to a member function getResult() on bool
+[Method: GET, Route: dashboard]
+in SYSTEMPATH\Model.php on line 287.
+ 1 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 2 APPPATH\Models\EnrollmentModel.php(21): CodeIgniter\BaseModel->findAll()
+ 3 APPPATH\Controllers\Auth.php(91): App\Models\EnrollmentModel->getPendingRequests()
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 14:25:59 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "courses/index.php"
+[Method: GET, Route: course]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('courses/index.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('courses/index', [], true)
+ 3 APPPATH\Controllers\Course.php(15): view('courses/index', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 14:26:12 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "courses/index.php"
+[Method: GET, Route: course]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('courses/index.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('courses/index', [], true)
+ 3 APPPATH\Controllers\Course.php(15): view('courses/index', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 14:28:32 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "quiz_edit.php"
+[Method: GET, Route: quiz/edit/5]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('quiz_edit.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('quiz_edit', [], true)
+ 3 APPPATH\Controllers\Quiz.php(62): view('quiz_edit', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Quiz->edit('5')
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

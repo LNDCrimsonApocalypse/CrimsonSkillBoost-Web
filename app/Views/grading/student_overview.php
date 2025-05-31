@@ -2,81 +2,119 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Student Grade Overview</title>
+    <title>Student Grading - <?= esc($student['name']) ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
+            padding: 20px;
             background-color: #ffeef8;
         }
         .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
-        .student-info {
+        .student-header {
             background: white;
-            border-radius: 10px;
             padding: 20px;
+            border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .grade-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+        .submissions-list {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .summary-card {
-            background: #f9f0f7;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
+        .submission-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .summary-card h3 {
-            margin: 0;
-            color: #666;
-            font-size: 0.9em;
+        .grade-input {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-        .summary-card .value {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #e636a4;
+        .save-btn {
+            background: #e636a4;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
         }
+        .status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        .status.pending { background: #fff3cd; color: #856404; }
+        .status.graded { background: #d4edda; color: #155724; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="student-info">
+        <div class="student-header">
             <h2><?= esc($student['name']) ?></h2>
-            <p>Student Number: <?= esc($student['student_number']) ?></p>
-            <p>Section: <?= esc($student['section']) ?></p>
-            
-            <div class="grade-summary">
-                <div class="summary-card">
-                    <h3>Task Average</h3>
-                    <div class="value"><?= number_format($student['average_task_score'], 1) ?></div>
-                </div>
-                <div class="summary-card">
-                    <h3>Quiz Average</h3>
-                    <div class="value"><?= number_format($student['average_quiz_score'], 1) ?></div>
-                </div>
-                <div class="summary-card">
-                    <h3>Overall Grade</h3>
-                    <div class="value">
-                        <?= number_format(($student['average_task_score'] + $student['average_quiz_score']) / 2, 1) ?>
-                    </div>
-                </div>
-            </div>
+            <p>Email: <?= esc($student['email']) ?></p>
         </div>
 
-        <!-- Submissions listing here -->
-        <?php if (!empty($submissions)): ?>
-            <div class="submissions-list">
-                <!-- Similar to the main grading overview table -->
-            </div>
-        <?php endif; ?>
+        <div class="submissions-list">
+            <h3>Submissions</h3>
+            <?php if (!empty($submissions)): ?>
+                <?php foreach ($submissions as $submission): ?>
+                    <div class="submission-item">
+                        <div>
+                            <strong><?= esc($submission['task_title']) ?></strong>
+                            <br>
+                            <small>Submitted: <?= date('M d, Y h:i A', strtotime($submission['submitted_at'])) ?></small>
+                        </div>
+                        <div>
+                            <input type="number" class="grade-input" 
+                                   value="<?= $submission['score'] ?? '' ?>" 
+                                   min="0" max="100"
+                                   data-submission-id="<?= $submission['id'] ?>">
+                            <button onclick="saveGrade(<?= $submission['id'] ?>)" class="save-btn">Save</button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No submissions found.</p>
+            <?php endif; ?>
+        </div>
     </div>
+
+    <script>
+        function saveGrade(submissionId) {
+            const input = document.querySelector(`input[data-submission-id="${submissionId}"]`);
+            const score = input.value;
+
+            fetch(`/grading/save/${submissionId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ score })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Grade saved successfully!');
+                } else {
+                    alert('Error saving grade: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to save grade');
+            });
+        }
+    </script>
 </body>
 </html>

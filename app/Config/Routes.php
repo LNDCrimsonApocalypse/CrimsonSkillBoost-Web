@@ -53,6 +53,7 @@ $routes->get('quiz/result/(:num)', 'Quiz::result/$1'); // Keep specific ID route
 $routes->get('quiz/duedate/(:num)', 'Quiz::showDueDateForm/$1');
 $routes->post('quiz/save_settings/(:num)', 'Quiz::saveSettings/$1');
 $routes->get('quiz/edit/(:num)', 'Quiz::edit/$1');
+$routes->post('quiz/update/(:num)', 'Quiz::update/$1');
 $routes->post('quiz/delete/(:num)', 'Quiz::delete/$1');
 
 // TASK FLOW
@@ -79,4 +80,9 @@ $routes->group('grading', ['namespace' => 'App\Controllers'], function($routes) 
     $routes->get('/', 'Grading::overview');
     $routes->get('student/(:num)', 'Grading::studentOverview/$1');
     $routes->post('save/(:num)', 'Grading::save/$1');
+    $routes->post('grading/save/(:num)', 'Grading::save/$1');
 });
+
+$routes->get('enrollment', 'Enrollment::index');
+$routes->post('enrollment/submit', 'Enrollment::submitRequest');
+$routes->post('enrollment/update/(:num)', 'Enrollment::updateRequest/$1');

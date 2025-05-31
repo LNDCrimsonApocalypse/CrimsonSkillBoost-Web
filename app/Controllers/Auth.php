@@ -82,13 +82,18 @@ class Auth extends BaseController
     {
         $courseModel = new \App\Models\CourseModel();
         $submissionModel = new \App\Models\SubmissionModel();
+        $enrollmentModel = new \App\Models\EnrollmentModel();
         
         // Get recent submissions
-        $recentSubmissions = $submissionModel->getRecentSubmissions(5); // Get last 5 submissions
+        $recentSubmissions = $submissionModel->getRecentSubmissions(5);
+        
+        // Get pending enrollment requests
+        $pendingEnrollments = $enrollmentModel->getPendingRequests();
         
         return view('dashboard', [
             'courses' => $courseModel->findAll(),
-            'submissions' => $recentSubmissions
+            'submissions' => $recentSubmissions,
+            'enrollmentRequests' => $pendingEnrollments
         ]);
     }
     
