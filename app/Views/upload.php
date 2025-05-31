@@ -259,8 +259,8 @@
   <!-- Tab Bar -->
   <div class="tabbar">
     <span>Topic</span>
-    <span>Task</span>
-    <span class="active">Quiz</span>
+    <span onclick="window.location.href='<?= base_url('task/result') ?>'" style="cursor: pointer;">Task</span>
+    <span onclick="window.location.href='<?= base_url('quiz/result') ?>'" style="cursor: pointer;">Quiz</span>
     <span>Student</span>
   </div>
 

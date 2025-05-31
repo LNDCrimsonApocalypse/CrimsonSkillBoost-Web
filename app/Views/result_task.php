@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>Task Details - <?= esc($task['title']) ?></title>
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="<?= base_url('public/css/auth.css') ?>">
     <style>
         body {
             margin: 0;
@@ -102,12 +103,11 @@
             margin: 0 auto;
         }
 
-        .task-card {
+        .tasks-list {
+            width: 65%;  /* Increased width */
             background: white;
             border-radius: 10px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-            width: 65%;
-            padding: 20px;
         }
 
         .task-header {
@@ -121,50 +121,93 @@
             align-items: center;
         }
 
-        .task-body {
+        .task-details {
+            padding: 20px;
+            background: #f8f0f7;
+            margin: 15px;
+            border-radius: 8px;
+        }
+
+        .tasks-scroll {
+            max-height: 400px;
+            overflow-y: auto;
             padding: 15px;
         }
 
-        .pdf-link {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 14px;
-            margin: 10px 0;
-        }
-
-        .pdf-link a {
-            color: #f53ea2;
-            text-decoration: none;
-        }
-
-        .submission-list {
-            width: 35%;
-            background: white;
-            border-radius: 10px;
+        .current-task-entry {
+            background-color: #f0e6ff;
+            margin: 0 0 20px 0;
             padding: 20px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            border-left: 4px solid #c3b7f9;
         }
 
-        .submission-list h3 {
-            margin-top: 0;
-            color: #333;
-        }
-
-        .student-entry {
+        .submission-entry {
             background-color: #f7f7f7;
             margin: 10px 0;
-            padding: 10px;
+            padding: 15px;
             border-radius: 8px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
 
-        .student-status {
+        .submission-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .submission-date {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .submission-score {
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+
+        .grading-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .score-input {
+            width: 60px;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .grade-btn {
+            padding: 6px 12px;
+            background: #e636a4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .edit-grade-btn {
+            background: #6d4fd2;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: white;
+            font-size: 11px;
+            cursor: pointer;
+            border: none;
+            margin-left: 8px;
+        }
+
+        .score-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .completed {
@@ -204,6 +247,129 @@
             color: #e74c3c;
             margin: 10px 0;
         }
+
+        .task-entry {
+            background-color: #f7f7f7;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .task-date {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .edit-btn {
+            background: #f94fa4;
+            color: white;
+            text-decoration: none;
+        }
+
+        .delete-btn {
+            background: #ff4444;
+            color: white;
+        }
+
+        .current-task-entry {
+            background-color: #f0e6ff;
+            margin: 0 0 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #c3b7f9;
+        }
+
+        .task-meta {
+            font-size: 0.9em;
+            color: #666;
+            margin: 8px 0;
+        }
+
+        .task-description {
+            margin: 10px 0;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .view-btn {
+            background: #6d4fd2;
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .submission-header {
+            border-bottom: 2px solid #f0e6ff;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+        }
+
+        .current-task {
+            font-size: 0.9em;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.1em;
+            color: #999;
+        }
+
+        .error {
+            color: #e74c3c;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .no-submissions {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        .logout-btn {
+            background: #ff4081;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 15px;
+        }
+
+        .logout-btn:hover {
+            background: #e63975;
+        }
     </style>
 </head>
 <body>
@@ -229,6 +395,7 @@
             <input type="text" placeholder="Search.." />
             <img src="imgs/notifications.png" alt="Notifications" class="icon" />
             <img src="https://i.imgur.com/uIgDDDd.png" alt="profile" class="profile"/>
+            <button id="signOutButton" class="logout-btn">Sign Out</button>
         </div>
     </div>
 
@@ -242,45 +409,169 @@
     <div class="title-bar"><?= esc($task['title']) ?></div>
 
     <div class="content">
-        <div class="task-card">
+        <div class="tasks-list">
             <div class="task-header">
-                Task Details
+                All Tasks
                 <span>✎</span>
             </div>
-            <div class="task-body">
-                <p><strong>Description:</strong> <?= esc($task['description']) ?: 'No description provided' ?></p>
-                <p><strong>Year:</strong> <?= esc($task['year']) ?> | <strong>Section:</strong> <?= esc($task['section']) ?></p>
-                <p><strong>Start Date:</strong> <?= esc($task['start_date']) ?: 'Not Set' ?></p>
-                <p><strong>End Date:</strong> <?= esc($task['end_date']) ?: 'Not Set' ?></p>
-                <div class="due">🕒 Due <?= $task['end_date'] ? 'on ' . date('F j, Y', strtotime($task['end_date'])) : 'date not set' ?></div>
-                
-                <?php if (!empty($task['file_path'])): ?>
-                    <div class="pdf-link">
-                        📄 <a href="<?= base_url('task/download/' . $task['id']) ?>">Download Task File</a>
+            <div class="tasks-scroll">
+                <!-- Current Task -->
+                <div class="current-task-entry">
+                    <div class="task-info">
+                        <strong><?= esc($task['title']) ?></strong>
+                        <p class="task-description"><?= esc($task['description']) ?: 'No description provided' ?></p>
+                        <div class="task-meta">
+                            <span>Start: <?= $task['start_date'] ? date('M d, Y', strtotime($task['start_date'])) : 'Not set' ?></span>
+                            <span>Due: <?= $task['end_date'] ? date('M d, Y', strtotime($task['end_date'])) : 'Not set' ?></span>
+                        </div>
+                        <?php if (!empty($task['file_path'])): ?>
+                            <div class="pdf-link">
+                                📄 <a href="<?= base_url('task/download/' . $task['id']) ?>">Download Task File</a>
+                            </div>
+                        <?php endif; ?>
                     </div>
-                <?php endif; ?>
+                </div>
+
+                <!-- Other Tasks List -->
+                <?php foreach ($allTasks as $t): ?>
+                    <?php if ($t['id'] != $task['id']): ?>
+                        <div class="task-entry">
+                            <div class="task-info">
+                                <strong><?= esc($t['title']) ?></strong>
+                                <p class="task-date">Created: <?= date('M d, Y', strtotime($t['created_at'])) ?></p>
+                            </div>
+                            <div class="task-actions">
+                                <a href="<?= base_url('task/result/' . $t['id']) ?>" class="view-btn">View</a>
+                                <a href="<?= base_url('task/edit/' . $t['id']) ?>" class="edit-btn">Edit</a>
+                                <form action="<?= base_url('task/delete/' . $t['id']) ?>" method="post" style="display:inline;">
+                                    <?= csrf_field() ?>
+                                    <button type="submit" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             </div>
         </div>
 
+        <!-- Submissions List -->
         <div class="submission-list">
-            <h3>Recent Submissions</h3>
-            <!-- Example submissions - Replace with actual data -->
-            <div class="student-entry">
-                <div class="info">◼️ Juan Dela Cruz</div>
-                <div class="student-status">
-                    <span class="completed">Completed</span>
-                    <span class="score">1/1</span>
-                </div>
+            <div class="submission-header">
+                <h3>Student Submissions</h3>
+                <p class="current-task">For: <?= esc($task['title']) ?></p>
             </div>
-            <!-- Add more student entries -->
-            <div class="student-entry">
-                <div class="info">◼️ Maria Santos</div>
-                <div class="status-bar status-incomplete">
-                    <div class="status-fill"></div>
-                </div>
-                <span class="score">0/1</span>
+            <div id="submissions-container">
+                <!-- Loading indicator -->
+                <div class="loading">Loading submissions...</div>
             </div>
         </div>
+
+        <script>
+            function loadSubmissions() {
+                const container = document.getElementById('submissions-container');
+                container.innerHTML = '<div class="loading">Loading...</div>';
+
+                fetch('<?= base_url('task/submissions/' . $task['id']) ?>')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) throw new Error(data.message);
+                        
+                        if (data.submissions.length === 0) {
+                            container.innerHTML = '<p class="no-submissions">No submissions yet</p>';
+                            return;
+                        }
+
+                        container.innerHTML = data.submissions.map(sub => `
+                            <div class="submission-entry">
+                                <div class="submission-info">
+                                    <strong>${sub.student_name}</strong>
+                                    <span class="submission-date">Submitted: ${sub.submitted_at}</span>
+                                    ${sub.file_path ? `<a href="${sub.file_path}" class="submission-file" target="_blank">📎 View Submission</a>` : ''}
+                                </div>
+                                <div class="submission-score">
+                                    ${sub.status === 'completed' 
+                                        ? `<div class="score-info">
+                                            <span class="completed">Completed</span>
+                                            <span class="score">${sub.score}/100</span>
+                                            <button onclick="editGrade(${sub.id}, ${sub.score})" class="edit-grade-btn">Edit</button>
+                                           </div>`
+                                        : `<div class="grading-controls" id="grade-controls-${sub.id}">
+                                            <input type="number" min="0" max="100" class="score-input" placeholder="Score">
+                                            <button onclick="gradeSubmission(${sub.id})" class="grade-btn">Grade</button>
+                                           </div>`
+                                    }
+                                </div>
+                            </div>
+                        `).join('');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        container.innerHTML = `<p class="error">Error loading submissions: ${error.message}</p>`;
+                    });
+            }
+
+            // Add editGrade function
+            function editGrade(submissionId, currentScore) {
+                const submissionEl = event.target.closest('.submission-entry');
+                const scoreInfo = submissionEl.querySelector('.score-info');
+                
+                scoreInfo.innerHTML = `
+                    <div class="grading-controls" id="grade-controls-${submissionId}">
+                        <input type="number" min="0" max="100" class="score-input" value="${currentScore}">
+                        <button onclick="gradeSubmission(${submissionId})" class="grade-btn">Update</button>
+                    </div>
+                `;
+            }
+
+            function gradeSubmission(submissionId) {
+                const controls = document.getElementById(`grade-controls-${submissionId}`);
+                const scoreInput = controls.querySelector('.score-input');
+                const score = parseFloat(scoreInput.value);
+
+                if (isNaN(score) || score < 0 || score > 100) {
+                    alert('Please enter a valid score between 0 and 100');
+                    return;
+                }
+
+                fetch('<?= base_url('task/grade/') ?>/' + submissionId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ score: score })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadSubmissions(); // Reload the submissions list
+                    } else {
+                        throw new Error(data.message || 'Failed to update grade');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(error.message || 'Failed to update grade');
+                });
+            }
+
+            // Load submissions when page loads
+            document.addEventListener('DOMContentLoaded', loadSubmissions);
+        </script>
     </div>
+
+    <!-- Firebase Integration -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+    <script>
+        document.getElementById('signOutButton').addEventListener('click', function() {
+            firebase.auth().signOut().then(() => {
+                window.location.href = '<?= base_url('login') ?>';
+            }).catch((error) => {
+                console.error('Sign out error:', error);
+                alert('Error signing out');
+            });
+        });
+    </script>
 </body>
 </html>

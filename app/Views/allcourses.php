@@ -395,8 +395,9 @@
     </li>
     </div>
     <div class="navbar-right">
-    <img src="imgs/notifications.png" alt="Notifications" class="icon" />
-      <img src="imgs/profile.png" alt="Profile" class="navbar-profile" />
+        <img src="imgs/notifications.png" alt="Notifications" class="icon" />
+        <img src="imgs/profile.png" alt="Profile" class="navbar-profile" />
+        <button id="signOutButton" class="logout-btn">Sign Out</button>
     </div>
   </nav>
   <!-- MAIN AREA -->

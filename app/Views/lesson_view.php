@@ -230,16 +230,15 @@
         </div>
       </li>
     </div>
-    <div class="menu">
-      <div class="search-bar">
-        <input type="text" placeholder="Search..">
-          <a href="<?= base_url('upload') ?>">
+    <div class="navbar-right">
+        <div class="search-bar">
+            <input type="text" placeholder="Search..">
             <button>+ Add Content</button>
-          </a>
-      </div>
-      <div class="user">
-        <img src="<?= base_url('imgs/profile.png') ?>" alt="User" class="user-icon" />
-      </div>
+        </div>
+        <div class="user">
+            <img src="<?= base_url('imgs/profile.png') ?>" alt="User" class="user-icon" />
+        </div>
+        <button id="signOutButton" class="logout-btn">Sign Out</button>
     </div>
   </div>
 

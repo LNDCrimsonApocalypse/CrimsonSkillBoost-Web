@@ -258,4 +258,7 @@
             <div style="text-align: right; padding: 20px;">
                 <button type="submit">Next</button>
             </div>
-        </form
+        </form>
+    </div>
+</body>
+</html>

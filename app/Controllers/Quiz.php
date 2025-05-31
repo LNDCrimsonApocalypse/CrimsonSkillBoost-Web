@@ -215,35 +215,50 @@ class Quiz extends BaseController
     }
 
     // Step 5: Show quiz summary/result
-    public function result($quizId)
+    public function result($quizId = null)
     {
         try {
             $quizModel = new \App\Models\QuizModel();
             $questionModel = new \App\Models\QuestionModel();
             
-            $quiz = $quizModel->find($quizId);
+            // If no ID provided, get the most recent quiz
+            if (!$quizId) {
+                $quiz = $quizModel->orderBy('created_at', 'DESC')->first();
+                if (!$quiz) {
+                    return redirect()->to('quiz/upload')->with('error', 'No quizzes found');
+                }
+                $quizId = $quiz['id'];
+            } else {
+                $quiz = $quizModel->find($quizId);
+            }
+
+            // Get all quizzes
+            $allQuizzes = $quizModel->orderBy('created_at', 'DESC')->findAll();
+            
             if (!$quiz) {
                 throw new \Exception('Quiz not found');
             }
 
-            // Get questions for this quiz
             $questions = $questionModel->where('quiz_id', $quizId)->findAll();
-            if ($questions === false) {
-                $questions = []; // Ensure questions is always an array
-            }
-
-            $data = [
+            
+            return view('result_quiz', [
                 'quiz' => $quiz,
-                'questions' => $questions
-            ];
-
-            return view('result_quiz', $data);
+                'questions' => $questions ?? [],
+                'allQuizzes' => $allQuizzes
+            ]);
 
         } catch (\Exception $e) {
             log_message('error', '[Quiz] View error: ' . $e->getMessage());
-            return redirect()->to('quiz/upload')
-                           ->with('error', $e->getMessage());
+            return redirect()->to('quiz/upload')->with('error', $e->getMessage());
         }
+    }
+
+    // Add delete method
+    public function delete($quizId)
+    {
+        $quizModel = new \App\Models\QuizModel();
+        $quizModel->delete($quizId);
+        return redirect()->to('/dashboard')->with('success', 'Quiz deleted successfully');
     }
 
     public function startQuizCreation()

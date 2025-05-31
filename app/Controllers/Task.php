@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Models\TaskModel;
 use App\Models\CourseModel;
+use App\Models\SubmissionModel;
 
 class Task extends BaseController
 {
@@ -115,14 +116,32 @@ class Task extends BaseController
         return redirect()->to("/task/result/$taskId");
     }
 
-    public function result($taskId)
+    public function result($taskId = null)
     {
         $taskModel = new TaskModel();
-        $task = $taskModel->find($taskId);
+        
+        // If no ID provided, get the most recent task
+        if (!$taskId) {
+            $task = $taskModel->orderBy('created_at', 'DESC')->first();
+            if (!$task) {
+                return redirect()->to('/task/assign')->with('error', 'No tasks found');
+            }
+            $taskId = $task['id'];
+        } else {
+            $task = $taskModel->find($taskId);
+        }
+
+        // Get all tasks
+        $allTasks = $taskModel->orderBy('created_at', 'DESC')->findAll();
+        
         if (!$task) {
             return redirect()->to('/task/assign')->with('error', 'Task not found');
         }
-        return view('result_task', ['task' => $task]);
+        
+        return view('result_task', [
+            'task' => $task,
+            'allTasks' => $allTasks
+        ]);
     }
 
     public function download($taskId)
@@ -145,5 +164,87 @@ class Task extends BaseController
         $filename = $task['title'] . '.' . $extension;
 
         return $this->response->download($path, null)->setFileName($filename);
+    }
+
+    public function getSubmissions($taskId)
+    {
+        header('Content-Type: application/json'); // Force JSON content type
+        $submissionModel = new SubmissionModel();
+        
+        try {
+            $submissions = $submissionModel->getTaskSubmissions($taskId);
+            
+            return $this->response->setJSON([
+                'success' => true,
+                'submissions' => array_map(function($sub) {
+                    return [
+                        'id' => $sub['id'],
+                        'student_name' => $sub['student_name'],
+                        'status' => $sub['status'],
+                        'score' => $sub['score'],
+                        'submitted_at' => date('M d, Y h:i A', strtotime($sub['submitted_at'])),
+                        'file_path' => $sub['file_path']
+                    ];
+                }, $submissions)
+            ])->setContentType('application/json');
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error fetching submissions: ' . $e->getMessage());
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Error fetching submissions: ' . $e->getMessage()
+            ])->setStatusCode(500)->setContentType('application/json');
+        }
+    }
+
+    public function grade($submissionId)
+    {
+        try {
+            $submissionModel = new SubmissionModel();
+            
+            // Get raw input
+            $json = $this->request->getJSON();
+            if (!$json || !isset($json->score)) {
+                throw new \Exception('Score is required');
+            }
+
+            $score = (float) $json->score;
+            if ($score < 0 || $score > 100) {
+                throw new \Exception('Score must be between 0 and 100');
+            }
+
+            // Update submission
+            $updateData = [
+                'score' => $score,
+                'status' => 'completed'
+            ];
+
+            $success = $submissionModel->update($submissionId, $updateData);
+
+            if (!$success) {
+                throw new \Exception('Failed to update grade');
+            }
+
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Grade updated successfully',
+                'data' => ['score' => $score]
+            ]);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Grade error: ' . $e->getMessage());
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => $e->getMessage()
+            ])->setStatusCode(400);
+        }
+    }
+
+    // Add delete method
+    public function delete($taskId)
+    {
+        $taskModel = new TaskModel();
+        $taskModel->delete($taskId);
+        return redirect()->to('/dashboard')->with('success', 'Task deleted successfully');
     }
 }

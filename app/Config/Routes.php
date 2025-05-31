@@ -48,9 +48,12 @@ $routes->post('quiz/manual_create', 'Quiz::manualCreate');
 $routes->post('quiz/ai_generate', 'Quiz::ai_generate');
 $routes->get('quiz/questions', 'Quiz::showQuestionsForm');
 $routes->post('quiz/save_questions', 'Quiz::saveQuestions');
+$routes->get('quiz/result', 'Quiz::result'); // Add base result route without ID
+$routes->get('quiz/result/(:num)', 'Quiz::result/$1'); // Keep specific ID route
 $routes->get('quiz/duedate/(:num)', 'Quiz::showDueDateForm/$1');
 $routes->post('quiz/save_settings/(:num)', 'Quiz::saveSettings/$1');
-$routes->get('quiz/result/(:num)', 'Quiz::result/$1');
+$routes->get('quiz/edit/(:num)', 'Quiz::edit/$1');
+$routes->post('quiz/delete/(:num)', 'Quiz::delete/$1');
 
 // TASK FLOW
 $routes->post('task/start', 'Task::startTaskCreation');
@@ -58,10 +61,18 @@ $routes->get('task/assign', 'Task::showAssignForm');
 $routes->post('task/assign', 'Task::processAssign');
 $routes->get('task/upload', 'Task::showUploadForm');
 $routes->post('task/upload', 'Task::processUpload');
+$routes->get('task/result', 'Task::result'); // Add base result route without ID
+$routes->get('task/result/(:num)', 'Task::result/$1'); // Keep specific ID route
 $routes->get('task/duedate/(:num)', 'Task::showDueDateForm/$1');
 $routes->post('task/duedate/(:num)', 'Task::processDueDate/$1');
-$routes->get('task/result/(:num)', 'Task::result/$1');
 $routes->get('task/download/(:num)', 'Task::download/$1');
+$routes->post('task/grade/(:num)', 'Task::grade/$1');
+$routes->get('task/submissions/(:num)', 'Task::getSubmissions/$1');
+$routes->get('task/edit/(:num)', 'Task::edit/$1');
+$routes->post('task/delete/(:num)', 'Task::delete/$1');
+
+// Debug route
+$routes->get('task/debug-submissions/(:num)', 'Task::debugSubmissions/$1');
 
 // Enable auto routing (optional but helpful during development)
 $routes->setAutoRoute(false);

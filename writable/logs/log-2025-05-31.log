@@ -467,3 +467,181 @@ in APPPATH\Views\result_quiz.php on line 24.
 ERROR - 2025-05-31 07:09:34 --> [Quiz] Create error: Undefined variable $questions
 ERROR - 2025-05-31 07:13:40 --> [Quiz] Create error: Undefined variable $questions
 ERROR - 2025-05-31 07:17:32 --> [Quiz] Create error: Undefined variable $questions
+ERROR - 2025-05-31 12:41:01 --> Error fetching submissions: You cannot use "getCompiledSelect()" in "App\Models\SubmissionModel". This is a method of the Query Builder Class.
+ERROR - 2025-05-31 12:41:02 --> Error fetching submissions: You cannot use "getCompiledSelect()" in "App\Models\SubmissionModel". This is a method of the Query Builder Class.
+ERROR - 2025-05-31 12:41:04 --> Error fetching submissions: You cannot use "getCompiledSelect()" in "App\Models\SubmissionModel". This is a method of the Query Builder Class.
+ERROR - 2025-05-31 12:41:17 --> Error fetching submissions: You cannot use "getCompiledSelect()" in "App\Models\SubmissionModel". This is a method of the Query Builder Class.
+ERROR - 2025-05-31 12:42:23 --> Error fetching submissions: Undefined array key "feedback"
+ERROR - 2025-05-31 12:56:03 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(215): CodeIgniter\Model->update('9', Array)
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+ERROR - 2025-05-31 12:57:47 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(228): CodeIgniter\Model->update('9', Array)
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+ERROR - 2025-05-31 12:57:47 --> Failed to update submission: Array
+(
+    [CodeIgniter\Database\MySQLi\Connection] => Unknown column 'updated_at' in 'field list'
+)
+
+ERROR - 2025-05-31 12:57:47 --> Grading error: Database update failed
+ERROR - 2025-05-31 12:58:58 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(215): CodeIgniter\Model->update('9', Array)
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+ERROR - 2025-05-31 12:58:58 --> Grading error: Failed to update grade
+ERROR - 2025-05-31 13:01:14 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(221): CodeIgniter\Model->update('9', Array)
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+ERROR - 2025-05-31 13:01:21 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(221): CodeIgniter\Model->update('9', Array)
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+ERROR - 2025-05-31 13:01:25 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(221): CodeIgniter\Model->update('9', Array)
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+ERROR - 2025-05-31 13:03:47 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(218): CodeIgniter\Model->update('9', Array)
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+ERROR - 2025-05-31 13:03:47 --> Failed to update submission: Array
+(
+    [CodeIgniter\Database\MySQLi\Connection] => Unknown column 'updated_at' in 'field list'
+)
+
+ERROR - 2025-05-31 13:03:47 --> Grade error: Failed to update grade
+ERROR - 2025-05-31 13:05:52 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(222): CodeIgniter\Model->update('9', Array)
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+ERROR - 2025-05-31 13:05:52 --> Grade error: Failed to update grade
+ERROR - 2025-05-31 13:07:41 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
+#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
+#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
+#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
+#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(NULL, Array)
+#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(NULL, Array)
+#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(229): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
+#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
+#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+ERROR - 2025-05-31 13:07:41 --> Database Error: Array
+(
+    [CodeIgniter\Database\MySQLi\Connection] => Unknown column 'updated_at' in 'field list'
+)
+
+ERROR - 2025-05-31 13:07:41 --> Grade error: Failed to update grade

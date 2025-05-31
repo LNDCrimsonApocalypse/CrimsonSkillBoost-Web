@@ -195,6 +195,50 @@
             cursor: pointer;
             margin-top: 20px;
         }
+
+        /* Additional styles for the new button section */
+        .button-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .button-section .btn {
+            flex: 1;
+            margin: 0 10px;
+            padding: 12px;
+            border: none;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button-section .btn span {
+            position: absolute;
+            display: block;
+            width: 300%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(to right, #f94fa4, #a48bd7);
+            transition: all 0.4s;
+            z-index: 1;
+        }
+
+        .button-section .btn:hover span {
+            width: 100%;
+            right: 0;
+            left: auto;
+        }
+
+        .button-section .btn-inner {
+            position: relative;
+            color: white;
+            z-index: 2;
+        }
     </style>
 </head>
 <body>
@@ -212,7 +256,9 @@
         </div>
         <div class="navbar-right">
             <input type="text" placeholder="Search.." />
-            <img src="https://i.imgur.com/uIgDDDd.png" alt="profile" class="profile"/>
+            <img src="imgs/notifications.png" alt="Notifications" class="icon" />
+            <img src="imgs/profile.png" alt="Profile" class="profile" />
+            <button id="signOutButton" class="logout-btn">Sign Out</button>
         </div>
     </div>
 
@@ -251,7 +297,12 @@
             <label for="import_content">Import content</label>
         </div>
 
-        <button type="submit" class="add-btn">ADD</button>
+        <div class="button-section">
+            <button type="submit" class="btn">
+                <span></span>
+                <span class="btn-inner">ADD</span>
+            </button>
+        </div>
     </form>
 
     <script>
