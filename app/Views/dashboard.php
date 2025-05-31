@@ -251,6 +251,32 @@
     .grade-btn:hover {
       background: #d62894;
     }
+
+    /* Add these styles to your existing CSS */
+    .btn-approve, .btn-reject {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 0.9em;
+    }
+    
+    .btn-approve {
+        background: #4CAF50;
+        color: white;
+    }
+    
+    .btn-reject {
+        background: #f44336;
+        color: white;
+        margin-left: 8px;
+    }
+
+    .request-actions {
+        display: flex;
+        gap: 8px;
+    }
   </style>
 </head>
 <body>
@@ -279,6 +305,7 @@
   </nav>
 
   <div class="card">
+    <?= csrf_field() ?> <!-- Add this line -->
     <main class="container">
       <section class="left-panel">
         <h2>Active Courses</h2>
@@ -303,25 +330,27 @@
         <?php endif; ?>
       </section>
       <aside class="right-panel">
-        <!-- <div class="enrollment-requests">
+        <div class="enrollment-requests">
           <h2>Enrollment Requests</h2>
-          <?php if (!empty($enrollmentRequests)): ?>
-            <?php foreach ($enrollmentRequests as $request): ?>
-              <div class="request-card">
-                <div class="request-info">
-                  <strong><?= esc($request['student_name']) ?></strong>
-                  <p>Requesting for enrollment in <?= esc($request['course_name']) ?> - Section <?= esc($request['section']) ?></p>
+          <div id="enrollment-list">
+            <?php if (!empty($enrollmentRequests)): ?>
+              <?php foreach ($enrollmentRequests as $request): ?>
+                <div class="request-card" id="request-<?= $request['id'] ?>">
+                  <div class="request-info">
+                    <strong><?= esc($request['student_name']) ?></strong>
+                    <p>Requesting enrollment in <?= esc($request['course_name']) ?> - Section <?= esc($request['section']) ?></p>
+                  </div>
+                  <div class="request-actions">
+                    <button onclick="updateEnrollment(<?= $request['id'] ?>, 'approved')" class="btn-approve">Approve</button>
+                    <button onclick="updateEnrollment(<?= $request['id'] ?>, 'rejected')" class="btn-reject">Reject</button>
+                  </div>
                 </div>
-                <div class="request-actions">
-                  <button onclick="updateEnrollment(<?= $request['id'] ?>, 'approved')" class="btn-approve">Approve</button>
-                  <button onclick="updateEnrollment(<?= $request['id'] ?>, 'rejected')" class="btn-reject">Reject</button>
-                </div>
-              </div>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <p>No pending enrollment requests</p>
-          <?php endif; ?>
-        </div> -->
+              <?php endforeach; ?>
+            <?php else: ?>
+              <p>No pending enrollment requests</p>
+            <?php endif; ?>
+          </div>
+        </div>
 
         <div class="recent-submissions">
           <h2>Recent Submissions</h2>
@@ -362,21 +391,37 @@
     });
 
     function updateEnrollment(id, status) {
-      fetch(`/enrollment/update/${id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status: status })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          location.reload();
-        } else {
-          alert('Error: ' + data.message);
+        if (!confirm(`Are you sure you want to ${status} this enrollment request?`)) {
+            return;
         }
-      });
+        
+        fetch(`/enrollment/update/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                const card = document.getElementById(`request-${id}`);
+                card.remove();
+                
+                if (document.querySelectorAll('.request-card').length === 0) {
+                    document.getElementById('enrollment-list').innerHTML = '<p>No pending enrollment requests</p>';
+                }
+            } else {
+                throw new Error(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to update enrollment status');
+        });
     }
   </script>
 </body>

@@ -85,4 +85,5 @@ $routes->group('grading', ['namespace' => 'App\Controllers'], function($routes) 
 
 $routes->get('enrollment', 'Enrollment::index');
 $routes->post('enrollment/submit', 'Enrollment::submitRequest');
+$routes->addRedirect('enrollment/update', '');  // Block direct access
 $routes->post('enrollment/update/(:num)', 'Enrollment::updateRequest/$1');

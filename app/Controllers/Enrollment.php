@@ -2,9 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\EnrollmentModel;
-use App\Models\CourseModel;
-
 class Enrollment extends BaseController
 {
     public function index()
@@ -41,19 +38,32 @@ class Enrollment extends BaseController
 
     public function updateRequest($id)
     {
-        $enrollmentModel = new EnrollmentModel();
-        $status = $this->request->getPost('status');
+        $json = $this->request->getJSON();
         
-        if ($enrollmentModel->update($id, ['status' => $status])) {
-            return $this->response->setJSON([
-                'success' => true,
-                'message' => 'Request ' . $status . ' successfully'
+        if (!$json || !isset($json->status)) {
+            return $this->response->setStatusCode(400)->setJSON([
+                'success' => false,
+                'message' => 'Missing status'
             ]);
         }
 
-        return $this->response->setJSON([
-            'success' => false,
-            'message' => 'Failed to update request'
-        ]);
+        $enrollmentModel = new \App\Models\EnrollmentModel();
+        
+        try {
+            $enrollmentModel->update($id, ['status' => $json->status]);
+            
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Status updated successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            log_message('error', '[Enrollment] Update failed: ' . $e->getMessage());
+            
+            return $this->response->setStatusCode(500)->setJSON([
+                'success' => false,
+                'message' => 'Failed to update status'
+            ]);
+        }
     }
 }

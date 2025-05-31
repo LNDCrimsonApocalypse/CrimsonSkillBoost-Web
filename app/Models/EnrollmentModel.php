@@ -8,7 +8,7 @@ class EnrollmentModel extends Model
 {
     protected $table = 'enrollment_requests';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['student_id', 'course_id', 'section', 'status'];
+    protected $allowedFields = ['status'];  // Simplified to just allow status updates
     protected $useTimestamps = true;
     protected $returnType = 'array';
 
