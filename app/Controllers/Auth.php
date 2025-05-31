@@ -314,4 +314,9 @@ class Auth extends BaseController
         return view('password_reset');
     }
 
+    public function upload()
+    {
+        return view('upload');
+    }
+
 }

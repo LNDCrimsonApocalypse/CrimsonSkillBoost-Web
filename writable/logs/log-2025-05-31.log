@@ -1,0 +1,37 @@
+CRITICAL - 2025-05-31 00:21:49 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "quiz_create.php"
+[Method: GET, Route: quiz/create]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('quiz_create.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('quiz_create', [], true)
+ 3 APPPATH\Controllers\Quiz.php(48): view('quiz_create', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Quiz->create()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 01:26:02 --> ErrorException: Undefined variable $taskData
+[Method: GET, Route: task/upload]
+in APPPATH\Views\upload_task.php on line 12.
+ 1 APPPATH\Views\upload_task.php(12): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $taskData', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\upload_task.php', 12)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\upload_task.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('upload_task', [], true)
+ 5 APPPATH\Controllers\Task.php(38): view('upload_task')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Task->showUploadForm()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 01:27:35 --> CodeIgniter\Exceptions\InvalidArgumentException: update(): argument #1 ($id) should not be boolean.
+[Method: POST, Route: task/upload]
+in SYSTEMPATH\BaseModel.php on line 989.
+ 1 SYSTEMPATH\Model.php(863): CodeIgniter\BaseModel->update(false, [...])
+ 2 APPPATH\Controllers\Task.php(80): CodeIgniter\Model->update(false, [...])
+ 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Task->processUpload()
+ 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

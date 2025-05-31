@@ -271,13 +271,10 @@
     </div>
     <div class="instruction">Create your first Task</div>
     <div class="buttons">
-    <form action="<?= base_url('quiz/upload') ?>" method="get" style="display:inline;">
-        <button type="submit" class="quiz">Create a quiz</button>
-    </form>
-
-    <form action="<?= base_url('task/assign') ?>" method="get" style="display:inline;">
-        <button type="submit" class="task">Create a Task</button>
-    </form>
+        <form action="<?= base_url('task/start') ?>" method="post" style="display:inline;">
+            <?= csrf_field() ?>
+            <button type="submit" class="task">Create a Task</button>
+        </form>
     </div>
   </div>
 
