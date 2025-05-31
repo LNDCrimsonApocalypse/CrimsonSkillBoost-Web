@@ -41,6 +41,17 @@ $routes->get(from: 'course/view/(:num)', to: 'Course::view/$1');
 $routes->get('lesson/view/(:num)', 'LessonController::view/$1');
 $routes->get('/upload', 'Auth::upload');
 
+// QUIZ FLOW
+$routes->post('quiz/start', 'Quiz::startQuizCreation');
+$routes->get('quiz/upload', 'Quiz::showUploadForm');
+$routes->post('quiz/manual_create', 'Quiz::manualCreate');
+$routes->post('quiz/ai_generate', 'Quiz::ai_generate');
+$routes->get('quiz/questions', 'Quiz::showQuestionsForm');
+$routes->post('quiz/save_questions', 'Quiz::saveQuestions');
+$routes->get('quiz/duedate/(:num)', 'Quiz::showDueDateForm/$1');
+$routes->post('quiz/save_settings/(:num)', 'Quiz::saveSettings/$1');
+$routes->get('quiz/result/(:num)', 'Quiz::result/$1');
+
 // TASK FLOW
 $routes->post('task/start', 'Task::startTaskCreation');
 $routes->get('task/assign', 'Task::showAssignForm');

@@ -217,7 +217,7 @@
     }
 
     .buttons .quiz {
-      background-color: #f1ccdd;
+      background-color: #e636a4;
       color: white;
     }
 
@@ -274,6 +274,11 @@
         <form action="<?= base_url('task/start') ?>" method="post" style="display:inline;">
             <?= csrf_field() ?>
             <button type="submit" class="task">Create a Task</button>
+        </form>
+
+        <form action="<?= base_url('quiz/start') ?>" method="post" style="display:inline;">
+            <?= csrf_field() ?>
+            <button type="submit" class="quiz">Create a Quiz</button>
         </form>
     </div>
   </div>

@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Helpers\GeminiAI;
+use Smalot\PdfParser\Parser;
+
 use App\Models\QuizModel;
 use App\Models\CourseModel;
 use App\Models\QuestionModel;
@@ -85,44 +88,62 @@ class Quiz extends BaseController
     }
 
     // Step 1: Quiz/Task selection page
+    public function start()
+    {
+        return redirect()->to('quiz/upload');
+    }
+
     public function upload()
     {
-        $quizData = session()->get('quiz_data');
-        if (!$quizData) {
-            return redirect()->to('quiz/create');
+        return view('upload_quiz');
+    }
+
+    public function ai_generate()
+    {
+        $file = $this->request->getFile('content_file');
+        if (!$file->isValid()) {
+            return redirect()->back()->with('error', 'Invalid file');
         }
 
-        if ($this->request->getMethod() === 'post') {
-            $quizModel = new QuizModel();
-            
-            $data = [
-                'title' => $this->request->getPost('title'),
-                'description' => $this->request->getPost('description'),
-                'year' => $quizData['year'],
-                'section' => $quizData['section'],
-                'semester' => $quizData['semester'],
-                'courses' => json_encode($quizData['courses']),
-                'duration' => $this->request->getPost('duration'),
-                'total_questions' => $this->request->getPost('total_questions'),
-                'passing_score' => $this->request->getPost('passing_score'),
-                'created_at' => date('Y-m-d H:i:s')
-            ];
+        try {
+            $content = $this->extractContent($file);
+            $gemini = new GeminiAI();
+            $questions = $gemini->generateQuizQuestions($content);
 
-            if ($quizModel->insert($data)) {
-                $quizId = $quizModel->insertID();
-                session()->remove('quiz_data');
-                return redirect()->to("quiz/questions/{$quizId}")
-                               ->with('success', 'Quiz created successfully. Now add your questions.');
-            } else {
-                return redirect()->back()
-                               ->with('error', 'Failed to create quiz. Please try again.')
-                               ->withInput();
+            if (empty($questions)) {
+                throw new \Exception('No questions were generated');
             }
-        }
 
-        return view('upload_quiz', [
-            'quizData' => $quizData
-        ]);
+            session()->set('generated_questions', $questions);
+            return redirect()->to('quiz/questions');
+
+        } catch (\Exception $e) {
+            log_message('error', 'Quiz generation error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Failed to generate quiz: ' . $e->getMessage());
+        }
+    }
+
+    private function extractContent($file)
+    {
+        $extension = $file->getExtension();
+        
+        switch(strtolower($extension)) {
+            case 'pdf':
+                $parser = new Parser();
+                $pdf = $parser->parseFile($file->getTempName());
+                return $pdf->getText();
+            
+            case 'txt':
+                return file_get_contents($file->getTempName());
+            
+            case 'docx':
+                // Add docx support if needed
+                throw new \Exception('DOCX files are not supported yet');
+            
+            default:
+                throw new \Exception('Unsupported file type');
+        }
     }
 
     public function questions($quizId)
@@ -196,16 +217,159 @@ class Quiz extends BaseController
     // Step 5: Show quiz summary/result
     public function result($quizId)
     {
-        $quizModel = new QuizModel();
-        $questionModel = new QuestionModel();
-        $optionModel = new OptionModel();
-        $quiz = $quizModel->find($quizId);
-        $questions = $questionModel->where('quiz_id', $quizId)->findAll();
-        // Optionally fetch options for each question
-        return view('result_quiz', [
-            'quiz' => $quiz,
-            'questions' => $questions,
-            // 'options' => ... (if needed)
+        try {
+            $quizModel = new \App\Models\QuizModel();
+            $questionModel = new \App\Models\QuestionModel();
+            
+            $quiz = $quizModel->find($quizId);
+            if (!$quiz) {
+                throw new \Exception('Quiz not found');
+            }
+
+            // Get questions for this quiz
+            $questions = $questionModel->where('quiz_id', $quizId)->findAll();
+            if ($questions === false) {
+                $questions = []; // Ensure questions is always an array
+            }
+
+            $data = [
+                'quiz' => $quiz,
+                'questions' => $questions
+            ];
+
+            return view('result_quiz', $data);
+
+        } catch (\Exception $e) {
+            log_message('error', '[Quiz] View error: ' . $e->getMessage());
+            return redirect()->to('quiz/upload')
+                           ->with('error', $e->getMessage());
+        }
+    }
+
+    public function startQuizCreation()
+    {
+        return redirect()->to('quiz/upload');
+    }
+
+    public function showUploadForm()
+    {
+        return view('upload_quiz');
+    }
+
+    public function manualCreate()
+    {
+        // Store basic quiz info in session
+        $session = session();
+        $session->set([
+            'quiz_title' => $this->request->getPost('title'),
+            'quiz_description' => $this->request->getPost('description')
         ]);
+        
+        return redirect()->to('quiz/questions');
+    }
+
+    public function showQuestionsForm()
+    {
+        return view('quiz_questions');
+    }
+
+    public function saveQuestions()
+    {
+        try {
+            // Get questions from POST data
+            $questions = $this->request->getPost('questions');
+            if (empty($questions)) {
+                throw new \Exception('No questions provided');
+            }
+
+            $session = session();
+            $quizData = [
+                'course_id' => null, // Set to null for now
+                'title' => $session->get('quiz_title'),
+                'description' => $session->get('quiz_description'),
+                'created_by' => 1 // Default user ID
+            ];
+
+            // Start transaction
+            $db = \Config\Database::connect();
+            $db->transStart();
+
+            // Save quiz
+            $quizModel = new \App\Models\QuizModel();
+            if (!$quizModel->save($quizData)) {
+                throw new \Exception('Failed to save quiz');
+            }
+
+            $quizId = $quizModel->getInsertID();
+            $questionModel = new \App\Models\QuestionModel();
+
+            // Save each question
+            foreach ($questions as $q) {
+                $questionData = [
+                    'quiz_id' => $quizId,
+                    'question_text' => $q['text'],
+                    'options' => json_encode($q['options']),
+                    'correct_answer' => $q['correct']
+                ];
+                
+                if (!$questionModel->save($questionData)) {
+                    throw new \Exception('Failed to save question');
+                }
+            }
+
+            $db->transComplete();
+
+            if ($db->transStatus() === false) {
+                throw new \Exception('Database transaction failed');
+            }
+
+            return redirect()->to("quiz/duedate/$quizId");
+
+        } catch (\Exception $e) {
+            log_message('error', '[Quiz] Create error: ' . $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function showDueDateForm($quizId)
+    {
+        $quizModel = new \App\Models\QuizModel();
+        $quiz = $quizModel->find($quizId);
+        
+        if (!$quiz) {
+            return redirect()->to('quiz/upload')->with('error', 'Quiz not found');
+        }
+
+        return view('duedate_quiz', ['quiz' => $quiz]);
+    }
+
+    public function saveSettings($quizId)
+    {
+        $quizModel = new \App\Models\QuizModel();
+        
+        // Format dates for database
+        $startDate = $this->request->getPost('start_date');
+        $endDate = $this->request->getPost('end_date');
+        
+        $data = [
+            'start_date' => date('Y-m-d H:i:s', strtotime($startDate)),
+            'end_date' => date('Y-m-d H:i:s', strtotime($endDate)),
+            'allow_late' => $this->request->getPost('allow_late') ? 1 : 0,
+            'attempts' => (int)$this->request->getPost('attempts') ?: null
+        ];
+
+        try {
+            if ($quizModel->update($quizId, $data)) {
+                return redirect()->to("quiz/result/$quizId");
+            }
+            // If update fails, get the error
+            $error = $quizModel->errors();
+            return redirect()->back()
+                           ->with('error', 'Failed to save settings: ' . json_encode($error));
+        } catch (\Exception $e) {
+            log_message('error', '[Quiz] Save settings error: ' . $e->getMessage());
+            return redirect()->back()
+                           ->with('error', 'Database error: ' . $e->getMessage());
+        }
     }
 }
