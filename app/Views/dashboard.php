@@ -277,6 +277,96 @@
         display: flex;
         gap: 8px;
     }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.4);
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .nav-links li {
+        font-size: 1.2rem;
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .container {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .left-panel, .right-panel {
+        flex: 1;
+      }
+
+      .course-card, .empty-card {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .course-img {
+        width: 100%;
+        height: auto;
+        margin-bottom: 16px;
+      }
+
+      .submission-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+      }
+
+      .grade-btn {
+        padding: 3px 10px;
+        font-size: 0.7em;
+      }
+
+      .btn-approve, .btn-reject {
+        font-size: 0.8em;
+      }
+    }
   </style>
 </head>
 <body>
@@ -311,17 +401,14 @@
         <h2>Active Courses</h2>
         <?php if (!empty($courses)): ?>
           <?php foreach ($courses as $course): ?>
-            <div class="course-card">
+            <div class="course-card" id="course-<?= $course['id'] ?>">
               <div class="course-img"></div>
               <div class="course-info">
-                <h3><?= esc($course['course_name']) ?></h3>
+                <h3 class="course-title"><?= esc($course['course_name']) ?></h3>
                 <p>Created on <?= date('F j, Y', strtotime($course['created_at'])) ?></p>
                 <a href="<?= base_url('course/view/' . $course['id']) ?>" class="btn">View</a>
-                <a href="<?= base_url('course/edit/' . $course['id']) ?>" class="btn">Edit</a>
-                <form action="<?= base_url('course/delete/' . $course['id']) ?>" method="post" style="display:inline;">
-                  <?= csrf_field() ?>
-                  <button type="submit">Delete</button>
-                </form>
+                <a href="javascript:void(0)" class="btn" onclick="openEditCourseModal(<?= $course['id'] ?>, '<?= esc(addslashes($course['course_name'])) ?>')">Edit</a>
+                <a href="javascript:void(0)" class="btn" onclick="deleteCourse(<?= $course['id'] ?>, this)">Delete</a>
               </div>
             </div>
           <?php endforeach; ?>
@@ -378,6 +465,22 @@
     </main>
   </div>
 
+  <!-- Edit Course Modal -->
+  <div id="editCourseModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeEditCourseModal()">&times;</span>
+      <h3>Edit Course Name</h3>
+      <form id="editCourseForm">
+        <input type="hidden" id="editCourseId">
+        <input type="text" id="editCourseName" style="width:100%;padding:8px;margin-bottom:16px;" required>
+        <div style="text-align:right;">
+          <button type="button" onclick="closeEditCourseModal()" style="margin-right:10px;">Cancel</button>
+          <button type="submit" class="btn">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
@@ -423,6 +526,61 @@
             console.error('Error:', error);
             alert('Failed to update status: ' + error.message);
         });
+    }
+
+    // Edit Course Modal Logic
+    function openEditCourseModal(id, name) {
+      document.getElementById('editCourseId').value = id;
+      document.getElementById('editCourseName').value = name;
+      document.getElementById('editCourseModal').style.display = 'flex';
+    }
+    function closeEditCourseModal() {
+      document.getElementById('editCourseModal').style.display = 'none';
+    }
+    document.getElementById('editCourseForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const id = document.getElementById('editCourseId').value;
+      const name = document.getElementById('editCourseName').value.trim();
+      if (!name) return alert('Course name required');
+      fetch('<?= site_url('course/update/') ?>' + id, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: JSON.stringify({ course_name: name })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          // Update title in the list
+          const card = document.getElementById('course-' + id);
+          if (card) card.querySelector('.course-title').textContent = name;
+          closeEditCourseModal();
+          alert('Course updated!');
+        } else {
+          alert(data.message || 'Failed to update course');
+        }
+      })
+      .catch(() => alert('Failed to update course'));
+    });
+
+    // Delete Course Logic
+    function deleteCourse(id, btn) {
+      if (!confirm('Are you sure you want to delete this course?')) return;
+      fetch('<?= site_url('course/delete/') ?>' + id, {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          // Remove the course card from the DOM
+          const card = document.getElementById('course-' + id);
+          if (card) card.remove();
+          alert('Course deleted!');
+        } else {
+          alert(data.message || 'Failed to delete course');
+        }
+      })
+      .catch(() => alert('Failed to delete course'));
     }
   </script>
 </body>

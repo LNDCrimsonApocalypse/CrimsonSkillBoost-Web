@@ -25,6 +25,35 @@ class Course extends BaseController
 
     public function update($id)
     {
+        if ($this->request->isAJAX()) {
+            $courseModel = new \App\Models\CourseModel();
+            $json = $this->request->getJSON(true);
+
+            // Check for correct field and non-empty value
+            if (!isset($json['course_name']) || trim($json['course_name']) === '') {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Course name is required'
+                ]);
+            }
+
+            // Make sure 'course_name' is in allowedFields in your CourseModel
+            $success = $courseModel->update($id, ['course_name' => $json['course_name']]);
+            if ($success) {
+                return $this->response->setJSON([
+                    'success' => true,
+                    'message' => 'Course updated'
+                ]);
+            } else {
+                // Show model errors for debugging
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Failed to update course',
+                    'errors' => $courseModel->errors()
+                ]);
+            }
+        }
+
         $model = new CourseModel();
         $model->update($id, [
             'course_name' => $this->request->getPost('course_name')
@@ -35,6 +64,15 @@ class Course extends BaseController
 
     public function delete($id)
     {
+        if ($this->request->isAJAX()) {
+            $courseModel = new \App\Models\CourseModel();
+            $success = $courseModel->delete($id);
+            return $this->response->setJSON([
+                'success' => $success,
+                'message' => $success ? 'Course deleted' : 'Failed to delete course'
+            ]);
+        }
+
         $model = new CourseModel();
         $model->delete($id);
 

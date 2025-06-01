@@ -72,8 +72,10 @@ class Filters extends BaseFilters
             'csrf' => [
                 'except' => [
                     'enrollment/update/*',
+                    'grading/save/*',
                     'task/grade/*',
-                    'grading/save/*'
+                    'course/update/*',
+                    'course/delete/*'
                 ]
             ]
         ],
