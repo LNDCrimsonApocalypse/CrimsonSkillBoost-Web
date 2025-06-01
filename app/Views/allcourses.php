@@ -11,82 +11,65 @@
       background: #ffeaf6;
         font-family: 'Poppins', 'Segoe UI', sans-serif;
     }
-      /* Navbar */
+   /* NAVBAR */
     .navbar {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      padding: 15px 30px;
-      background-color: white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+     padding: 10px 40px;
+      background: #fff;
     }
-
-    .navbar-logo {
-      flex: 1;
-      display: flex;
-      align-items: center;
+    .navbar-left img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
     }
-
-    .navbar-logo .logo {
-      width: 40px;
-    }
-
     .navbar-center {
-      flex: 2;
       display: flex;
-      justify-content: center;
+      gap: 36px;
       align-items: center;
-      gap: 30px;
     }
-
     .navbar-center a {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1.3rem;
       text-decoration: none;
-      color: black;
-      font-weight: bold;
-      margin: 0 10px;
+      color: #222;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.2s;
     }
-
+    .navbar-center a.active {
+      color: #000;
+      font-weight: 900;
+    }
     .navbar-center .dropdown {
       position: relative;
     }
-
-   
-  
+    .navbar-center .dropdown::after {
+      font-size: 0.85em;
+      vertical-align: middle;
+      font-weight: bold;
+    }
     .navbar-right {
-      flex: 1;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      gap: 15px; /* space between search, bell, and profile */
+      gap: 22px;
     }
-
-    .navbar-right input[type="text"] {
-      padding: 6px 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      /* Remove margin-right to avoid extra space */
-      margin: 0;
-      width: 140px;
+     .icon {
+       width: 48px;
+            height: 48px;
+            object-fit: cover;
     }
-
-    .navbar-right img.profile {
-      width: 35px;
-      height: 35px;
+    .navbar-profile {
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       object-fit: cover;
-      cursor: pointer;
+      border: none;
+      background: #fff;
     }
-
-    .navbar-right img.icon {
-      width: 25px;
-      height: 25px;
-      cursor: pointer;
-      /* Align vertically with profile */
-      vertical-align: middle;
-    }
+    
     /* MAIN AREA */
     .main-bg {
       background: #ffeaf6;
@@ -391,34 +374,32 @@
   </style>
 </head>
 <body>
-<!-- Navbar -->
-  <div class="navbar">
-    <div class="navbar-logo">
-      <img src="imgs/Logo.png" alt="logo" class="logo"/>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <img src="imgs/Logo.png" alt="Logo" />
     </div>
     <div class="navbar-center">
-      <a href="<?= base_url('homepage') ?>">HOME</a>
-      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
-      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+      <a href="#">HOME</a>
+      <a href="#" class="active">DASHBOARD</a>
+      <a href="cssabout.html">ABOUT</a>
      <li class="dropdown">
-      <span>COURSES <span class="arrow">&#9660;</span></span>
+      <button class="dropbtn">COURSES ▼</button>
       <div class="dropdown-content">
         <select id="course-select">
           <option value="web">ALL COURSES </option>
-          <option value="data">MY COURSES </option>
+          <option value="data">MY COURSES</option>
          
         </select>
       </div>
     </li>
     </div>
-
     <div class="navbar-right">
-      <input type="text" placeholder="Search.." />
-      <img src="imgs/notifications.png" alt="Notifications" class="icon" />
-      <img src="imgs/profile.png" alt="profile" class="profile" />
-      <button id="signOutButton" class="logout-btn">Sign Out</button>
+        <img src="imgs/notifications.png" alt="Notifications" class="icon" />
+        <img src="imgs/profile.png" alt="Profile" class="navbar-profile" />
+        <button id="signOutButton" class="logout-btn">Sign Out</button>
     </div>
-  </div>
+  </nav>
   <!-- MAIN AREA -->
   <div class="main-bg">
     <div class="card-container">

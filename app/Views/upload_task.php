@@ -13,81 +13,76 @@
             background-color: #f2e6ee;
         }
 
-              /* Navbar */
+        /* Navbar Styles */
         .navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 30px;
-        background-color: white;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        }
-
-        .navbar-logo {
-        flex: 1;
-        display: flex;
-        align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px 50px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .navbar-logo .logo {
-        width: 40px;
+            height: 40px;
         }
 
         .navbar-center {
-        flex: 2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 30px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
         }
 
         .navbar-center a {
-        text-decoration: none;
-        color: black;
-        font-weight: bold;
-        margin: 0 10px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
         }
 
         .navbar-center .dropdown {
-        position: relative;
+            position: relative;
         }
 
-    
-    
+        .navbar-center .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .navbar-center .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .navbar-center .dropdown-content a {
+            padding: 12px 16px;
+            text-decoration: none;
+            color: #333;
+            display: block;
+        }
+
+        .navbar-center .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
         .navbar-right {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 15px; /* space between search, bell, and profile */
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .navbar-right input[type="text"] {
-        padding: 6px 12px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        /* Remove margin-right to avoid extra space */
-        margin: 0;
-        width: 140px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
         }
 
-        .navbar-right img.profile {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        object-fit: cover;
-        cursor: pointer;
-        }
-
-        .navbar-right img.icon {
-        width: 25px;
-        height: 25px;
-        cursor: pointer;
-        /* Align vertically with profile */
-        vertical-align: middle;
+        .navbar-right .profile {
+            height: 40px;
+            border-radius: 50%;
         }
 
         /* Tab Bar styles here... */
@@ -247,34 +242,25 @@
     </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="navbar-logo">
-      <img src="imgs/Logo.png" alt="logo" class="logo"/>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img src="https://i.imgur.com/1W7sOom.png" alt="logo" class="logo"/>
+        </div>
+        <div class="navbar-center">
+            <a href="#">HOME</a>
+            <a href="#">DASHBOARD</a>
+            <a href="#">ABOUT</a>
+            <a href="#" class="dropdown">COURSES</a>
+            <div class="icon">🔔</div>
+        </div>
+        <div class="navbar-right">
+            <input type="text" placeholder="Search.." />
+            <img src="imgs/notifications.png" alt="Notifications" class="icon" />
+            <img src="imgs/profile.png" alt="Profile" class="profile" />
+            <button id="signOutButton" class="logout-btn">Sign Out</button>
+        </div>
     </div>
-    <div class="navbar-center">
-      <a href="<?= base_url('homepage') ?>">HOME</a>
-      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
-      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
-     <li class="dropdown">
-      <span>COURSES <span class="arrow">&#9660;</span></span>
-      <div class="dropdown-content">
-        <select id="course-select">
-          <option value="web">ALL COURSES </option>
-          <option value="data">MY COURSES </option>
-         
-        </select>
-      </div>
-    </li>
-    </div>
-
-    <div class="navbar-right">
-      <input type="text" placeholder="Search.." />
-      <img src="imgs/notifications.png" alt="Notifications" class="icon" />
-      <img src="imgs/profile.png" alt="profile" class="profile" />
-      <button id="signOutButton" class="logout-btn">Sign Out</button>
-    </div>
-  </div>
 
     <!-- Tab Bar -->
     <div class="tabbar">
