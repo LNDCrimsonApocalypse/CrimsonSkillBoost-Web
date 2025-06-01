@@ -245,9 +245,9 @@
       <img src="imgs/Logo.png" alt="logo" class="logo"/>
     </div>
     <div class="navbar-center">
-      <a href="#">HOME</a>
-      <a href="#">DASHBOARD</a>
-      <a href="#">ABOUT</a>
+      <a href="<?= base_url('homepage') ?>">HOME</a>
+      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
      <li class="dropdown">
       <span>COURSES <span class="arrow">&#9660;</span></span>
       <div class="dropdown-content">
