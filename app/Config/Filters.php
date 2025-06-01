@@ -71,18 +71,15 @@ class Filters extends BaseFilters
         'before' => [
             'csrf' => [
                 'except' => [
-                    'task/grade/*',
-                    'task/submissions/*'
+                    'enrollment/update/*',
+                    'enrollment/submit',
+                    'enrollment/*'  // Add this to cover all enrollment routes
                 ]
-            ],
-            // 'honeypot',
-            // 'invalidchars',
+            ]
         ],
         'after' => [
-            // 'honeypot',
-            // 'secureheaders',
-            'toolbar',
-        ],
+            'toolbar'
+        ]
     ];
 
     /**

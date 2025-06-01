@@ -8,9 +8,23 @@ class EnrollmentModel extends Model
 {
     protected $table = 'enrollment_requests';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['status'];  // Simplified to just allow status updates
-    protected $useTimestamps = true;
-    protected $returnType = 'array';
+    protected $allowedFields = ['status'];
+    protected $useTimestamps = false;
+
+    public function updateEnrollmentStatus($id, $status)
+    {
+        log_message('debug', "Attempting to update enrollment {$id} to {$status}");
+        
+        try {
+            $result = $this->update($id, ['status' => $status]);
+            log_message('debug', "Update result: " . ($result ? 'success' : 'failed'));
+            log_message('debug', "Last query: " . $this->db->getLastQuery());
+            return $result;
+        } catch (\Exception $e) {
+            log_message('error', "Update error: " . $e->getMessage());
+            return false;
+        }
+    }
 
     public function getPendingRequests()
     {

@@ -394,18 +394,18 @@
         if (!confirm(`Are you sure you want to ${status} this enrollment request?`)) {
             return;
         }
-        
-        fetch(`/enrollment/update/${id}`, {
+
+        fetch(`<?= site_url('enrollment/update') ?>/${id}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
             },
-            body: JSON.stringify({ status })
+            body: JSON.stringify({
+                status: status
+            })
         })
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             if (data.success) {
                 const card = document.getElementById(`request-${id}`);
@@ -414,13 +414,14 @@
                 if (document.querySelectorAll('.request-card').length === 0) {
                     document.getElementById('enrollment-list').innerHTML = '<p>No pending enrollment requests</p>';
                 }
+                alert(`Enrollment request ${status} successfully`);
             } else {
-                throw new Error(data.message);
+                throw new Error(data.message || 'Failed to update status');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Failed to update enrollment status');
+            alert('Failed to update status: ' + error.message);
         });
     }
   </script>

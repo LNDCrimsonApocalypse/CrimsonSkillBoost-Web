@@ -80,17 +80,23 @@ class Auth extends BaseController
 
     public function dashboard()
     {
-        $courseModel = new \App\Models\CourseModel();
-        $submissionModel = new \App\Models\SubmissionModel();
-        $enrollmentModel = new \App\Models\EnrollmentModel();
+        try {
+            $courseModel = new \App\Models\CourseModel();
+            $submissionModel = new \App\Models\SubmissionModel();
+            $enrollmentModel = new \App\Models\EnrollmentModel();
 
-        $data = [
-            'courses' => $courseModel->findAll(),
-            'submissions' => $submissionModel->getRecentSubmissions(5),
-            'enrollmentRequests' => $enrollmentModel->getPendingRequests()
-        ];
+            $data = [
+                'courses' => $courseModel->findAll(),
+                'submissions' => $submissionModel->getRecentSubmissions(5),
+                'enrollmentRequests' => $enrollmentModel->getPendingRequests()
+            ];
 
-        return view('dashboard', $data);
+            return view('dashboard', $data);
+            
+        } catch (\Exception $e) {
+            log_message('error', '[Dashboard] Error: ' . $e->getMessage());
+            return view('dashboard', ['error' => 'Failed to load dashboard data']);
+        }
     }
     
     public function getCourses()

@@ -1,1038 +1,14 @@
-CRITICAL - 2025-05-31 00:21:49 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "quiz_create.php"
-[Method: GET, Route: quiz/create]
-in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
- 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('quiz_create.php')
- 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('quiz_create', [], true)
- 3 APPPATH\Controllers\Quiz.php(48): view('quiz_create', [...])
- 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Quiz->create()
- 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 01:26:02 --> ErrorException: Undefined variable $taskData
-[Method: GET, Route: task/upload]
-in APPPATH\Views\upload_task.php on line 12.
- 1 APPPATH\Views\upload_task.php(12): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $taskData', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\upload_task.php', 12)
- 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\upload_task.php')
- 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
- 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('upload_task', [], true)
- 5 APPPATH\Controllers\Task.php(38): view('upload_task')
- 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Task->showUploadForm()
- 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
- 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
-10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 01:27:35 --> CodeIgniter\Exceptions\InvalidArgumentException: update(): argument #1 ($id) should not be boolean.
-[Method: POST, Route: task/upload]
-in SYSTEMPATH\BaseModel.php on line 989.
- 1 SYSTEMPATH\Model.php(863): CodeIgniter\BaseModel->update(false, [...])
- 2 APPPATH\Controllers\Task.php(80): CodeIgniter\Model->update(false, [...])
- 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Task->processUpload()
- 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
- 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 8 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-ERROR - 2025-05-31 05:36:44 --> mysqli_sql_exception: Table 'school_db.quiz_questions' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(292): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 05:36:44 --> mysqli_sql_exception: Table 'school_db.quiz_questions' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(292): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 05:36:44 --> mysqli_sql_exception: Table 'school_db.quiz_questions' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(292): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 05:36:44 --> mysqli_sql_exception: Table 'school_db.quiz_questions' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(292): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 05:36:48 --> mysqli_sql_exception: Table 'school_db.quiz_questions' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(292): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 05:36:52 --> mysqli_sql_exception: Table 'school_db.quiz_questions' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(292): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 05:38:02 --> mysqli_sql_exception: Table 'school_db.quiz_questions' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(292): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 05:38:22 --> mysqli_sql_exception: Unknown column 'time_limit' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `quizzes...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `quizzes...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `quizzes...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `quizzes...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(322): CodeIgniter\Model->update('4', Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveSettings('4')
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 06:18:10 --> mysqli_sql_exception: Table 'school_db.quiz_questions' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(292): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 06:18:10 --> mysqli_sql_exception: Table 'school_db.quiz_questions' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(292): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 06:18:10 --> mysqli_sql_exception: Table 'school_db.quiz_questions' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(292): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 06:18:30 --> mysqli_sql_exception: Unknown column 'time_limit' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `quizzes...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `quizzes...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `quizzes...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `quizzes...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(323): CodeIgniter\Model->update('5', Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveSettings('5')
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 06:25:49 --> mysqli_sql_exception: Table 'school_db.quiz' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT *\nFROM `...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(210): CodeIgniter\Database\BaseBuilder->get()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(609): CodeIgniter\Model->doFind(true, '5')
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(301): CodeIgniter\BaseModel->find('5')
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->showDueDateForm('5')
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#13 {main}
-CRITICAL - 2025-05-31 06:25:49 --> Error: Call to a member function getFirstRow() on bool
-[Method: GET, Route: quiz/duedate/5]
-in SYSTEMPATH\Model.php on line 211.
- 1 SYSTEMPATH\BaseModel.php(609): CodeIgniter\Model->doFind(true, '5')
- 2 APPPATH\Controllers\Quiz.php(301): CodeIgniter\BaseModel->find('5')
- 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Quiz->showDueDateForm('5')
- 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
- 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 8 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-ERROR - 2025-05-31 06:27:27 --> mysqli_sql_exception: Table 'school_db.quiz' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(277): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 06:29:35 --> mysqli_sql_exception: Table 'school_db.quiz' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(280): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 06:31:56 --> mysqli_sql_exception: Table 'school_db.quiz' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, false)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(750): CodeIgniter\Model->insert(Array, false)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(280): CodeIgniter\BaseModel->save(Array)
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#14 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#15 {main}
-ERROR - 2025-05-31 06:31:56 --> [Quiz] Create error: Failed to create quiz: Table 'school_db.quiz' doesn't exist
-ERROR - 2025-05-31 06:34:14 --> mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`school_db`.`quizzes`, CONSTRAINT `quizzes_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE SET NULL) in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, false)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(750): CodeIgniter\Model->insert(Array, false)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(280): CodeIgniter\BaseModel->save(Array)
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#14 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#15 {main}
-ERROR - 2025-05-31 06:34:14 --> [Quiz] Create error: Failed to create quiz: Cannot add or update a child row: a foreign key constraint fails (`school_db`.`quizzes`, CONSTRAINT `quizzes_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE SET NULL)
-ERROR - 2025-05-31 06:38:17 --> mysqli_sql_exception: Table 'school_db.question' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(297): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 06:38:17 --> mysqli_sql_exception: Table 'school_db.question' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(297): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 06:38:17 --> mysqli_sql_exception: Table 'school_db.question' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(297): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 06:38:17 --> mysqli_sql_exception: Table 'school_db.question' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(297): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 06:38:17 --> mysqli_sql_exception: Table 'school_db.question' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `qu...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `qu...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `qu...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `qu...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(839): CodeIgniter\Model->doInsert(Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(800): CodeIgniter\BaseModel->insert(Array, true)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(297): CodeIgniter\Model->insert(Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->saveQuestions()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 06:38:35 --> mysqli_sql_exception: Table 'school_db.question' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT *\nFROM `...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Quiz.php(224): CodeIgniter\BaseModel->findAll()
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Quiz->result('7')
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#13 {main}
-CRITICAL - 2025-05-31 06:38:35 --> Error: Call to a member function getResult() on bool
-[Method: GET, Route: quiz/result/7]
-in SYSTEMPATH\Model.php on line 287.
- 1 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
- 2 APPPATH\Controllers\Quiz.php(224): CodeIgniter\BaseModel->findAll()
- 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Quiz->result('7')
- 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
- 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 8 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 06:41:05 --> ErrorException: Undefined array key "time_limit"
-[Method: GET, Route: quiz/result/8]
-in APPPATH\Views\result_quiz.php on line 24.
- 1 APPPATH\Views\result_quiz.php(24): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "time_limit"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\result_quiz.php', 24)
- 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\result_quiz.php')
- 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
- 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('result_quiz', [], true)
- 5 APPPATH\Controllers\Quiz.php(230): view('result_quiz', [...])
- 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Quiz->result('8')
- 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
- 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
-10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-ERROR - 2025-05-31 07:09:34 --> [Quiz] Create error: Undefined variable $questions
-ERROR - 2025-05-31 07:13:40 --> [Quiz] Create error: Undefined variable $questions
-ERROR - 2025-05-31 07:17:32 --> [Quiz] Create error: Undefined variable $questions
-ERROR - 2025-05-31 12:41:01 --> Error fetching submissions: You cannot use "getCompiledSelect()" in "App\Models\SubmissionModel". This is a method of the Query Builder Class.
-ERROR - 2025-05-31 12:41:02 --> Error fetching submissions: You cannot use "getCompiledSelect()" in "App\Models\SubmissionModel". This is a method of the Query Builder Class.
-ERROR - 2025-05-31 12:41:04 --> Error fetching submissions: You cannot use "getCompiledSelect()" in "App\Models\SubmissionModel". This is a method of the Query Builder Class.
-ERROR - 2025-05-31 12:41:17 --> Error fetching submissions: You cannot use "getCompiledSelect()" in "App\Models\SubmissionModel". This is a method of the Query Builder Class.
-ERROR - 2025-05-31 12:42:23 --> Error fetching submissions: Undefined array key "feedback"
-ERROR - 2025-05-31 12:56:03 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(215): CodeIgniter\Model->update('9', Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 12:57:47 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(228): CodeIgniter\Model->update('9', Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 12:57:47 --> Failed to update submission: Array
-(
-    [CodeIgniter\Database\MySQLi\Connection] => Unknown column 'updated_at' in 'field list'
-)
-
-ERROR - 2025-05-31 12:57:47 --> Grading error: Database update failed
-ERROR - 2025-05-31 12:58:58 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(215): CodeIgniter\Model->update('9', Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 12:58:58 --> Grading error: Failed to update grade
-ERROR - 2025-05-31 13:01:14 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(221): CodeIgniter\Model->update('9', Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 13:01:21 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(221): CodeIgniter\Model->update('9', Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 13:01:25 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(221): CodeIgniter\Model->update('9', Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 13:03:47 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(218): CodeIgniter\Model->update('9', Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 13:03:47 --> Failed to update submission: Array
-(
-    [CodeIgniter\Database\MySQLi\Connection] => Unknown column 'updated_at' in 'field list'
-)
-
-ERROR - 2025-05-31 13:03:47 --> Grade error: Failed to update grade
-ERROR - 2025-05-31 13:05:52 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(Array, Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(Array, Array)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(222): CodeIgniter\Model->update('9', Array)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 13:05:52 --> Grade error: Failed to update grade
-ERROR - 2025-05-31 13:07:41 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('UPDATE `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(2521): CodeIgniter\Database\BaseConnection->query('UPDATE `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(461): CodeIgniter\Database\BaseBuilder->update()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(1027): CodeIgniter\Model->doUpdate(NULL, Array)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(863): CodeIgniter\BaseModel->update(NULL, Array)
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Task.php(229): CodeIgniter\Model->update()
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Task->grade('9')
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-ERROR - 2025-05-31 13:07:41 --> Database Error: Array
-(
-    [CodeIgniter\Database\MySQLi\Connection] => Unknown column 'updated_at' in 'field list'
-)
-
-ERROR - 2025-05-31 13:07:41 --> Grade error: Failed to update grade
-ERROR - 2025-05-31 13:50:55 --> mysqli_sql_exception: Unknown column 'users.name' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Grading.php(19): CodeIgniter\BaseModel->findAll()
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Grading->overview()
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#13 {main}
-CRITICAL - 2025-05-31 13:50:55 --> Error: Call to a member function getResult() on bool
-[Method: GET, Route: grading]
-in SYSTEMPATH\Model.php on line 287.
- 1 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
- 2 APPPATH\Controllers\Grading.php(19): CodeIgniter\BaseModel->findAll()
- 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Grading->overview()
- 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
- 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 8 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-ERROR - 2025-05-31 13:56:20 --> mysqli_sql_exception: Unknown column 'users.name' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(213): CodeIgniter\Database\BaseBuilder->get()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(609): CodeIgniter\Model->doFind(false, NULL)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Models\SubmissionModel.php(30): CodeIgniter\BaseModel->find()
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Auth.php(87): App\Models\SubmissionModel->getRecentSubmissions(5)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-CRITICAL - 2025-05-31 13:56:20 --> Error: Call to a member function getResult() on bool
-[Method: GET, Route: dashboard]
-in SYSTEMPATH\Model.php on line 213.
- 1 SYSTEMPATH\BaseModel.php(609): CodeIgniter\Model->doFind(false, null)
- 2 APPPATH\Models\SubmissionModel.php(30): CodeIgniter\BaseModel->find()
- 3 APPPATH\Controllers\Auth.php(87): App\Models\SubmissionModel->getRecentSubmissions(5)
- 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
- 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-ERROR - 2025-05-31 13:56:21 --> mysqli_sql_exception: Unknown column 'users.name' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(213): CodeIgniter\Database\BaseBuilder->get()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(609): CodeIgniter\Model->doFind(false, NULL)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Models\SubmissionModel.php(30): CodeIgniter\BaseModel->find()
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Auth.php(87): App\Models\SubmissionModel->getRecentSubmissions(5)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-CRITICAL - 2025-05-31 13:56:21 --> Error: Call to a member function getResult() on bool
-[Method: GET, Route: dashboard]
-in SYSTEMPATH\Model.php on line 213.
- 1 SYSTEMPATH\BaseModel.php(609): CodeIgniter\Model->doFind(false, null)
- 2 APPPATH\Models\SubmissionModel.php(30): CodeIgniter\BaseModel->find()
- 3 APPPATH\Controllers\Auth.php(87): App\Models\SubmissionModel->getRecentSubmissions(5)
- 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
- 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-ERROR - 2025-05-31 13:56:23 --> mysqli_sql_exception: Unknown column 'users.name' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(213): CodeIgniter\Database\BaseBuilder->get()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(609): CodeIgniter\Model->doFind(false, NULL)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Models\SubmissionModel.php(30): CodeIgniter\BaseModel->find()
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Auth.php(87): App\Models\SubmissionModel->getRecentSubmissions(5)
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-CRITICAL - 2025-05-31 13:56:23 --> Error: Call to a member function getResult() on bool
-[Method: GET, Route: dashboard]
-in SYSTEMPATH\Model.php on line 213.
- 1 SYSTEMPATH\BaseModel.php(609): CodeIgniter\Model->doFind(false, null)
- 2 APPPATH\Models\SubmissionModel.php(30): CodeIgniter\BaseModel->find()
- 3 APPPATH\Controllers\Auth.php(87): App\Models\SubmissionModel->getRecentSubmissions(5)
- 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
- 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-ERROR - 2025-05-31 13:57:52 --> mysqli_sql_exception: Unknown column 'users.name' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Grading.php(19): CodeIgniter\BaseModel->findAll()
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Grading->overview()
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#13 {main}
-CRITICAL - 2025-05-31 13:57:52 --> Error: Call to a member function getResult() on bool
-[Method: GET, Route: grading]
-in SYSTEMPATH\Model.php on line 287.
- 1 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
- 2 APPPATH\Controllers\Grading.php(19): CodeIgniter\BaseModel->findAll()
- 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Grading->overview()
- 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
- 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 8 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-ERROR - 2025-05-31 14:00:08 --> mysqli_sql_exception: Unknown column 'users.name' in 'field list' in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `submiss...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `submiss...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `submiss...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `submiss...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Grading.php(19): CodeIgniter\BaseModel->findAll()
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Grading->overview()
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#13 {main}
-CRITICAL - 2025-05-31 14:00:08 --> Error: Call to a member function getResult() on bool
-[Method: GET, Route: grading]
-in SYSTEMPATH\Model.php on line 287.
- 1 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
- 2 APPPATH\Controllers\Grading.php(19): CodeIgniter\BaseModel->findAll()
- 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Grading->overview()
- 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
- 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 8 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 14:01:55 --> ErrorException: Undefined array key "title"
-[Method: GET, Route: grading]
-in APPPATH\Views\grading\overview.php on line 92.
- 1 APPPATH\Views\grading\overview.php(92): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\grading\\overview.php', 92)
- 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\grading\\overview.php')
- 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
- 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('grading/overview', [], true)
- 5 APPPATH\Controllers\Grading.php(19): view('grading/overview', [...])
- 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Grading->overview()
- 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
- 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
-10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 14:01:58 --> ErrorException: Undefined array key "title"
-[Method: GET, Route: grading]
-in APPPATH\Views\grading\overview.php on line 92.
- 1 APPPATH\Views\grading\overview.php(92): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\grading\\overview.php', 92)
- 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\grading\\overview.php')
- 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
- 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('grading/overview', [], true)
- 5 APPPATH\Controllers\Grading.php(19): view('grading/overview', [...])
- 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Grading->overview()
- 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
- 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
-10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 14:02:36 --> ErrorException: Undefined array key "title"
-[Method: GET, Route: grading]
-in APPPATH\Views\grading\overview.php on line 92.
- 1 APPPATH\Views\grading\overview.php(92): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\grading\\overview.php', 92)
- 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\grading\\overview.php')
- 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
- 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('grading/overview', [], true)
- 5 APPPATH\Controllers\Grading.php(19): view('grading/overview', [...])
- 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Grading->overview()
- 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Grading))
- 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
-10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-ERROR - 2025-05-31 14:21:48 --> mysqli_sql_exception: Table 'school_db.enrollment_requests' doesn't exist in C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php:327
-Stack trace:
-#0 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `enrollm...', 0)
-#1 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `enrollm...')
-#2 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `enrollm...')
-#3 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `enrollm...', Array, false)
-#4 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
-#5 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
-#6 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Models\EnrollmentModel.php(21): CodeIgniter\BaseModel->findAll()
-#7 C:\xampp\htdocs\CrimsonSkillBoost-Web\app\Controllers\Auth.php(91): App\Models\EnrollmentModel->getPendingRequests()
-#8 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
-#9 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
-#10 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
-#11 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
-#12 C:\xampp\htdocs\CrimsonSkillBoost-Web\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-#13 C:\xampp\htdocs\CrimsonSkillBoost-Web\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-#14 {main}
-CRITICAL - 2025-05-31 14:21:48 --> Error: Call to a member function getResult() on bool
-[Method: GET, Route: dashboard]
-in SYSTEMPATH\Model.php on line 287.
- 1 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
- 2 APPPATH\Models\EnrollmentModel.php(21): CodeIgniter\BaseModel->findAll()
- 3 APPPATH\Controllers\Auth.php(91): App\Models\EnrollmentModel->getPendingRequests()
- 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
- 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 14:25:59 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "courses/index.php"
-[Method: GET, Route: course]
-in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
- 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('courses/index.php')
- 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('courses/index', [], true)
- 3 APPPATH\Controllers\Course.php(15): view('courses/index', [...])
- 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->index()
- 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 14:26:12 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "courses/index.php"
-[Method: GET, Route: course]
-in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
- 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('courses/index.php')
- 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('courses/index', [], true)
- 3 APPPATH\Controllers\Course.php(15): view('courses/index', [...])
- 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->index()
- 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 14:28:32 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "quiz_edit.php"
-[Method: GET, Route: quiz/edit/5]
-in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
- 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('quiz_edit.php')
- 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('quiz_edit', [], true)
- 3 APPPATH\Controllers\Quiz.php(62): view('quiz_edit', [...])
- 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Quiz->edit('5')
- 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:42:42 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
-[Method: POST, Route: enrollment/update/9]
-in SYSTEMPATH\Security\Security.php on line 262.
- 1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
- 2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
- 3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
- 4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
- 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/9', 'before')
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:43:40 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
-[Method: POST, Route: enrollment/update/8]
-in SYSTEMPATH\Security\Security.php on line 262.
- 1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
- 2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
- 3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
- 4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
- 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/8', 'before')
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:44:49 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
-[Method: POST, Route: enrollment/update/8]
-in SYSTEMPATH\Security\Security.php on line 262.
- 1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
- 2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
- 3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
- 4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
- 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/8', 'before')
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:44:52 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
-[Method: POST, Route: enrollment/update/8]
-in SYSTEMPATH\Security\Security.php on line 262.
- 1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
- 2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
- 3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
- 4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
- 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/8', 'before')
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:45:21 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
-[Method: POST, Route: enrollment/update/8]
-in SYSTEMPATH\Security\Security.php on line 262.
- 1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
- 2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
- 3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
- 4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
- 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/8', 'before')
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:45:30 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
-[Method: POST, Route: enrollment/update/8]
-in SYSTEMPATH\Security\Security.php on line 262.
- 1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
- 2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
- 3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
- 4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
- 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/8', 'before')
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:46:53 --> CodeIgniter\Exceptions\BadMethodCallException: Call to undefined method App\Models\EnrollmentModel::getPendingRequests
+CRITICAL - 2025-05-31 18:37:57 --> CodeIgniter\Exceptions\BadMethodCallException: Call to undefined method App\Models\EnrollmentModel::getPendingRequests
 [Method: GET, Route: dashboard]
 in SYSTEMPATH\Model.php on line 930.
- 1 APPPATH\Controllers\Auth.php(91): CodeIgniter\Model->__call('getPendingRequests', [])
+ 1 APPPATH\Controllers\Auth.php(90): CodeIgniter\Model->__call('getPendingRequests', [])
  2 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
  3 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
  4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:47:11 --> CodeIgniter\Exceptions\BadMethodCallException: Call to undefined method App\Models\EnrollmentModel::getPendingRequests
-[Method: GET, Route: dashboard]
-in SYSTEMPATH\Model.php on line 930.
- 1 APPPATH\Controllers\Auth.php(91): CodeIgniter\Model->__call('getPendingRequests', [])
- 2 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
- 3 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
- 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:47:13 --> CodeIgniter\Exceptions\BadMethodCallException: Call to undefined method App\Models\EnrollmentModel::getPendingRequests
-[Method: GET, Route: dashboard]
-in SYSTEMPATH\Model.php on line 930.
- 1 APPPATH\Controllers\Auth.php(91): CodeIgniter\Model->__call('getPendingRequests', [])
- 2 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
- 3 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
- 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:47:19 --> CodeIgniter\Exceptions\BadMethodCallException: Call to undefined method App\Models\EnrollmentModel::getPendingRequests
-[Method: GET, Route: dashboard]
-in SYSTEMPATH\Model.php on line 930.
- 1 APPPATH\Controllers\Auth.php(91): CodeIgniter\Model->__call('getPendingRequests', [])
- 2 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
- 3 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
- 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:49:59 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
+CRITICAL - 2025-05-31 18:39:34 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
 [Method: POST, Route: enrollment/update/6]
 in SYSTEMPATH\Security\Security.php on line 262.
  1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
@@ -1044,7 +20,19 @@ in SYSTEMPATH\Security\Security.php on line 262.
  7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:50:01 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
+CRITICAL - 2025-05-31 18:39:50 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
+[Method: POST, Route: enrollment/update/6]
+in SYSTEMPATH\Security\Security.php on line 262.
+ 1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
+ 2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
+ 3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
+ 4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
+ 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/6', 'before')
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 18:44:39 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
 [Method: POST, Route: enrollment/update/7]
 in SYSTEMPATH\Security\Security.php on line 262.
  1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
@@ -1056,26 +44,86 @@ in SYSTEMPATH\Security\Security.php on line 262.
  7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:51:07 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
-[Method: POST, Route: enrollment/update/6]
+CRITICAL - 2025-05-31 18:47:03 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
+[Method: POST, Route: enrollment/update/7]
 in SYSTEMPATH\Security\Security.php on line 262.
  1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
  2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
  3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
  4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
- 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/6', 'before')
+ 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/7', 'before')
  6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
  7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-05-31 17:51:10 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
-[Method: POST, Route: enrollment/update/6]
+CRITICAL - 2025-05-31 18:47:13 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
+[Method: POST, Route: enrollment/update/7]
 in SYSTEMPATH\Security\Security.php on line 262.
  1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
  2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
  3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
  4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
- 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/6', 'before')
+ 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/7', 'before')
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 18:48:29 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
+[Method: POST, Route: enrollment/update/7]
+in SYSTEMPATH\Security\Security.php on line 262.
+ 1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
+ 2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
+ 3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
+ 4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
+ 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/7', 'before')
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 18:48:34 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
+[Method: POST, Route: enrollment/update/7]
+in SYSTEMPATH\Security\Security.php on line 262.
+ 1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
+ 2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
+ 3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
+ 4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
+ 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/7', 'before')
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 18:48:36 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
+[Method: POST, Route: enrollment/update/7]
+in SYSTEMPATH\Security\Security.php on line 262.
+ 1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
+ 2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
+ 3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
+ 4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
+ 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/7', 'before')
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 18:50:28 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
+[Method: POST, Route: enrollment/update/7]
+in SYSTEMPATH\Security\Security.php on line 262.
+ 1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
+ 2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
+ 3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
+ 4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
+ 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/7', 'before')
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-05-31 18:50:31 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
+[Method: POST, Route: enrollment/update/7]
+in SYSTEMPATH\Security\Security.php on line 262.
+ 1 SYSTEMPATH\Security\Security.php(262): CodeIgniter\Security\Exceptions\SecurityException::forDisallowedAction()
+ 2 SYSTEMPATH\Filters\CSRF.php(52): CodeIgniter\Security\Security->verify(Object(CodeIgniter\HTTP\IncomingRequest))
+ 3 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Filters\CSRF->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
+ 4 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
+ 5 SYSTEMPATH\CodeIgniter.php(479): CodeIgniter\Filters\Filters->run('enrollment/update/7', 'before')
  6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
  7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))

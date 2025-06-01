@@ -38,31 +38,41 @@ class Enrollment extends BaseController
 
     public function updateRequest($id)
     {
-        $json = $this->request->getJSON();
-        
-        if (!$json || !isset($json->status)) {
-            return $this->response->setStatusCode(400)->setJSON([
-                'success' => false,
-                'message' => 'Missing status'
-            ]);
-        }
-
-        $enrollmentModel = new \App\Models\EnrollmentModel();
+        // Set proper headers
+        header('Access-Control-Allow-Origin: *');
+        header('Content-Type: application/json');
         
         try {
-            $enrollmentModel->update($id, ['status' => $json->status]);
+            $json = $this->request->getJSON();
+            log_message('debug', 'Update request: ' . json_encode($json));
             
+            if (!$json || !isset($json->status)) {
+                throw new \Exception('Missing status');
+            }
+
+            if (!in_array($json->status, ['approved', 'rejected'])) {
+                throw new \Exception('Invalid status value');
+            }
+
+            $enrollmentModel = new \App\Models\EnrollmentModel();
+            $result = $enrollmentModel->update($id, [
+                'status' => $json->status
+            ]);
+
+            if (!$result) {
+                throw new \Exception('Failed to update record');
+            }
+
             return $this->response->setJSON([
                 'success' => true,
-                'message' => 'Status updated successfully'
+                'message' => 'Updated successfully'
             ]);
 
         } catch (\Exception $e) {
-            log_message('error', '[Enrollment] Update failed: ' . $e->getMessage());
-            
-            return $this->response->setStatusCode(500)->setJSON([
+            log_message('error', $e->getMessage());
+            return $this->response->setStatusCode(400)->setJSON([
                 'success' => false,
-                'message' => 'Failed to update status'
+                'message' => $e->getMessage()
             ]);
         }
     }
