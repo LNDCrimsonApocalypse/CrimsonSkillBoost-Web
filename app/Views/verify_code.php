@@ -126,6 +126,8 @@
         return;
       }
 
+      let redirectInProgress = false;
+
       firebase.auth().onAuthStateChanged((user) => {
         if (!user) {
           message.textContent = "❌ User not authenticated. Please login again.";
@@ -133,43 +135,58 @@
           return;
         }
 
+        // Check immediately if already verified
+        if (user.emailVerified) {
+          handleVerifiedUser(user);
+          return;
+        }
+
         const checkVerification = () => {
+          if (redirectInProgress) return;
+
           user.reload().then(() => {
             if (user.emailVerified) {
-              firebase.firestore().collection("users").doc(user.uid).set({
-                fullName: tempData.fullName,
-                email: tempData.email,
-                birthday: tempData.birthday,
-                gender: tempData.gender,
-                role: "educator",
-                createdAt: new Date().toISOString()
-              }).then(() => {
-                sessionStorage.removeItem("tempUser");
-                message.textContent = "✅ Email verified. Redirecting...";
-                message.style.color = "green";
-                setTimeout(() => {
-                  window.location.href = "<?= base_url('setup_profile') ?>";
-                }, 1500);
-              }).catch((error) => {
-                message.textContent = "❌ Failed to save data: " + error.message;
-                message.style.color = "red";
-              });
+              handleVerifiedUser(user);
             } else {
-              message.textContent = "📩 Still waiting for email verification...";
+              message.textContent = "📩 Waiting for email verification... Please click the link in your email.";
               message.style.color = "orange";
             }
           });
         };
 
-        // Form submit — trigger manual check
+        function handleVerifiedUser(user) {
+          if (redirectInProgress) return;
+          redirectInProgress = true;
+
+          firebase.firestore().collection("users").doc(user.uid).set({
+            fullName: tempData.fullName,
+            email: tempData.email,
+            birthday: tempData.birthday,
+            gender: tempData.gender,
+            role: "educator",
+            createdAt: new Date().toISOString()
+          }).then(() => {
+            sessionStorage.removeItem("tempUser");
+            message.textContent = "✅ Email verified. Redirecting...";
+            message.style.color = "green";
+            window.location.href = "<?= base_url('setup_profile') ?>";
+          }).catch((error) => {
+            redirectInProgress = false;
+            message.textContent = "❌ Failed to save data: " + error.message;
+            message.style.color = "red";
+          });
+        }
+
+        // Form submit handler
         form.addEventListener("submit", (e) => {
           e.preventDefault();
-          message.textContent = "🔄 Checking verification status...";
-          message.style.color = "#555";
           checkVerification();
         });
 
-        // Auto-check every 3 seconds
+        // Initial check
+        checkVerification();
+
+        // Check every 3 seconds
         const intervalId = setInterval(() => {
           user.reload().then(() => {
             if (user.emailVerified) {
