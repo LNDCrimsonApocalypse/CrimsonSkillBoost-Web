@@ -12,46 +12,81 @@
       font-family: 'Inter', Arial, sans-serif;
     }
 
+      /* Navbar */
     .navbar {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      background: #eec8e6;
-      padding: 10px 40px;
-    }
-
-    .navbar-left {
-      display: flex;
       align-items: center;
-      gap: 18px;
+      padding: 15px 30px;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     .navbar-logo {
-      width: 52px;
-      height: 52px;
-      object-fit: contain;
-    }
-
-    .navbar-center {
+      flex: 1;
       display: flex;
-      gap: 36px;
       align-items: center;
     }
 
-    .navbar-center a {
-      font-family: 'Montserrat', Arial, sans-serif;
-      font-weight: 700;
-      font-size: 1.35rem;
-      text-decoration: none;
-      color: #222;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: color 0.2s;
+    .navbar-logo .logo {
+      width: 40px;
     }
 
-    .navbar-center a.active {
-      color: #222;
-      font-weight: 900;
+    .navbar-center {
+      flex: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .navbar-center a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+      margin: 0 10px;
+    }
+
+    .navbar-center .dropdown {
+      position: relative;
+    }
+
+   
+  
+    .navbar-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 15px; /* space between search, bell, and profile */
+    }
+
+    .navbar-right input[type="text"] {
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      /* Remove margin-right to avoid extra space */
+      margin: 0;
+      width: 140px;
+    }
+
+    .navbar-right img.profile {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .navbar-right img.icon {
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      /* Align vertically with profile */
+      vertical-align: middle;
     }
 
     .dropdown {
@@ -92,25 +127,10 @@
       display: block;
     }
 
-    .navbar-right {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-    }
-
     .icon {
       width: 48px;
       height: 48px;
       object-fit: cover;
-    }
-
-    .navbar-profile {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #eee;
-      background: #fff;
     }
 
     .about-section {
@@ -227,29 +247,34 @@
 </head>
 <body>
   <!-- NAVBAR -->
-  <nav class="navbar">
-    <div class="navbar-left">
-      <img src="<?= base_url('imgs/Logo.png') ?>" alt="Logo" />
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="navbar-logo">
+      <img src="imgs/Logo.png" alt="logo" class="logo"/>
     </div>
     <div class="navbar-center">
-      <a href="#">HOME</a>
-      <a href="#" class="active">DASHBOARD</a>
-      <a href="#">ABOUT</a>
-      <li class="dropdown">
-        <button class="dropbtn">COURSES ▼</button>
-        <div class="dropdown-content">
-          <select id="course-select">
-            <option value="web">ALL COURSES</option>
-            <option value="data">MY COURSES</option>
-          </select>
-        </div>
-      </li>
+      <a href="<?= base_url('homepage') ?>">HOME</a>
+      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+     <li class="dropdown">
+      <span>COURSES <span class="arrow">&#9660;</span></span>
+      <div class="dropdown-content">
+        <select id="course-select">
+          <option value="web">ALL COURSES </option>
+          <option value="data">MY COURSES </option>
+         
+        </select>
+      </div>
+    </li>
     </div>
+
     <div class="navbar-right">
-      <img src="<?= base_url('imgs/notifications.png') ?>" alt="Notifications" class="icon" />
-      <img src="<?= base_url('imgs/profile.png') ?>" alt="Profile" class="navbar-profile" />
+      <input type="text" placeholder="Search.." />
+      <img src="imgs/notifications.png" alt="Notifications" class="icon" />
+      <img src="imgs/profile.png" alt="profile" class="profile" />
+      <button id="signOutButton" class="logout-btn">Sign Out</button>
     </div>
-  </nav>
+  </div>
 
   <!-- ABOUT SECTION -->
   <section class="about-section">

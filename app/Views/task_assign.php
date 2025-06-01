@@ -15,44 +15,79 @@
 
         /* Navbar styles */
         .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #fff;
-            padding: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        }
+
+        .navbar-logo {
+        flex: 1;
+        display: flex;
+        align-items: center;
         }
 
         .navbar-logo .logo {
-            height: 40px;
+        width: 40px;
         }
 
         .navbar-center {
-            display: flex;
-            gap: 20px;
+        flex: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
         }
 
         .navbar-center a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        margin: 0 10px;
         }
 
+        .navbar-center .dropdown {
+        position: relative;
+        }
+
+    
+    
         .navbar-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 15px; /* space between search, bell, and profile */
         }
 
-        .navbar-right input {
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        .navbar-right input[type="text"] {
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        /* Remove margin-right to avoid extra space */
+        margin: 0;
+        width: 140px;
         }
 
-        .navbar-right .profile {
-            height: 40px;
-            border-radius: 50%;
+        .navbar-right img.profile {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        object-fit: cover;
+        cursor: pointer;
+        }
+
+        .navbar-right img.icon {
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+        /* Align vertically with profile */
+        vertical-align: middle;
         }
 
         /* Tab bar styles */
@@ -176,22 +211,34 @@
 </head>
 <body>
     <!-- Navbar -->
-    <div class="navbar">
-        <div class="navbar-logo">
-            <img src="https://i.imgur.com/1W7sOom.png" alt="logo" class="logo"/>
-        </div>
-        <div class="navbar-center">
-            <a href="#">HOME</a>
-            <a href="#">DASHBOARD</a>
-            <a href="#">ABOUT</a>
-            <a href="#" class="dropdown">COURSES</a>
-            <div class="icon">🔔</div>
-        </div>
-        <div class="navbar-right">
-            <input type="text" placeholder="Search.." />
-            <img src="https://i.imgur.com/uIgDDDd.png" alt="profile" class="profile"/>
-        </div>
+<!-- Navbar -->
+  <div class="navbar">
+    <div class="navbar-logo">
+      <img src="imgs/Logo.png" alt="logo" class="logo"/>
     </div>
+    <div class="navbar-center">
+      <a href="<?= base_url('homepage') ?>">HOME</a>
+      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+     <li class="dropdown">
+      <span>COURSES <span class="arrow">&#9660;</span></span>
+      <div class="dropdown-content">
+        <select id="course-select">
+          <option value="web">ALL COURSES </option>
+          <option value="data">MY COURSES </option>
+         
+        </select>
+      </div>
+    </li>
+    </div>
+
+    <div class="navbar-right">
+      <input type="text" placeholder="Search.." />
+      <img src="imgs/notifications.png" alt="Notifications" class="icon" />
+      <img src="imgs/profile.png" alt="profile" class="profile" />
+      <button id="signOutButton" class="logout-btn">Sign Out</button>
+    </div>
+  </div>
 
     <!-- Tab Bar -->
     <div class="tabbar">
