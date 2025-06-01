@@ -160,10 +160,207 @@
             overflow-y: auto;
             padding-right: 10px;
         }
+
+            /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .navbar-logo {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-logo .logo {
+      width: 40px;
+    }
+
+    .navbar-center {
+      flex: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .navbar-center a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+      margin: 0 10px;
+    }
+
+    .navbar-center .dropdown {
+      position: relative;
+    }
+
+   
+  
+    .navbar-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 15px; /* space between search, bell, and profile */
+    }
+
+    .navbar-right input[type="text"] {
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      /* Remove margin-right to avoid extra space */
+      margin: 0;
+      width: 140px;
+    }
+
+    .navbar-right img.profile {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .navbar-right img.icon {
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      /* Align vertically with profile */
+      vertical-align: middle;
+    }
+ .tabbar {
+      display: flex;
+      justify-content: start;
+      gap: 30px;
+      padding: 10px 50px;
+      background-color: white;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .tabbar span {
+      font-weight: 500;
+
+      cursor: pointer;
+    }
+
+    .tabbar .active {
+      color: black;
+      font-weight: bold;
+      border-bottom: 3px solid black;
+      padding-bottom: 5px;
+    }
+    .dropbtn {
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: black;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+/* Dropdown container */
+    .dropdown {
+      position: relative;
+    }
+
+/* Dropdown menu */
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+
+      z-index: 1;
+    }
+
+/* Dropdown items */
+    .dropdown-content a {
+      padding: 12px 16px;
+      display: block;
+      color: black;
+      text-decoration: none;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #eee;
+    }
+
+    /* Show dropdown on hover */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .arrow {
+        font-size: 1.2rem;
+        margin-left: 4px;
+        vertical-align: middle;
+        /* Ensures the arrow is centered with the text */
+    }
+    .dropdown .arrow {
+      font-size: 1rem;
+      margin-left: 4px;
+    }
+    li{
+      font-weight: bold;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+
+    }
     </style>
 </head>
 <body>
-    <div class="title-bar"><?= esc($quiz['title']) ?></div>
+
+
+    <!-- Navbar -->
+  <div class="navbar">
+    <div class="navbar-logo">
+      <img src="imgs/Logo.png" alt="logo" class="logo"/>
+    </div>
+    <div class="navbar-center">
+      <a href="<?= base_url('homepage') ?>">HOME</a>
+      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+     <li class="dropdown">
+      <span>COURSES <span class="arrow">&#9660;</span></span>
+      <div class="dropdown-content">
+        <select id="course-select">
+          <option value="web">ALL COURSES </option>
+          <option value="data">MY COURSES </option>
+         
+        </select>
+      </div>
+    </li>
+    </div>
+
+    <div class="navbar-right">
+      <input type="text" placeholder="Search.." />
+      <img src="imgs/notifications.png" alt="Notifications" class="icon" />
+      <img src="imgs/profile.png" alt="profile" class="profile" />
+      <button id="signOutButton" class="logout-btn">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tabbar">
+    <span>Topic</span>
+    <span>Task</span>
+    <span class="active">Quiz</span>
+    <span>Student</span>
+  </div>
+
+  <div class="title-bar"><?= esc($quiz['title']) ?></div>
 
     <div class="content">
         <!-- Quizzes List with Details - Left Side -->

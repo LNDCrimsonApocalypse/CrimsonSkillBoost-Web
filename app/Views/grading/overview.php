@@ -177,69 +177,69 @@
       padding-bottom: 5px;
     }
     .dropbtn {
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: black;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-}
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: black;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
 
 /* Dropdown container */
-.dropdown {
-  position: relative;
-}
+    .dropdown {
+      position: relative;
+    }
 
 /* Dropdown menu */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: white;
-  min-width: 160px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 
-  z-index: 1;
-}
+      z-index: 1;
+    }
 
 /* Dropdown items */
-.dropdown-content a {
-  padding: 12px 16px;
-  display: block;
-  color: black;
-  text-decoration: none;
-}
+    .dropdown-content a {
+      padding: 12px 16px;
+      display: block;
+      color: black;
+      text-decoration: none;
+    }
 
-.dropdown-content a:hover {
-  background-color: #eee;
-}
+    .dropdown-content a:hover {
+      background-color: #eee;
+    }
 
-/* Show dropdown on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-.arrow {
-    font-size: 1.2rem;
-    margin-left: 4px;
-    vertical-align: middle;
-    /* Ensures the arrow is centered with the text */
-}
- .dropdown .arrow {
-            font-size: 1rem;
-            margin-left: 4px;
-        }
-        li{
-          font-weight: bold;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+    /* Show dropdown on hover */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .arrow {
+        font-size: 1.2rem;
+        margin-left: 4px;
+        vertical-align: middle;
+        /* Ensures the arrow is centered with the text */
+    }
+    .dropdown .arrow {
+      font-size: 1rem;
+      margin-left: 4px;
+    }
+    li{
+      font-weight: bold;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
 
-        }
+    }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+  <!-- Navbar -->
   <div class="navbar">
     <div class="navbar-logo">
       <img src="imgs/Logo.png" alt="logo" class="logo"/>
@@ -259,11 +259,12 @@
       </div>
     </li>
     </div>
-    
+
     <div class="navbar-right">
       <input type="text" placeholder="Search.." />
       <img src="imgs/notifications.png" alt="Notifications" class="icon" />
       <img src="imgs/profile.png" alt="profile" class="profile" />
+      <button id="signOutButton" class="logout-btn">Sign Out</button>
     </div>
   </div>
 
