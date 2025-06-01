@@ -95,24 +95,35 @@
             const input = document.querySelector(`input[data-submission-id="${submissionId}"]`);
             const score = input.value;
 
-            fetch(`/grading/save/${submissionId}`, {
+            if (!score || score < 0 || score > 100) {
+                alert('Please enter a valid score between 0 and 100');
+                return;
+            }
+
+            fetch(`<?= site_url('task/grade') ?>/${submissionId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 },
-                body: JSON.stringify({ score })
+                body: JSON.stringify({ score: parseFloat(score) })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    const statusSpan = input.closest('.submission-item').querySelector('.status');
+                    if (statusSpan) {
+                        statusSpan.className = 'status graded';
+                        statusSpan.textContent = 'Graded';
+                    }
                     alert('Grade saved successfully!');
                 } else {
-                    alert('Error saving grade: ' + data.message);
+                    throw new Error(data.message || 'Failed to save grade');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Failed to save grade');
+                alert('Failed to save grade: ' + error.message);
             });
         }
     </script>
