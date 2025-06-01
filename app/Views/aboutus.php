@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,15 +21,14 @@
       padding: 10px 40px;
     }
 
-    .navbar-left {
+ .navbar-left {
       display: flex;
       align-items: center;
       gap: 18px;
     }
-
     .navbar-logo {
-      width: 52px;
-      height: 52px;
+      width: 40px;
+      height: 40px;
       object-fit: contain;
     }
 
@@ -229,7 +229,7 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar-left">
-      <img src="<?= base_url('imgs/Logo.png') ?>" alt="Logo" />
+     <img src="<?= base_url('img/Logo.png') ?>" alt="Logo" />
     </div>
     <div class="navbar-center">
       <a href="#">HOME</a>
