@@ -134,7 +134,7 @@
     <div class="nav-center">
       <a href="<?= base_url('homepage') ?>" class="active">HOME</a>
       <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
-      <a href="<?= base_url('about') ?>">ABOUT</a>
+      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
       <a href="<?= base_url('courses') ?>">COURSES</a>
     </div>
     <div class="nav-right">
