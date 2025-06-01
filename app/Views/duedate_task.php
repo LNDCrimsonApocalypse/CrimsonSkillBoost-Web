@@ -151,7 +151,31 @@
 <body>
     <!-- Navbar -->
     <div class="navbar">
-        <!-- ...existing navbar content... -->
+        <div class="navbar-logo">
+        <img src="imgs/Logo.png" alt="logo" class="logo"/>
+        </div>
+        <div class="navbar-center">
+        <a href="<?= base_url('homepage') ?>">HOME</a>
+        <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+        <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+        <li class="dropdown">
+        <span>COURSES <span class="arrow">&#9660;</span></span>
+        <div class="dropdown-content">
+            <select id="course-select">
+            <option value="web">ALL COURSES </option>
+            <option value="data">MY COURSES </option>
+            
+            </select>
+        </div>
+        </li>
+        </div>
+
+        <div class="navbar-right">
+        <input type="text" placeholder="Search.." />
+        <img src="imgs/notifications.png" alt="Notifications" class="icon" />
+        <img src="imgs/profile.png" alt="profile" class="profile" />
+        <button id="signOutButton" class="logout-btn">Sign Out</button>
+        </div>
     </div>
 
     <!-- Tab Bar -->
