@@ -79,8 +79,7 @@ $routes->get('task/debug-submissions/(:num)', 'Task::debugSubmissions/$1');
 $routes->group('grading', ['namespace' => 'App\Controllers'], function($routes) {
     $routes->get('/', 'Grading::overview');
     $routes->get('student/(:num)', 'Grading::studentOverview/$1');
-    $routes->post('save/(:num)', 'Grading::save/$1');
-    $routes->post('grading/save/(:num)', 'Grading::save/$1');
+    $routes->post('save/(:num)', 'Grading::save/$1', ['filter' => 'ajax']);
 });
 
 $routes->get('enrollment', 'Enrollment::index');

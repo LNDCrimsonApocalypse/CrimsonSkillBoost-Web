@@ -200,9 +200,8 @@ class Task extends BaseController
     public function grade($submissionId)
     {
         try {
-            $submissionModel = new SubmissionModel();
+            $submissionModel = new \App\Models\SubmissionModel();
             
-            // Get raw input
             $json = $this->request->getJSON();
             if (!$json || !isset($json->score)) {
                 throw new \Exception('Score is required');
@@ -213,22 +212,19 @@ class Task extends BaseController
                 throw new \Exception('Score must be between 0 and 100');
             }
 
-            // Update submission
-            $updateData = [
+            $success = $submissionModel->update($submissionId, [
                 'score' => $score,
-                'status' => 'completed'
-            ];
-
-            $success = $submissionModel->update($submissionId, $updateData);
+                'status' => 'graded',
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
 
             if (!$success) {
-                throw new \Exception('Failed to update grade');
+                throw new \Exception('Failed to update submission');
             }
 
             return $this->response->setJSON([
                 'success' => true,
-                'message' => 'Grade updated successfully',
-                'data' => ['score' => $score]
+                'message' => 'Grade saved successfully'
             ]);
 
         } catch (\Exception $e) {

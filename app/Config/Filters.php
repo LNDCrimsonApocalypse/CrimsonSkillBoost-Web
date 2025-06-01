@@ -72,8 +72,8 @@ class Filters extends BaseFilters
             'csrf' => [
                 'except' => [
                     'enrollment/update/*',
-                    'enrollment/submit',
-                    'enrollment/*'  // Add this to cover all enrollment routes
+                    'grading/save/*',
+                    'task/grade/*'
                 ]
             ]
         ],
