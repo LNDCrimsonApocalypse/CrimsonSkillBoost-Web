@@ -11,49 +11,151 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* ... [STYLE BLOCK REMAINS UNCHANGED] ... */
+    body {
+  background: linear-gradient(to bottom right, #fbeaff, #eaf4ff);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ font-family: 'Segoe UI', sans-serif;
+}
+
+.profile-setup .container {
+  max-width: 800px;
+  width: 100%;
+  padding: 40px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo-top-left {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  height: 40px;
+  z-index: 10;
+}
+
+.header h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.header p {
+  font-size: 0.95rem;
+  color: #777;
+}
+
+.profile-content {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.profile-image {
+  text-align: center;
+  flex: 1;
+  min-width: 200px;
+}
+
+.profile-image img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 3px solid #ccc;
+}
+
+.profile-image h3 {
+  font-size: 1.1rem;
+  color: #222;
+}
+
+.profile-image p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.profile-form {
+  flex: 2;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.profile-form input,
+.profile-form select,
+.profile-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.profile-form .row {
+  display: flex;
+  gap: 10px;
+}
+
+.profile-form button {
+  padding: 10px;
+  font-size: 1rem;
+  background: linear-gradient(to right, #d977f7, #c084fc);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.profile-form button:hover {
+  opacity: 0.9;
+}
+
+
   </style>
 </head>
 <body>
-  <div class="profile-container">
-    <div class="logo">
-      <img src="<?= base_url('/img/logo.jpg') ?>" alt="Logo" height="40">
-    </div>
-
-    <div class="profile-title">Set up your profile</div>
-    <div class="profile-subtitle">Upload a clear image to help your student recognize you.</div>
-
-    <div class="profile-content">
-      <div class="profile-avatar-section">
-        <label for="avatarUpload" style="cursor: pointer;">
-          <div id="avatarPreview" class="profile-avatar">
-            <svg width="64" height="64" fill="#bdbdbd" viewBox="0 0 24 24">
-              <circle cx="12" cy="8" r="5"/>
-              <ellipse cx="12" cy="17" rx="7" ry="5"/>
-            </svg>
-          </div>
-        </label>
-        <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
-        <div class="profile-name">Jao Nicholas Benedicto</div>
-        <div class="profile-username">@JaoJaoBen110983</div>
+   <section class="profile-setup">
+    <div class="container">
+      <div class="header">
+        <img src="public/img/Logo.png" alt="Logo" class="logo-top-left" />
+        <h2>Set up your profile</h2>
+        <p>Upload a clear and professional image to help your professor recognize you.</p>
       </div>
 
-      <form id="profileForm" class="profile-form">
-        <input type="text" id="username" placeholder="Username" required>
-        <div class="profile-form-row">
-          <input type="date" id="birthday" required>
-          <select id="gender" required>
-            <option value="">Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
+      <div class="profile-content">
+        <div class="profile-image">
+          <img src="public/img/profile.png" alt="Profile Picture" />
+          <h3>Jao Nicholas Benedicto</h3>
+          <p>@JaoJoaBen10983</p>
         </div>
-        <textarea id="bio" rows="5" placeholder="Your bio" required></textarea>
-        <button type="submit" class="profile-save-btn">Save</button>
-      </form>
+
+        <div class="profile-form">
+          <input type="email" placeholder="JaoNicholasBenedicto@gmail.com" />
+          <div class="row">
+            <input type="date" />
+            <select>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <textarea rows="4" placeholder="Education&#10;Bachelor of Science in Computer Science&#10;Doctorate in Science Engineering"></textarea>
+          <button type="submit">Save</button>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
   <script>
     const db = firebase.firestore();

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,8 +26,8 @@
       gap: 18px;
     }
     .navbar-logo {
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 50px;
       object-fit: contain;
     }
 
@@ -99,8 +98,8 @@
     }
 
     .icon {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       object-fit: cover;
     }
 
@@ -229,12 +228,12 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar-left">
-     <img src="<?= base_url('img/Logo.png') ?>" alt="Logo" />
+     <img src="public/img/logo.png" alt="Logo"  class="navbar-logo" />
     </div>
     <div class="navbar-center">
-      <a href="#">HOME</a>
-      <a href="#" class="active">DASHBOARD</a>
-      <a href="#">ABOUT</a>
+      <a href="homepage_initial.php">HOME</a>
+      <a href="dashboard.php">DASHBOARD</a>
+      <a href="aboutus.php">ABOUT</a>
       <li class="dropdown">
         <button class="dropbtn">COURSES ▼</button>
         <div class="dropdown-content">
@@ -246,8 +245,8 @@
       </li>
     </div>
     <div class="navbar-right">
-      <img src="<?= base_url('imgs/notifications.png') ?>" alt="Notifications" class="icon" />
-      <img src="<?= base_url('imgs/profile.png') ?>" alt="Profile" class="navbar-profile" />
+      <img src="public/img/notifications.png" alt="Notifications" class="icon" />
+      <img src="public/img/profile.png" alt="Profile" class="navbar-profile" />
     </div>
   </nav>
 
@@ -261,7 +260,7 @@
         </div>
       </div>
       <div class="about-right">
-        <img class="about-illustration" src="<?= base_url('imgs/grp.png') ?>" alt="Team Illustration">
+        <img class="about-illustration" src="public/img/grp.png" alt="Team Illustration">
         <div class="about-brand">CRIMSONSKILLBOOST</div>
       </div>
     </div>

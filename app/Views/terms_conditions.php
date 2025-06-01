@@ -1,11 +1,11 @@
-csstc.html
+
 <html> 
     <head>
         <title>"Terms and Conditions"</title>
     </head>
 <style>
 
-    body {
+   body {
       background: linear-gradient(to bottom, #f8e6f7 0%, #eaf1fb 100%);
       font-family: 'Montserrat', Arial, sans-serif;
       margin: 0;
@@ -22,11 +22,11 @@ csstc.html
       text-align: center;
     }
     .logo img {
-  width: 50px;
+  width: 100px;
   margin-bottom: 20px;
   float: center;
   margin-left:900px;
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
     h1 {
@@ -83,8 +83,8 @@ csstc.html
 </style>
 
  <body>
-    <div class="logo">
-        <img src="imgs/Logo.png" alt="Logo">
+   <div class="logo">
+        <img src="public/img/Logo.png" alt="Logo">
     </div> 
     <div class="container">
      <h1>Terms and Condition</h1>
@@ -99,9 +99,7 @@ csstc.html
     <p>
       The <a href="#">Privacy Policy</a> explains how we collect, use, and protect your data when you create an account. For example, we use this information to enhance learning experiences, provide personalized recommendations, and improve platform features.
     </p>
-    <a href="<?= base_url('register') ?>">
-        <button class="agree-btn">I agree</butto>
-    </a>
+    <button class="agree-btn">I agree</button>
   </div>
 
 </html>

@@ -12,159 +12,172 @@
   <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #ffeef5, #e6f4ff);
-    }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
 
-    .container {
-      display: flex;
-      height: 100vh;
-    }
+body {
+  background: linear-gradient(to top right, #fce8fc, #e5f0ff);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header {
+  width: 100%;
+  padding: 1rem 2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 
-    .left-section {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
+.logo {
+  max-height: 40px;
+}
 
-    .logo {
-      width: 50px;
-      margin-bottom: 20px;
-    }
+.container {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  padding: 3rem 2rem;
+  max-width: 1100px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
-    .image-placeholder {
-      width: 100%;
-      max-width: 400px;
-      height: 400px;
-      background: #ccc;
-    }
+.illustration img {
+  max-width: 400px;
+  width: 100%;
+  margin-left: -80px;
+}
 
-    .right-section {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.form-box {
+  background:#d877dd44;
+  padding: 2rem;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 100%;
+  backdrop-filter: blur(10px);
+  margin-right: -90px;
+}
 
-    .form-box {
-      background: linear-gradient(to bottom right, #fce4ff, #e5e9ff);
-      padding: 40px;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+.form-box h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #222;
+}
 
-    .form-box h2 {
-      margin-bottom: 20px;
-      text-align: center;
-    }
+form input, form select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+}
 
-    form input,
-    form select {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
+.row {
+  display: flex;
+  gap: 1rem;
+}
 
-    .row {
-      display: flex;
-      gap: 10px;
-    }
+.row input, .row select {
+  flex: 1;
+}
 
-    .checkbox-container {
-      display: flex;
-      align-items: flex-start;
-      font-size: 0.85rem;
-      margin-bottom: 20px;
-    }
+.checkbox {
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.1rem;
+  color: #333;
+}
 
-    .checkbox-container input {
-      margin-right: 10px;
-      margin-top: 4px;
-      width: 18px;
-      height: 18px;
-    }
+.checkbox input[type="checkbox"] {
+  margin-top: 3px;
+}
 
-    .checkbox-container a {
-      color: #888;
-      text-decoration: none;
-    }
+.checkbox input {
+  margin-right: 0.5rem;
+}
 
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #dd5cd2;
-      color: white;
-      border: none;
-      border-radius: 9999px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
+.checkbox a {
+  color: #6c63ff;
+  text-decoration: none;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
-    button:hover {
-      background: #c94ac1;
-    }
+.form-footer {
+  margin-top: auto; /* Pushes this div (and the button inside) to the bottom */
+}
 
-    #message {
-      text-align: center;
-      margin-top: 10px;
-    }
 
-    .success {
-      color: green;
-    }
+button {
+  background-color: #da6de9;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  width: 100%;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
-    .error {
-      color: red;
-    }
+button:hover {
+  background-color: #c75cd5;
+}
+
   </style>
 </head>
 <body>
+ <header class="header">
+  <img src="public/img/Logo.png" alt="Crimson Skill Boost Logo" class="logo" />
+</header>
   <div class="container">
-    <div class="left-section">
-      <img src="<?= base_url('public/img/logo.jpg') ?>" alt="Logo" class="logo" />
-      <div class="image-placeholder"></div>
+    <div class="illustration">
+      <img src="public/img/5.png" alt="Illustration" />
     </div>
-
-    <div class="right-section">
-      <div class="form-box">
-        <h2>Create An Account</h2>
-        <form id="registerForm">
-          <input type="text" id="fullname" placeholder="Full name" required />
-          <input type="email" id="email" placeholder="Email Address" required />
-          <div class="row">
-            <input type="date" id="birthday" placeholder="Birthday" required />
-            <select id="gender" required>
-              <option value="">Gender</option>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="row">
-            <input type="password" id="password" placeholder="Password" required />
-            <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
-          </div>
-          <label class="checkbox-container">
-            <input type="checkbox" id="terms" required />
+    <div class="form-box">
+      <h2>Create An Account</h2>
+      <form>
+        <input type="text" placeholder="Full name" required />
+        <input type="email" placeholder="Email Address" required />
+        <div class="row">
+          <input type="date" placeholder="Birthday" required />
+          <select required>
+            <option value="" disabled selected>Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="row">
+          <input type="password" placeholder="Password" required />
+          <input type="password" placeholder="Confirm Password" required />
+        </div>
+        <label class="checkbox">
+         <input type="checkbox" required />
             <span>
-              By clicking here, I state that I have read and understood the 
-              <a href="<?= base_url('terms') ?>" target="_blank">Terms and Conditions</a>.
+              By clicking here, I state that I have read and understood the
+               <a href="<?= base_url('terms') ?>" target="_blank" style="color:#e636a4;text-decoration:underline;">Terms and Conditions</a>.
             </span>
-          </label>
-          <button type="submit">Sign Up</button>
-          <p id="message"></p>
-          <p style="text-align:center">Already have an account? <a href="<?= base_url('login') ?>">Log In</a></p>
-        </form>
-      </div>
+            </label>
+        <div class="form-footer">
+    <button type="submit">Sign Up</button>
+  </div>
+      </form>
     </div>
   </div>
 
