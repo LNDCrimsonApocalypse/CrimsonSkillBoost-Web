@@ -139,7 +139,7 @@
         <h2>Create An Account</h2>
         <form id="registerForm">
           <input type="text" id="fullname" placeholder="Full name" required />
-          <input type="email" id="email" placeholder="Email Address" required />
+          <input type="email" id="email" placeholder="youremail@umak.edu.ph" required pattern=".*@umak\.edu\.ph$" />
           <div class="row">
             <input type="date" id="birthday" placeholder="Birthday" required />
             <select id="gender" required>
@@ -186,6 +186,13 @@
       msg.textContent = "";
       msg.className = "";
 
+      // Add email domain validation
+      if (!email.endsWith('@umak.edu.ph')) {
+        msg.textContent = "❌ Please use your official UMak email address";
+        msg.classList.add("error");
+        return;
+      }
+
       if (!email || !password || !confirmPassword || !fullname || !birthday || !gender) {
         msg.textContent = "⚠ Please fill in all fields.";
         msg.classList.add("error");
@@ -219,18 +226,18 @@
                 gender: gender
               }));
 
-              msg.textContent = "✅ Verification email sent. Redirecting...";
-              msg.classList.add("success");
-              setTimeout(() => {
-                window.location.href = "<?= base_url('verify_code') ?>";
-              }, 1500);
-            })
-            .catch((error) => {
               msg.textContent = "❌ Failed to send verification email: " + error.message;
-              msg.classList.add("error");
-            });
-        })
+              msg.classList.add("error"););
+            });etTimeout(() => {
+        })      window.location.href = "<?= base_url('verify_code') ?>";
         .catch((error) => {
+          msg.textContent = "❌ " + error.message;
+          msg.classList.add("error");
+        });   msg.textContent = "❌ Failed to send verification email: " + error.message;
+    });       msg.classList.add("error");
+  </script> });
+</body> })
+</html> .catch((error) => {
           msg.textContent = "❌ " + error.message;
           msg.classList.add("error");
         });
