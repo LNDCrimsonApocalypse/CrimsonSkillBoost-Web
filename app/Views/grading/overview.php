@@ -259,6 +259,7 @@
       </div>
     </li>
     </div>
+    
     <div class="navbar-right">
       <input type="text" placeholder="Search.." />
       <img src="imgs/notifications.png" alt="Notifications" class="icon" />

@@ -15,75 +15,161 @@
         }
 
         /* Navbar */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
 
-        .navbar-logo .logo {
-            height: 40px;
-        }
+    .navbar-logo {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
 
-        .navbar-center {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+    .navbar-logo .logo {
+      width: 40px;
+    }
 
-        .navbar-center a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-        }
+    .navbar-center {
+      flex: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+    }
 
-        .navbar-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+    .navbar-center a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+      margin: 0 10px;
+    }
 
-        .navbar-right input {
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
+    .navbar-center .dropdown {
+      position: relative;
+    }
 
-        .icon {
-            height: 24px;
-            cursor: pointer;
-        }
+   
+  
+    .navbar-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 15px; /* space between search, bell, and profile */
+    }
 
-        .profile {
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
+    .navbar-right input[type="text"] {
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      /* Remove margin-right to avoid extra space */
+      margin: 0;
+      width: 140px;
+    }
 
-        .tabbar {
-            display: flex;
-            justify-content: center;
-            background-color: #fff;
-            padding: 10px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+    .navbar-right img.profile {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
 
-        .tabbar span {
-            margin: 0 15px;
-            cursor: pointer;
-            font-weight: 500;
-            color: #333;
-        }
+    .navbar-right img.icon {
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      /* Align vertically with profile */
+      vertical-align: middle;
+    }
+ .tabbar {
+      display: flex;
+      justify-content: start;
+      gap: 30px;
+      padding: 10px 50px;
+      background-color: white;
+      border-bottom: 1px solid #ddd;
+    }
 
-        .tabbar .active {
-            color: #f53ea2;
-            font-weight: 600;
+    .tabbar span {
+      font-weight: 500;
+
+      cursor: pointer;
+    }
+
+    .tabbar .active {
+      color: black;
+      font-weight: bold;
+      border-bottom: 3px solid black;
+      padding-bottom: 5px;
+    }
+    .dropbtn {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: black;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* Dropdown container */
+.dropdown {
+  position: relative;
+}
+
+/* Dropdown menu */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+
+  z-index: 1;
+}
+
+/* Dropdown items */
+.dropdown-content a {
+  padding: 12px 16px;
+  display: block;
+  color: black;
+  text-decoration: none;
+}
+
+.dropdown-content a:hover {
+  background-color: #eee;
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.arrow {
+    font-size: 1.2rem;
+    margin-left: 4px;
+    vertical-align: middle;
+    /* Ensures the arrow is centered with the text */
+}
+ .dropdown .arrow {
+            font-size: 1rem;
+            margin-left: 4px;
+        }
+        li{
+          font-weight: bold;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
         }
 
         .title-bar {
@@ -373,24 +459,26 @@
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="navbar-logo">
-            <img src="https://i.imgur.com/1W7sOom.png" alt="logo" class="logo"/>
-        </div>
-        <div class="navbar-center">
-            <a href="#">HOME</a>
-            <a href="#">DASHBOARD</a>
-            <a href="#">ABOUT</a>
-            <li class="dropdown">
-                <span>COURSES <span class="arrow">&#9660;</span></span>
-                <div class="dropdown-content">
-                    <select id="course-select">
-                        <option value="web">ALL COURSES</option>
-                        <option value="data">MY COURSES</option>
-                    </select>
-                </div>
-            </li>
-        </div>
+    <!-- Navbar -->
+  <div class="navbar">
+    <div class="navbar-logo">
+      <img src="imgs/Logo.png" alt="logo" class="logo"/>
+    </div>
+    <div class="navbar-center">
+      <a href="<?= base_url('homepage') ?>">HOME</a>
+      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+     <li class="dropdown">
+      <span>COURSES <span class="arrow">&#9660;</span></span>
+      <div class="dropdown-content">
+        <select id="course-select">
+          <option value="web">ALL COURSES </option>
+          <option value="data">MY COURSES </option>
+         
+        </select>
+      </div>
+    </li>
+    </div>
         <div class="navbar-right">
             <input type="text" placeholder="Search.." />
             <img src="imgs/notifications.png" alt="Notifications" class="icon" />
