@@ -98,13 +98,32 @@ class Auth extends BaseController
             return view('dashboard', ['error' => 'Failed to load dashboard data']);
         }
     }
-    
     public function getCourses()
     {
         $courseModel = new \App\Models\CourseModel();
         $courses = $courseModel->findAll();
-
         return $this->response->setJSON($courses);
+    }
+
+    public function getLessons()
+    {
+        $lessonModel = new \App\Models\LessonModel();
+        $lessons = $lessonModel->findAll();
+        return $this->response->setJSON($lessons);
+    }
+
+    public function getTasks()
+    {
+        $taskModel = new \App\Models\TaskModel();
+        $tasks = $taskModel->findAll();
+        return $this->response->setJSON($tasks);
+    }
+
+    public function getQuizzes()
+    {
+        $quizModel = new \App\Models\QuizModel();
+        $quizzes = $quizModel->findAll();
+        return $this->response->setJSON($quizzes);
     }
     
     public function saveProfile()

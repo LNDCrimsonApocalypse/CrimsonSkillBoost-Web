@@ -24,6 +24,9 @@ $routes->get('lessons-dashboard', 'LessonsController::index');
 $routes->get('lesson/(:num)', 'Lesson::view/$1'); // For viewing a single lesson
 $routes->get('lessons', 'Lesson::index'); // Optional: full lessons list
 $routes->get('/auth/get-courses', 'Auth::getCourses');
+$routes->get('/auth/get-lessons', 'Auth::getLessons');
+$routes->get('/auth/get-tasks', 'Auth::getTasks');
+$routes->get('/auth/get-quizzes', 'Auth::getQuizzes');
 $routes->post('/auth/upload-lesson', 'Auth::uploadLesson');
 $routes->post('/grades/calculate', 'Auth::calculateGrade'); // or 'GradesController::calculateGrade'
 $routes->get('/test/upload_lessons', 'TestPages::uploadLesson');
