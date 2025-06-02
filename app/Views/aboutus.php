@@ -11,32 +11,59 @@
       background: #fff;
       font-family: 'Inter', Arial, sans-serif;
     }
-
-    .navbar {
+       /* NAVBAR */
+     .navbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #eec8e6;
-      padding: 10px 40px;
-    }
+        background: #fff;
 
- .navbar-left {
+     padding: 10px 40px;
+    }
+    .navbar-left {
       display: flex;
       align-items: center;
       gap: 18px;
     }
     .navbar-logo {
-      width: 50px;
-      height: 50px;
+      width: 52px;
+      height: 52px;
       object-fit: contain;
     }
-
     .navbar-center {
       display: flex;
       gap: 36px;
       align-items: center;
     }
-
+    .navbar-center a {
+  
+      font-weight: 500;
+      font-size: 1.35rem;
+      text-decoration: none;
+      color: black;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+    .navbar-center a.active {
+      color: #222;
+      font-weight: 900;
+    }
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+    .navbar-left img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+    .navbar-center {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+    }
     .navbar-center a {
       font-family: 'Montserrat', Arial, sans-serif;
       font-weight: 700;
@@ -47,69 +74,46 @@
       letter-spacing: 1px;
       transition: color 0.2s;
     }
-
     .navbar-center a.active {
       color: #222;
       font-weight: 900;
     }
-
-    .dropdown {
+    .navbar-center .dropdown {
       position: relative;
     }
+    .navbar-center .dropdown::after {
 
-    .dropbtn {
-      text-decoration: none;
+      font-size: 0.85em;
+      vertical-align: middle;
       font-weight: bold;
-      font-size: 1.3rem;
-      color: black;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
     }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: white;
-      min-width: 160px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-      z-index: 1;
-    }
-
-    .dropdown-content select {
-      width: 100%;
-      padding: 12px 16px;
-      font-size: 1rem;
-      border: none;
-      background: none;
-      appearance: none;
-      cursor: pointer;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
     .navbar-right {
       display: flex;
       align-items: center;
       gap: 22px;
     }
-
-    .icon {
-      width: 40px;
-      height: 40px;
-      object-fit: cover;
+ .icon {
+       width: 48px;
+            height: 48px;
+            object-fit: cover;
+        
     }
-
-    .navbar-profile {
+     .navbar-profile {
       width: 38px;
       height: 38px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #eee;
       background: #fff;
+
+    }
+    /* --- MAIN SECTION --- */
+    .main-section {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      margin-top: 24px;
+      min-height: 78vh;
     }
 
     .about-section {
@@ -216,12 +220,71 @@
       }
     }
 
-    li {
-      font-weight: bold;
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
+     .dropbtn {
+  
+   font-weight: bold;
+  font-size: 1.35rem;
+  color: black;
+  background: none;
+  border: none;
+  cursor: pointer;
+  
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #EED2EE;
+  min-width: 160px;
+  padding: 8px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.custom-select {
+  width: 100%;
+  padding:  12px 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  color: black;
+  appearance: none; /* Hide default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #a84d9b;
+
+}
+
+.arrow {
+  font-size: 1rem;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
   </style>
 </head>
 <body>
@@ -231,18 +294,21 @@
      <img src="public/img/logo.png" alt="Logo"  class="navbar-logo" />
     </div>
     <div class="navbar-center">
-      <a href="homepage_initial.php">HOME</a>
-      <a href="dashboard.php">DASHBOARD</a>
-      <a href="aboutus.php">ABOUT</a>
-      <li class="dropdown">
-        <button class="dropbtn">COURSES ▼</button>
-        <div class="dropdown-content">
-          <select id="course-select">
-            <option value="web">ALL COURSES</option>
-            <option value="data">MY COURSES</option>
-          </select>
-        </div>
-      </li>
+     <a href="<?= base_url('homepage') ?>" target="_blank">HOME</a> 
+     <a href="<?= base_url('dashboard') ?>" target="blank">DASHBOARD</a>
+     <a href="<?= base_url('aboutus') ?>" target="blank">ABOUT</a>
+             <li class="dropdown">
+  <label class="dropbtn" for="course-select">
+    COURSES <span class="arrow">▼</span>
+  </label>
+  <div class="dropdown-content">
+    <select id="course-select" class="custom-select">
+      <option value="web">ALL COURSES</option>
+      <option value="data">MY COURSES</option>
+    </select>
+  </div>
+</li>
+
     </div>
     <div class="navbar-right">
       <img src="public/img/notifications.png" alt="Notifications" class="icon" />

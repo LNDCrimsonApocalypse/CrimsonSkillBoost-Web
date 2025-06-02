@@ -4,110 +4,192 @@
   <meta charset="UTF-8">
   <title>CrimsonSkillBoost - Dashboard</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', Arial, sans-serif;
-      background: linear-gradient(to right, #f8eaff, #f3d9ff);
-      color: #222;
-    }
+  body {
+            margin: 0;
+            font-family: 'Inter', Arial, sans-serif;
+        background: linear-gradient(to right, #f8eaff, #f3d9ff);
+            color: #222;
+        }
 
-    .navbar {
+      /* NAVBAR */
+     .navbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 18px 40px;
-      background: #fff;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+        background: #fff;
+     padding: 10px 40px;
     }
-
-    .logo img {
-      width: 52px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 36px;
-      list-style: none;
-      font-size: 2rem;
-      margin: 0;
-      padding: 0;
-    }
-
-    .nav-links li {
-      cursor: pointer;
-      font-size: 1.5rem;
-    }
-
-    .active-section {
-      color: black;
-    }
-
-    .dropdown .arrow {
-      font-size: 1rem;
-      margin-left: 4px;
-    }
-
-    .nav-icons {
+    .navbar-left {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 18px;
     }
-
-    .dropbtn {
+    .navbar-logo {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+    }
+    .navbar-center {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+    }
+    
+    .navbar-center a {
+  
+      font-weight: 500;
+      font-size: 1.35rem;
       text-decoration: none;
-      font-size: 1.5rem;
       color: black;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.2s;
     }
-
-    .dropdown {
-      position: relative;
+ .navbar-center a:hover {
+      color: #ff00aa;
     }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: white;
-      min-width: 160px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-      z-index: 1;
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 22px;
     }
-
-    .dropdown-content a {
-      padding: 12px 16px;
-      display: block;
-      color: black;
-      text-decoration: none;
-    }
-
-    .dropdown-content a:hover {
-      background-color: #eee;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    .arrow {
-      font-size: 1.2rem;
-      margin-left: 4px;
-      vertical-align: middle;
-    }
-
-    .user-img, .notif-img {
+    .navbar-left img {
       width: 48px;
       height: 48px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 2px solid #eee;
+      object-fit: contain;
+    }
+    .navbar-center {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+    }
+    .navbar-center a {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      text-decoration: none;
+      color: #222;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+    .navbar-center a.active {
+      color: #222;
+      font-weight: 900;
+    }
+    .navbar-center .dropdown {
+      position: relative;
+    }
+    .navbar-center .dropdown::after {
+
+      font-size: 0.85em;
+      vertical-align: middle;
+      font-weight: bold;
+    }
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+ .icon {
+       width: 48px;
+            height: 48px;
+            object-fit: cover;
+        
     }
 
-    .user-img {
-      background: #e636a4;
+    .navbar-profile {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #eee;
+      background: #fff;
+
     }
+       .dropbtn {
+  
+   font-weight: bold;
+  font-size: 1.35rem;
+  color: black;
+  background: none;
+  border: none;
+  cursor: pointer;
+     margin: 0 15px;
+  
+}
+ .dropbtn :hover {
+   color: #ff00aa;
+ }
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #EED2EE;
+  min-width: 160px;
+  padding: 8px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.custom-select {
+  width: 100%;
+  padding:  12px 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  color: black;
+  appearance: none; /* Hide default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #a84d9b;
+
+}
+
+.arrow {
+  font-size: 1rem;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+        .user-img {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+              border: 2px solid #eee;
+      background: #e636a4;
+       border-radius: 50%;
+        }
+        .notif-img {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+           
+        }
 
     .card {
       max-width: 1200px;
@@ -370,29 +452,32 @@
   </style>
 </head>
 <body>
+    <!-- NAVBAR -->
   <nav class="navbar">
-    <div class="logo">
-      <img src="<?= base_url('public/img/logo.png') ?>" alt="Logo">
+    <div class="navbar-left">
+      <img src="public/img/Logo.png" alt="Logo" />
     </div>
-    <ul class="nav-links">
-      <li><a href="<?= base_url('homepage') ?>">HOME</a></li>
-      <li><span class="active-section">DASHBOARD</span></li>
-      <li><a href="<?= base_url('aboutus') ?>">ABOUT</a></li>
-      <li><a href="<?= base_url('grading') ?>">GRADING</a></li>
-      <li class="dropdown">
-        <span>COURSES <span class="arrow">&#9660;</span></span>
-        <div class="dropdown-content">
-          <a href="<?= base_url('courses') ?>">ALL COURSES</a>
-          <a href="#">MY COURSES</a>
-        </div>
-      </li>
-    </ul>
-    <div class="nav-icons">
-      <img src="<?= base_url('public/img/bell.png') ?>" alt="Notifications" class="notif-img">
-      <img src="<?= base_url('public/img/profile.jpg') ?>" alt="Profile" class="user-img">
-      <button id="signOutButton" class="dropbtn">Sign Out</button>
+    <div class="navbar-center">
+       <a href="<?= base_url('homepage_initial') ?>">HOME</a>
+          <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+        <li class="dropdown">
+      <button class="dropbtn">COURSES ▼</button>
+      <div class="dropdown-content">
+        <select id="course-select">
+          <option value="web">ALL COURSES </option>
+          <option value="data">MY COURSES</option>
+         
+        </select>
+      </div>
+    </li>
+    </div>
+    <div class="navbar-right">
+<img src="public/img/notifications.png" alt="Notifications" class="icon" />
+      <img src="public/img/profile.png" alt="Profile" class="navbar-profile" />
     </div>
   </nav>
+
 
   <div class="card">
     <?= csrf_field() ?> <!-- Add this line -->

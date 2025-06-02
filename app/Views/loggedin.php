@@ -217,66 +217,71 @@
         padding: 22px 8vw;
       }
     }
-        .dropbtn {
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1.5rem;
+           .dropbtn {
+  
+   font-weight: bold;
+  font-size: 1.18rem;
   color: black;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
+  
 }
 
-/* Dropdown container */
 .dropdown {
   position: relative;
 }
 
-/* Dropdown menu */
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: white;
+  background-color: #EED2EE;
   min-width: 160px;
+  padding: 8px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-
   z-index: 1;
 }
 
-/* Dropdown items */
-.dropdown-content a {
-  padding: 12px 16px;
-  display: block;
-  color: black;
-  text-decoration: none;
-}
-
-.dropdown-content a:hover {
-  background-color: #eee;
-}
-
-/* Show dropdown on hover */
 .dropdown:hover .dropdown-content {
   display: block;
 }
-.arrow {
-    font-size: 1.2rem;
-    margin-left: 4px;
-    vertical-align: middle;
-    /* Ensures the arrow is centered with the text */
-}
- .dropdown .arrow {
-            font-size: 1rem;
-            margin-left: 4px;
-        }
-        li{
-          font-weight: bold;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
 
-        }
+.custom-select {
+  width: 100%;
+  padding:  12px 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  color: black;
+  appearance: none; /* Hide default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #a84d9b;
+
+}
+
+.arrow {
+  font-size: 1rem;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
   </style>
 </head>
 <body>
@@ -289,15 +294,16 @@
       <a href="#" >DASHBOARD</a>
       <a href="#">ABOUT</a>
         <li class="dropdown">
-      <button class="dropbtn">COURSES ▼</button>
-      <div class="dropdown-content">
-        <select id="course-select">
-          <option value="web">ALL COURSES </option>
-          <option value="data">MY COURSES</option>
-         
-        </select>
-      </div>
-    </li>
+  <label class="dropbtn" for="course-select">
+    COURSES <span class="arrow">▼</span>
+  </label>
+  <div class="dropdown-content">
+    <select id="course-select" class="custom-select">
+      <option value="web">ALL COURSES</option>
+      <option value="data">MY COURSES</option>
+    </select>
+  </div>
+</li>
     </div>
     <div class="navbar-right">
 <img src="public/img/notifications.png" alt="Notifications" class="icon" />
