@@ -119,6 +119,50 @@ class Auth extends BaseController
         return $this->response->setJSON($tasks);
     }
 
+    // Add: Get details for a single task by ID (for Android)
+    public function getTaskDetails()
+    {
+        $taskId = $this->request->getGet('taskId');
+        if (!$taskId) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Missing taskId'
+            ])->setStatusCode(400);
+        }
+        $taskModel = new \App\Models\TaskModel();
+        $task = $taskModel->find($taskId);
+        if (!$task) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Task not found'
+            ])->setStatusCode(404);
+        }
+        return $this->response->setJSON($task);
+    }
+
+    // Add: Upload/update file path for a task (for Android)
+    public function uploadTask()
+    {
+        $taskId = $this->request->getGet('taskId');
+        $filePath = $this->request->getGet('filePath');
+        if (!$taskId || !$filePath) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Missing taskId or filePath'
+            ])->setStatusCode(400);
+        }
+        $taskModel = new \App\Models\TaskModel();
+        $updated = $taskModel->update($taskId, ['file_path' => $filePath]);
+        if ($updated) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Failed to update task'
+            ])->setStatusCode(500);
+        }
+    }
+
     public function getQuizzes()
     {
         $quizModel = new \App\Models\QuizModel();

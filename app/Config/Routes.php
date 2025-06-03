@@ -26,6 +26,8 @@ $routes->get('lessons', 'Lesson::index'); // Optional: full lessons list
 $routes->get('/auth/get-courses', 'Auth::getCourses');
 $routes->get('/auth/get-lessons', 'Auth::getLessons');
 $routes->get('/auth/get-tasks', 'Auth::getTasks');
+$routes->get('/auth/get-task-details', 'Auth::getTaskDetails');
+$routes->post('/auth/upload-task', 'Auth::uploadTask');
 $routes->get('/auth/get-quizzes', 'Auth::getQuizzes');
 $routes->get('/auth/get-quiz-questions', 'Auth::getQuizQuestions');
 $routes->get('/auth/get-submissions', 'Auth::getSubmissions');
