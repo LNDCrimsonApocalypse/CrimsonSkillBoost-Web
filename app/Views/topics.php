@@ -19,6 +19,8 @@
       padding: 15px 30px;
       background-color: white;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+     
+      
     }
     .navbar-logo {
       flex: 1;
@@ -41,54 +43,75 @@
       color: black;
       font-weight: bold;
     }
-    .dropbtn {
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1.5rem;
-      color: black;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-    }
-    .dropdown {
-      position: relative;
-    }
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: white;
-      min-width: 160px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-      z-index: 1;
-    }
-    .dropdown-content a {
-      padding: 12px 16px;
-      display: block;
-      color: black;
-      text-decoration: none;
-    }
-    .dropdown-content a:hover {
-      background-color: #eee;
-    }
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-    .arrow {
-      font-size: 1.2rem;
-      margin-left: 4px;
-      vertical-align: middle;
-    }
-    .dropdown .arrow {
-      font-size: 1rem;
-      margin-left: 4px;
-    }
-    li{
-      font-weight: bold;
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
+      .dropbtn {
+  
+   font-weight: bold;
+  font-size: 1rem;
+  color: black;
+  background: none;
+  border: none;
+  cursor: pointer;
+     margin: 0 15px;
+  
+}
+ .dropbtn :hover {
+   color: #ff00aa;
+ }
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #EED2EE;
+  min-width: 160px;
+  padding: 8px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.custom-select {
+  width: 100%;
+  padding:  12px 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  color: black;
+  appearance: none; /* Hide default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #a84d9b;
+
+}
+
+.arrow {
+  font-size: 1rem;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
     .navbar-right {
       display: flex;
       align-items: center;
@@ -121,15 +144,15 @@
       border-radius: 50%;
       object-fit: cover;
     }
-    .tabbar {
-      display: flex;
+       .tabbar {
+         display: flex;
       gap: 36px;
       font-size: 1.1rem;
       font-weight: 500;
       margin-left: 40px;
     }
     .tabbar-row{
-      display: flex;
+         display: flex;
       align-items: center;
       justify-content: space-between;
       padding:  40px;
@@ -139,8 +162,10 @@
     }
     .tabbar span {
       font-weight: 500;
+ 
       cursor: pointer;
     }
+
     .tabbar .active {
       color: black;
       font-weight: bold;
@@ -242,25 +267,26 @@
   <!-- Navbar -->
   <div class="navbar">
     <div class="navbar-logo">
-      <img src="<?= base_url('public/img/logo.jpg') ?>" alt="logo" class="logo"/>
+      <img src="public/img/Logo.png" alt="logo" class="logo"/>
     </div>
     <div class="navbar-center">
       <a href="#">HOME</a>
       <a href="#">DASHBOARD</a>
       <a href="#">ABOUT</a>
-      <li class="dropdown">
-        <span>COURSES <span class="arrow">&#9660;</span></span>
-        <div class="dropdown-content">
-          <select id="course-select">
-            <option value="web">ALL COURSES </option>
-            <option value="data">MY COURSES </option>
-          </select>
-        </div>
-      </li>
+     <li class="dropdown">
+      <button class="dropbtn">COURSES ▼</button>
+      <div class="dropdown-content">
+        <select id="course-select">
+          <option value="web">ALL COURSES </option>
+          <option value="data">MY COURSES</option>
+         
+        </select>
+      </div>
+    </li>
     </div>
     <div class="navbar-right">
       <input class="search-box" type="text" placeholder="Search.." />
-      <button>+ Add Content</button>
+      <a href="<?= base_url('upload_task') ?>"> <button>+ Add Content</button> </a>
       <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
     </div>
   </div>
@@ -268,7 +294,7 @@
   <div class="tabbar">
     <span>Topic</span>
     <span>Task</span>
-    <span class="active">Quiz</span>
+    <span>Quiz</span>
     <span>Student</span>
   </div>
   <!-- Section Title -->
