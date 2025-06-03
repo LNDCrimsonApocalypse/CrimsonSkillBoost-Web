@@ -27,6 +27,8 @@ $routes->get('/auth/get-courses', 'Auth::getCourses');
 $routes->get('/auth/get-lessons', 'Auth::getLessons');
 $routes->get('/auth/get-tasks', 'Auth::getTasks');
 $routes->get('/auth/get-quizzes', 'Auth::getQuizzes');
+$routes->get('/auth/get-quiz-questions', 'Auth::getQuizQuestions');
+$routes->get('/auth/get-submissions', 'Auth::getSubmissions');
 $routes->post('/auth/upload-lesson', 'Auth::uploadLesson');
 $routes->post('/grades/calculate', 'Auth::calculateGrade'); // or 'GradesController::calculateGrade'
 $routes->get('/test/upload_lessons', 'TestPages::uploadLesson');

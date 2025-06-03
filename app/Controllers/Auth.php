@@ -125,7 +125,21 @@ class Auth extends BaseController
         $quizzes = $quizModel->findAll();
         return $this->response->setJSON($quizzes);
     }
-    
+
+    public function getQuizQuestions()
+    {
+        $quizQuestionsModel = new \App\Models\QuizQuestionsModel();
+        $questions = $quizQuestionsModel->findAll();
+        return $this->response->setJSON($questions);
+    }
+
+    public function getSubmissions()
+    {
+        $submissionModel = new \App\Models\SubmissionModel();
+        $submissions = $submissionModel->findAll();
+        return $this->response->setJSON($submissions);
+    }
+
     public function saveProfile()
     {
         $json = $this->request->getJSON(true);
