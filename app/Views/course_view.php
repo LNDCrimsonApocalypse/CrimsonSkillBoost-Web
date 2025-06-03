@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title><?= esc($course['course_name']) ?></title>
+  <title>
+    <?php if (isset($course) && is_array($course) && isset($course['course_name'])): ?>
+      <?= esc($course['course_name']) ?>
+    <?php else: ?>
+      Course
+    <?php endif; ?>
+  </title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -19,6 +25,7 @@
       padding: 15px 30px;
       background-color: white;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
     }
 
     .navbar-logo .logo {
@@ -70,6 +77,13 @@
       align-items: center;
       gap: 14px;
     }
+        .navbar-right img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
 
     .search-box {
       padding: 6px 12px;
@@ -89,6 +103,9 @@
       padding: 8px 22px;
       cursor: pointer;
     }
+    .navbar-right button:hover {
+      background: #b11f4c;
+    }
 
     .navbar-right img.profile {
       width: 35px;
@@ -97,21 +114,7 @@
       object-fit: cover;
     }
 
-    .tabbar {
-      display: flex;
-      gap: 36px;
-      font-size: 1.1rem;
-      font-weight: 500;
-      margin: 20px 40px;
-    }
-
-    .tabbar .active {
-      color: black;
-      font-weight: bold;
-      border-bottom: 3px solid black;
-      padding-bottom: 5px;
-    }
-
+  
     .section-title {
       background-color: #e8c6eb;
       text-align: center;
@@ -177,10 +180,370 @@
       .card {
         width: 90%;
       }
-      .tabbar {
+    
+    }
+
+     /* DASHBOARD LAYOUT */
+    .dashboard-bg {
+      background: #fdeef4;
+      min-height: 100vh;
+      padding: 32px 0;
+    }
+    .dashboard-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    /* LEFT: MY COURSES */
+    .courses-card {
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      flex: 2;
+      padding: 32px 32px 32px 32px;
+      min-width: 420px;
+    }
+    .courses-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 24px;
+      color: #222;
+      letter-spacing: 1px;
+    }
+    .course-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .course-item {
+      display: flex;
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 18px 20px;
+      align-items: flex-start;
+      gap: 18px;
+      min-height: 100px;
+    }
+    .course-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: 4px;
+      object-fit: cover;
+      background: #f4f4f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      color: #ccc;
+    }
+    .course-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .course-title {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1.07rem;
+      margin: 0;
+      color: #222;
+    }
+    .course-desc {
+      font-size: 0.97rem;
+      color: #444;
+      margin-bottom: 5px;
+      font-family: Arial, sans-serif;
+      font-weight: 400;
+    }
+    .course-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-edit {
+      background:#e636a4;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 16px;
+      font-size: 0.97rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-edit:hover {
+  background-color: #c92c8e;
+  color:#e636a4;
+}
+
+    .btn-delete {
+      background: #e636a4;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 16px;
+      font-size: 0.97rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    /* Placeholder for empty course image */
+    .course-thumb.placeholder {
+      background: #f4f4f4;
+      color: #ccc;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* RIGHT: ENROLLMENT REQUESTS */
+    .enroll-card {
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      flex: 1;
+      padding: 32px 32px 32px 32px;
+      min-width: 340px;
+    }
+    .enroll-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 24px;
+      color: #222;
+      letter-spacing: 1px;
+    }
+    .enroll-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .enroll-item {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .enroll-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+      font-size: 1.07rem;
+      color: #222;
+      margin-bottom: 2px;
+    }
+    .enroll-header .enroll-icon {
+      font-size: 1.17rem;
+      color: #111;
+    }
+    .enroll-desc {
+      font-size: 0.97rem;
+      color: #444;
+      margin-bottom: 6px;
+      font-family: Arial, sans-serif;
+      font-weight: 400;
+    }
+    .btn-view {
+      background: #e636a4;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 18px;
+      font-size: 1.01rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 80px;
+      transition: background 0.2s;
+    }
+    .btn-view.gray {
+      background: #e636a4;
+      color: #ffffff;
+    }
+       .btn-view:hover {
+  background-color: #c92c8e;
+  color:#e636a4;
+}
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .dashboard-container {
         flex-direction: column;
-        gap: 10px;
-        margin: 10px 20px;
+        gap: 36px;
+        align-items: stretch;
+      }
+      .courses-card,
+      .enroll-card {
+        min-width: 0;
+        width: 100%;
+      }
+    }
+    @media (max-width: 700px) {
+      .navbar {
+        flex-direction: column;
+        gap: 14px;
+        padding: 18px 10px 0 10px;
+      }
+      .dashboard-container {
+        flex-direction: column;
+        gap: 24px;
+        padding: 0 4vw;
+      }
+      .courses-card,
+      .enroll-card {
+        padding: 18px 10px;
+      }
+    }
+
+    /* --- Modal Styles from cssaddcourse.html --- */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.18);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      border-radius: 8px;
+      max-width: 900px;
+      width: 90vw;
+      padding: 0 0 32px 0;
+      box-shadow: 0 6px 32px rgba(0,0,0,0.11);
+      position: relative;
+      animation: fadeIn 0.25s;
+    }
+    @keyframes fadeIn {
+      from { transform: translateY(-30px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+    .modal-header {
+      border-bottom: 2px solid #eee;
+      padding: 22px 0 12px 0;
+      text-align: center;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #444;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      right: 30px;
+      top: 18px;
+      font-size: 2rem;
+      color: #888;
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color 0.2s;
+    }
+    .modal-close:hover {
+      color: #e636a4;
+    }
+    .modal-body {
+      display: flex;
+      gap: 34px;
+      padding: 30px 38px 0 38px;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .modal-col {
+      flex: 1;
+      min-width: 260px;
+      border: 1.5px solid #bbb;
+      border-radius: 0 0 8px 8px;
+      padding: 0 0 16px 0;
+      background: #fff;
+      min-height: 260px;
+      overflow: hidden;
+    }
+    .modal-col-header {
+      background: #eec8e6;
+      color: #222;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 8px 0 8px 16px;
+      border-bottom: 1.5px solid #bbb;
+      letter-spacing: 1px;
+    }
+    .modal-col-content {
+      padding: 18px 28px 0 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .radio-group {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      flex-direction: column;
+      margin-bottom: 8px;
+    }
+    .radio-group label {
+      font-size: 1rem;
+      color: #222;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .modal-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 32px;
+    }
+    .modal-add-btn {
+      background: linear-gradient(90deg, #e636a4 0%, #b983ff 100%);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 10px 48px;
+      cursor: pointer;
+      letter-spacing: 1.5px;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(230,54,164,0.08);
+    }
+    .modal-add-btn:hover {
+      background: linear-gradient(90deg, #c92c8e 0%, #7f53ac 100%);
+      box-shadow: 0 4px 20px rgba(230,54,164,0.14);
+    }
+    @media (max-width: 900px) {
+      .modal-content {
+        max-width: 98vw;
+      }
+      .modal-body {
+        flex-direction: column;
+        gap: 18px;
+        padding: 20px 8vw 0 8vw;
+      }
+      .modal-col {
+        min-width: 0;
+      }
+    }
+    @media (max-width: 600px) {
+      .modal-body {
+        padding: 12px 2vw 0 2vw;
+      }
+      .modal-header {
+        font-size: 1.2rem;
       }
     }
   </style>
@@ -190,7 +553,7 @@
   <!-- Navbar -->
   <div class="navbar">
     <div class="navbar-logo">
-      <img src="/imgs/Logo.png" alt="logo" class="logo"/>
+      <img src="public/img/Logo.png" alt="logo" class="logo"/>
     </div>
     <div class="navbar-center">
       <a href="#">HOME</a>
@@ -208,40 +571,256 @@
     </div>
     <div class="navbar-right">
       <input class="search-box" type="text" placeholder="Search.." />
-        <a href="<?= base_url('upload') ?>">
-            <button>+ Add Content</button>
-        </a>
+      <button id="openModalBtn">+ Add Content</button>
       <img src="/imgs/profile.png" alt="profile" class="profile"/>
     </div>
   </div>
 
-  <!-- Tabs -->
-  <div class="tabbar">
-    <span>Topic</span>
-    <span>Task</span>
-    <span class="active">Lessons</span>
-    <span>Students</span>
-  </div>
+ 
 
   <!-- Section Title -->
   <div class="section-title">
-    <?= esc($course['course_name']) ?> – <?= esc($course['overview']) ?>
+    <?php if (isset($course) && is_array($course)): ?>
+    <?php else: ?>
+      Course Information Not Available
+    <?php endif; ?>
   </div>
 
-  <!-- Lesson Cards -->
-  <div class="cards">
-    <?php foreach ($lessons as $lesson): ?>
-      <div class="card">
-        <div class="card-content">
-          <div class="card-title"><?= esc($lesson['title']) ?></div>
-          <div class="card-desc"><?= esc($lesson['description']) ?></div>
-        </div>
-        <div class="card-footer">
-          <a href="<?= site_url('lesson/' . $lesson['id']) ?>" class="view-btn">View Info</a>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard-bg">
+    <div class="dashboard-container">
+      <!-- LEFT: MY COURSES -->
+      <div class="courses-card">
+        <div class="courses-title">MY COURSES</div>
+        <div class="course-list">
+          <!-- Course 1 -->
+          <div class="course-item">
+            <img class="course-thumb" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80" alt="Course" />
+            <div class="course-info">
+              <div class="course-title">Computer Programming Language 1</div>
+              <div class="course-desc">Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.</div>
+              <div class="course-actions">
+                <button class="btn-edit">EDIT</button>
+                <button class="btn-delete">DELETE</button>
+              </div>
+            </div>
+          </div>
+          <!-- Course 2 -->
+          <div class="course-item">
+            <div class="course-thumb placeholder">
+              <span>&#128247;</span>
+            </div>
+            <div class="course-info">
+              <div class="course-title">Title</div>
+              <div class="course-desc">Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.</div>
+              <div class="course-actions">
+                <button class="btn-edit">EDIT</button>
+                <button class="btn-edit">DELETE</button>
+              </div>
+            </div>
+          </div>
+          <!-- Course 3 -->
+          <div class="course-item">
+            <div class="course-thumb placeholder">
+              <span>&#128247;</span>
+            </div>
+            <div class="course-info">
+              <div class="course-title">Title</div>
+              <div class="course-desc">Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.</div>
+              <div class="course-actions">
+                <button class="btn-edit">EDIT</button>
+                <button class="btn-edit">DELETE</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    <?php endforeach; ?>
+      <!-- RIGHT: ENROLLMENT REQUESTS -->
+      <div class="enroll-card">
+        <div class="enroll-title">Enrollment Requests</div>
+        <div class="enroll-list">
+          <!-- Request 1 -->
+          <div class="enroll-item">
+            <div class="enroll-header">
+              <span class="enroll-icon">&#8505;</span>
+              California Magpantay
+            </div>
+            <div class="enroll-desc">Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.</div>
+            <button class="btn-view">VIEW</button>
+          </div>
+          <!-- Request 2 -->
+          <div class="enroll-item">
+            <div class="enroll-header">
+              <span class="enroll-icon">&#8505;</span>
+              Precious Gargale
+            </div>
+            <div class="enroll-desc">Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.</div>
+            <button class="btn-view btn-view gray">VIEW</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <!-- MODAL: Add Course -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        ADD NEW COURSE
+        <button class="modal-close" id="closeModalBtn" title="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Year and Section -->
+        <div class="modal-col">
+          <div class="modal-col-header">Year and Section</div>
+          <div class="modal-col-content">
+            <div class="radio-group">
+              <label><input type="radio" name="year" value="1st Year" checked/> 1st Year</label>
+              <label><input type="radio" name="year" value="2nd Year" /> 2nd Year</label>
+              <label><input type="radio" name="year" value="3rd Year"  /> 3rd Year</label>
+              <label><input type="radio" name="year" value="4th Year" /> 4th Year</label>
+            </div>
+            <div class="radio-group">
+              <label><input type="radio" name="section" value="ACSAD" checked /> ACSAD</label>
+              <label><input type="radio" name="section" value="BCSAD" /> BCSAD</label>
+              <label><input type="radio" name="section" value="CCSAD" /> CCSAD</label>
+            </div>
+          </div>
+        </div>
+        <!-- Courses -->
+        <div class="modal-col">
+          <div class="modal-col-header">Courses</div>
+          <div class="modal-col-content">
+            <div class="radio-group">
+              <label><input type="radio" name="sem" value="First Semester" checked /> First Semester</label>
+              <label><input type="radio" name="sem" value="Second Semester"/> Second Semester</label>
+            </div>
+            <div class="radio-group" id="coursesContainer">
+              <!-- Dynamic course radio buttons will be inserted here -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-add-btn">ADD</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Modal logic and dynamic courses
+    const subjectsByYearSemester = {
+      "1ST YEAR": {
+        "FIRST SEMESTER": [
+          "INTRODUCTION TO COMPUTING",
+          "COMPUTER PROGRAMMING 1",
+          "WEB DEVELOPMENT TOOLS"
+        ],
+        "SECOND SEMESTER": [
+          "PROBABILITY AND STATISTICS",
+          "COMPUTER PROGRAMMING 2",
+          "INFORMATION MANAGEMENT",
+          "WEB APPLICATIONS DEVELOPMENT"
+        ]
+      },
+      "2ND YEAR": {
+        "FIRST SEMESTER": [
+          "ORGANIZATIONAL COMMUNICATION",
+          "DATA STRUCTURES AND ALGORITHMS",
+          "OPERATING SYSTEMS",
+          "OBJECT ORIENTED PROGRAMMING"
+        ],
+        "SECOND SEMESTER": [
+          "MODERN PHYSICS",
+          "APPLICATIONS DEVELOPMENT AND EMERGING TECHNOLOGIES",
+          "DISCRETE STRUCTURES 1"
+        ]
+      },
+      "3RD YEAR": {
+        "FIRST SEMESTER": [
+          "DIFFERENTIAL AND INTEGRAL CALCULUS",
+          "ALGORITHMS AND COMPLEXITY",
+          "DISCRETE STRUCTURES 2",
+          "INFORMATION ASSURANCE AND SECURITY",
+          "SOFTWARE ENGINEERING 1",
+          "HUMAN COMPUTER INTERACTION",
+          "MODELING AND SIMULATION",
+          "ELECTIVE 1"
+        ],
+        "SECOND SEMESTER": [
+          "METHODS OF RESEARCH",
+          "SOFTWARE ENGINEERING 2",
+          "PROGRAMMING LANGUAGES",
+          "NETWORKS AND COMMUNICATIONS",
+          "ARCHITECTURE AND ORGANIZATION",
+          "AUTOMATA THEORY AND FORMAL LANGUAGES",
+          "PROJECT MANAGEMENT",
+          "ELECTIVE 2"
+        ]
+      },
+      "4TH YEAR": {
+        "FIRST SEMESTER": [
+          "ADVANCED ENGLISH PRE-EMPLOYMENT TRAINING",
+          "SOCIAL ISSUES AND PROFESSIONAL PRACTICE",
+          "CS THESIS WRITING 1",
+          "ELECTIVE 3",
+          "ELECTIVE 4",
+          "ELECTIVE 5"
+        ],
+        "SECOND SEMESTER": [
+          "PRACTICUM (486 HOURS)",
+          "CS THESIS WRITING 2"
+        ]
+      }
+    };
+
+    function getSelectedValue(radioNodeList) {
+      const checked = Array.from(radioNodeList).find(radio => radio.checked);
+      return checked ? checked.value : null;
+    }
+
+    function renderCourses(year, semester, section) {
+      const courses = subjectsByYearSemester[year]?.[semester] || [];
+      const coursesContainer = document.getElementById('coursesContainer');
+      if (courses.length === 0) {
+        coursesContainer.innerHTML = '<p>No courses available for this selection.</p>';
+        return;
+      }
+      coursesContainer.innerHTML = courses.map((course, idx) => `
+        <label>
+          <input type="radio" name="course" value="${course}" />
+          ${course} 
+        </label>
+      `).join('');
+    }
+
+    function updateCourses() {
+      const selectedYear = (getSelectedValue(document.querySelectorAll('input[name="year"]')) || '').toUpperCase();
+      const selectedSem = (getSelectedValue(document.querySelectorAll('input[name="sem"]')) || '').toUpperCase();
+      const selectedSection = getSelectedValue(document.querySelectorAll('input[name="section"]')) || '';
+      renderCourses(selectedYear, selectedSem, selectedSection);
+    }
+
+    ['year', 'sem', 'section'].forEach(name => {
+      document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+        radio.addEventListener('change', updateCourses);
+      });
+    });
+
+    updateCourses();
+
+    const modalOverlay = document.getElementById('modalOverlay');
+    const openBtn = document.getElementById('openModalBtn');
+    const closeBtn = document.getElementById('closeModalBtn');
+
+    openBtn.addEventListener('click', () => {
+      modalOverlay.classList.add('active');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modalOverlay.classList.remove('active');
+    });
+  </script>
 </body>
 </html>

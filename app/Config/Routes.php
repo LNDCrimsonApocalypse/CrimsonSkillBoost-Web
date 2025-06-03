@@ -45,6 +45,9 @@ $routes->get(from: 'password_reset', to: 'Auth::forgetPassword');
 $routes->get(from: 'course/view/(:num)', to: 'Course::view/$1');
 $routes->get('lesson/view/(:num)', 'LessonController::view/$1');
 $routes->get('/upload', 'Auth::upload');
+$routes->get('course_view', 'Course::view');
+$routes->get('course/(:num)', 'Course::view/$1');
+$routes->get('course_view/(:num)', 'Course::view/$1'); // Optional alias
 
 // QUIZ FLOW
 $routes->post('quiz/start', 'Quiz::startQuizCreation');
@@ -90,3 +93,4 @@ $routes->group('grading', ['namespace' => 'App\Controllers'], function($routes) 
 $routes->get('enrollment', 'Enrollment::index');
 $routes->post('enrollment/submit', 'Enrollment::submitRequest');
 $routes->post('enrollment/update/(:num)', 'Enrollment::updateRequest/$1');
+$routes->get('enrollment_req', 'Enrollment::requests');

@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\EnrollmentRequestModel;
+use App\Models\EnrollmentModel; // Ensure this is imported
+
 class Enrollment extends BaseController
 {
     public function index()
@@ -74,6 +77,28 @@ class Enrollment extends BaseController
                 'success' => false,
                 'message' => $e->getMessage()
             ]);
+        }
+    }
+
+    public function requests()
+    {
+        try {
+            $model = new EnrollmentRequestModel();
+            $requests = $model->findAll();
+
+            // Debug: log the result
+            log_message('debug', 'Enrollment requests: ' . json_encode($requests));
+
+            // Fallback if $requests is not an array
+            if (!is_array($requests)) {
+                $requests = [];
+            }
+
+            return view('enrollment_req', ['requests' => $requests]);
+        } catch (\Throwable $e) {
+            log_message('error', 'Error in Enrollment::requests - ' . $e->getMessage());
+            // Show a simple error message for debugging
+            return "Error: " . $e->getMessage();
         }
     }
 }

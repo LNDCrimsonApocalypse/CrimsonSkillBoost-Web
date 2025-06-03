@@ -144,6 +144,13 @@ li {
       border-radius: 50%;
       object-fit: cover;
     }
+        .navbar-right img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
        .tabbar {
          display: flex;
       gap: 36px;
@@ -286,7 +293,7 @@ li {
     </div>
     <div class="navbar-right">
       <input class="search-box" type="text" placeholder="Search.." />
-      <a href="<?= base_url('upload_task') ?>"> <button>+ Add Content</button> </a>
+       <button>+ Add Content</button> 
       <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
     </div>
   </div>

@@ -53,6 +53,7 @@
       align-items: center;
       gap: 22px;
     }
+    
     .navbar-left img {
       width: 48px;
       height: 48px;

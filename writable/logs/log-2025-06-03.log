@@ -160,3 +160,118 @@ in SYSTEMPATH\Model.php on line 287.
  6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  8 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-03 15:57:51 --> ArgumentCountError: Too few arguments to function App\Controllers\Course::view(), 0 passed in Z:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php on line 933 and exactly 1 expected
+[Method: GET, Route: course_view]
+in APPPATH\Controllers\Course.php on line 82.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view()
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-03 15:57:54 --> ArgumentCountError: Too few arguments to function App\Controllers\Course::view(), 0 passed in Z:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php on line 933 and exactly 1 expected
+[Method: GET, Route: course_view]
+in APPPATH\Controllers\Course.php on line 82.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view()
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-03 15:58:10 --> ArgumentCountError: Too few arguments to function App\Controllers\Course::view(), 0 passed in Z:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php on line 933 and exactly 1 expected
+[Method: GET, Route: course_view]
+in APPPATH\Controllers\Course.php on line 82.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view()
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-03 15:59:13 --> ArgumentCountError: Too few arguments to function App\Controllers\Course::view(), 0 passed in Z:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php on line 933 and exactly 1 expected
+[Method: GET, Route: course_view]
+in APPPATH\Controllers\Course.php on line 82.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view()
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-03 16:02:11 --> ArgumentCountError: Too few arguments to function App\Controllers\Course::view(), 0 passed in Z:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php on line 933 and exactly 1 expected
+[Method: GET, Route: course_view]
+in APPPATH\Controllers\Course.php on line 82.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view()
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-03 16:02:12 --> ArgumentCountError: Too few arguments to function App\Controllers\Course::view(), 0 passed in Z:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php on line 933 and exactly 1 expected
+[Method: GET, Route: course_view]
+in APPPATH\Controllers\Course.php on line 82.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view()
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-03 16:02:15 --> ArgumentCountError: Too few arguments to function App\Controllers\Course::view(), 0 passed in Z:\xampp\htdocs\CrimsonSkillBoost-Web\system\CodeIgniter.php on line 933 and exactly 1 expected
+[Method: GET, Route: course_view]
+in APPPATH\Controllers\Course.php on line 82.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->view()
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-03 16:36:07 --> Error: Class "App\Models\EnrollmentRequestModel" not found
+[Method: GET, Route: enrollment_req]
+in APPPATH\Controllers\Enrollment.php on line 84.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Enrollment->requests()
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Enrollment))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-03 16:36:41 --> ErrorException: Undefined array key "student_name"
+[Method: GET, Route: enrollment_req]
+in APPPATH\Views\enrollment_req.php on line 413.
+ 1 APPPATH\Views\enrollment_req.php(413): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "student_name"', 'Z:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\enrollment_req.php', 413)
+ 2 SYSTEMPATH\View\View.php(224): include('Z:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\enrollment_req.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('enrollment_req', [], true)
+ 5 APPPATH\Controllers\Enrollment.php(87): view('enrollment_req', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Enrollment->requests()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Enrollment))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-03 16:36:43 --> ErrorException: Undefined array key "student_name"
+[Method: GET, Route: enrollment_req]
+in APPPATH\Views\enrollment_req.php on line 413.
+ 1 APPPATH\Views\enrollment_req.php(413): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "student_name"', 'Z:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\enrollment_req.php', 413)
+ 2 SYSTEMPATH\View\View.php(224): include('Z:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\enrollment_req.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('enrollment_req', [], true)
+ 5 APPPATH\Controllers\Enrollment.php(87): view('enrollment_req', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Enrollment->requests()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Enrollment))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2025-06-03 16:37:11 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 16:37:29 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 16:38:45 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 16:39:30 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 16:40:13 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 16:40:38 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 16:46:35 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 16:48:50 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 16:49:21 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 16:50:10 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 16:56:46 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 16:58:06 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 16:59:13 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 17:00:00 --> Error in Enrollment::requests - Undefined array key "student_name"
+ERROR - 2025-06-03 17:01:10 --> Error in Enrollment::requests - Undefined array key "student_name"

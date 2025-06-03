@@ -56,6 +56,13 @@
       align-items: center;
       gap: 22px;
     }
+        .navbar-right img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
      .icon {
        width: 48px;
             height: 48px;
