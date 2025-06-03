@@ -309,10 +309,11 @@ li {
     COURSES <span class="arrow">▼</span>
   </label>
   <div class="dropdown-content">
-    <select id="course-select" class="custom-select">
-      <option value="web">ALL COURSES</option>
-      <option value="data">MY COURSES</option>
-    </select>
+ <select id="course-select">
+            <option value="">Select Course</option>
+            <option value="<?= base_url('allcourses') ?>">ALL COURSES</option>
+            <option value="<?= base_url('courses') ?>">MY COURSES</option>
+          </select>
   </div>
 </li>
 

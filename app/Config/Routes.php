@@ -50,6 +50,7 @@ $routes->get('/upload', 'Auth::upload');
 $routes->get('course_view', 'Course::view');
 $routes->get('course/(:num)', 'Course::view/$1');
 $routes->get('course_view/(:num)', 'Course::view/$1'); // Optional alias
+$routes->get('allcourses', 'Allcourses::index');
 
 // QUIZ FLOW
 $routes->post('quiz/start', 'Quiz::startQuizCreation');
@@ -96,3 +97,5 @@ $routes->get('enrollment', 'Enrollment::index');
 $routes->post('enrollment/submit', 'Enrollment::submitRequest');
 $routes->post('enrollment/update/(:num)', 'Enrollment::updateRequest/$1');
 $routes->get('enrollment_req', 'Enrollment::requests');
+$routes->get('notif', 'Notif::index');
+$routes->get('recentsub', 'Recentsub::index');

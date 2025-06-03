@@ -271,23 +271,25 @@ li {
       <img src="public/img/Logo.png" alt="logo" class="logo"/>
     </div>
     <div class="navbar-center">
-      <a href="#">HOME</a>
-      <a href="#">DASHBOARD</a>
-      <a href="#">ABOUT</a>
+      <a href="<?= base_url('homepage_initial') ?>">HOME</a>
+      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
       <div class="dropdown">
-        <span  style="font-weight:bold;" >COURSES <span class="arrow">&#9660;</span></span>
+        <span style="font-weight:bold;">COURSES <span class="arrow">&#9660;</span></span>
         <div class="dropdown-content">
           <select id="course-select">
-            <option value="web">ALL COURSES</option>
-            <option value="data">MY COURSES</option>
+            <option value="">Select Course</option>
+            <option value="<?= base_url('allcourses') ?>">ALL COURSES</option>
+            <option value="<?= base_url('courses') ?>">MY COURSES</option>
           </select>
         </div>
       </div>
     </div>
     <div class="navbar-right">
-        <img src="public/img/notifications.png" alt="Notifications" class="icon" style="cursor:pointer;z-index:1101;" />
-       
-      <img src="public/img/profile.png" alt="Profile" class="navbar-profile" />
+        <a href="<?= base_url('notif') ?>">
+            <img src="<?= base_url('public/img/notifications.png') ?>" alt="Notifications" class="icon" style="cursor:pointer;z-index:1101;" />
+        </a>
+        <img src="<?= base_url('public/img/profile.png') ?>" alt="Profile" class="navbar-profile" />
     </div>
   </div>
   <!-- MAIN SECTION -->

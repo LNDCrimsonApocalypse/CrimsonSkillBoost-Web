@@ -466,10 +466,10 @@ li {
       <button class="dropbtn">COURSES ▼</button>
       <div class="dropdown-content">
         <select id="course-select">
-          <option value="web">ALL COURSES </option>
-          <option value="data">MY COURSES</option>
-         
-        </select>
+            <option value="">Select Course</option>
+            <option value="<?= base_url('allcourses') ?>">ALL COURSES</option>
+            <option value="<?= base_url('courses') ?>">MY COURSES</option>
+          </select>
       </div>
     </li>
     </div>

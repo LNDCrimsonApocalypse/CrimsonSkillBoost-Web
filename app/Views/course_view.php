@@ -556,15 +556,16 @@
       <img src="public/img/Logo.png" alt="logo" class="logo"/>
     </div>
     <div class="navbar-center">
-      <a href="#">HOME</a>
-      <a href="#">DASHBOARD</a>
-      <a href="#">ABOUT</a>
+    <a href="<?= base_url('homepage_initial') ?>">HOME</a>
+          <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
       <div class="dropdown">
         <span>COURSES <span class="arrow">&#9660;</span></span>
         <div class="dropdown-content">
-          <select id="course-select">
-            <option value="web">ALL COURSES</option>
-            <option value="data">MY COURSES</option>
+        <select id="course-select">
+            <option value="">Select Course</option>
+            <option value="<?= base_url('allcourses') ?>">ALL COURSES</option>
+            <option value="<?= base_url('courses') ?>">MY COURSES</option>
           </select>
         </div>
       </div>
@@ -572,7 +573,7 @@
     <div class="navbar-right">
       <input class="search-box" type="text" placeholder="Search.." />
       <button id="openModalBtn">+ Add Content</button>
-      <img src="/imgs/profile.png" alt="profile" class="profile"/>
+      <img src="public/img/profile.png" alt="profile" class="profile"/>
     </div>
   </div>
 
@@ -708,6 +709,63 @@
     </div>
   </div>
 
+  <!-- MODAL: Edit Course -->
+<div class="modal-overlay" id="editModalOverlay">
+  <div class="modal-content" style="max-width: 900px;">
+    <div class="modal-header">
+      Computer Programming 1
+      <button class="modal-close" id="closeEditModalBtn" title="Close">&times;</button>
+    </div>
+    <div style="display: flex; gap: 32px; padding: 32px 32px 0 32px;">
+      <!-- Left: Course Info -->
+      <div style="flex:2;">
+        <div style="font-family:'DM Serif Display',serif;font-size:2.1rem;font-weight:400;margin-bottom:8px;color:#222;">
+          Computer Programming 1
+        </div>
+        <div style="color:#888;font-size:1.05rem;margin-bottom:8px;">
+          <span style="vertical-align:middle;">&#128100;</span> 1,050 students
+        </div>
+        <div style="color:#444;font-size:1.01rem;margin-bottom:18px;">
+          Computer Programming 1 is an introductory course designed to teach the fundamentals of programming using a specific programming language (such as Python, Java, or C++). It covers basic concepts like variables, data types, control structures (if-else, loops), functions, and basic input/output operations. Students also learn problem-solving techniques and how to write, test, and debug simple programs.
+        </div>
+        <div style="background:#e8c6eb;padding:18px 22px;border-radius:8px;margin-bottom:18px;">
+          <div style="font-weight:bold;font-size:1.1rem;margin-bottom:6px;">Course Overview</div>
+          <div>Explore the basics of game design and development, and start creating your own games from scratch. Gain hands-on experience with game engines, storytelling, and interactive mechanics to bring your ideas to life.</div>
+        </div>
+        <div style="background:#e8c6eb;padding:18px 22px;border-radius:8px;">
+          <div style="font-weight:bold;font-size:1.1rem;margin-bottom:6px;">Topic Overview</div>
+          <ul style="margin:0;padding-left:18px;">
+            <li>Introduction to Computer Programming</li>
+            <li><b>Definition of computer programming</b></li>
+            <li>Importance and real-world applications</li>
+          </ul>
+        </div>
+        <!-- EDIT BUTTON INSIDE MODAL -->
+        <div style="margin-top:28px; text-align:right;">
+          <button class="btn-edit" style="padding:8px 28px; font-size:1.08rem;">EDIT</button>
+        </div>
+      </div>
+      <!-- Right: Instructor Info -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:18px;">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Instructor" style="width:120px;height:120px;border-radius:50%;object-fit:cover;background:#f4f4f4;">
+        <div style="font-weight:bold;font-size:1.1rem;text-align:center;">Professor Nicholas Aguinaldo</div>
+        <button style="background:#f23eb3;color:#fff;font-weight:700;border:none;border-radius:24px;padding:12px 28px;font-size:1.05rem;cursor:pointer;margin-bottom:8px;">GET YOUR STUDENT STARTED</button>
+        <div style="background:#fff;padding:18px 18px 12px 18px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.06);width:100%;">
+          <div style="font-weight:bold;margin-bottom:8px;">This course includes:</div>
+          <ul style="font-size:0.98rem;line-height:1.7;margin:0;padding-left:18px;">
+            <li>🟦 Step-by-step lessons</li>
+            <li>🟦 Hands-on coding exercises</li>
+            <li>🟦 Problem-solving activities</li>
+            <li>🟩 Quizzes and assessments</li>
+            <li>🟩 Introduction to real coding tools</li>
+            <li>🟩 Instructor support and guidance</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
   <script>
     // Modal logic and dynamic courses
     const subjectsByYearSemester = {
@@ -821,6 +879,27 @@
     closeBtn.addEventListener('click', () => {
       modalOverlay.classList.remove('active');
     });
+
+    // Edit modal logic
+const editModalOverlay = document.getElementById('editModalOverlay');
+const closeEditModalBtn = document.getElementById('closeEditModalBtn');
+document.querySelectorAll('.btn-edit').forEach(btn => {
+  btn.addEventListener('click', function() {
+    editModalOverlay.classList.add('active');
+  });
+});
+closeEditModalBtn.addEventListener('click', function() {
+  editModalOverlay.classList.remove('active');
+});
+window.addEventListener('click', function(e) {
+  if (e.target === editModalOverlay) editModalOverlay.classList.remove('active');
+});
+
+document.getElementById('course-select').addEventListener('change', function() {
+    if (this.value) {
+      window.location.href = this.value;
+    }
+  });
   </script>
 </body>
 </html>
