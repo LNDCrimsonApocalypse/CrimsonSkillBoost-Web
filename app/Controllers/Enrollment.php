@@ -101,4 +101,37 @@ class Enrollment extends BaseController
             return "Error: " . $e->getMessage();
         }
     }
+
+    // Add: API endpoint for Android enrollment request
+    public function enrollInCourse()
+    {
+        // Accept both GET and POST for flexibility
+        $studentId = $this->request->getGet('student_id') ?? $this->request->getPost('student_id');
+        $courseId = $this->request->getGet('course_id') ?? $this->request->getPost('course_id');
+        $section = $this->request->getGet('section') ?? $this->request->getPost('section');
+
+        if (!$studentId || !$courseId || !$section) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Missing student_id, course_id, or section'
+            ])->setStatusCode(400);
+        }
+
+        $enrollmentModel = new \App\Models\EnrollmentModel();
+        $data = [
+            'student_id' => $studentId,
+            'course_id' => $courseId,
+            'section' => $section,
+            'status' => 'pending'
+        ];
+
+        if ($enrollmentModel->insert($data)) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Failed to submit enrollment request'
+            ])->setStatusCode(500);
+        }
+    }
 }

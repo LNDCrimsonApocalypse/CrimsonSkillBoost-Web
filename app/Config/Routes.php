@@ -99,3 +99,4 @@ $routes->post('enrollment/update/(:num)', 'Enrollment::updateRequest/$1');
 $routes->get('enrollment_req', 'Enrollment::requests');
 $routes->get('notif', 'Notif::index');
 $routes->get('recentsub', 'Recentsub::index');
+$routes->match(['get', 'post'], 'enrollment/enroll-in-course', 'Enrollment::enrollInCourse');
