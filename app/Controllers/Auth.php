@@ -128,8 +128,9 @@ class Auth extends BaseController
 
     public function getQuizQuestions()
     {
-        $quizQuestionsModel = new \App\Models\QuizQuestionsModel();
-        $questions = $quizQuestionsModel->findAll();
+        // Use the correct model and table for quiz questions
+        $questionModel = new \App\Models\QuestionModel();
+        $questions = $questionModel->findAll();
         return $this->response->setJSON($questions);
     }
 
