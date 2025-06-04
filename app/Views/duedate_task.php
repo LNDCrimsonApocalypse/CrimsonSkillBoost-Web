@@ -1,309 +1,415 @@
-<!-- app/Views/duedate_task.php -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Due Date</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Due Date</title>
+  <!-- Add Google Fonts link for Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', Arial, sans-serif;
+      background-color: #f5ecf2;
+    }
+   /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
 
-        /* Navbar styles */
-            .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            }
+    .navbar-logo {
+      flex: 1;
+      display: flex;            
+      align-items: center;
+    }
 
-            .navbar-logo {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            }
+    .navbar-logo .logo {
+      width: 40px;
+    }
 
-            .navbar-logo .logo {
-            width: 40px;
-            }
+    .navbar-center {
+      flex: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+    }
 
-            .navbar-center {
-            flex: 2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            }
+    .navbar-center a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+      margin: 0 10px;
+    }
 
-            .navbar-center a {
-            text-decoration: none;
-            color: black;
-            font-weight: bold;
-            margin: 0 10px;
-            }
+    .navbar-center .dropdown {
+      position: relative;
+    }
 
-            .navbar-center .dropdown {
-            position: relative;
-            }
+   
+  
+    .navbar-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 15px; /* space between search, bell, and profile */
+    }
 
-        
-        
-            .navbar-right {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 15px; /* space between search, bell, and profile */
-            }
+    .navbar-right input[type="text"] {
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      /* Remove margin-right to avoid extra space */
+      margin: 0;
+      width: 140px;
+    }
 
-            .navbar-right input[type="text"] {
-            padding: 6px 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            /* Remove margin-right to avoid extra space */
-            margin: 0;
-            width: 140px;
-            }
+    .navbar-right img.profile {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
 
-            .navbar-right img.profile {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            object-fit: cover;
-            cursor: pointer;
-            }
+    .navbar-right img.icon {
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      /* Align vertically with profile */
+      vertical-align: middle;
+    }
+   
+    .tabbar {
+      display: flex;
+      justify-content: start;
+      gap: 30px;
+      padding: 10px 50px;
+      background-color: white;
+      border-bottom: 1px solid #ddd;
+    }
 
-            .navbar-right img.icon {
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
-            /* Align vertically with profile */
-            vertical-align: middle;
-            }
+    .tabbar span {
+      font-weight: 500;
+    
+      cursor: pointer;
+    }
 
-        /* Tab bar styles */
-        .tabbar {
-            display: flex;
-            justify-content: space-around;
-            background-color: #fff;
-            padding: 10px 0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+    .tabbar .active {
+      color: black;
+      font-weight: bold;
+      border-bottom: 3px solid black;
+      padding-bottom: 5px;
+    }
+       
+ 
+     .dropbtn {
+   font-weight: bold;
+  font-size: 1.35rem;
+  color: black;
+  background: none;
+  border: none;
+  cursor: pointer;
+     margin: 0 15px;
+  
+}
+ .dropbtn :hover {
+   color: #ff00aa;
+ }
 
-        .tabbar span {
-            cursor: pointer;
-            padding: 10px 20px;
-        }
+.dropdown {
+  position: relative;
+}
 
-        .tabbar .active {
-            font-weight: 700;
-            color: #514a6d;
-        }
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #EED2EE;
+  min-width: 160px;
+  padding: 8px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  z-index: 1;
+}
 
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.custom-select {
+  width: 100%;
+  padding:  12px 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  color: black;
+  appearance: none; /* Hide default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #a84d9b;
+
+}
+
+.arrow {
+  font-size: 1rem;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+} 
         /* Modal Overlay */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(80, 41, 79, 0.06);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        /* Modal */
-        .modal {
-            background: #fff;
-            border-radius: 14px;
-            box-shadow: 0 8px 32px rgba(80,41,79,0.07);
-            padding: 32px 36px 28px 36px;
-            width: 480px;
-            max-width: 96vw;
-            position: relative;
-            margin-top: 20px;
-        }
-
-        .modal-section-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #514a6d;
-            margin-bottom: 8px;
-        }
-
-        .modal-section-subtitle {
-            font-size: 14px;
-            color: #777;
-            margin-bottom: 24px;
-        }
-
-        .modal-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-
-        .modal-row div {
-            flex: 1;
-            margin-right: 8px;
-        }
-
-        .modal-row div:last-child {
-            margin-right: 0;
-        }
-
-        .modal-checkbox-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .modal-checkbox-row input {
-            margin-right: 8px;
-        }
-
-        .modal-divider {
-            border: 0;
-            height: 1px;
-            background: #eaeaea;
-            margin: 16px 0;
-        }
-
-        .modal-options-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #514a6d;
-            margin-bottom: 8px;
-        }
-
-        .modal-options-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .modal-options-note {
-            font-size: 12px;
-            color: #999;
-        }
-
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .modal-done-btn {
-            background-color: #514a6d;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .modal-done-btn:hover {
-            background-color: #403354;
-        }
-    </style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(80, 41, 79, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    /* Modal */
+    .modal {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(80,41,79,0.07);
+      padding: 32px 36px 28px 36px;
+      width: 480px;
+      max-width: 96vw;
+      position: relative;
+      margin-top: 20px;
+    }
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      color: #aaa;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .modal-close:hover {
+      color: #d13e6f;
+    }
+    .modal-section-title {
+      font-weight: 600;
+      font-size: 1.14rem;
+      color: #32203c;
+      margin-bottom: 4px;
+    }
+    .modal-section-subtitle {
+      color: #b8aebd;
+      font-size: 0.98rem;
+      margin-bottom: 18px;
+    }
+    .modal-row {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .modal-row label {
+      font-size: 0.98rem;
+      color: #32203c;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .modal-row input[type="date"] {
+      padding: 8px 10px;
+      border: 1.5px solid #e3d3e6;
+      border-radius: 7px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: #faf8fb;
+      width: 170px;
+      margin-top: 4px;
+    }
+    .modal-checkbox-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 18px;
+      margin-top: 6px;
+    }
+    .modal-checkbox-row input[type="checkbox"] {
+      accent-color: #6d4fd2;
+      margin-right: 7px;
+      width: 16px;
+      height: 16px;
+    }
+    .modal-checkbox-row label {
+      color: #6d4fd2;
+      font-size: 0.97rem;
+      cursor: pointer;
+    }
+    .modal-divider {
+      border: none;
+      border-top: 1px solid #e6e1ea;
+      margin: 24px 0 18px 0;
+    }
+    .modal-options-title {
+      font-weight: 600;
+      font-size: 1.08rem;
+      color: #32203c;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-options-title::before {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: #d3c5e6;
+      border-radius: 50%;
+    }
+    .modal-options-row {
+      margin-bottom: 10px;
+    }
+    .modal-options-row label {
+      font-size: 0.97rem;
+      color: #32203c;
+      margin-bottom: 2px;
+      display: block;
+    }
+    .modal-options-row input[type="number"] {
+      padding: 8px 10px;
+      border: 1.5px solid #e3d3e6;
+      border-radius: 7px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: #faf8fb;
+      width: 120px;
+      margin-top: 4px;
+    }
+    .modal-options-note {
+      color: #b8aebd;
+      font-size: 0.92rem;
+      margin-bottom: 0;
+      margin-top: 3px;
+    }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 22px;
+    }
+    .modal-done-btn {
+      background: #4fd269;
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 10px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .modal-done-btn:hover {
+      background: #34bb4d;
+    }
+  </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <div class="navbar">
-        <div class="navbar-logo">
-        <img src="imgs/Logo.png" alt="logo" class="logo"/>
-        </div>
-        <div class="navbar-center">
-        <a href="<?= base_url('homepage') ?>">HOME</a>
-        <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
-        <a href="<?= base_url('aboutus') ?>">ABOUT</a>
-        <li class="dropdown">
-        <span>COURSES <span class="arrow">&#9660;</span></span>
+<div class="navbar">
+    <div class="navbar-logo">
+      <a href="<?= base_url('homepage_initial') ?>">
+        <img src="<?= base_url('public/img/Logo.png') ?>" alt="logo" class="logo"/>
+      </a>
+    </div>
+    <div class="navbar-center">
+      <a href="<?= base_url('homepage_initial') ?>">HOME</a>
+      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+      <div class="dropdown">
+        <span style="font-weight: bold;">COURSES <span class="arrow">&#9660;</span></span>
         <div class="dropdown-content">
-            <select id="course-select">
-            <option value="web">ALL COURSES </option>
-            <option value="data">MY COURSES </option>
-            
-            </select>
+          <select id="course-select">
+            <option value="">Select Course</option>
+            <option value="<?= base_url('allcourses') ?>">ALL COURSES</option>
+            <option value="<?= base_url('courses') ?>">MY COURSES</option>
+          </select>
         </div>
-        </li>
-        </div>
-
-        <div class="navbar-right">
-        <input type="text" placeholder="Search.." />
-        <img src="imgs/notifications.png" alt="Notifications" class="icon" />
-        <img src="imgs/profile.png" alt="profile" class="profile" />
-        <button id="signOutButton" class="logout-btn">Sign Out</button>
-        </div>
+      </div>
     </div>
-
-    <!-- Tab Bar -->
-    <div class="tabbar">
-        <span>Topic</span>
-        <span class="active">Task</span>
-        <span>Quiz</span>
-        <span>Student</span>
+    <div class="navbar-right">
+      <input type="text" placeholder="Search.." />
+      <img src="<?= base_url('public/img/notifications.png') ?>" alt="Notifications" class="icon" />    
+      <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
     </div>
+  </div>
+
+
+  <!-- Tab Bar -->
+  <div class="tabbar">
+    <span>Topic</span>
+    <span >Task</span>
+    <span>Quiz</span>
+    <span>Student</span>
+  </div>
 
     <!-- Modal Overlay -->
-    <div class="modal-overlay">
-        <form class="modal" action="<?= base_url('task/duedate/' . $task['id']) ?>" method="post">
-            <?= csrf_field() ?>
-            
-            <div class="modal-section-title">Due date</div>
-            <div class="modal-section-subtitle">Set due dates for: <?= esc($task['title']) ?></div>
-            
-            <div class="modal-row">
-                <div>
-                    <label for="start_date">Start date</label>
-                    <input type="date" id="start_date" name="start_date" 
-                        value="<?= old('start_date', $task['start_date']) ?>" required />
-                </div>
-                <div>
-                    <label for="end_date">End date</label>
-                    <input type="date" id="end_date" name="end_date" 
-                        value="<?= old('end_date', $task['end_date']) ?>" required />
-                </div>
-            </div>
-
-            <div class="modal-checkbox-row">
-                <input type="checkbox" id="allow_late" name="allow_late" value="1" 
-                    <?= old('allow_late', $task['allow_late']) ? 'checked' : '' ?> />
-                <label for="allow_late">Allow late submission for the following week</label>
-            </div>
-
-            <hr class="modal-divider" />
-
-            <div class="modal-options-title">Options</div>
-            <div class="modal-options-row">
-                <label for="attempts">Number of attempts</label>
-                <input type="number" id="attempts" name="attempts" min="0" 
-                    value="<?= old('attempts', $task['attempts']) ?>" />
-                <div class="modal-options-note">Based on best attempt</div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="submit" class="modal-done-btn">Done</button>
-            </div>
-        </form>
+  <div class="modal-overlay">
+    <div class="modal">
+      <button class="modal-close" title="Close">&times;</button>
+      <div class="modal-section-title">Due date</div>
+      <div class="modal-section-subtitle">Recommended next steps</div>
+      <div class="modal-row">
+        <div>
+          <label for="start-date">Start date</label>
+          <input type="date" id="start-date" />
+        </div>
+        <div>
+          <label for="end-date">End date</label>
+          <input type="date" id="end-date" />
+        </div>
+      </div>
+      <div class="modal-checkbox-row">
+        <input type="checkbox" id="late-submission" />
+        <label for="late-submission">Allow late submission for the following week</label>
+      </div>
+      <hr class="modal-divider" />
+      <div class="modal-options-title">Options</div>
+      <div class="modal-options-row">
+        <label for="attempts">Number of attempts</label>
+        <input type="number" id="attempts" min="0" value="0" />
+        <div class="modal-options-note">Based on best attempt</div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-done-btn">Done</button>
+      </div>
     </div>
+  </div>
 
-    <script>
-        // Handle close button click
-        document.querySelector('.modal-close')?.addEventListener('click', function() {
-            window.location.href = '<?= base_url('dashboard') ?>';
-        });
-    </script>
+
+  <script>
+    // Dropdown select redirect
+    document.getElementById('course-select').addEventListener('change', function() {
+      if (this.value) window.location.href = this.value;
+    });
+  </script>
 </body>
 </html>

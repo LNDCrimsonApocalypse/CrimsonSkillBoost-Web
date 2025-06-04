@@ -52,6 +52,8 @@ $routes->get('course/(:num)', 'Course::view/$1');
 $routes->get('course_view/(:num)', 'Course::view/$1'); // Optional alias
 $routes->get('allcourses', 'Allcourses::index');
 
+$routes->get('lesson_view/(:num)', 'LessonView::index/$1');
+
 // QUIZ FLOW
 $routes->post('quiz/start', 'Quiz::startQuizCreation');
 $routes->get('quiz/upload', 'Quiz::showUploadForm');
@@ -66,6 +68,8 @@ $routes->post('quiz/save_settings/(:num)', 'Quiz::saveSettings/$1');
 $routes->get('quiz/edit/(:num)', 'Quiz::edit/$1');
 $routes->post('quiz/update/(:num)', 'Quiz::update/$1');
 $routes->post('quiz/delete/(:num)', 'Quiz::delete/$1');
+$routes->get('quiz_edit/(:num)', 'QuizEdit::index/$1');
+$routes->get('quiz', 'Quiz::index');
 
 // TASK FLOW
 $routes->post('task/start', 'Task::startTaskCreation');
@@ -83,12 +87,13 @@ $routes->get('task/submissions/(:num)', 'Task::getSubmissions/$1');
 $routes->get('task/edit/(:num)', 'Task::edit/$1');
 $routes->post('task/delete/(:num)', 'Task::delete/$1');
 
+
 // Debug route
 $routes->get('task/debug-submissions/(:num)', 'Task::debugSubmissions/$1');
 
 // Grading routes
 $routes->group('grading', ['namespace' => 'App\Controllers'], function($routes) {
-    $routes->get('/', 'Grading::overview');
+    $routes->get('grading/overview', 'Grading::overview');
     $routes->get('student/(:num)', 'Grading::studentOverview/$1');
     $routes->post('save/(:num)', 'Grading::save/$1', ['filter' => 'ajax']);
 });
@@ -100,3 +105,10 @@ $routes->get('enrollment_req', 'Enrollment::requests');
 $routes->get('notif', 'Notif::index');
 $routes->get('recentsub', 'Recentsub::index');
 $routes->match(['get', 'post'], 'enrollment/enroll-in-course', 'Enrollment::enrollInCourse');
+$routes->get('lesson1', 'Lesson1::index');
+$routes->get('create_task', 'CreateTask::index');
+$routes->get('duedate_task', 'DuedateTask::index');
+$routes->get('result_task/(:num)', 'ResultTask::index/$1');
+$routes->get('taskresult', 'Taskresult::index');
+$routes->get('upload_quiz', 'UploadQuiz::index');
+$routes->get('result_quiz/(:num)', 'ResultQuiz::index/$1');

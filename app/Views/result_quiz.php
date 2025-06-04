@@ -1,167 +1,23 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Quiz Details - <?= esc($quiz['title']) ?></title>
-    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Poppins', 'Segoe UI', sans-serif;
-            background-color: #ffeef8;
-        }
+  <meta charset="UTF-8">
+  <title>Quiz Dashboard</title>
+  <!-- Add Google Fonts link for Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
 
-        .container { max-width: 800px; margin: 40px auto; padding: 20px; }
-        .question { 
-            background: #fff;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .content {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .quiz-card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-            width: 45%;
-            padding: 20px;
-        }
-
-        .quiz-header {
-            background-color: #c3b7f9;
-            padding: 10px;
-            border-radius: 8px 8px 0 0;
-            font-weight: bold;
-            color: #1c1c5a;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .question-list {
-            padding: 15px;
-        }
-
-        .question-item {
-            background: #f8f0f7;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-        }
-
-        .question-item p {
-            margin: 0 0 10px 0;
-            font-weight: 500;
-        }
-
-        .options-list {
-            list-style: none;
-            padding-left: 20px;
-        }
-
-        .options-list li {
-            margin: 5px 0;
-            color: #514a6d;
-        }
-
-        .quizzes-list {
-            width: 25%;  /* Adjusted width */
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-        }
-
-        .quiz-entry {
-            background-color: #f7f7f7;
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .quiz-info strong {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .quiz-date {
-            font-size: 12px;
-            color: #666;
-            margin: 0;
-        }
-
-        .quiz-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .edit-btn, .delete-btn {
-            padding: 5px 10px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .edit-btn {
-            background: #f94fa4;
-            color: white;
-            text-decoration: none;
-        }
-
-        .delete-btn {
-            background: #ff4444;
-            color: white;
-        }
-
-        .quiz-meta {
-            display: flex;
-            gap: 20px;
-            margin: 15px 0;
-            padding: 10px;
-            background: #f8f0f7;
-            border-radius: 8px;
-        }
-
-        .quiz-meta p {
-            margin: 5px 0;
-        }
-
-        .submission-list {
-            width: 30%;  /* Adjusted width */
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-        }
-
-        .more-questions {
-            font-weight: bold;
-            color: #f94fa4;
-            margin-top: 10px;
-        }
-
-        .quizzes-scroll {
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-
-            /* Navbar */
+    body {
+      background-color: #fff0f5;
+    }
+    /* Navbar */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -176,7 +32,7 @@
 
     .navbar-logo {
       flex: 1;
-      display: flex;
+      display: flex;            
       align-items: center;
     }
 
@@ -258,166 +114,352 @@
       border-bottom: 3px solid black;
       padding-bottom: 5px;
     }
-    .dropbtn {
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1.5rem;
-      color: black;
-      background: none;
+  .dropbtn {
+   font-weight: bold;
+  font-size: 1.35rem;
+  color: black;
+  background: none;
+  border: none;
+  cursor: pointer;
+     margin: 0 15px;
+  
+}
+ .dropbtn :hover {
+   color: #ff00aa;
+ }
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #EED2EE;
+  min-width: 160px;
+  padding: 8px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.custom-select {
+  width: 100%;
+  padding:  12px 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  color: black;
+  appearance: none; /* Hide default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #a84d9b;
+
+}
+
+.arrow {
+  font-size: 1rem;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+} 
+    .add-content-btn {
+      background-color: #f542a4;
+      color: white;
+      padding: 10px 15px;
       border: none;
+      border-radius: 8px;
+      font-weight: bold;
       cursor: pointer;
-      padding: 8px;
     }
 
-/* Dropdown container */
-    .dropdown {
+    .main {
+      display: flex;
+      padding: 40px;
+      gap: 40px;
+    }
+
+    .left-column {
+      flex: 1;
+    }
+
+    .right-column {
+      width: 300px;
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .filters {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .filter-button {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: white;
+      cursor: pointer;
+    }
+
+    .quiz-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       position: relative;
     }
 
-/* Dropdown menu */
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: white;
-      min-width: 160px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-
-      z-index: 1;
+    .quiz-card img {
+      width: 100%;
+      border-radius: 10px;
     }
 
-/* Dropdown items */
-    .dropdown-content a {
-      padding: 12px 16px;
-      display: block;
-      color: black;
-      text-decoration: none;
+    .quiz-card h3 {
+      margin: 15px 0 5px;
     }
 
-    .dropdown-content a:hover {
+    .quiz-card p {
+      font-size: 14px;
+      color: gray;
+    }
+
+    .tags {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+    }
+
+    .tag.logical {
       background-color: #eee;
     }
 
-    /* Show dropdown on hover */
-    .dropdown:hover .dropdown-content {
-      display: block;
+    .tag.required {
+      background-color: #fdd;
     }
-    .arrow {
-        font-size: 1.2rem;
-        margin-left: 4px;
-        vertical-align: middle;
-        /* Ensures the arrow is centered with the text */
-    }
-    .dropdown .arrow {
-      font-size: 1rem;
-      margin-left: 4px;
-    }
-    li{
-      font-weight: bold;
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
 
+    .status {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      align-items: center;
     }
-    </style>
+
+    .status .assigned {
+      color: green;
+      font-weight: bold;
+    }
+
+    .status .running {
+      color: red;
+      font-weight: bold;
+    }
+
+    .recent-submission h3 {
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    .submission {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding: 8px;
+      border-radius: 8px;
+      background: #f9f9f9;
+    }
+
+    .submission .name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .submission img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+
+    .progress {
+      flex: 1;
+      height: 10px;
+      background-color: #ddd;
+      border-radius: 5px;
+      margin-left: 10px;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: #4caf50;
+      border-radius: 5px;
+      width: 100%;
+    }
+
+    .score {
+      margin-left: 10px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+       .logout-btn {
+            background: #ff4081;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 15px;
+        }
+
+        .logout-btn:hover {
+            background: #e63975;
+        }
+  </style>
 </head>
 <body>
-
-
-    <!-- Navbar -->
-  <div class="navbar">
+    <div class="navbar">
     <div class="navbar-logo">
-      <img src="imgs/Logo.png" alt="logo" class="logo"/>
+      <a href="<?= base_url('homepage_initial') ?>">
+        <img src="<?= base_url('public/img/Logo.png') ?>" alt="logo" class="logo"/>
+      </a>
     </div>
     <div class="navbar-center">
-      <a href="<?= base_url('homepage') ?>">HOME</a>
+      <a href="<?= base_url('homepage_initial') ?>">HOME</a>
       <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
-     <li class="dropdown">
-      <span>COURSES <span class="arrow">&#9660;</span></span>
-      <div class="dropdown-content">
-        <select id="course-select">
-          <option value="web">ALL COURSES </option>
-          <option value="data">MY COURSES </option>
-         
-        </select>
-      </div>
-    </li>
+      <li class="dropdown">
+        <span style="font-weight: bold;">COURSES <span class="arrow">&#9660;</span></span>
+        <div class="dropdown-content">
+           <select id="course-select">
+            <option value="">Select Course</option>
+            <option value="<?= base_url('allcourses') ?>">ALL COURSES</option>
+            <option value="<?= base_url('courses') ?>">MY COURSES</option>
+          </select>
+        </div>
+      </li>
     </div>
-
-    <div class="navbar-right">
-      <input type="text" placeholder="Search.." />
-      <img src="imgs/notifications.png" alt="Notifications" class="icon" />
-      <img src="imgs/profile.png" alt="profile" class="profile" />
-      <button id="signOutButton" class="logout-btn">Sign Out</button>
+        <div class="navbar-right">
+            <input type="text" placeholder="Search.." />
+          <img src="<?= base_url('public/img/notifications.png') ?>" alt="Notifications" class="icon" />  
+             <img src="<?= base_url('public/img/profile.png') ?>"alt="profile" class="profile"/>
+            <button id="signOutButton" class="logout-btn">Sign Out</button>
+        </div>
     </div>
-  </div>
 
   <!-- Tab Bar -->
   <div class="tabbar">
-    <span>Topic</span>
-    <span>Task</span>
-    <span class="active">Quiz</span>
+     <a href="<?= base_url('allcourses') ?>"><span>Course</span></a>
+    <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
+    <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
     <span>Student</span>
   </div>
 
-  <div class="title-bar"><?= esc($quiz['title']) ?></div>
+  <div class="main">
+    <div class="left-column">
+      <div class="filters">
+        <div class="filter-button">III - BCSAD</div>
+        <div class="filter-button">Filtered by Date</div>
+      </div>
 
-    <div class="content">
-        <!-- Quizzes List with Details - Left Side -->
-        <div class="quizzes-list">
-            <div class="quiz-header">
-                All Quizzes
-                <span>✎</span>
-            </div>
-
-            <div class="quiz-details">
-                <div class="quiz-meta">
-                    <div>
-                        <p><strong>Current Quiz:</strong> <?= esc($quiz['title']) ?></p>
-                        <p><strong>Start Date:</strong> <?= esc($quiz['start_date'] ?? 'Not set') ?></p>
-                        <p><strong>End Date:</strong> <?= esc($quiz['end_date'] ?? 'Not set') ?></p>
-                    </div>
-                </div>
-
-                <div class="question-preview">
-                    <?php if (!empty($questions)): ?>
-                        <h4>Questions Preview</h4>
-                        <?php foreach (array_slice($questions, 0, 3) as $index => $question): ?>
-                            <div class="question-item">Q<?= $index + 1 ?>: <?= esc($question['question_text']) ?></div>
-                        <?php endforeach; ?>
-                        <?php if (count($questions) > 3): ?>
-                            <div class="more-questions">+ <?= count($questions) - 3 ?> more questions</div>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <div class="quizzes-scroll">
-                <?php foreach ($allQuizzes as $q): ?>
-                    <div class="quiz-entry">
-                        <div class="quiz-info">
-                            <strong><?= esc($q['title']) ?></strong>
-                            <p class="quiz-date">Created: <?= date('M d, Y', strtotime($q['created_at'])) ?></p>
-                        </div>
-                        <div class="quiz-actions">
-                            <a href="<?= base_url('quiz/edit/' . $q['id']) ?>" class="edit-btn">Edit</a>
-                            <form action="<?= base_url('quiz/delete/' . $q['id']) ?>" method="post" style="display:inline;">
-                                <?= csrf_field() ?>
-                                <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this quiz?')">Delete</button>
-                            </form>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+      <div class="quiz-card">
+        <img src="<?= base_url('public/img/11.png')?>" alt="Quiz Image">
+        <h3>Introduction in Computer Programming 1</h3>
+        <p>DUE 13TH APRIL 11:59 PM</p>
+        <div class="tags">
+          <div class="tag logical">Logical</div>
+          <div class="tag required">Required</div>
         </div>
-
-        <!-- Student Submissions - Right Side -->
-        <div class="submission-list">
-            <h3>Recent Submissions</h3>
-            <div id="submissions-container">
-                <!-- Submissions will be loaded here -->
-            </div>
+        <p>10 Questions</p>
+        <div class="status">
+          <span class="assigned">Assigned</span>
+          <span class="running">Running</span>
         </div>
+      </div>
     </div>
+
+    <div class="right-column recent-submission">
+      <h3>Recent Submission</h3>
+
+      <div class="submission">
+        <div class="name">
+          <img src="imgs/img3.png">
+          Marites Dela Cruz
+        </div>
+        <div class="score">1/1</div>
+        <div class="progress"><div class="progress-bar" style="width: 100%"></div></div>
+      </div>
+
+      <!-- Dummy data for students -->
+      <div class="submission">
+        <div class="name">STUDENT NAME</div>
+        <div class="score">1/1</div>
+        <div class="progress"><div class="progress-bar" style="width: 100%"></div></div>
+      </div>
+      <div class="submission">
+        <div class="name">STUDENT NAME</div>
+        <div class="score">0/1</div>
+        <div class="progress"><div class="progress-bar" style="width: 0%"></div></div>
+      </div>
+      <div class="submission">
+        <div class="name">STUDENT NAME</div>
+        <div class="score">1/1</div>
+        <div class="progress"><div class="progress-bar" style="width: 100%"></div></div>
+      </div>
+      <div class="submission">
+        <div class="name">STUDENT NAME</div>
+        <div class="score">1/1</div>
+        <div class="progress"><div class="progress-bar" style="width: 100%"></div></div>
+      </div>
+      <div class="submission">
+        <div class="name">STUDENT NAME</div>
+        <div class="score">1/1</div>
+        <div class="progress"><div class="progress-bar" style="width: 100%"></div></div>
+      </div>
+      <div class="submission">
+        <div class="name">STUDENT NAME</div>
+        <div class="score">0/1</div>
+        <div class="progress"><div class="progress-bar" style="width: 0%"></div></div>
+      </div>
+      <div class="submission">
+        <div class="name">STUDENT NAME</div>
+        <div class="score">1/1</div>
+        <div class="progress"><div class="progress-bar" style="width: 100%"></div></div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

@@ -10,8 +10,10 @@
     body {
       margin: 0;
       font-family: 'Poppins', Arial, sans-serif;
-      background-color: #fdeef4;
+      background-color: #FFF4F9;
     }
+
+    /* Navbar */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -19,17 +21,18 @@
       padding: 15px 30px;
       background-color: white;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-     
-      
     }
+
     .navbar-logo {
       flex: 1;
       display: flex;
       align-items: center;
     }
+
     .navbar-logo .logo {
       width: 40px;
     }
+
     .navbar-center {
       flex: 2;
       display: flex;
@@ -37,16 +40,17 @@
       align-items: center;
       gap: 30px;
     }
+
     .navbar-center a {
       margin: 0 15px;
       text-decoration: none;
       color: black;
       font-weight: bold;
     }
+
       .dropbtn {
-  
    font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.35rem;
   color: black;
   background: none;
   border: none;
@@ -117,14 +121,16 @@ li {
       align-items: center;
       gap: 14px;
     }
+
     .navbar-right input[type="text"] {
       padding: 6px 12px;
       border: 1px solid #ccc;
       border-radius: 6px;
       margin-right: 15px;
     }
+
     .navbar-right button {
-      background: #ff3bbd;
+        background: #ff3bbd;
       color: #fff;
       border: none;
       border-radius: 8px;
@@ -135,23 +141,19 @@ li {
       transition: background 0.2s;
       margin-right: 8px;
     }
-    .navbar-right button {
+      .navbar-right button {
       background: #d12c5c;
     }
+
     .navbar-right img.profile {
       width: 35px;
       height: 35px;
       border-radius: 50%;
       object-fit: cover;
     }
-        .navbar-right img {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      object-fit: cover;
-      cursor: pointer;
-    }
-       .tabbar {
+
+    /* Tabs */
+    .tabbar {
          display: flex;
       gap: 36px;
       font-size: 1.1rem;
@@ -189,6 +191,7 @@ li {
       width: 170px;
       box-sizing: border-box;
     }
+    /* Section Title */
     .section-title {
       background-color: #e8c6eb;
       text-align: center;
@@ -197,13 +200,16 @@ li {
       padding: 10px 0;
       margin-bottom: 30px;
     }
+
+    /* Cards Container */
     .cards {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: flex-start; /* Align cards to the left */
       gap: 20px;
       padding: 0 20px 40px;
     }
+
     .card {
       background-color: white;
       width: 600px;
@@ -214,9 +220,11 @@ li {
       border-image: linear-gradient(to right, #f8228a, #ad9bdc);
       border-image-slice: 1;
     }
+
     .card-content {
       padding: 20px;
     }
+
     .card-title {
       font-size: 18px;
       font-weight: bold;
@@ -224,6 +232,7 @@ li {
       align-items: center;
       justify-content: space-between;
     }
+
     .card-title i {
       font-style: normal;
       font-weight: normal;
@@ -231,17 +240,20 @@ li {
       margin-left: 10px;
       cursor: pointer;
     }
+
     .card-desc {
       color: #555;
       font-size: 14px;
       margin-top: 5px;
     }
+
     .card-footer {
       display: flex;
       justify-content: flex-end;
       align-items: center;
       padding: 0 20px 15px;
     }
+
     .view-btn {
       background-color: #f23eb3;
       color: white;
@@ -253,11 +265,12 @@ li {
       font-weight: bold;
       margin-right: 10px;
     }
+
     .dots {
       font-size: 20px;
       cursor: pointer;
     }
-    @media (max-width: 900px) {
+     @media (max-width: 900px) {
       .tabbar, .tabbar-row {
         flex-direction: column;
         align-items: flex-start;
@@ -271,33 +284,38 @@ li {
   </style>
 </head>
 <body>
+
   <!-- Navbar -->
   <div class="navbar">
     <div class="navbar-logo">
-      <img src="public/img/Logo.png" alt="logo" class="logo"/>
+      <a href="<?= base_url('homepage_initial') ?>">
+        <img src="<?= base_url('public/img/Logo.png') ?>" alt="logo" class="logo"/>
+      </a>
     </div>
     <div class="navbar-center">
-      <a href="#">HOME</a>
-      <a href="#">DASHBOARD</a>
-      <a href="#">ABOUT</a>
-     <li class="dropdown">
-      <button class="dropbtn">COURSES ▼</button>
-      <div class="dropdown-content">
-        <select id="course-select">
-          <option value="web">ALL COURSES </option>
-          <option value="data">MY COURSES</option>
-         
-        </select>
-      </div>
-    </li>
+      <a href="<?= base_url('homepage_initial') ?>">HOME</a>
+      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+      <li class="dropdown">
+        <span style="font-weight: bold;">COURSES <span class="arrow">&#9660;</span></span>
+        <div class="dropdown-content">
+           <select id="course-select">
+            <option value="">Select Course</option>
+            <option value="<?= base_url('allcourses') ?>">ALL COURSES</option>
+            <option value="<?= base_url('courses') ?>">MY COURSES</option>
+          </select>
+        </div>
+      </li>
     </div>
     <div class="navbar-right">
       <input class="search-box" type="text" placeholder="Search.." />
-       <button>+ Add Content</button> 
-      <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
+      <button>+ Add Content</button>
+      <img src="public/img/profile.png" alt="profile" class="profile"/>
     </div>
   </div>
+
   <!-- Tabs -->
+  <div class="tabbar">
   <div class="tabbar">
      <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
     <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
@@ -308,6 +326,7 @@ li {
   <div class="section-title">
     Computer Programming 1 – Core Topics
   </div>
+
   <!-- Cards -->
   <div class="cards">
     <div class="card">
@@ -320,10 +339,11 @@ li {
         </div>
       </div>
       <div class="card-footer">
-        <button class="view-btn">View Info</button>
+        <button class="view-btn" onclick="window.location.href='<?= base_url('lesson_view/1') ?>'">View Info</button>
         <span class="dots">⋮</span>
       </div>
     </div>
+
     <div class="card">
       <div class="card-content">
         <div class="card-title">
@@ -334,10 +354,11 @@ li {
         </div>
       </div>
       <div class="card-footer">
-        <button class="view-btn">View Info</button>
+        <button class="view-btn" onclick="window.location.href='<?= base_url('lesson_view/2') ?>'">View Info</button>
         <span class="dots">⋮</span>
       </div>
     </div>
   </div>
+
 </body>
 </html>

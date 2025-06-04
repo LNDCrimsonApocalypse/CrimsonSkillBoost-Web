@@ -14,9 +14,7 @@ class Quiz extends BaseController
 {
     public function index()
     {
-        $quizModel = new QuizModel();
-        $quizzes = $quizModel->findAll();
-        return view('quiz_list', ['quizzes' => $quizzes]);
+        return view('quiz');
     }
 
     public function create()
@@ -57,14 +55,23 @@ class Quiz extends BaseController
     {
         $quizModel = new QuizModel();
         $questionModel = new QuestionModel();
-        
+
+        // Debug: Check if $id is valid and models are loaded
+        if (empty($id) || !is_numeric($id)) {
+            return redirect()->to('/quiz')->with('error', 'Invalid quiz ID');
+        }
+
         $quiz = $quizModel->find($id);
         if (!$quiz) {
             return redirect()->to('/quiz')->with('error', 'Quiz not found');
         }
 
-        $questions = $questionModel->where('quiz_id', $id)
-                                 ->findAll();
+        $questions = $questionModel->where('quiz_id', $id)->findAll();
+
+        // Debug: Check if questions are loaded
+        if ($questions === false) {
+            return redirect()->to('/quiz')->with('error', 'Failed to load questions');
+        }
 
         return view('quiz_edit', [
             'quiz' => $quiz,
