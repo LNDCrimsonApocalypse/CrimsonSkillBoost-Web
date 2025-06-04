@@ -1,17 +1,18 @@
 {
   "functions": {
-    "public/index.php": {
+    "api/index.php": {
       "runtime": "vercel-php@0.6.0"
     }
   },
   "routes": [
-    { "src": "/(.*)", "dest": "/public/index.php" }
+    { "src": "/(.*)", "dest": "/api/index.php" }
   ],
   "env": {
     "CI_ENVIRONMENT": "production",
     "database.default.hostname": "your-db-host",
     "database.default.database": "your-db-name",
     "database.default.username": "your-db-user",
-    "database.default.password": "your-db-pass"
+    "database.default.password": "your-db-pass",
+    "FIREBASE_DATABASE_URL": "https://csboostcmo-default-rtdb.firebaseio.com/"
   }
 }
