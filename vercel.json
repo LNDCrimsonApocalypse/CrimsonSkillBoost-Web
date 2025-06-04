@@ -1,0 +1,17 @@
+{
+  "functions": {
+    "public/index.php": {
+      "runtime": "vercel-php@0.6.0"
+    }
+  },
+  "routes": [
+    { "src": "/(.*)", "dest": "/public/index.php" }
+  ],
+  "env": {
+    "CI_ENVIRONMENT": "production",
+    "database.default.hostname": "your-db-host",
+    "database.default.database": "your-db-name",
+    "database.default.username": "your-db-user",
+    "database.default.password": "your-db-pass"
+  }
+}
