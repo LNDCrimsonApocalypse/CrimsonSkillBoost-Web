@@ -9,10 +9,10 @@
   ],
   "env": {
     "CI_ENVIRONMENT": "production",
-    "database.default.hostname": "your-db-host",
-    "database.default.database": "your-db-name",
-    "database.default.username": "your-db-user",
-    "database.default.password": "your-db-pass",
+    "DB_HOST": "cmoboost.vercel.app",
+    "DB_NAME": "3306",
+    "DB_USER": "root",
+    "DB_PASS": "",
     "FIREBASE_DATABASE_URL": "https://csboostcmo-default-rtdb.firebaseio.com/"
   }
 }

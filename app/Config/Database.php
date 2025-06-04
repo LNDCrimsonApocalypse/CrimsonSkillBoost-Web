@@ -26,10 +26,10 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => 'root',
-        'password'     => '',
-        'database'     => 'school_db',
+        'hostname'     => getenv('DB_HOST'),
+        'username'     => getenv('DB_USER'),
+        'password'     => getenv('DB_PASS'),
+        'database'     => getenv('DB_NAME'),
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
