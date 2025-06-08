@@ -85,14 +85,28 @@ class Auth extends BaseController
             $submissionModel = new \App\Models\SubmissionModel();
             $enrollmentModel = new \App\Models\EnrollmentModel();
 
+            // Fetch all courses
+            $courses = $courseModel->findAll();
+
+            // Fetch recent submissions with correct fields
+            $submissions = $submissionModel->getRecentSubmissions(5);
+
+            // Fetch pending enrollment requests with correct fields
+            $enrollmentRequests = $enrollmentModel->getPendingRequests();
+
+            // Debug: log what is being passed
+            log_message('debug', '[Dashboard] Courses: ' . json_encode($courses));
+            log_message('debug', '[Dashboard] Submissions: ' . json_encode($submissions));
+            log_message('debug', '[Dashboard] Enrollment Requests: ' . json_encode($enrollmentRequests));
+
             $data = [
-                'courses' => $courseModel->findAll(),
-                'submissions' => $submissionModel->getRecentSubmissions(5),
-                'enrollmentRequests' => $enrollmentModel->getPendingRequests()
+                'courses' => $courses,
+                'submissions' => $submissions,
+                'enrollmentRequests' => $enrollmentRequests
             ];
 
             return view('dashboard', $data);
-            
+
         } catch (\Exception $e) {
             log_message('error', '[Dashboard] Error: ' . $e->getMessage());
             return view('dashboard', ['error' => 'Failed to load dashboard data']);

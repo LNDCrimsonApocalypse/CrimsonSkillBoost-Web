@@ -30,7 +30,7 @@ class SubmissionModel extends Model
 
     public function getRecentSubmissions($limit = 5)
     {
-        return $this->select('submissions.*, students.name as student_name, tasks.title as task_title')
+        return $this->select('submissions.*, students.name as student_name, tasks.title as task_title, students.id as student_id')
                    ->join('students', 'students.id = submissions.student_id')
                    ->join('tasks', 'tasks.id = submissions.task_id')
                    ->orderBy('submissions.submitted_at', 'DESC')

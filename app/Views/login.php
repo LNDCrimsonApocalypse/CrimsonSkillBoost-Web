@@ -235,9 +235,9 @@
       <div class="login-card-bg">
         <img class="login-logo" src="public/img/Logo.png" alt="Logo" />
         <form class="login-form">
-          <input class="login-input" type="text" placeholder="Username or Email" required />
-          <input class="login-input" type="password" placeholder="Password" required />
-          <button class="login-btn" type="submit" onclick="window.location.href='<?= base_url('loggedin') ?>'">Log In</button>
+          <input class="login-input" id="email" type="text" placeholder="Username or Email" required />
+          <input class="login-input" id="password" type="password" placeholder="Password" required />
+          <button class="login-btn" id="loginButton" type="submit">Log In</button>
         </form>
         <div class="login-links" style="margin-top:14px;">
           <a href="<?= base_url('password_reset') ?>" target="_blank">Forgot your password?</a>

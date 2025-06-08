@@ -374,30 +374,54 @@ li {
     </div>
   </div>
   <table class="enrollment-table">
-                <thead>
-                    <tr>
-                        <th>Student Name</th>
-                        <th>Course</th>
-                        <th>Section</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($requests as $request): ?>
-                    <tr>
-                        <td><?= esc($request['student_name']) ?></td>
-                        <td><?= esc($request['course_name']) ?></td>
-                        <td><?= esc($request['section']) ?></td>
-                        <td><?= esc($request['status']) ?></td>
-                        <td>
-                            <button onclick="updateRequest(<?= $request['id'] ?>, 'approved')" class="btn btn-approve">Approve</button>
-                            <button onclick="updateRequest(<?= $request['id'] ?>, 'rejected')" class="btn btn-reject">Reject</button>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Course</th>
+        <th>Section</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($requests as $request): ?>
+      <tr>
+        <td><?= esc($request['student_name']) ?></td>
+        <td><?= esc($request['course_name']) ?></td>
+        <td><?= esc($request['section']) ?></td>
+        <td><?= esc($request['status']) ?></td>
+        <td>
+          <button onclick="updateRequest(<?= $request['id'] ?>, 'approved')" class="btn btn-approve">Approve</button>
+          <button onclick="updateRequest(<?= $request['id'] ?>, 'rejected')" class="btn btn-reject">Reject</button>
+        </td>
+      </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+
+  <script>
+    function updateRequest(id, status) {
+      if (!confirm(`Are you sure you want to ${status} this enrollment request?`)) return;
+      fetch('<?= site_url('enrollment/update/') ?>' + id, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({ status: status })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Request updated!');
+          location.reload();
+        } else {
+          alert('Error: ' + (data.message || 'Failed to update request'));
+        }
+      })
+      .catch(() => alert('Failed to update request'));
+    }
+  </script>
 
           
 </body>

@@ -34,8 +34,8 @@ class EnrollmentModel extends Model
     public function getPendingRequests()
     {
         return $this->select('enrollment_requests.*, students.name as student_name, courses.course_name')
-                    ->join('students', 'students.id = enrollment_requests.student_id')
-                    ->join('courses', 'courses.id = enrollment_requests.course_id')
+                    ->join('students', 'students.id = enrollment_requests.student_id', 'left')
+                    ->join('courses', 'courses.id = enrollment_requests.course_id', 'left')
                     ->where('enrollment_requests.status', 'pending')
                     ->findAll();
     }

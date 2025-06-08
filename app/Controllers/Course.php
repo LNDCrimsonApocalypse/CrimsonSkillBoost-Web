@@ -84,13 +84,18 @@ class Course extends BaseController
         $courseModel = new CourseModel();
         $lessonModel = new LessonModel();
 
-        // Fetch course and lessons from the database
-        $course = $courseModel->find($id);
-        $lessons = $lessonModel->where('course_id', $id)->findAll();
+        // Fetch all courses for the view
+        $courses = $courseModel->findAll();
 
-        // Pass data to the view
+        // Optionally, fetch lessons for a specific course if $id is provided
+        $lessons = [];
+        if ($id) {
+            $lessons = $lessonModel->where('course_id', $id)->findAll();
+        }
+
+        // Pass all courses and lessons to the view
         return view('course_view', [
-            'course' => $course,
+            'courses' => $courses,
             'lessons' => $lessons
         ]);
     }

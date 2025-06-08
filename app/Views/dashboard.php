@@ -485,6 +485,10 @@ li {
     <main class="container">
       <section class="left-panel">
         <h2>Active Courses</h2>
+        <?php
+          // Ensure $courses is always an array
+          $courses = isset($courses) && is_array($courses) ? $courses : [];
+        ?>
         <?php if (!empty($courses)): ?>
           <?php foreach ($courses as $course): ?>
             <div class="course-card" id="course-<?= $course['id'] ?>">
@@ -506,6 +510,10 @@ li {
         <div class="enrollment-requests">
           <h2>Enrollment Requests</h2>
           <div id="enrollment-list">
+            <?php
+              // Ensure $enrollmentRequests is always an array
+              $enrollmentRequests = isset($enrollmentRequests) && is_array($enrollmentRequests) ? $enrollmentRequests : [];
+            ?>
             <?php if (!empty($enrollmentRequests)): ?>
               <?php foreach ($enrollmentRequests as $request): ?>
                 <div class="request-card" id="request-<?= $request['id'] ?>">
@@ -527,6 +535,10 @@ li {
 
         <div class="recent-submissions">
           <h2>Recent Submissions</h2>
+          <?php
+            // Ensure $submissions is always an array
+            $submissions = isset($submissions) && is_array($submissions) ? $submissions : [];
+          ?>
           <?php if (!empty($submissions)): ?>
             <?php foreach ($submissions as $submission): ?>
               <div class="submission-card">
@@ -598,8 +610,7 @@ li {
         .then(data => {
             if (data.success) {
                 const card = document.getElementById(`request-${id}`);
-                card.remove();
-                
+                if (card) card.remove();
                 if (document.querySelectorAll('.request-card').length === 0) {
                     document.getElementById('enrollment-list').innerHTML = '<p>No pending enrollment requests</p>';
                 }
@@ -656,7 +667,7 @@ li {
         headers: { 'X-Requested-With': 'XMLHttpRequest' }
       })
       .then(res => res.json())
-      .then(data => {
+      .then data => {
         if (data.success) {
           // Remove the course card from the DOM
           const card = document.getElementById('course-' + id);

@@ -582,59 +582,50 @@
   <!-- Section Title -->
   <div class="section-title">
     <?php if (isset($course) && is_array($course)): ?>
+      <?= esc($course['course_name']) ?>
     <?php else: ?>
       Course Information Not Available
     <?php endif; ?>
   </div>
-
 
   <!-- DASHBOARD -->
   <div class="dashboard-bg">
     <div class="dashboard-container">
       <!-- LEFT: MY COURSES -->
       <div class="courses-card">
-        <div class="courses-title">MY COURSES</div>
+        <div class="courses-title">MY LESSONS</div>
         <div class="course-list">
-          <!-- Course 1 -->
-          <div class="course-item">
-            <img class="course-thumb" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80" alt="Course" />
-            <div class="course-info">
-              <div class="course-title">Computer Programming Language 1</div>
-              <div class="course-desc">Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.</div>
-              <div class="course-actions">
-                <button class="btn-edit">EDIT</button>
-                <button class="btn-delete">DELETE</button>
+          <!-- Display lessons for this course -->
+          <?php if (isset($lessons) && is_array($lessons) && count($lessons) > 0): ?>
+            <?php foreach ($lessons as $lesson): ?>
+              <div class="course-item">
+                <div class="course-thumb placeholder">
+                  <span>&#128218;</span>
+                </div>
+                <div class="course-info">
+                  <div class="course-title"><?= esc($lesson['title']) ?></div>
+                  <div class="course-desc"><?= esc($lesson['description'] ?? 'No description.') ?></div>
+                  <div class="course-actions">
+                    <a href="<?= base_url('lesson/show/' . $lesson['id']) ?>" class="btn-edit">VIEW</a>
+                    <a href="<?= base_url('lesson/edit/' . $lesson['id']) ?>" class="btn-edit">EDIT</a>
+                    <form action="<?= base_url('lesson/delete/' . $lesson['id']) ?>" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this lesson?');">
+                      <?= csrf_field() ?>
+                      <button type="submit" class="btn-delete">DELETE</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <div class="course-item">
+              <div class="course-thumb placeholder">
+                <span>&#128218;</span>
+              </div>
+              <div class="course-info">
+                <div class="course-title">No lessons found for this course.</div>
               </div>
             </div>
-          </div>
-          <!-- Course 2 -->
-          <div class="course-item">
-            <div class="course-thumb placeholder">
-              <span>&#128247;</span>
-            </div>
-            <div class="course-info">
-              <div class="course-title">Title</div>
-              <div class="course-desc">Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.</div>
-              <div class="course-actions">
-                <button class="btn-edit">EDIT</button>
-                <button class="btn-edit">DELETE</button>
-              </div>
-            </div>
-          </div>
-          <!-- Course 3 -->
-          <div class="course-item">
-            <div class="course-thumb placeholder">
-              <span>&#128247;</span>
-            </div>
-            <div class="course-info">
-              <div class="course-title">Title</div>
-              <div class="course-desc">Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.</div>
-              <div class="course-actions">
-                <button class="btn-edit">EDIT</button>
-                <button class="btn-edit">DELETE</button>
-              </div>
-            </div>
-          </div>
+          <?php endif; ?>
         </div>
       </div>
       <!-- RIGHT: ENROLLMENT REQUESTS -->
