@@ -607,7 +607,7 @@
                   <div class="course-desc"><?= esc($lesson['description'] ?? 'No description.') ?></div>
                   <div class="course-actions">
                     <a href="<?= base_url('lesson/show/' . $lesson['id']) ?>" class="btn-edit">VIEW</a>
-                    <a href="<?= base_url('lesson/edit/' . $lesson['id']) ?>" class="btn-edit">EDIT</a>
+                    <!-- <a href="<?= base_url('lesson/edit/' . $lesson['id']) ?>" class="btn-edit">EDIT</a> -->
                     <form action="<?= base_url('lesson/delete/' . $lesson['id']) ?>" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this lesson?');">
                       <?= csrf_field() ?>
                       <button type="submit" class="btn-delete">DELETE</button>

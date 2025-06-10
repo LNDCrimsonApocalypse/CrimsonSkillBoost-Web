@@ -102,6 +102,12 @@ $routes->get('enrollment', 'Enrollment::index');
 $routes->post('enrollment/submit', 'Enrollment::submitRequest');
 $routes->post('enrollment/update/(:num)', 'Enrollment::updateRequest/$1');
 $routes->get('enrollment_req', 'Enrollment::requests');
+$routes->post('enrollment/apiSubmit', 'Enrollment::apiSubmit');
+$routes->get('enrollment/apiStudentRequests/(:num)', 'Enrollment::apiStudentRequests/$1');
+$routes->get('enrollment/apiCourseRequests/(:num)', 'Enrollment::apiCourseRequests/$1');
+$routes->post('enrollment/apiUpdateStatus/(:num)', 'Enrollment::apiUpdateStatus/$1');
+$routes->get('enrollment/apiPending', 'Enrollment::apiPending');
+
 $routes->get('notif', 'Notif::index');
 $routes->get('recentsub', 'Recentsub::index');
 $routes->match(['get', 'post'], 'enrollment/enroll-in-course', 'Enrollment::enrollInCourse');

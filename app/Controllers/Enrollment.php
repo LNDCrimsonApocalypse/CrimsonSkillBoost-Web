@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\EnrollmentRequestModel;
-use App\Models\EnrollmentModel; // Ensure this is imported
+use App\Models\EnrollmentModel;
 
 class Enrollment extends BaseController
 {
@@ -11,14 +11,13 @@ class Enrollment extends BaseController
     {
         $enrollmentModel = new EnrollmentModel();
         $pendingRequests = $enrollmentModel->getPendingRequests();
-        
         return view('enrollment', ['requests' => $pendingRequests]);
     }
 
     public function submitRequest()
     {
         $enrollmentModel = new EnrollmentModel();
-        
+
         $data = [
             'student_id' => $this->request->getPost('student_id'),
             'course_id' => $this->request->getPost('course_id'),
@@ -41,14 +40,13 @@ class Enrollment extends BaseController
 
     public function updateRequest($id)
     {
-        // Set proper headers
         header('Access-Control-Allow-Origin: *');
         header('Content-Type: application/json');
-        
+
         try {
             $json = $this->request->getJSON();
             log_message('debug', 'Update request: ' . json_encode($json));
-            
+
             if (!$json || !isset($json->status)) {
                 throw new \Exception('Missing status');
             }
@@ -86,10 +84,8 @@ class Enrollment extends BaseController
             $model = new EnrollmentRequestModel();
             $requests = $model->findAll();
 
-            // Debug: log the result
             log_message('debug', 'Enrollment requests: ' . json_encode($requests));
 
-            // Fallback if $requests is not an array
             if (!is_array($requests)) {
                 $requests = [];
             }
@@ -97,15 +93,130 @@ class Enrollment extends BaseController
             return view('enrollment_req', ['requests' => $requests]);
         } catch (\Throwable $e) {
             log_message('error', 'Error in Enrollment::requests - ' . $e->getMessage());
-            // Show a simple error message for debugging
             return "Error: " . $e->getMessage();
         }
     }
 
-    // Add: API endpoint for Android enrollment request
+    // --- ANDROID API ENHANCEMENTS ---
+
+    // API: Submit enrollment request (POST/JSON)
+    public function apiSubmit()
+    {
+        $json = $this->request->getJSON(true);
+        if (!$json) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Invalid JSON'
+            ])->setStatusCode(400);
+        }
+
+        $studentId = $json['student_id'] ?? null;
+        $courseId = $json['course_id'] ?? null;
+        $section = $json['section'] ?? null;
+
+        if (!$studentId || !$courseId || !$section) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Missing student_id, course_id, or section'
+            ])->setStatusCode(400);
+        }
+
+        $enrollmentModel = new EnrollmentModel();
+        $data = [
+            'student_id' => $studentId,
+            'course_id' => $courseId,
+            'section' => $section,
+            'status' => 'pending'
+        ];
+
+        if ($enrollmentModel->insert($data)) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Failed to submit enrollment request'
+            ])->setStatusCode(500);
+        }
+    }
+
+    // API: Get all enrollment requests for a student (GET)
+    public function apiStudentRequests($studentId)
+    {
+        $enrollmentModel = new EnrollmentModel();
+        $requests = $enrollmentModel
+            ->where('student_id', $studentId)
+            ->orderBy('created_at', 'DESC')
+            ->findAll();
+
+        return $this->response->setJSON([
+            'success' => true,
+            'requests' => $requests
+        ]);
+    }
+
+    // API: Get all enrollment requests for a course (GET)
+    public function apiCourseRequests($courseId)
+    {
+        $enrollmentModel = new EnrollmentModel();
+        $requests = $enrollmentModel
+            ->where('course_id', $courseId)
+            ->orderBy('created_at', 'DESC')
+            ->findAll();
+
+        return $this->response->setJSON([
+            'success' => true,
+            'requests' => $requests
+        ]);
+    }
+
+    // API: Update enrollment status (POST/JSON)
+    public function apiUpdateStatus($id)
+    {
+        $json = $this->request->getJSON(true);
+        if (!$json || !isset($json['status'])) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Missing status'
+            ])->setStatusCode(400);
+        }
+
+        $status = $json['status'];
+        if (!in_array($status, ['approved', 'rejected', 'pending'])) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Invalid status value'
+            ])->setStatusCode(400);
+        }
+
+        $enrollmentModel = new EnrollmentModel();
+        $result = $enrollmentModel->update($id, ['status' => $status]);
+
+        if ($result) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Failed to update status'
+            ])->setStatusCode(500);
+        }
+    }
+
+    // API: Get all pending requests (GET)
+    public function apiPending()
+    {
+        $enrollmentModel = new EnrollmentModel();
+        $pending = $enrollmentModel->where('status', 'pending')->findAll();
+        return $this->response->setJSON([
+            'success' => true,
+            'requests' => $pending
+        ]);
+    }
+
+    // --- END ANDROID API ENHANCEMENTS ---
+
+    // Add: API endpoint for Android enrollment request (legacy/fallback)
     public function enrollInCourse()
     {
-        // Accept both GET and POST for flexibility
         $studentId = $this->request->getGet('student_id') ?? $this->request->getPost('student_id');
         $courseId = $this->request->getGet('course_id') ?? $this->request->getPost('course_id');
         $section = $this->request->getGet('section') ?? $this->request->getPost('section');
@@ -117,7 +228,7 @@ class Enrollment extends BaseController
             ])->setStatusCode(400);
         }
 
-        $enrollmentModel = new \App\Models\EnrollmentModel();
+        $enrollmentModel = new EnrollmentModel();
         $data = [
             'student_id' => $studentId,
             'course_id' => $courseId,
