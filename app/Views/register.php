@@ -182,72 +182,67 @@ button:hover {
   </div>
 
   <script>
-    const registerForm = document.getElementById("registerForm");
+    function generateCode() {
+    return Math.floor(100000 + Math.random() * 900000);
+  }
+
+  document.getElementById("registerForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const confirmPassword = document.getElementById("confirmPassword").value.trim();
+    const fullname = document.getElementById("fullname").value.trim();
+    const birthday = document.getElementById("birthday").value;
+    const gender = document.getElementById("gender").value;
+    const termsAccepted = document.getElementById("terms").checked;
     const msg = document.getElementById("message");
 
-    registerForm.addEventListener("submit", function (e) {
-      e.preventDefault();
+    msg.textContent = ""; // Clear previous messages
 
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const confirmPassword = document.getElementById("confirmPassword").value.trim();
-      const fullname = document.getElementById("fullname").value.trim();
-      const birthday = document.getElementById("birthday").value;
-      const gender = document.getElementById("gender").value;
-      const termsAccepted = document.getElementById("terms").checked;
+    if (!termsAccepted) {
+      msg.textContent = "Accept the terms and conditions.";
+      return;
+    }
+    if (password !== confirmPassword) {
+      msg.textContent = "Passwords do not match.";
+      return;
+    }
 
-      msg.textContent = "";
-      msg.className = "";
+    try {
+      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+      const code = generateCode();
 
-      if (!email || !password || !confirmPassword || !fullname || !birthday || !gender) {
-        msg.textContent = "⚠ Please fill in all fields.";
-        msg.classList.add("error");
-        return;
-      }
+      // Store code in Firestore
+      await firebase.firestore().collection("verifications").doc(user.uid).set({
+        code: code,
+        email: email,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
 
-      if (password !== confirmPassword) {
-        msg.textContent = "❌ Passwords do not match.";
-        msg.classList.add("error");
-        return;
-      }
+      const response = await fetch("<?= base_url('send-verification-code') ?>", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email: email, code: code })
+});
 
-      if (!termsAccepted) {
-        msg.textContent = "❌ You must accept the terms and conditions.";
-        msg.classList.add("error");
-        return;
-      }
+if (!response.ok) {
+  throw new Error("Failed to send verification code. Server error.");
+}
 
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
 
-          user.sendEmailVerification()
-            .then(() => {
-              // Save data to sessionStorage for later use in verify_code.php
-              sessionStorage.setItem("tempUser", JSON.stringify({
-                uid: user.uid,
-                fullName: fullname,
-                email: email,
-                birthday: birthday,
-                gender: gender
-              }));
+      msg.textContent = "Verification code sent! Redirecting...";
+      setTimeout(() => {
+        window.location.href = "<?= base_url('verify_code') ?>";
+      }, 2000);
+      
+    } catch (error) {
+      msg.textContent = "Error: " + error.message;
+    } 
+  });
 
-              msg.textContent = "✅ Verification email sent. Redirecting...";
-              msg.classList.add("success");
-              setTimeout(() => {
-                window.location.href = "<?= base_url('verify_code') ?>";
-              }, 1500);
-            })
-            .catch((error) => {
-              msg.textContent = "❌ Failed to send verification email: " + error.message;
-              msg.classList.add("error");
-            });
-        })
-        .catch((error) => {
-          msg.textContent = "❌ " + error.message;
-          msg.classList.add("error");
-        });
-    });
+      
   </script>
 </body>
 </html>
