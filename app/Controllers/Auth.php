@@ -67,6 +67,54 @@ class Auth extends BaseController
         $email = $this->request->getGet('email');
         return view('verify_code', ['email' => $email]);
     }
+    public function send_verification_code()
+{
+    if ($this->request->getMethod() !== 'post') {
+        log_message('error', 'send_verification_code: Method not allowed');
+        return $this->response->setStatusCode(405)->setBody('Method Not Allowed');
+    }
+
+    $data = $this->request->getJSON(true);
+    $email = $data['email'] ?? null;
+    $code = $data['code'] ?? null;
+
+    if (!$email || !$code) {
+        log_message('error', 'send_verification_code: Missing email or code. Data: ' . json_encode($data));
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'Missing email or code'
+        ])->setStatusCode(400);
+    }
+
+    if (ENVIRONMENT === 'development') {
+        log_message('debug', "send_verification_code: [DEV MODE] Would send code $code to $email");
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Verification email (simulated in dev mode)',
+            'code' => $code
+        ]);
+    }
+
+    $emailService = \Config\Services::email();
+    $emailService->setTo($email);
+    $emailService->setSubject('Your CrimsonSkillBoost Verification Code');
+    $emailService->setMessage("Your verification code is: <b>$code</b>");
+
+    if (!$emailService->send()) {
+        $debug = $emailService->printDebugger(['headers', 'subject', 'body']);
+        log_message('error', 'send_verification_code: Email failed to send. Debug: ' . print_r($debug, true));
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'Email failed to send.',
+            'debug' => $debug
+        ])->setStatusCode(500);
+    }
+
+    return $this->response->setJSON([
+        'status' => 'success',
+        'message' => 'Verification email sent'
+    ]);
+}
 
     public function setupProfile()
     {
