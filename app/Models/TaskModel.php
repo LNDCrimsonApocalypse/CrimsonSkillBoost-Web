@@ -1,9 +1,7 @@
 <?php
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-class TaskModel extends Model
+class TaskModel
 {
     protected $table = 'tasks';
     protected $primaryKey = 'id';

@@ -2,98 +2,68 @@
 
 namespace App\Controllers;
 
-use App\Models\CourseModel;
-use App\Models\LessonModel;
-
 class Course extends BaseController
 {
     public function index()
     {
-        $model = new CourseModel();
-        $data['courses'] = $model->findAll();
+        // Dummy data instead of SQL
+        $data['courses'] = [
+            ['id' => 1, 'course_name' => 'Sample Course 1'],
+            ['id' => 2, 'course_name' => 'Sample Course 2']
+        ];
 
         return view('courses/index', $data);
     }
 
     public function edit($id)
     {
-        $model = new CourseModel();
-        $data['course'] = $model->find($id);
+        // Dummy data
+        $data['course'] = ['id' => $id, 'course_name' => 'Sample Course ' . $id];
 
         return view('courses/edit', $data);
     }
 
     public function update($id)
     {
+        // Simulate update success
         if ($this->request->isAJAX()) {
-            $courseModel = new \App\Models\CourseModel();
-            $json = $this->request->getJSON(true);
-
-            // Check for correct field and non-empty value
-            if (!isset($json['course_name']) || trim($json['course_name']) === '') {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Course name is required'
-                ]);
-            }
-
-            // Make sure 'course_name' is in allowedFields in your CourseModel
-            $success = $courseModel->update($id, ['course_name' => $json['course_name']]);
-            if ($success) {
-                return $this->response->setJSON([
-                    'success' => true,
-                    'message' => 'Course updated'
-                ]);
-            } else {
-                // Show model errors for debugging
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Failed to update course',
-                    'errors' => $courseModel->errors()
-                ]);
-            }
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Course updated'
+            ]);
         }
-
-        $model = new CourseModel();
-        $model->update($id, [
-            'course_name' => $this->request->getPost('course_name')
-        ]);
 
         return redirect()->to('/course');
     }
 
     public function delete($id)
     {
+        // Simulate delete success
         if ($this->request->isAJAX()) {
-            $courseModel = new \App\Models\CourseModel();
-            $success = $courseModel->delete($id);
             return $this->response->setJSON([
-                'success' => $success,
-                'message' => $success ? 'Course deleted' : 'Failed to delete course'
+                'success' => true,
+                'message' => 'Course deleted'
             ]);
         }
-
-        $model = new CourseModel();
-        $model->delete($id);
 
         return redirect()->to('/course');
     }
 
     public function view($id = null)
     {
-        $courseModel = new CourseModel();
-        $lessonModel = new LessonModel();
-
-        // Fetch all courses for the view
-        $courses = $courseModel->findAll();
-
-        // Optionally, fetch lessons for a specific course if $id is provided
+        // Dummy courses and lessons
+        $courses = [
+            ['id' => 1, 'course_name' => 'Sample Course 1'],
+            ['id' => 2, 'course_name' => 'Sample Course 2']
+        ];
         $lessons = [];
         if ($id) {
-            $lessons = $lessonModel->where('course_id', $id)->findAll();
+            $lessons = [
+                ['id' => 1, 'title' => 'Lesson 1', 'course_id' => $id],
+                ['id' => 2, 'title' => 'Lesson 2', 'course_id' => $id]
+            ];
         }
 
-        // Pass all courses and lessons to the view
         return view('course_view', [
             'courses' => $courses,
             'lessons' => $lessons

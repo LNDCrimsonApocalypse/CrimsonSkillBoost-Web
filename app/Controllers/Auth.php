@@ -129,23 +129,24 @@ class Auth extends BaseController
     public function dashboard()
     {
         try {
-            $courseModel = new \App\Models\CourseModel();
-            $submissionModel = new \App\Models\SubmissionModel();
-            $enrollmentModel = new \App\Models\EnrollmentModel();
-
-            // Fetch all courses
-            $courses = $courseModel->findAll();
-
-            // Fetch recent submissions with correct fields
-            $submissions = $submissionModel->getRecentSubmissions(5);
-
-            // Fetch pending enrollment requests with correct fields
-            $enrollmentRequests = $enrollmentModel->getPendingRequests();
-
-            // Debug: log what is being passed
-            log_message('debug', '[Dashboard] Courses: ' . json_encode($courses));
-            log_message('debug', '[Dashboard] Submissions: ' . json_encode($submissions));
-            log_message('debug', '[Dashboard] Enrollment Requests: ' . json_encode($enrollmentRequests));
+            // Dummy data for dashboard
+            $courses = [
+                ['id' => 1, 'course_name' => 'Sample Course 1'],
+                ['id' => 2, 'course_name' => 'Sample Course 2']
+            ];
+            $submissions = [
+                [
+                    'id' => 1,
+                    'student_name' => 'Juan Dela Cruz',
+                    'task_title' => 'Task 1',
+                    'submitted_at' => '2024-06-01',
+                    'status' => 'graded',
+                    'score' => 95
+                ]
+            ];
+            $enrollmentRequests = [
+                ['id' => 1, 'student_id' => 1, 'course_id' => 1, 'section' => 'A', 'status' => 'pending']
+            ];
 
             $data = [
                 'courses' => $courses,
@@ -156,28 +157,63 @@ class Auth extends BaseController
             return view('dashboard', $data);
 
         } catch (\Exception $e) {
-            log_message('error', '[Dashboard] Error: ' . $e->getMessage());
             return view('dashboard', ['error' => 'Failed to load dashboard data']);
         }
     }
     public function getCourses()
     {
-        $courseModel = new \App\Models\CourseModel();
-        $courses = $courseModel->findAll();
+        // Dummy courses
+        $courses = [
+            ['id' => 1, 'course_name' => 'Sample Course 1'],
+            ['id' => 2, 'course_name' => 'Sample Course 2']
+        ];
         return $this->response->setJSON($courses);
     }
 
     public function getLessons()
     {
-        $lessonModel = new \App\Models\LessonModel();
-        $lessons = $lessonModel->findAll();
+        // Dummy lessons
+        $lessons = [
+            [
+                'id' => 1,
+                'title' => 'Sample Lesson 1',
+                'course_id' => 1,
+                'created_at' => '2024-06-01',
+                'description' => 'Sample description 1',
+                'content' => 'Content 1'
+            ],
+            [
+                'id' => 2,
+                'title' => 'Sample Lesson 2',
+                'course_id' => 2,
+                'created_at' => '2024-06-02',
+                'description' => 'Sample description 2',
+                'content' => 'Content 2'
+            ]
+        ];
         return $this->response->setJSON($lessons);
     }
 
     public function getTasks()
     {
-        $taskModel = new \App\Models\TaskModel();
-        $tasks = $taskModel->findAll();
+        // Dummy tasks
+        $tasks = [
+            [
+                'id' => 1,
+                'title' => 'Sample Task',
+                'description' => 'Sample description',
+                'year' => 2024,
+                'section' => 'A',
+                'semester' => 1,
+                'courses' => json_encode([1,2]),
+                'start_date' => '2024-06-01',
+                'end_date' => '2024-06-10',
+                'allow_late' => 0,
+                'attempts' => 1,
+                'created_at' => '2024-06-01',
+                'updated_at' => '2024-06-01'
+            ]
+        ];
         return $this->response->setJSON($tasks);
     }
 
@@ -191,14 +227,22 @@ class Auth extends BaseController
                 'message' => 'Missing taskId'
             ])->setStatusCode(400);
         }
-        $taskModel = new \App\Models\TaskModel();
-        $task = $taskModel->find($taskId);
-        if (!$task) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Task not found'
-            ])->setStatusCode(404);
-        }
+        // Dummy task
+        $task = [
+            'id' => $taskId,
+            'title' => 'Sample Task',
+            'description' => 'Sample description',
+            'year' => 2024,
+            'section' => 'A',
+            'semester' => 1,
+            'courses' => json_encode([1,2]),
+            'start_date' => '2024-06-01',
+            'end_date' => '2024-06-10',
+            'allow_late' => 0,
+            'attempts' => 1,
+            'created_at' => '2024-06-01',
+            'updated_at' => '2024-06-01'
+        ];
         return $this->response->setJSON($task);
     }
 
@@ -213,37 +257,49 @@ class Auth extends BaseController
                 'message' => 'Missing taskId or filePath'
             ])->setStatusCode(400);
         }
-        $taskModel = new \App\Models\TaskModel();
-        $updated = $taskModel->update($taskId, ['file_path' => $filePath]);
-        if ($updated) {
-            return $this->response->setJSON(['success' => true]);
-        } else {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Failed to update task'
-            ])->setStatusCode(500);
-        }
+        // Simulate update
+        return $this->response->setJSON(['success' => true]);
     }
 
     public function getQuizzes()
     {
-        $quizModel = new \App\Models\QuizModel();
-        $quizzes = $quizModel->findAll();
+        // Dummy quizzes
+        $quizzes = [
+            [
+                'id' => 1,
+                'title' => 'Sample Quiz',
+                'start_date' => '2024-06-01',
+                'end_date' => '2024-06-10',
+                'created_at' => '2024-06-01'
+            ]
+        ];
         return $this->response->setJSON($quizzes);
     }
 
     public function getQuizQuestions()
     {
-        // Use the correct model and table for quiz questions
-        $questionModel = new \App\Models\QuestionModel();
-        $questions = $questionModel->findAll();
+        // Dummy questions
+        $questions = [
+            ['id' => 1, 'quiz_id' => 1, 'question_text' => 'Sample question 1', 'options' => json_encode(['A','B','C','D']), 'correct_answer' => 0],
+            ['id' => 2, 'quiz_id' => 1, 'question_text' => 'Sample question 2', 'options' => json_encode(['A','B','C','D']), 'correct_answer' => 1]
+        ];
         return $this->response->setJSON($questions);
     }
 
     public function getSubmissions()
     {
-        $submissionModel = new \App\Models\SubmissionModel();
-        $submissions = $submissionModel->findAll();
+        // Dummy submissions
+        $submissions = [
+            [
+                'id' => 1,
+                'student_id' => 1,
+                'task_id' => 1,
+                'score' => 95,
+                'status' => 'graded',
+                'submitted_at' => '2024-06-01 10:00:00',
+                'graded_at' => '2024-06-01 12:00:00'
+            ]
+        ];
         return $this->response->setJSON($submissions);
     }
 
