@@ -118,3 +118,4 @@ $routes->get('result_task/(:num)', 'ResultTask::index/$1');
 $routes->get('taskresult', 'Taskresult::index');
 $routes->get('upload_quiz', 'UploadQuiz::index');
 $routes->get('result_quiz/(:num)', 'ResultQuiz::index/$1');
+$routes->post('send-verification-code', 'Auth::send_verification_code');

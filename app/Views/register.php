@@ -111,6 +111,7 @@ form input, form select {
   color: #6c63ff;
   text-decoration: none;
 }
+
 .form {
   display: flex;
   flex-direction: column;
@@ -118,9 +119,8 @@ form input, form select {
 }
 
 .form-footer {
-  margin-top: auto; /* Pushes this div (and the button inside) to the bottom */
+  margin-top: auto;
 }
-
 
 button {
   background-color: #da6de9;
@@ -138,25 +138,25 @@ button {
 button:hover {
   background-color: #c75cd5;
 }
-
   </style>
 </head>
 <body>
- <header class="header">
-  <img src="public/img/Logo.png" alt="Crimson Skill Boost Logo" class="logo" />
-</header>
+  <header class="header">
+    <img src="public/img/Logo.png" alt="Crimson Skill Boost Logo" class="logo" />
+  </header>
+
   <div class="container">
     <div class="illustration">
       <img src="public/img/5.png" alt="Illustration" />
     </div>
     <div class="form-box">
       <h2>Create An Account</h2>
-      <form>
-        <input type="text" placeholder="Full name" required />
-        <input type="email" placeholder="Email Address" required />
+      <form id="registerForm">
+        <input type="text" id="fullname" placeholder="Full name" required />
+        <input type="email" id="email" placeholder="Email Address" required />
         <div class="row">
-          <input type="date" placeholder="Birthday" required />
-          <select required>
+          <input type="date" id="birthday" placeholder="Birthday" required />
+          <select id="gender" required>
             <option value="" disabled selected>Gender</option>
             <option>Male</option>
             <option>Female</option>
@@ -164,85 +164,85 @@ button:hover {
           </select>
         </div>
         <div class="row">
-          <input type="password" placeholder="Password" required />
-          <input type="password" placeholder="Confirm Password" required />
+          <input type="password" id="password" placeholder="Password" required />
+          <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
         </div>
         <label class="checkbox">
-         <input type="checkbox" required />
-            <span>
-              By clicking here, I state that I have read and understood the
-               <a href="<?= base_url('terms') ?>" target="_blank" style="color:#e636a4;text-decoration:underline;">Terms and Conditions</a>.
-            </span>
-            </label>
+          <input type="checkbox" id="terms" required />
+          <span>
+            By clicking here, I state that I have read and understood the
+            <a href="<?= base_url('terms') ?>" target="_blank" style="color:#e636a4;text-decoration:underline;">Terms and Conditions</a>.
+          </span>
+        </label>
+        <p id="message" style="color: red; margin-bottom: 1rem;"></p>
         <div class="form-footer">
-    <button type="submit">Sign Up</button>
-  </div>
+          <button type="submit">Sign Up</button>
+        </div>
       </form>
     </div>
   </div>
 
   <script>
     function generateCode() {
-    return Math.floor(100000 + Math.random() * 900000);
-  }
-
-  document.getElementById("registerForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const confirmPassword = document.getElementById("confirmPassword").value.trim();
-    const fullname = document.getElementById("fullname").value.trim();
-    const birthday = document.getElementById("birthday").value;
-    const gender = document.getElementById("gender").value;
-    const termsAccepted = document.getElementById("terms").checked;
-    const msg = document.getElementById("message");
-
-    msg.textContent = ""; // Clear previous messages
-
-    if (!termsAccepted) {
-      msg.textContent = "Accept the terms and conditions.";
-      return;
-    }
-    if (password !== confirmPassword) {
-      msg.textContent = "Passwords do not match.";
-      return;
+      return Math.floor(100000 + Math.random() * 900000);
     }
 
-    try {
-      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-      const user = userCredential.user;
-      const code = generateCode();
+    document.getElementById("registerForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
 
-      // Store code in Firestore
-      await firebase.firestore().collection("verifications").doc(user.uid).set({
-        code: code,
-        email: email,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+      const fullname = document.getElementById("fullname").value.trim();
+      const birthday = document.getElementById("birthday").value;
+      const gender = document.getElementById("gender").value;
+      const termsAccepted = document.getElementById("terms").checked;
+      const msg = document.getElementById("message");
 
-      const response = await fetch("<?= base_url('send-verification-code') ?>", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ email: email, code: code })
-});
+      msg.textContent = ""; // Clear previous messages
 
-if (!response.ok) {
-  throw new Error("Failed to send verification code. Server error.");
-}
+      if (!termsAccepted) {
+        msg.textContent = "Accept the terms and conditions.";
+        return;
+      }
+      if (password !== confirmPassword) {
+        msg.textContent = "Passwords do not match.";
+        return;
+      }
 
+      try {
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+        const code = generateCode();
 
-      msg.textContent = "Verification code sent! Redirecting...";
-      setTimeout(() => {
-        window.location.href = "<?= base_url('verify_code') ?>";
-      }, 2000);
-      
-    } catch (error) {
-      msg.textContent = "Error: " + error.message;
-    } 
-  });
+        // Store code in Firestore
+        await firebase.firestore().collection("verifications").doc(user.uid).set({
+          code: code,
+          email: email,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
 
-      
+        const response = await fetch("<?= base_url('send-verification-code') ?>", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email, code: code })
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to send verification code. Server error.");
+        }
+
+        msg.style.color = "green";
+        msg.textContent = "Verification code sent! Redirecting...";
+        setTimeout(() => {
+          window.location.href = "<?= base_url('verify_code') ?>";
+        }, 2000);
+
+      } catch (error) {
+        msg.style.color = "red";
+        msg.textContent = "Error: " + error.message;
+      }
+    });
   </script>
 </body>
 </html>
