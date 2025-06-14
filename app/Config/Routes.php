@@ -93,7 +93,7 @@ $routes->get('task/debug-submissions/(:num)', 'Task::debugSubmissions/$1');
 
 // Grading routes
 $routes->group('grading', ['namespace' => 'App\Controllers'], function($routes) {
-    $routes->get('grading/overview', 'Grading::overview');
+    $routes->get('overview', 'Grading::overview');
     $routes->get('student/(:num)', 'Grading::studentOverview/$1');
     $routes->post('save/(:num)', 'Grading::save/$1', ['filter' => 'ajax']);
 });
@@ -119,3 +119,4 @@ $routes->get('taskresult', 'Taskresult::index');
 $routes->get('upload_quiz', 'UploadQuiz::index');
 $routes->get('result_quiz/(:num)', 'ResultQuiz::index/$1');
 $routes->post('send-verification-code', 'Auth::send_verification_code');
+$routes->get('studentprog', 'Studentprog::index');
