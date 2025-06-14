@@ -120,3 +120,4 @@ $routes->get('upload_quiz', 'UploadQuiz::index');
 $routes->get('result_quiz/(:num)', 'ResultQuiz::index/$1');
 $routes->post('send-verification-code', 'Auth::send_verification_code');
 $routes->get('studentprog', 'Studentprog::index');
+$routes->get('courses_view', 'Courses::view');

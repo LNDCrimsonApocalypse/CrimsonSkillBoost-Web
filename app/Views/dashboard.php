@@ -108,7 +108,7 @@
       background: #fff;
 
     }
-       .dropbtn {
+        .dropbtn {
   
    font-weight: bold;
   font-size: 1.35rem;
@@ -116,12 +116,8 @@
   background: none;
   border: none;
   cursor: pointer;
-     margin: 0 15px;
   
 }
- .dropbtn :hover {
-   color: #ff00aa;
- }
 
 .dropdown {
   position: relative;
@@ -462,20 +458,21 @@ li {
        <a href="<?= base_url('homepage_initial') ?>">HOME</a>
           <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
        <a href="<?= base_url('aboutus') ?>">ABOUT</a>
-        <li class="dropdown">
-      <button class="dropbtn">COURSES ▼</button>
-      <div class="dropdown-content">
-        <select id="course-select">
-            <option value="">Select Course</option>
-            <option value="<?= base_url('allcourses') ?>">ALL COURSES</option>
-            <option value="<?= base_url('courses') ?>">MY COURSES</option>
-          </select>
-      </div>
-    </li>
+         <li class="dropdown">
+  <label class="dropbtn" for="course-select">
+    COURSES <span class="arrow">▼</span>
+  </label>
+  <div class="dropdown-content">
+    <select id="coursesDropdown" class="courses-dropdown">
+      <option value="allcourses">ALL COURSES</option>
+      <option value="mycourses">MY COURSES</option>
+    </select>
+  </div>
+</li>
     </div>
     <div class="navbar-right">
 <img src="public/img/notifications.png" alt="Notifications" class="icon" />
-      <img src="public/img/profile.png" alt="Profile" class="navbar-profile" />
+      <img src="" alt="Profile" class="navbar-profile" />
     </div>
   </nav>
 
@@ -484,7 +481,7 @@ li {
     <?= csrf_field() ?> <!-- Add this line -->
     <main class="container">
       <section class="left-panel">
-        <h2>Active Courses</h2>
+        <h2> Available Courses</h2>
         <?php
           // Ensure $courses is always an array
           $courses = isset($courses) && is_array($courses) ? $courses : [];
@@ -495,7 +492,7 @@ li {
               <div class="course-img"></div>
               <div class="course-info">
                 <h3 class="course-title"><?= esc($course['course_name']) ?></h3>
-                <p>Created on <?= date('F j, Y', strtotime($course['created_at'])) ?></p>
+                <p>Created on <?= isset($row['created_at']) ? $row['created_at'] : 'N/A'; ?></p>
                 <a href="<?= base_url('course/view/' . $course['id']) ?>" class="btn">View</a>
                 <a href="javascript:void(0)" class="btn" onclick="openEditCourseModal(<?= $course['id'] ?>, '<?= esc(addslashes($course['course_name'])) ?>')">Edit</a>
                 <a href="javascript:void(0)" class="btn" onclick="deleteCourse(<?= $course['id'] ?>, this)">Delete</a>
@@ -607,7 +604,7 @@ li {
             })
         })
         .then(response => response.json())
-        .then(data => {
+        .then data => {
             if (data.success) {
                 const card = document.getElementById(`request-${id}`);
                 if (card) card.remove();
@@ -679,6 +676,14 @@ li {
       })
       .catch(() => alert('Failed to delete course'));
     }
+
+    document.getElementById('coursesDropdown').addEventListener('change', function() {
+    if (this.value === "mycourses") {
+        window.location.href = "<?= base_url('mycourses') ?>";
+    } else if (this.value === "allcourses") {
+        window.location.href = "<?= base_url('allcourses') ?>";
+    }
+});
   </script>
 </body>
 </html>

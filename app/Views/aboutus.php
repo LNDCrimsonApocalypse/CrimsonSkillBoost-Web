@@ -294,25 +294,25 @@ li {
      <img src="public/img/logo.png" alt="Logo"  class="navbar-logo" />
     </div>
     <div class="navbar-center">
-     <a href="<?= base_url('homepage') ?>" target="_blank">HOME</a> 
-     <a href="<?= base_url('dashboard') ?>" target="blank">DASHBOARD</a>
-     <a href="<?= base_url('aboutus') ?>" target="blank">ABOUT</a>
+     <a href="<?= base_url('homepage') ?>" >HOME</a> 
+     <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+     <a href="<?= base_url('aboutus') ?>">ABOUT</a>
              <li class="dropdown">
   <label class="dropbtn" for="course-select">
     COURSES <span class="arrow">▼</span>
   </label>
   <div class="dropdown-content">
-    <select id="course-select" class="custom-select">
-      <option value="web">ALL COURSES</option>
-      <option value="data">MY COURSES</option>
-    </select>
+    <select id="coursesDropdown" class="dropdown-select">
+    <option value="allcourses">ALL COURSES</option>
+    <option value="mycourses">MY COURSES</option>
+</select>
+
   </div>
 </li>
 
     </div>
     <div class="navbar-right">
       <img src="public/img/notifications.png" alt="Notifications" class="icon" />
-      <img src="public/img/profile.png" alt="Profile" class="navbar-profile" />
     </div>
   </nav>
 
@@ -338,5 +338,14 @@ li {
       <path fill="#fdeef4" fill-opacity="1" d="M0,120 C360,200 1080,40 1440,120 L1440,120 L0,120 Z"></path>
     </svg>
   </section>
+  <script>
+document.getElementById('coursesDropdown').addEventListener('change', function() {
+    if (this.value === "mycourses") {
+        window.location.href = "<?= base_url('my_courses_view') ?>";
+    } else if (this.value === "allcourses") {
+        window.location.href = "<?= base_url('allcourses') ?>";
+    }
+});
+</script>
 </body>
 </html>

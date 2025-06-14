@@ -1,0 +1,276 @@
+CRITICAL - 2025-06-14 08:48:13 --> ErrorException: Undefined array key "created_at"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\dashboard.php on line 494.
+ 1 APPPATH\Views\dashboard.php(494): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "created_at"', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php', 494)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(145): view('dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 08:48:33 --> ErrorException: Undefined array key "created_at"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\dashboard.php on line 494.
+ 1 APPPATH\Views\dashboard.php(494): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "created_at"', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php', 494)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(145): view('dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 08:51:40 --> ErrorException: Undefined array key "created_at"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\dashboard.php on line 494.
+ 1 APPPATH\Views\dashboard.php(494): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "created_at"', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php', 494)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(145): view('dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 08:51:42 --> ErrorException: Undefined array key "created_at"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\dashboard.php on line 494.
+ 1 APPPATH\Views\dashboard.php(494): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "created_at"', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php', 494)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(145): view('dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 08:53:15 --> ErrorException: Undefined array key "created_at"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\dashboard.php on line 494.
+ 1 APPPATH\Views\dashboard.php(494): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "created_at"', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php', 494)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(145): view('dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 08:56:40 --> ErrorException: Undefined variable $row
+[Method: GET, Route: dashboard]
+in APPPATH\Views\dashboard.php on line 494.
+ 1 APPPATH\Views\dashboard.php(494): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php', 494)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(145): view('dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 08:56:41 --> ErrorException: Undefined variable $row
+[Method: GET, Route: dashboard]
+in APPPATH\Views\dashboard.php on line 494.
+ 1 APPPATH\Views\dashboard.php(494): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php', 494)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(145): view('dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 08:57:07 --> ErrorException: Undefined array key "student_name"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\dashboard.php on line 517.
+ 1 APPPATH\Views\dashboard.php(517): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "student_name"', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php', 517)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(145): view('dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 08:57:08 --> ErrorException: Undefined array key "student_name"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\dashboard.php on line 517.
+ 1 APPPATH\Views\dashboard.php(517): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "student_name"', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php', 517)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(145): view('dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 08:57:10 --> ErrorException: Undefined array key "student_name"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\dashboard.php on line 517.
+ 1 APPPATH\Views\dashboard.php(517): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "student_name"', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php', 517)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(145): view('dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 08:59:20 --> ErrorException: Undefined array key "student_name"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\dashboard.php on line 517.
+ 1 APPPATH\Views\dashboard.php(517): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "student_name"', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php', 517)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(145): view('dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 16:18:34 --> ErrorException: Undefined variable $user
+[Method: GET, Route: allcourses]
+in APPPATH\Views\allcourses.php on line 411.
+ 1 APPPATH\Views\allcourses.php(411): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $user', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php', 411)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('allcourses', [], true)
+ 5 APPPATH\Controllers\Allcourses.php(9): view('allcourses')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Allcourses->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Allcourses))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 16:18:35 --> ErrorException: Undefined variable $user
+[Method: GET, Route: allcourses]
+in APPPATH\Views\allcourses.php on line 411.
+ 1 APPPATH\Views\allcourses.php(411): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $user', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php', 411)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('allcourses', [], true)
+ 5 APPPATH\Controllers\Allcourses.php(9): view('allcourses')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Allcourses->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Allcourses))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 16:18:39 --> ErrorException: Undefined variable $user
+[Method: GET, Route: allcourses]
+in APPPATH\Views\allcourses.php on line 411.
+ 1 APPPATH\Views\allcourses.php(411): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $user', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php', 411)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('allcourses', [], true)
+ 5 APPPATH\Controllers\Allcourses.php(9): view('allcourses')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Allcourses->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Allcourses))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 16:18:52 --> ErrorException: Undefined variable $user
+[Method: GET, Route: allcourses]
+in APPPATH\Views\allcourses.php on line 411.
+ 1 APPPATH\Views\allcourses.php(411): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $user', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php', 411)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('allcourses', [], true)
+ 5 APPPATH\Controllers\Allcourses.php(9): view('allcourses')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Allcourses->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Allcourses))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 16:18:55 --> ErrorException: Undefined variable $user
+[Method: GET, Route: allcourses]
+in APPPATH\Views\allcourses.php on line 411.
+ 1 APPPATH\Views\allcourses.php(411): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $user', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php', 411)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('allcourses', [], true)
+ 5 APPPATH\Controllers\Allcourses.php(9): view('allcourses')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Allcourses->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Allcourses))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 16:20:56 --> ErrorException: Undefined variable $user
+[Method: GET, Route: allcourses]
+in APPPATH\Views\allcourses.php on line 411.
+ 1 APPPATH\Views\allcourses.php(411): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $user', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php', 411)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('allcourses', [], true)
+ 5 APPPATH\Controllers\Allcourses.php(9): view('allcourses')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Allcourses->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Allcourses))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 16:20:59 --> ErrorException: Undefined variable $user
+[Method: GET, Route: allcourses]
+in APPPATH\Views\allcourses.php on line 411.
+ 1 APPPATH\Views\allcourses.php(411): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $user', 'D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php', 411)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\allcourses.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('allcourses', [], true)
+ 5 APPPATH\Controllers\Allcourses.php(9): view('allcourses')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Allcourses->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Allcourses))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 16:49:11 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "courses_view.php"
+[Method: GET, Route: courses_view]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('courses_view.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('courses_view', [], true)
+ 3 APPPATH\Controllers\Courses.php(9): view('courses_view')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Courses->view()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Courses))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-14 16:52:41 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "courses_view.php"
+[Method: GET, Route: courses_view]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('courses_view.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('courses_view', [], true)
+ 3 APPPATH\Controllers\Courses.php(10): view('courses_view')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Courses->view()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Courses))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

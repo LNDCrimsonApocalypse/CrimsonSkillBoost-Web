@@ -139,6 +139,12 @@ class Auth extends BaseController
                 'enrollmentRequests' => $enrollmentRequests
             ];
 
+            foreach ($data['rows'] as &$row) {
+                if (!isset($row['created_at'])) {
+                    $row['created_at'] = 'N/A';
+                }
+            }
+
             return view('dashboard', $data);
 
         } catch (\Exception $e) {
