@@ -61,47 +61,41 @@ class Auth extends BaseController
         }
     }
 
-
     public function verifyCodeInput()
     {
         $email = $this->request->getGet('email');
         return view('verify_code', ['email' => $email]);
     }
-   public function send_verification_code() {
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Headers: Content-Type");
-    header("Content-Type: application/json");
 
-    $data = json_decode(file_get_contents("php://input"), true);
-    $email = $data['email'] ?? null;
-    $code = $data['code'] ?? null;
-
-    if (!$email || !$code) {
-        http_response_code(400);
-        echo json_encode(["error" => "Missing email or code"]);
-        return;
+ public function sendVerificationCode()
+    {
+        $data = $this->request->getJSON(true);
+        $email = $data['email'] ?? null;
+        $code = $data['code'] ?? null;
+        if (!$email || !$code) {
+            return $this->response->setJSON(['error' => 'Missing email or code'])->setStatusCode(400);
+        }
+        $emailService = \Config\Services::email();
+        $emailService->setFrom('keisuk3.1114@gmail.com', 'CrimsonSkillBoost'); // Update to your email
+        $emailService->setTo($email);
+        $emailService->setSubject('Your Verification Code');
+        $emailService->setMessage(
+            "Dear user,br>br>" .
+            "Your verification code is strong>{$code}/strong>.br>" .
+            "Please enter this code to verify your account.br>br>" .
+            "Thank you!br>YourAppName Team"
+        );
+        if ($emailService->send()) {
+            return $this->response->setJSON(['success' => true]);
+        }
+        // Return error with debug info if sending fails
+        return $this->response->setJSON([
+            'error' => 'Failed to send email',
+            'debug' => $emailService->printDebugger(['headers'])
+        ])->setStatusCode(500);
     }
 
-    // Use your preferred mailer here (PHPMailer, CodeIgniter email library, etc.)
-    $subject = "Your CrimsonSkillBoost Verification Code";
-    $message = "Your verification code is: $code";
-
-    // Example using CodeIgniter email library:
-    $this->load->library('email');
-    $this->email->from('noreply@yourdomain.com', 'CrimsonSkillBoost');
-    $this->email->to($email);
-    $this->email->subject($subject);
-    $this->email->message($message);
-
-    if ($this->email->send()) {
-        echo json_encode(["success" => true]);
-    } else {
-        http_response_code(500);
-        echo json_encode(["error" => "Failed to send email"]);
-    }
-}
-
-    public function setupProfile()
+public function setupProfile()
     {
         return view('setup_profile');
     }
