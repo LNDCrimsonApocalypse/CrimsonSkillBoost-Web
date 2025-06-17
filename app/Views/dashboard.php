@@ -463,9 +463,9 @@ li {
     COURSES <span class="arrow">▼</span>
   </label>
   <div class="dropdown-content">
-    <select id="coursesDropdown" class="courses-dropdown">
-      <option value="allcourses">ALL COURSES</option>
-      <option value="mycourses">MY COURSES</option>
+    <select id="course-select" class="custom-select">
+      <option value="<?= base_url('allcourses') ?>">ALL COURSES</option>
+      <option value="<?= base_url('courses') ?>">MY COURSES</option>
     </select>
   </div>
 </li>
@@ -676,14 +676,6 @@ li {
       })
       .catch(() => alert('Failed to delete course'));
     }
-
-    document.getElementById('coursesDropdown').addEventListener('change', function() {
-    if (this.value === "mycourses") {
-        window.location.href = "<?= base_url('mycourses') ?>";
-    } else if (this.value === "allcourses") {
-        window.location.href = "<?= base_url('allcourses') ?>";
-    }
-});
   </script>
 </body>
 </html>
