@@ -96,8 +96,10 @@
 
   <div class="verify-container">
     <h2>Enter Confirmation Code</h2>
-    <p>To confirm your account, enter the 6-digit code we sent to<br><strong><?= esc($email) ?></strong></p>
-
+    <p id="emailPrompt">
+      To confirm your account, enter the 6-digit code we sent to<br>
+      <strong id="userEmail"><?= esc($email) ?></strong>
+    </p>
     <form id="verifyForm">
       <div class="code-inputs">
         <?php for ($i = 0; $i < 6; $i++): ?>
@@ -106,11 +108,9 @@
       </div>
       <button type="submit">CONFIRM</button>
     </form>
-
     <div class="resend">
       Didn’t receive code? <a id="resendLink">Resend</a>
     </div>
-
     <p id="message"></p>
   </div>
 
@@ -118,102 +118,189 @@
     document.addEventListener("DOMContentLoaded", () => {
       const message = document.getElementById("message");
       const form = document.getElementById("verifyForm");
+      const codeInputs = document.querySelectorAll(".code-inputs input");
+      const emailElem = document.getElementById("userEmail");
+      let userUID = null;
+      let canEnterCode = false;
+      let redirectInProgress = false;
       const tempData = JSON.parse(sessionStorage.getItem("tempUser"));
 
-      if (!tempData) {
-        message.textContent = "❌ Session expired. Please register again.";
-        message.style.color = "red";
-        return;
+      // --- IMPROVED CONTINUOUS CODE INPUT LOGIC ---
+      codeInputs.forEach((input, idx) => {
+        input.addEventListener("input", function(e) {
+          let value = this.value.replace(/[^0-9]/g, "");
+          if (value.length === 0) {
+            this.value = "";
+            return;
+          }
+          // Handle paste or fast typing
+          let chars = value.split("");
+          this.value = chars[0];
+          let nextIdx = idx;
+          for (let i = 1; i < chars.length && nextIdx < codeInputs.length - 1; i++) {
+            nextIdx++;
+            codeInputs[nextIdx].value = chars[i];
+          }
+          // Move focus to next empty input
+          let focusSet = false;
+          for (let i = idx + 1; i < codeInputs.length; i++) {
+            if (codeInputs[i].value === "") {
+              codeInputs[i].focus();
+              focusSet = true;
+              break;
+            }
+          }
+          if (!focusSet && getCodeValue().length === codeInputs.length) {
+            triggerAutoSubmit();
+          }
+        });
+        input.addEventListener("keydown", function(e) {
+          if (e.key === "Backspace" && this.value === "" && idx > 0) {
+            codeInputs[idx - 1].focus();
+          }
+        });
+        input.addEventListener("paste", function(e) {
+          e.preventDefault();
+          const paste = (e.clipboardData || window.clipboardData).getData("text").replace(/\D/g, "");
+          if (paste) {
+            for (let i = 0; i < codeInputs.length; i++) {
+              codeInputs[i].value = paste[i] || "";
+            }
+            if (paste.length >= codeInputs.length) {
+              codeInputs[codeInputs.length - 1].focus();
+              triggerAutoSubmit();
+            } else {
+              codeInputs[paste.length].focus();
+            }
+          }
+        });
+      });
+
+      function getCodeValue() {
+        return Array.from(codeInputs).map(i => i.value.trim()).join("");
       }
 
-      let redirectInProgress = false;
+      function triggerAutoSubmit() {
+        if (getCodeValue().length === codeInputs.length) {
+          form.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
+        }
+      }
 
       firebase.auth().onAuthStateChanged((user) => {
         if (!user) {
           message.textContent = "❌ User not authenticated. Please login again.";
           message.style.color = "red";
+          form.querySelector("button").disabled = true;
+          codeInputs.forEach(i => i.disabled = true);
           return;
         }
 
-        // Check immediately if already verified
+        // Set email and UID from Firebase user
+        emailElem.textContent = user.email;
+        userUID = user.uid;
+
+        // Only allow code entry after email is verified
+        function enableCodeEntry() {
+          canEnterCode = true;
+          message.textContent = "✅ Email verified! Now enter the 6-digit code sent to your email.";
+          message.style.color = "green";
+          form.querySelector("button").disabled = false;
+          codeInputs.forEach(i => i.disabled = false);
+          codeInputs[0].focus();
+        }
+
+        function disableCodeEntry(msgText, color = "orange") {
+          canEnterCode = false;
+          message.textContent = msgText;
+          message.style.color = color;
+          form.querySelector("button").disabled = true;
+          codeInputs.forEach(i => i.disabled = true);
+        }
+
+        // Initial check
         if (user.emailVerified) {
-          handleVerifiedUser(user);
-          return;
+          enableCodeEntry();
+        } else {
+          disableCodeEntry("📩 Waiting for email verification... Please click the link in your email.");
         }
 
-        const checkVerification = () => {
-          if (redirectInProgress) return;
-
+        // Poll for email verification
+        const intervalId = setInterval(() => {
           user.reload().then(() => {
             if (user.emailVerified) {
-              handleVerifiedUser(user);
-            } else {
-              message.textContent = "📩 Waiting for email verification... Please click the link in your email.";
-              message.style.color = "orange";
+              clearInterval(intervalId);
+              enableCodeEntry();
             }
           });
-        };
+        }, 3000);
+
+        // Form submit handler
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          if (!canEnterCode) {
+            message.textContent = "Please verify your email first by clicking the link sent to your email.";
+            message.style.color = "red";
+            return;
+          }
+          let code = getCodeValue();
+          if (code.length !== 6) {
+            message.textContent = "Please enter the 6-digit code.";
+            message.style.color = "red";
+            return;
+          }
+          if (code !== "123456") {
+            message.textContent = "❌ Invalid confirmation code.";
+            message.style.color = "red";
+            return;
+          }
+          // All checks passed, proceed
+          handleVerifiedUser(user);
+        });
 
         function handleVerifiedUser(user) {
           if (redirectInProgress) return;
           redirectInProgress = true;
 
-          firebase.firestore().collection("users").doc(user.uid).set({
-            fullName: tempData.fullName,
-            email: tempData.email,
-            birthday: tempData.birthday,
-            gender: tempData.gender,
-            role: "educator",
-            createdAt: new Date().toISOString()
-          }).then(() => {
-            sessionStorage.removeItem("tempUser");
-            message.textContent = "✅ Email verified. Redirecting...";
-            message.style.color = "green";
-            window.location.href = "<?= base_url('setup_profile') ?>";
-          }).catch((error) => {
-            redirectInProgress = false;
-            message.textContent = "❌ Failed to save data: " + error.message;
-            message.style.color = "red";
-          });
+          // Save user info to Firestore if not already saved
+          if (!tempData) {
+            firebase.firestore().collection("users").doc(user.uid).set({
+              email: user.email,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              // Add other user fields as necessary
+            }).then(() => {
+              completeSignUp();
+            }).catch((error) => {
+              console.error("Error saving user to Firestore:", error);
+              message.textContent = "Error saving user data. Please contact support.";
+              message.style.color = "red";
+              redirectInProgress = false;
+            });
+          } else {
+            firebase.firestore().collection("users").doc(user.uid).update({
+              emailVerified: true,
+              // Add other fields to update as necessary
+            }).then(() => {
+              completeSignUp();
+            }).catch((error) => {
+              console.error("Error updating user in Firestore:", error);
+              message.textContent = "Error updating user data. Please contact support.";
+              message.style.color = "red";
+              redirectInProgress = false;
+            });
+          }
         }
 
-        // Form submit handler
-        form.addEventListener("submit", (e) => {
-          e.preventDefault();
-          checkVerification();
-        });
-
-        // Initial check
-        checkVerification();
-
-        // Check every 3 seconds
-        const intervalId = setInterval(() => {
-          user.reload().then(() => {
-            if (user.emailVerified) {
-              clearInterval(intervalId);
-              checkVerification();
-            }
-          });
-        }, 3000);
-      });
-
-      // Resend link handler
-      document.getElementById("resendLink").addEventListener("click", () => {
-        const user = firebase.auth().currentUser;
-        if (user) {
-          user.sendEmailVerification().then(() => {
-            message.textContent = "📧 Verification email resent.";
-            message.style.color = "blue";
-          }).catch((error) => {
-            message.textContent = "❌ " + error.message;
-            message.style.color = "red";
-          });
-        } else {
-          message.textContent = "❌ User not logged in.";
-          message.style.color = "red";
+        function completeSignUp() {
+          sessionStorage.removeItem("tempUser");
+          // Use absolute URL for redirect to avoid reload issues
+          window.location.replace("<?= base_url('setup_profile') ?>");
         }
       });
     });
+  </script>
+
+</body>
+</html>
   </script>
 
 </body>

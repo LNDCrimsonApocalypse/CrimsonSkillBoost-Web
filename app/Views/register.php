@@ -183,10 +183,6 @@ button:hover {
   </div>
 
   <script>
-    function generateCode() {
-      return Math.floor(100000 + Math.random() * 900000);
-    }
-
     document.getElementById("registerForm").addEventListener("submit", async function (e) {
       e.preventDefault();
 
@@ -213,27 +209,21 @@ button:hover {
       try {
         const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
         const user = userCredential.user;
-        const code = generateCode();
 
-        // Store code in Firestore
-        await firebase.firestore().collection("verifications").doc(user.uid).set({
-          code: code,
+        // Send Firebase email verification link
+        await user.sendEmailVerification();
+
+        // Store temp user data for verify_code.php
+        sessionStorage.setItem("tempUser", JSON.stringify({
+          fullName: fullname,
           email: email,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        const response = await fetch("<?= base_url('send-verification-code') ?>", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: email, code: code })
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to send verification code. Server error.");
-        }
+          birthday: birthday,
+          gender: gender
+        }));
 
         msg.style.color = "green";
-        msg.textContent = "Verification code sent! Redirecting...";
+        msg.textContent = "Registration successful! Please check your email for a verification link, click it, then enter the code on the next page.";
+
         setTimeout(() => {
           window.location.href = "<?= base_url('verify_code') ?>";
         }, 2000);

@@ -95,7 +95,7 @@ class Auth extends BaseController
         ])->setStatusCode(500);
     }
 
-public function setupProfile()
+    public function setupProfile()
     {
         return view('setup_profile');
     }
