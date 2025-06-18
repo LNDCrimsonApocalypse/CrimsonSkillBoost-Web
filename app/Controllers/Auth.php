@@ -67,7 +67,7 @@ class Auth extends BaseController
         return view('verify_code', ['email' => $email]);
     }
 
- public function sendVerificationCode()
+    public function sendVerificationCode()
     {
         $data = $this->request->getJSON(true);
         $email = $data['email'] ?? null;
@@ -80,11 +80,12 @@ class Auth extends BaseController
         $emailService->setTo($email);
         $emailService->setSubject('Your Verification Code');
         $emailService->setMessage(
-            "Dear user,br>br>" .
-            "Your verification code is strong>{$code}/strong>.br>" .
-            "Please enter this code to verify your account.br>br>" .
-            "Thank you!br>YourAppName Team"
+            "Dear user,<br><br>" .
+            "Your verification code is <strong>{$code}</strong>.<br>" .
+            "Please enter this code to verify your account.<br><br>" .
+            "Thank you!<br>CrimsonSkillBoost Team"
         );
+        $emailService->setMailType('html');
         if ($emailService->send()) {
             return $this->response->setJSON(['success' => true]);
         }

@@ -8,7 +8,8 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script src="<?= base_url('js/firebase-config.js') ?>"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+  <!-- ^^^ FIXED PATH: use public/js/firebase-config.js not js/firebase-config.js -->
 
   <!-- Inline CSS -->
   <style>
@@ -123,9 +124,20 @@
       let userUID = null;
       let canEnterCode = false;
       let redirectInProgress = false;
-      const tempData = JSON.parse(sessionStorage.getItem("tempUser"));
+      const tempData = (() => {
+        try {
+          return JSON.parse(sessionStorage.getItem("tempUser") || "{}");
+        } catch (e) {
+          return {};
+        }
+      })();
 
-      // --- IMPROVED CONTINUOUS CODE INPUT LOGIC ---
+      // Set email display from tempData if available
+      if (tempData && tempData.email) {
+        document.getElementById("userEmail").textContent = tempData.email;
+      }
+
+      // --- CONTINUOUS CODE INPUT LOGIC ---
       codeInputs.forEach((input, idx) => {
         input.addEventListener("input", function(e) {
           let value = this.value.replace(/[^0-9]/g, "");
@@ -133,7 +145,6 @@
             this.value = "";
             return;
           }
-          // Handle paste or fast typing
           let chars = value.split("");
           this.value = chars[0];
           let nextIdx = idx;
@@ -141,7 +152,6 @@
             nextIdx++;
             codeInputs[nextIdx].value = chars[i];
           }
-          // Move focus to next empty input
           let focusSet = false;
           for (let i = idx + 1; i < codeInputs.length; i++) {
             if (codeInputs[i].value === "") {
@@ -254,54 +264,34 @@
             return;
           }
           // All checks passed, proceed
-          handleVerifiedUser(user);
+          redirectToSetupProfile();
         });
 
-        function handleVerifiedUser(user) {
+        function redirectToSetupProfile() {
           if (redirectInProgress) return;
           redirectInProgress = true;
-
-          // Save user info to Firestore if not already saved
-          if (!tempData) {
-            firebase.firestore().collection("users").doc(user.uid).set({
-              email: user.email,
-              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-              // Add other user fields as necessary
-            }).then(() => {
-              completeSignUp();
-            }).catch((error) => {
-              console.error("Error saving user to Firestore:", error);
-              message.textContent = "Error saving user data. Please contact support.";
-              message.style.color = "red";
-              redirectInProgress = false;
-            });
-          } else {
-            firebase.firestore().collection("users").doc(user.uid).update({
-              emailVerified: true,
-              // Add other fields to update as necessary
-            }).then(() => {
-              completeSignUp();
-            }).catch((error) => {
-              console.error("Error updating user in Firestore:", error);
-              message.textContent = "Error updating user data. Please contact support.";
-              message.style.color = "red";
-              redirectInProgress = false;
-            });
-          }
-        }
-
-        function completeSignUp() {
           sessionStorage.removeItem("tempUser");
-          // Use absolute URL for redirect to avoid reload issues
-          window.location.replace("<?= base_url('setup_profile') ?>");
+          window.location.href = "<?= base_url('setup_profile') ?>";
         }
+
+        // Resend link handler
+        document.getElementById("resendLink").addEventListener("click", async () => {
+          if (!user) {
+            message.textContent = "❌ User not logged in.";
+            message.style.color = "red";
+            return;
+          }
+          try {
+            await user.sendEmailVerification();
+            message.textContent = "📧 Verification email resent.";
+            message.style.color = "blue";
+          } catch (error) {
+            message.textContent = "❌ " + error.message;
+            message.style.color = "red";
+          }
+        });
       });
     });
   </script>
-
-</body>
-</html>
-  </script>
-
 </body>
 </html>

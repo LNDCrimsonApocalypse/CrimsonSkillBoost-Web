@@ -257,16 +257,21 @@ button:hover {
     document.getElementById("registerForm").addEventListener("submit", async function (e) {
       e.preventDefault();
 
+      const fname = document.getElementById("fname").value.trim();
+      const mname = document.getElementById("mname").value.trim();
+      const lname = document.getElementById("lname").value.trim();
+      const extname = document.getElementById("extname").value.trim();
+      const fullname = [fname, mname, lname, extname].filter(Boolean).join(" ");
+
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
       const confirmPassword = document.getElementById("confirmPassword").value.trim();
-      const fullname = document.getElementById("fullname").value.trim();
       const birthday = document.getElementById("birthday").value;
       const gender = document.getElementById("gender").value;
       const termsAccepted = document.getElementById("terms").checked;
       const msg = document.getElementById("message");
 
-      msg.textContent = ""; // Clear previous messages
+      msg.textContent = "";
 
       if (!termsAccepted) {
         msg.textContent = "Accept the terms and conditions.";
@@ -281,26 +286,31 @@ button:hover {
         const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
         const user = userCredential.user;
 
-        // Send Firebase email verification link
-      await user.sendEmailVerification({
-  url: "<?= base_url('setup_profile') ?>",
-  handleCodeInApp: false
-});
-
-        // Store temp user data for verify_code.php
-        sessionStorage.setItem("tempUser", JSON.stringify({
-          fullName: fullname,
+        // Save user info to Firestore (users collection)
+        await firebase.firestore().collection("users").doc(user.uid).set({
           email: email,
+          fullName: fullname,
+          role: "educator",
           birthday: birthday,
-          gender: gender
-        }));
+          gender: gender,
+          bio: ""
+        });
+
+        // Send Firebase email verification link
+        await user.sendEmailVerification({
+          url: "<?= base_url('setup_profile') ?>",
+          handleCodeInApp: false
+        });
+
+        // Store only the UID in sessionStorage for setup_profile
+        sessionStorage.setItem("firebase_uid", user.uid);
 
         msg.style.color = "green";
         msg.textContent = "Registration successful! Please check your email for a verification link, click it, then enter the code on the next page.";
 
         setTimeout(() => {
-          window.location.href = "";
-        }, 5000);
+          window.location.href = "<?= base_url('verify_code') ?>";
+        }, 2000);
 
       } catch (error) {
         msg.style.color = "red";

@@ -133,31 +133,37 @@
       </label>
       <input type="file" id="profile-pic-input" accept="image/*" style="display:none;">
     </form>
-    <h2>Your name</h2>
-    <p>@username</p>
+    <h2 id="displayFullName">Your name</h2>
+    <p>@<span id="displayUsername">username</span></p>
   </div>
-
 
     <div class="right-section">
       <h1>Set up your profile</h1>
       <span>Upload a clear image to help your student recognize you.</span>
 
-      <form>
-        <input type="email" placeholder="Email" required>
+      <form id="profileForm">
+        <input type="email" id="email" placeholder="Email" required readonly>
+        <input type="text" id="fullname" placeholder="Full name" required readonly>
+        <input type="text" id="username" placeholder="Username" required>
         <div class="form-row">
-          <input type="date" placeholder="Birthday" required>
-          <select required>
+          <input type="date" id="birthday" placeholder="Birthday" required>
+          <select id="gender" required>
             <option value="">Gender</option>
             <option>Male</option>
             <option>Female</option>
             <option>Other</option>
           </select>
         </div>
-        <textarea placeholder="Your bio"></textarea>
+        <textarea id="bio" placeholder="Your bio"></textarea>
         <button type="submit" class="save-btn">Save</button>
       </form>
     </div>
   </div>
+<!-- Add Firebase SDKs before your script -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 <script>
   // Preview uploaded profile picture
   const input = document.getElementById('profile-pic-input');
@@ -169,6 +175,77 @@
         img.src = ev.target.result;
       }
       reader.readAsDataURL(input.files[0]);
+    }
+  });
+
+  // Load user info from Firestore using UID from sessionStorage
+  document.addEventListener("DOMContentLoaded", async function() {
+    // Wait for Firebase to be initialized
+    function waitForFirebaseAuthInit() {
+      return new Promise(resolve => {
+        if (typeof firebase !== "undefined" && firebase.apps && firebase.apps.length) {
+          resolve();
+        } else {
+          const check = setInterval(() => {
+            if (typeof firebase !== "undefined" && firebase.apps && firebase.apps.length) {
+              clearInterval(check);
+              resolve();
+            }
+          }, 50);
+        }
+      });
+    }
+
+    await waitForFirebaseAuthInit();
+
+    const uid = sessionStorage.getItem("firebase_uid");
+    if (!uid) return;
+
+    try {
+      if (!firebase.firestore) {
+        alert("Firestore not loaded.");
+        return;
+      }
+      const doc = await firebase.firestore().collection("users").doc(uid).get();
+      if (doc.exists) {
+        const data = doc.data();
+        document.getElementById("email").value = data.email || "";
+        document.getElementById("fullname").value = data.fullName || "";
+        document.getElementById("birthday").value = data.birthday || "";
+        document.getElementById("gender").value = data.gender || "";
+        document.getElementById("bio").value = data.bio || "";
+        document.getElementById("username").value = data.username || "";
+        // Display full name and username in left section
+        document.getElementById("displayFullName").textContent = data.fullName || "Your name";
+        document.getElementById("displayUsername").textContent = data.username || "username";
+      }
+    } catch (e) {
+      alert("Failed to load profile: " + e.message);
+    }
+
+    // Update @username display live as user types
+    document.getElementById("username").addEventListener("input", function() {
+      document.getElementById("displayUsername").textContent = this.value || "username";
+    });
+  });
+
+  // Update Firestore on profile save (now includes username)
+  document.getElementById("profileForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const uid = sessionStorage.getItem("firebase_uid");
+    if (!uid) return;
+    try {
+      await firebase.firestore().collection("users").doc(uid).update({
+        username: document.getElementById("username").value,
+        bio: document.getElementById("bio").value,
+        birthday: document.getElementById("birthday").value,
+        gender: document.getElementById("gender").value
+      });
+      alert("Profile updated!");
+      // Update left section display after save
+      document.getElementById("displayUsername").textContent = document.getElementById("username").value || "username";
+    } catch (e) {
+      alert("Failed to update profile.");
     }
   });
 </script>
