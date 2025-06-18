@@ -1,269 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>CrimsonSkillBoost: The Computer Science Learning Hub - Set Up Profile</title>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Set Up Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-  background: linear-gradient(to bottom right, #fbeaff, #eaf4ff);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
- font-family: 'Segoe UI', sans-serif;
-}
+      min-height: 100vh;
+      background: linear-gradient(to bottom right, #fce8fc, #e5f0ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.profile-setup .container {
-  max-width: 800px;
-  width: 100%;
-  padding: 40px;
-}
+    .profile-container {
+      max-width: 900px;
+      width: 100%;
+      display: flex;
+      gap: 2rem;
+      padding: 2rem;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
 
-.header {
-  text-align: center;
-  margin-bottom: 30px;
-}
+    }
 
-.logo-top-left {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  height: 40px;
-  z-index: 10;
-}
+    .left-section {
+      text-align: center;
+      flex: 1;
+    }
 
-.header h2 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  color: #333;
-}
+    .left-section img {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: #ccc;
+    }
 
-.header p {
-  font-size: 0.95rem;
-  color: #777;
-}
+    .camera-icon {
+      margin-top: -20px;
+      margin-bottom: 15px;
+      font-size: 20px;
+      color: gray;
+    }
 
-.profile-content {
-  display: flex;
-  gap: 30px;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: center;
-}
+    .left-section h2 {
+      font-size: 20px;
+      margin-top: 10px;
+    }
 
-.profile-image {
-  text-align: center;
-  flex: 1;
-  min-width: 200px;
-}
+    .left-section p {
+      font-size: 14px;
+      color: #888;
+    }
 
-.profile-image img {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
-  border: 3px solid #ccc;
-}
+    .right-section {
+      flex: 2;
+    }
 
-.profile-image h3 {
-  font-size: 1.1rem;
-  color: #222;
-}
+    .right-section h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
 
-.profile-image p {
-  font-size: 0.9rem;
-  color: #666;
-}
+    .right-section span {
+      color: #666;
+      font-size: 14px;
+      display: block;
+      margin-bottom: 20px;
+    }
 
-.profile-form {
-  flex: 2;
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
 
-.profile-form input,
-.profile-form select,
-.profile-form textarea {
-  width: 100%;
-  padding: 10px;
-  font-size: 0.95rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
+    .form-row {
+      display: flex;
+      gap: 1rem;
+    }
 
-.profile-form .row {
-  display: flex;
-  gap: 10px;
-}
+    input, select, textarea {
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      width: 100%;
+    }
 
-.profile-form button {
-  padding: 10px;
-  font-size: 1rem;
-  background: linear-gradient(to right, #d977f7, #c084fc);
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
+    textarea {
+      resize: none;
+      height: 120px;
+    }
 
-.profile-form button:hover {
-  opacity: 0.9;
-}
+    .save-btn {
+      background-color: #da6de9;
+      border: none;
+      color: white;
+      padding: 0.75rem;
+      border-radius: 999px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      width: 150px;
+      align-self: center;
+      transition: background-color 0.3s ease;
+    }
 
-
+    .save-btn:hover {
+      background-color: #c75cd5;
+    }
   </style>
 </head>
 <body>
-   <section class="profile-setup">
-    <div class="container">
-      <div class="header">
-        <img src="public/img/Logo.png" alt="Logo" class="logo-top-left" />
-        <h2>Set up your profile</h2>
-        <p>Upload a clear and professional image to help your professor recognize you.</p>
-      </div>
 
-      <div class="profile-content">
-        <div class="profile-image">
-          <img src="public/img/profile.png" alt="Profile Picture" />
-          <h3>Jao Nicholas Benedicto</h3>
-          <p>@JaoJoaBen10983</p>
-        </div>
+  <div class="profile-container">
+  <div class="left-section">
+    <form id="profile-pic-form" enctype="multipart/form-data">
+      <label for="profile-pic-input" style="cursor:pointer; display:inline-block; margin-top: 50px;">
+        <img id="profile-pic" src="https://ui-avatars.com/api/?name=User&background=cccccc&color=fff&size=160" alt="Profile Picture">
+        <div class="camera-icon">📷</div>
+      </label>
+      <input type="file" id="profile-pic-input" accept="image/*" style="display:none;">
+    </form>
+    <h2>Your name</h2>
+    <p>@username</p>
+  </div>
 
-        <div class="profile-form">
-          <input type="email" placeholder="JaoNicholasBenedicto@gmail.com" />
-          <div class="row">
-            <input type="date" />
-            <select>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <textarea rows="4" placeholder="Education&#10;Bachelor of Science in Computer Science&#10;Doctorate in Science Engineering"></textarea>
-          <button type="submit">Save</button>
+
+    <div class="right-section">
+      <h1>Set up your profile</h1>
+      <span>Upload a clear image to help your student recognize you.</span>
+
+      <form>
+        <input type="email" placeholder="Email" required>
+        <div class="form-row">
+          <input type="date" placeholder="Birthday" required>
+          <select required>
+            <option value="">Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
         </div>
-      </div>
+        <textarea placeholder="Your bio"></textarea>
+        <button type="submit" class="save-btn">Save</button>
+      </form>
     </div>
-  </section>
-
-  <script>
-    const db = firebase.firestore();
-    const storage = firebase.storage();
-    let selectedAvatarFile = null;
-    let avatarURL = "";
-
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (!user) {
-        alert("You must be logged in to set up your profile.");
-        return;
+  </div>
+<script>
+  // Preview uploaded profile picture
+  const input = document.getElementById('profile-pic-input');
+  const img = document.getElementById('profile-pic');
+  input.addEventListener('change', function(e) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        img.src = ev.target.result;
       }
-
-      firebase.firestore().collection("users").doc(user.uid).get()
-        .then(doc => {
-          if (doc.exists) {
-            const data = doc.data();
-            document.querySelector(".profile-name").textContent = data.fullName || "Your Name";
-            document.querySelector(".profile-username").textContent = "@" + (data.username || "yourusername");
-            if (data.username) document.getElementById("username").value = data.username;
-            if (data.birthday) document.getElementById("birthday").value = data.birthday;
-            if (data.gender) document.getElementById("gender").value = data.gender;
-            if (data.bio) document.getElementById("bio").value = data.bio;
-            if (data.avatar) {
-              document.getElementById("avatarPreview").style.backgroundImage = `url(${data.avatar})`;
-              document.getElementById("avatarPreview").style.backgroundSize = "cover";
-              document.getElementById("avatarPreview").innerHTML = "";
-            }
-          } else {
-            console.warn("No user document found.");
-          }
-        })
-        .catch(error => {
-          console.error("Error fetching user data:", error);
-        });
-    });
-
-    document.getElementById("avatarUpload").addEventListener("change", function(e) {
-      selectedAvatarFile = e.target.files[0];
-      if (selectedAvatarFile) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById("avatarPreview").style.backgroundImage = `url(${e.target.result})`;
-          document.getElementById("avatarPreview").style.backgroundSize = "cover";
-          document.getElementById("avatarPreview").innerHTML = "";
-        };
-        reader.readAsDataURL(selectedAvatarFile);
-      }
-    });
-
-    document.getElementById("profileForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const user = firebase.auth().currentUser;
-      if (!user) {
-        alert("User not logged in.");
-        return;
-      }
-
-      const saveProfile = (photoURL = "") => {
-        const profileData = {
-          username: document.getElementById("username").value.trim(),
-          birthday: document.getElementById("birthday").value,
-          gender: document.getElementById("gender").value,
-          bio: document.getElementById("bio").value.trim(),
-          avatar: photoURL,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        };
-
-        db.collection("users").doc(user.uid).set(profileData, { merge: true })
-          .then(() => {
-            alert("Profile saved to Firestore!");
-            console.log("Redirecting to /loggedin");
-            window.location.href = "/loggedin"; // ✅ Change made here
-          })
-          .catch((error) => {
-            console.error("Error saving profile to Firestore: ", error);
-            alert("Failed to save profile.");
-          });
-      };
-
-      if (selectedAvatarFile) {
-        const storageRef = storage.ref(`avatars/${user.uid}`);
-        storageRef.put(selectedAvatarFile)
-          .then(snapshot => snapshot.ref.getDownloadURL())
-          .then(downloadURL => {
-            avatarURL = downloadURL;
-            saveProfile(avatarURL);
-          })
-          .catch(error => {
-            console.error("Error uploading avatar:", error);
-            alert("Avatar upload failed.");
-          });
-      } else {
-        saveProfile();
-      }
-    });
-
-    document.getElementById("username").addEventListener("input", function() {
-      const liveUsername = this.value.trim();
-      document.querySelector(".profile-username").textContent = liveUsername ? `@${liveUsername}` : "";
-    });
-
-    // Global error logging
-    window.addEventListener("error", function (e) {
-      console.error("Global error caught:", e.error);
-    });
-  </script>
-
+      reader.readAsDataURL(input.files[0]);
+    }
+  });
+</script>
 </body>
 </html>
