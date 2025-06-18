@@ -168,24 +168,23 @@ button:hover {
   flex: 1;
 }
 
-.input-container input[type="password"],
-.input-container input[type="text"] {
+.input-container input {
   width: 100%;
-  padding: 0.75rem 2.5rem 0.75rem 0.75rem; /* space for eye icon */
+  padding: 0.75rem 2.5rem 0.75rem 0.75rem;
   border: 1px solid #ccc;
   border-radius: 10px;
   font-size: 1rem;
 }
 
-.toggle-password {
+.toggle-eye {
   position: absolute;
   right: 10px;
-  top: 35%;
+  top: 40%;
   transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  font-size: 1rem;
-  user-select: none;
-  color: #66
+  filter: grayscale(100%); /* makes sure the icon stays black and white */
 }
   </style>
 </head>
@@ -218,12 +217,12 @@ button:hover {
       <div class="row">
   <div class="input-container">
     <input type="password" id="password" placeholder="Password" required />
-    <span class="toggle-password" onclick="togglePassword('password', this)">👁️</span>
+    <img src="public/img/hide.png" class="toggle-eye" onclick="togglePassword('password', this)" alt="Toggle visibility">
   </div>
 
   <div class="input-container">
     <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
-    <span class="toggle-password" onclick="togglePassword('confirmPassword', this)">👁️</span>
+    <img src="public/img/hide.png" class="toggle-eye" onclick="togglePassword('confirmPassword', this)" alt="Toggle visibility">
   </div>
 </div>
         <label class="checkbox">
@@ -242,16 +241,19 @@ button:hover {
   </div>
 
   <script>
-     function togglePassword(id, btn) {
-      const input = document.getElementById(id);
-      if (input.type === "password") {
-        input.type = "text";
-        btn.textContent = "🙈";
-      } else {
-        input.type = "password";
-        btn.textContent = "👁️";
-      }
-    }
+     function togglePassword(id, icon) {
+  const input = document.getElementById(id);
+  const showIcon = "public/img/view.png";
+  const hideIcon = "public/img/hide.png";
+
+  if (input.type === "password") {
+    input.type = "text";
+    icon.src =  showIcon;
+  } else {
+    input.type = "password";
+    icon.src = hideIcon;
+  }
+}
     document.getElementById("registerForm").addEventListener("submit", async function (e) {
       e.preventDefault();
 
