@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       await firebase.firestore().collection("users").doc(uid).update(updateData);
 
       alert("Profile saved!");
-      window.location.href = "<?= base_url('home') ?>";
+      window.location.href = "<?= base_url('homepage') ?>";
 
     } catch (err) {
       alert("Error saving profile: " + err.message);

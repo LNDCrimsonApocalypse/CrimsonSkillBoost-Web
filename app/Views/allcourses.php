@@ -236,6 +236,88 @@ li {
   margin: 0;
   padding: 0;
 }
+/*COURSE CARDS */
+.card {
+  width: 350px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f8d1d8;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.13);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 20px 0; /* Only vertical margin */
+}
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
+.card-image img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+}
+
+.card-content {
+  padding: 18px 20px 14px 20px;
+  background: #f8d1d8;
+}
+
+.card-label {
+  font-size: 0.85rem;
+  color: #7c7c7c;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #222;
+}
+
+.card-subtitle {
+  font-size: 1rem;
+  color: #a2a2a2;
+  margin-bottom: 18px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-students {
+  font-size: 0.95rem;
+  color: #222;
+  display: flex;
+  align-items: center;
+}
+
+.card-students i {
+  margin-right: 6px;
+  font-size: 1.1em;
+}
+
+.card-btn {
+  background: #e754a2;
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 6px 18px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.card-btn:hover {
+  background: #c63d8e;
+}
+
           /* MODAL OVERLAY */
     .modal-overlay {
       display: none;
@@ -416,18 +498,159 @@ li {
       <div class="courses-card">
         <div class="courses-title">COURSES</div>
         <div class="courses-toolbar">
-          <select class="dropdown-select">
-            <option>All Category</option>
-            <option>Programming</option>
-            <option>Design</option>
-            <option>Business</option>
-          </select>
+          <select id="courseFilter" class="dropdown-select" onchange="filterCourses()">
+  <option value="all">All Category</option>
+  <option value="active">Active</option>
+  <option value="inactive">Inactive</option>
+</select>
+          </div>
           <div class="search-add-group">
             <input class="search-box" type="text" placeholder="Search.." />
             <button class="add-btn" id="openModalBtn">+ Add Courses</button>
           </div>
-        </div>
+  
+    <div class="cards-container">
+  <div class="card" data-status="active">
+    <div class="card-image">
+      <img src="cp1.jpg" alt="Computer Programming 1">
+    </div>
+    <div class="card-content">
+      <div class="card-label">COMPROG1</div>
+      <div class="card-title">Computer Programming 1</div>
+      <div class="card-subtitle">III - BCSAD</div>
+      <div class="card-footer">
+        <span class="card-students">
+          <i class="fa fa-users"></i> 1050 students
+        </span>
+        <button class="card-btn">View Info</button>
       </div>
+    </div>
+  </div>
+  <!-- Repeat for each card, do NOT nest .card inside another .card -->
+  <!-- ... other cards ... -->
+<div class="card">
+  <div class="card-image">
+    <img src="cp2.jpg" alt="Computer Programming 2">
+  </div>
+  <div class="card-content">
+    <div class="card-label">COMPROG2</div>
+    <div class="card-title">Computer Programming 2</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 980 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-image">
+    <img src="im.jpg" alt="Information Management">
+  </div>
+  <div class="card-content">
+    <div class="card-label">INFOMAN</div>
+    <div class="card-title">Information Management</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 870 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="card">
+  <div class="card-image">
+    <img src="itc.jpg" alt="Introduction to Computing">
+  </div>
+  <div class="card-content">
+    <div class="card-label">ITC</div>
+    <div class="card-title">Introduction to Computing</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 1120 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-image">
+    <img src="wdt.jpg" alt="Web Development Tools">
+  </div>
+  <div class="card-content">
+    <div class="card-label">WDT</div>
+    <div class="card-title">Web Development Tools</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 760 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="card">
+  <div class="card-image">
+    <img src="wad.jpg" alt="Web Applications Development">
+  </div>
+  <div class="card-content">
+    <div class="card-label">WAD</div>
+    <div class="card-title">Web Applications Development</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 810 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-image">
+    <img src="oop.jpg" alt="Object Oriented Programming">
+  </div>
+  <div class="card-content">
+    <div class="card-label">OOP</div>
+    <div class="card-title">Object Oriented Programming</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 950 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-image">
+    <img src="mad.jpg" alt="Mobile Applications Development">
+  </div>
+  <div class="card-content">
+    <div class="card-label">MAD</div>
+    <div class="card-title">Mobile Applications Development</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 690 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+  
+<!-- ... end  ... --></div>
+
     </div>
   </div>
    <!-- MODAL -->
@@ -492,20 +715,39 @@ li {
     </div>
     </div>
     <script>
-    const openModalBtn = document.getElementById('openModalBtn');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const modalOverlay = document.getElementById('modalOverlay');
-    openModalBtn.onclick = () => modalOverlay.classList.add('active');
-    closeModalBtn.onclick = () => modalOverlay.classList.remove('active');
-    window.onclick = (e) => {
-      if (e.target === modalOverlay) modalOverlay.classList.remove('active');
-    };
-    document.getElementById('coursesDropdown').addEventListener('change', function() {
-    if (this.value === "mycourses") {
-        window.location.href = "<?= base_url('courses_view') ?>";
-    } else if (this.value === "allcourses") {
-        window.location.href = "<?= base_url('allcourses') ?>";
+function filterCourses() {
+  const selected = document.getElementById('courseFilter').value;
+  const courses = document.querySelectorAll('.card');
+
+  courses.forEach(course => {
+    const status = course.getAttribute('data-status') || 'inactive';
+    if (selected === 'all' || status === selected) {
+      course.style.display = 'block';
+    } else {
+      course.style.display = 'none';
     }
+  });
+}
+
+// Modal toggle
+const openModalBtn = document.getElementById('openModalBtn');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const modalOverlay = document.getElementById('modalOverlay');
+
+openModalBtn.onclick = () => modalOverlay.classList.add('active');
+closeModalBtn.onclick = () => modalOverlay.classList.remove('active');
+
+window.onclick = (e) => {
+  if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+};
+
+// Dropdown page redirection
+document.getElementById('coursesDropdown').addEventListener('change', function() {
+  if (this.value === "mycourses") {
+    window.location.href = "<?= base_url('courses_view') ?>";
+  } else if (this.value === "allcourses") {
+    window.location.href = "<?= base_url('allcourses') ?>";
+  }
 });
   </script>
 </body>
