@@ -282,7 +282,7 @@ li {
     </div>
     <div class="nav-right">
       <img src="public/img/notifications.png" class="notification" alt="Notifications">
-      <img src="public/img/profile.png" class="profile" alt="User">
+      <img src="" class="profile" alt="User">
         <a href="<?= base_url('homepage_initial') ?>"><button id="signOutButton">Sign Out</button> </a>
     </div>
   </div>

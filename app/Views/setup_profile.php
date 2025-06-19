@@ -133,27 +133,17 @@
       </label>
       <input type="file" id="profile-pic-input" accept="image/*" style="display:none;">
     </form>
-    <h2 id="displayFullName">Your name</h2>
-    <p>@<span id="displayUsername">username</span></p>
+    <h2 id="displayFullName"></h2>
+    <p>@<span id="displayUsername"></span></p>
   </div>
-
+<div id="profile" style="margin-top: 1rem; font-size: 14px; color: #555;"></div>
+<div id="status" style="margin-top: 0.5rem; font-weight: bold;"></div>
     <div class="right-section">
       <h1>Set up your profile</h1>
       <span>Upload a clear image to help your student recognize you.</span>
 
       <form id="profileForm">
-        <input type="email" id="email" placeholder="Email" required readonly>
-        <input type="text" id="fullname" placeholder="Full name" required readonly>
-        <input type="text" id="username" placeholder="Username" required>
-        <div class="form-row">
-          <input type="date" id="birthday" placeholder="Birthday" required>
-          <select id="gender" required>
-            <option value="">Gender</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-          </select>
-        </div>
+       
         <textarea id="bio" placeholder="Your bio"></textarea>
         <button type="submit" class="save-btn">Save</button>
       </form>
@@ -163,89 +153,105 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+
 <script>
   // Preview uploaded profile picture
-  const input = document.getElementById('profile-pic-input');
-  const img = document.getElementById('profile-pic');
-  input.addEventListener('change', function(e) {
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        img.src = ev.target.result;
-      }
-      reader.readAsDataURL(input.files[0]);
+  // Wait for Firebase to initialize
+ async function waitForFirebaseAuthInit() {
+  return new Promise(resolve => {
+    if (firebase?.apps?.length) {
+      resolve();
+    } else {
+      const interval = setInterval(() => {
+        if (firebase?.apps?.length) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 50);
     }
   });
+}
 
-  // Load user info from Firestore using UID from sessionStorage
-  document.addEventListener("DOMContentLoaded", async function() {
-    // Wait for Firebase to be initialized
-    function waitForFirebaseAuthInit() {
-      return new Promise(resolve => {
-        if (typeof firebase !== "undefined" && firebase.apps && firebase.apps.length) {
-          resolve();
-        } else {
-          const check = setInterval(() => {
-            if (typeof firebase !== "undefined" && firebase.apps && firebase.apps.length) {
-              clearInterval(check);
-              resolve();
-            }
-          }, 50);
-        }
-      });
-    }
+document.addEventListener("DOMContentLoaded", async function () {
+  await waitForFirebaseAuthInit();
 
-    await waitForFirebaseAuthInit();
+ firebase.auth().onAuthStateChanged(async function(user) {
+  if (user) {
+    const uid = user.uid;
 
-    const uid = sessionStorage.getItem("firebase_uid");
-    if (!uid) return;
+    let data;
 
     try {
-      if (!firebase.firestore) {
-        alert("Firestore not loaded.");
-        return;
-      }
       const doc = await firebase.firestore().collection("users").doc(uid).get();
       if (doc.exists) {
-        const data = doc.data();
-        document.getElementById("email").value = data.email || "";
-        document.getElementById("fullname").value = data.fullName || "";
-        document.getElementById("birthday").value = data.birthday || "";
-        document.getElementById("gender").value = data.gender || "";
-        document.getElementById("bio").value = data.bio || "";
-        document.getElementById("username").value = data.username || "";
-        // Display full name and username in left section
-        document.getElementById("displayFullName").textContent = data.fullName || "Your name";
-        document.getElementById("displayUsername").textContent = data.username || "username";
+        data = doc.data();
+      } else {
+        alert("User data not found in Firestore.");
+        return;
       }
     } catch (e) {
-      alert("Failed to load profile: " + e.message);
+      alert("Error fetching user data: " + e.message);
+      return;
     }
 
-    // Update @username display live as user types
-    document.getElementById("username").addEventListener("input", function() {
-      document.getElementById("displayUsername").textContent = this.value || "username";
-    });
-  });
+    // ✅ Update UI
+    const fullName = [data.fname, data.mname, data.lname, data.extname].filter(Boolean).join(" ");
+    document.getElementById("displayFullName").textContent = fullName || "Your name";
+    document.getElementById("displayUsername").textContent = data.username || "username";
+    document.getElementById("bio").value = data.bio || "";
+    if (data.photoURL) {
+      document.getElementById("profile-pic").src = data.photoURL;
+    }
 
-  // Update Firestore on profile save (now includes username)
-  document.getElementById("profileForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
-    const uid = sessionStorage.getItem("firebase_uid");
-    if (!uid) return;
-    try {
-      await firebase.firestore().collection("users").doc(uid).update({
-        username: document.getElementById("username").value,
-        bio: document.getElementById("bio").value,
-        birthday: document.getElementById("birthday").value,
-        gender: document.getElementById("gender").value
-      });
-      alert("Profile updated!");
-      // Update left section display after save
-      document.getElementById("displayUsername").textContent = document.getElementById("username").value || "username";
-    } catch (e) {
-      alert("Failed to update profile.");
+    // ✅ Save UID for later use
+    window.profileUID = uid;
+
+  } else {
+    alert("You are not logged in. Please sign in again.");
+    window.location.href = "<?= base_url('login') ?>";
+  }
+});
+document.getElementById("profileForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const uid = window.profileUID;
+if (!uid) {
+  alert("User not found. Please log in again.");
+  return;
+}
+
+  const bio = document.getElementById("bio").value;
+  const username = document.getElementById("displayUsername").textContent;
+  const file = document.getElementById("profile-pic-input").files[0];
+
+  try {
+     let photoURL = null;
+
+      if (file) {
+        const storageRef = firebase.storage().ref();
+        const profilePicRef = storageRef.child(`profile_pictures/${uid}`);
+        await profilePicRef.put(file);
+        photoURL = await profilePicRef.getDownloadURL();
+      }
+
+      const updateData = {
+        bio: bio,
+        username: username
+      };
+
+      if (photoURL) {
+        updateData.photoURL = photoURL;
+      }
+
+      await firebase.firestore().collection("users").doc(uid).update(updateData);
+
+      alert("Profile saved!");
+      window.location.href = "<?= base_url('home') ?>";
+
+    } catch (err) {
+      alert("Error saving profile: " + err.message);
     }
   });
 </script>

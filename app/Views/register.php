@@ -7,11 +7,10 @@
   <title>CrimsonSkillBoost - Register</title>
 
   <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
-
   <style>
 * {
   box-sizing: border-box;
@@ -186,6 +185,99 @@ button:hover {
   cursor: pointer;
   filter: grayscale(100%); /* makes sure the icon stays black and white */
 }
+
+/* --- Add modal styles below --- */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background: rgba(0,0,0,0.4);
+  align-items: center;
+  justify-content: center;
+}
+.modal.show {
+  display: flex;
+}
+.modal-dialog {
+  background: #fff;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 90%;
+  margin: auto;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+  animation: fadeInModal 0.2s;
+}
+@keyframes fadeInModal {
+  from { transform: translateY(-30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.modal-header, .modal-footer {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+.modal-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.close {
+  background: none;
+  border: none;
+  font-size: 1.1rem; /* reduced from 1.5rem */
+  cursor: pointer;
+  padding: 0.1rem 0.4rem; /* add small padding for a smaller button */
+  line-height: 1;
+  height: 28px;
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-body {
+  padding: 1rem;
+}
+.modal-footer {
+  border-top: 1px solid #eee;
+  border-bottom: none;
+  text-align: right;
+}
+.btn.btn-primary {
+  background: #da6de9;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn.btn-primary:hover {
+  background: #c75cd5;
+}
+.resend-link {
+  background: none;
+  border: none;
+  color: #e636a4;
+  text-decoration: underline;
+  font-size: 0.95rem;
+  margin-left: 1rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+.resend-link:hover {
+  color: #c75cd5;
+}
+/* --- End modal styles --- */
   </style>
 </head>
 <body>
@@ -204,6 +296,7 @@ button:hover {
           <input type="text" id="mname" placeholder="Middle name" required />
           <input type="text" id="lname" placeholder="Last name" required />
         <input type="text" id="extname" placeholder="Extension name"  />
+         <input type="text" id="username" placeholder="Username"   required/>
         <input type="email" id="email" placeholder="Email Address" required />
         <div class="row">
           <input type="date" id="birthday" placeholder="Birthday" required />
@@ -239,6 +332,25 @@ button:hover {
       </form>
     </div>
   </div>
+    <div id="verificationSentModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Verification Email Sent</h5>
+        <button type="button" class="close" onclick="closeVerificationModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>A verification link has been sent to your email address. Please check your inbox and click the link to verify your account.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="closeVerificationModal()">OK</button>
+        <button type="button" class="resend-link" onclick="resendVerificationEmail()">Didn't receive an email? Resend</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <script>
      function togglePassword(id, icon) {
@@ -261,6 +373,7 @@ button:hover {
       const mname = document.getElementById("mname").value.trim();
       const lname = document.getElementById("lname").value.trim();
       const extname = document.getElementById("extname").value.trim();
+      const username = document.getElementById("username").value.trim();
       const fullname = [fname, mname, lname, extname].filter(Boolean).join(" ");
 
       const email = document.getElementById("email").value.trim();
@@ -282,41 +395,88 @@ button:hover {
         return;
       }
 
-      try {
-        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-        const user = userCredential.user;
+    try {
+  const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+  const user = userCredential.user;
 
-        // Save user info to Firestore (users collection)
-        await firebase.firestore().collection("users").doc(user.uid).set({
-          email: email,
-          fullName: fullname,
-          role: "educator",
-          birthday: birthday,
-          gender: gender,
-          bio: ""
-        });
+  await firebase.firestore().collection("users").doc(user.uid).set({
+    email: email,
+    fname: fname,
+    mname: mname,
+    lname: lname,
+    extname: extname,
+    username: "",
+    birthday: birthday,
+    gender: gender,
+    bio: ""
+  });
 
-        // Send Firebase email verification link
-        await user.sendEmailVerification({
-          url: "<?= base_url('setup_profile') ?>",
-          handleCodeInApp: false
-        });
+  // ✅ SAVE INFO TO SESSION
+  sessionStorage.setItem("firebase_uid", user.uid);
+  sessionStorage.setItem("signupInfo", JSON.stringify({
+    uid: user.uid,
+    email: email,
+    fname: fname,
+    mname: mname,
+    lname: lname,
+    extname: extname,
+    birthday: birthday,
+    gender: gender
+  }));
 
-        // Store only the UID in sessionStorage for setup_profile
-        sessionStorage.setItem("firebase_uid", user.uid);
+  // ✅ SEND EMAIL VERIFICATION
+  await user.sendEmailVerification({
+    url: "<?= base_url('setup_profile') ?>",
+    handleCodeInApp: false
+  });
 
-        msg.style.color = "green";
-        msg.textContent = "Registration successful! Please check your email for a verification link, click it, then enter the code on the next page.";
+  // ✅ SHOW VERIFICATION MODAL
+  showVerificationModal();
+  msg.style.color = "green";
+  msg.textContent = "Verification email sent! Please check your inbox.";
+  document.getElementById("registerForm").reset();
 
-        setTimeout(() => {
-          window.location.href = "<?= base_url('verify_code') ?>";
-        }, 2000);
-
-      } catch (error) {
-        msg.style.color = "red";
-        msg.textContent = "Error: " + error.message;
-      }
+} catch (error) {
+  msg.style.color = "red";
+  msg.textContent = "Error: " + error.message;
+}
     });
+    function closeVerificationModal() {
+  // Change to hide modal by removing 'show' class
+  document.getElementById('verificationSentModal').classList.remove('show');
+}
+function showVerificationModal() {
+  // Change to show modal by adding 'show' class
+  document.getElementById('verificationSentModal').classList.add('show');
+}
+
+function resendVerificationEmail() {
+  const user = firebase.auth().currentUser;
+  const msg = document.getElementById("message");
+  if (user) {
+    user.sendEmailVerification({
+      url: "<?= base_url('setup_profile') ?>",
+      handleCodeInApp: false
+    }).then(() => {
+      msg.style.color = "green";
+      msg.textContent = "Verification email resent! Please check your inbox.";
+      setTimeout(() => { msg.textContent = ""; }, 4000);
+    }).catch((error) => {
+      msg.style.color = "red";
+      msg.textContent = "Error resending email: " + error.message;
+    });
+  } else {
+    msg.style.color = "red";
+    msg.textContent = "No user found. Please register again.";
+  }
+}
+
+const user = userCredential.user;
+
+
   </script>
+
+
+
 </body>
 </html>
