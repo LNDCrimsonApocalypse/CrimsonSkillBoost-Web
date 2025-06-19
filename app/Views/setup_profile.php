@@ -123,21 +123,23 @@
   </style>
 </head>
 <body>
-
-  <div class="profile-container">
-  <div class="left-section">
-    <form id="profile-pic-form" enctype="multipart/form-data">
-      <label for="profile-pic-input" style="cursor:pointer; display:inline-block; margin-top: 50px;">
-        <img id="profile-pic" src="https://ui-avatars.com/api/?name=User&background=cccccc&color=fff&size=160" alt="Profile Picture">
-        <div class="camera-icon">📷</div>
-      </label>
-      <input type="file" id="profile-pic-input" accept="image/*" style="display:none;">
-    </form>
-    <h2 id="displayFullName"></h2>
-    <p>@<span id="displayUsername"></span></p>
+  <div id="loading" style="position:fixed;top:0;left:0;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.7);z-index:9999;font-size:2rem;display:none;">
+    Loading...
   </div>
-<div id="profile" style="margin-top: 1rem; font-size: 14px; color: #555;"></div>
-<div id="status" style="margin-top: 0.5rem; font-weight: bold;"></div>
+  <div class="profile-container">
+    <div class="left-section">
+      <form id="profile-pic-form" enctype="multipart/form-data">
+        <label for="profile-pic-input" style="cursor:pointer; display:inline-block; margin-top: 50px;">
+          <img id="profile-pic" src="https://ui-avatars.com/api/?name=User&background=cccccc&color=fff&size=160" alt="Profile Picture">
+          <div class="camera-icon">📷</div>
+        </label>
+        <input type="file" id="profile-pic-input" accept="image/*" style="display:none;">
+      </form>
+      <h2 id="displayFullName"></h2>
+      <p id="displayUsername" style="color:#888; font-size:14px; text-align:center; margin:0 0 8px 0;"></p>
+    </div>
+    <div id="profile" style="margin-top: 1rem; font-size: 14px; color: #555;"></div>
+    <div id="status" style="margin-top: 0.5rem; font-weight: bold;"></div>
     <div class="right-section">
       <h1>Set up your profile</h1>
       <span>Upload a clear image to help your student recognize you.</span>
@@ -157,9 +159,9 @@
 <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 
 <script>
-  // Preview uploaded profile picture
-  // Wait for Firebase to initialize
- async function waitForFirebaseAuthInit() {
+// Always use 'username' (all lowercase) for Firestore and UI fields
+
+async function waitForFirebaseAuthInit() {
   return new Promise(resolve => {
     if (firebase?.apps?.length) {
       resolve();
@@ -174,60 +176,73 @@
   });
 }
 
+function showLoading(show) {
+  document.getElementById('loading').style.display = show ? 'flex' : 'none';
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
+  showLoading(true);
   await waitForFirebaseAuthInit();
 
- firebase.auth().onAuthStateChanged(async function(user) {
-  if (user) {
-    const uid = user.uid;
+  firebase.auth().onAuthStateChanged(async function(user) {
+    if (user) {
+      const uid = user.uid;
+      console.log("Firebase Auth user:", user);
 
-    let data;
+      let data;
 
-    try {
-      const doc = await firebase.firestore().collection("users").doc(uid).get();
-      if (doc.exists) {
-        data = doc.data();
-      } else {
-        alert("User data not found in Firestore.");
+      try {
+        const doc = await firebase.firestore().collection("users").doc(uid).get();
+        console.log("Firestore doc.exists:", doc.exists, "doc.data:", doc.data());
+        if (doc.exists) {
+          data = doc.data();
+        } else {
+          alert("User data not found in Firestore. Please register again.");
+          window.location.href = "<?= base_url('register') ?>";
+          showLoading(false);
+          return;
+        }
+      } catch (e) {
+        alert("Error fetching user data: " + e.message);
+        showLoading(false);
         return;
       }
-    } catch (e) {
-      alert("Error fetching user data: " + e.message);
+
+      // ✅ Update UI with Firestore data
+      const fullName = [data.fname, data.mname, data.lname, data.extname].filter(Boolean).join(" ");
+      document.getElementById("displayFullName").textContent = fullName || "Your name";
+      document.getElementById("displayUsername").textContent = data.username ? `@${data.username}` : ""; // Traditional username display
+      document.getElementById("bio").value = data.bio || "";
+      if (data.photoURL) {
+        document.getElementById("profile-pic").src = data.photoURL;
+      }
+
+      // ✅ Save UID for later use
+      window.profileUID = uid;
+      showLoading(false);
+
+    } else {
+      alert("You are not logged in. Please sign in again.");
+      window.location.href = "<?= base_url('login') ?>";
+      showLoading(false);
+    }
+  });
+
+  document.getElementById("profileForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const uid = window.profileUID;
+    if (!uid) {
+      alert("User not found. Please log in again.");
       return;
     }
 
-    // ✅ Update UI
-    const fullName = [data.fname, data.mname, data.lname, data.extname].filter(Boolean).join(" ");
-    document.getElementById("displayFullName").textContent = fullName || "Your name";
-    document.getElementById("displayUsername").textContent = data.username || "username";
-    document.getElementById("bio").value = data.bio || "";
-    if (data.photoURL) {
-      document.getElementById("profile-pic").src = data.photoURL;
-    }
+    const bio = document.getElementById("bio").value;
+    const username = (document.getElementById("displayUsername").textContent || "").replace(/^@/, ""); // Remove @ for saving
+    const file = document.getElementById("profile-pic-input").files[0];
 
-    // ✅ Save UID for later use
-    window.profileUID = uid;
-
-  } else {
-    alert("You are not logged in. Please sign in again.");
-    window.location.href = "<?= base_url('login') ?>";
-  }
-});
-document.getElementById("profileForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
-
-  const uid = window.profileUID;
-if (!uid) {
-  alert("User not found. Please log in again.");
-  return;
-}
-
-  const bio = document.getElementById("bio").value;
-  const username = document.getElementById("displayUsername").textContent;
-  const file = document.getElementById("profile-pic-input").files[0];
-
-  try {
-     let photoURL = null;
+    try {
+      let photoURL = null;
 
       if (file) {
         const storageRef = firebase.storage().ref();
@@ -254,6 +269,7 @@ if (!uid) {
       alert("Error saving profile: " + err.message);
     }
   });
+});
 </script>
 </body>
 </html>

@@ -405,24 +405,27 @@ button:hover {
     mname: mname,
     lname: lname,
     extname: extname,
-    username: "",
+    username: username, // <-- Save the username entered by the user
     birthday: birthday,
     gender: gender,
     bio: ""
   });
 
-  // ✅ SAVE INFO TO SESSION
-  sessionStorage.setItem("firebase_uid", user.uid);
-  sessionStorage.setItem("signupInfo", JSON.stringify({
+  // ✅ SAVE INFO TO SESSION AND LOCAL STORAGE
+  const signupInfoObj = {
     uid: user.uid,
     email: email,
     fname: fname,
     mname: mname,
     lname: lname,
     extname: extname,
+    username: username, // <-- Save username in signupInfoObj as well
     birthday: birthday,
     gender: gender
-  }));
+  };
+  sessionStorage.setItem("firebase_uid", user.uid);
+  sessionStorage.setItem("signupInfo", JSON.stringify(signupInfoObj));
+  localStorage.setItem("signupInfo", JSON.stringify(signupInfoObj));
 
   // ✅ SEND EMAIL VERIFICATION
   await user.sendEmailVerification({
