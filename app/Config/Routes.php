@@ -16,6 +16,7 @@ $routes->get('/verify_code', 'Auth::verifyCodeInput');
 $routes->get('/setup_profile', 'Auth::setupProfile');
 $routes->get('/profile', 'Auth::profile');
 $routes->get('/homepage', 'Auth::homepage');
+$routes->get('homepage_initial', 'Auth::homepage');
 $routes->get('/dashboard', 'Auth::dashboard');
 $routes->post('/auth/verify', 'Auth::verify');
 $routes->post('profile/save', 'Profile::save');
@@ -124,3 +125,8 @@ $routes->post('auth/resend_verification', 'AuthController::resendVerification');
 $routes->get('studentprog', 'Studentprog::index');
 $routes->get('courses_view', 'Courses::view');
 $routes->get('editprofile', 'ProfileController::editProfile');
+$routes->get('course-description', 'CourseController::description');
+$routes->get('course_descrip', 'CourseController::description');
+$routes->get('allcourses2', 'CourseController::allcourses2');
+
+
