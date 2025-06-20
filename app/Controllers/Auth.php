@@ -527,9 +527,16 @@ class Auth extends BaseController
         $newName = $uid . '_' . time() . '.' . $file->getExtension();
         $uploadPath = FCPATH . 'public/uploads/profile_pics/';
         if (!is_dir($uploadPath)) {
-            mkdir($uploadPath, 0777, true);
+            if (!mkdir($uploadPath, 0777, true)) {
+                return $this->response->setJSON(['success' => false, 'error' => 'Failed to create upload directory.']);
+            }
         }
-        $file->move($uploadPath, $newName);
+        if (!is_writable($uploadPath)) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Upload directory is not writable. Please check permissions.']);
+        }
+        if (!$file->move($uploadPath, $newName)) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Failed to move uploaded file']);
+        }
         $url = base_url('public/uploads/profile_pics/' . $newName);
         return $this->response->setJSON(['success' => true, 'url' => $url]);
     }

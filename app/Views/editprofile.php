@@ -288,37 +288,47 @@ document.addEventListener("DOMContentLoaded", async function () {
     const gender = document.getElementById("gender").value;
     const bio = document.getElementById("bio").value;
     const file = document.getElementById("profile-pic-input").files[0];
+    let photoURL = null;
 
-    try {
-      let photoURL = null;
-      if (file) {
-        const storageRef = firebase.storage().ref();
-        const profilePicRef = storageRef.child(`profile_pictures/${uid}`);
-        await profilePicRef.put(file);
-        photoURL = await profilePicRef.getDownloadURL();
+    if (file) {
+      // Use FormData to send the file to your PHP endpoint
+      const formData = new FormData();
+      formData.append('profile_pic', file);
+      formData.append('uid', uid);
+
+      // Adjust the URL to your upload endpoint
+      const response = await fetch('<?= base_url('upload_profile_pic') ?>', {
+        method: 'POST',
+        body: formData
+      });
+      const result = await response.json();
+      if (result.success && result.url) {
+        photoURL = result.url;
+      } else {
+        alert("Failed to upload profile picture.");
+        showLoading(false);
+        return;
       }
-
-      const updateData = {
-        fname: fname,
-        mname: mname,
-        lname: lname,
-        extname: extname,
-        username: username,
-        birthday: birthday,
-        gender: gender,
-        bio: bio
-      };
-      if (photoURL) {
-        updateData.photoURL = photoURL;
-      }
-
-      await firebase.firestore().collection("users").doc(uid).update(updateData);
-
-      alert("Profile updated!");
-      window.location.href = "<?= base_url('dashboard') ?>";
-    } catch (err) {
-      alert("Error saving profile: " + err.message);
     }
+
+    const updateData = {
+      fname: fname,
+      mname: mname,
+      lname: lname,
+      extname: extname,
+      username: username,
+      birthday: birthday,
+      gender: gender,
+      bio: bio
+    };
+    if (photoURL) {
+      updateData.photoURL = photoURL;
+    }
+
+    await firebase.firestore().collection("users").doc(uid).update(updateData);
+
+    alert("Profile updated!");
+    window.location.href = "<?= base_url('dashboard') ?>";
     showLoading(false);
   });
 });

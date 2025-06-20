@@ -238,36 +238,43 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     const bio = document.getElementById("bio").value;
-    const username = (document.getElementById("displayUsername").textContent || "").replace(/^@/, ""); // Remove @ for saving
+    const username = (document.getElementById("displayUsername").textContent || "").replace(/^@/, "");
     const file = document.getElementById("profile-pic-input").files[0];
+    let photoURL = null;
 
-    try {
-      let photoURL = null;
+    if (file) {
+      // Use FormData to send the file to your PHP endpoint
+      const formData = new FormData();
+      formData.append('profile_pic', file);
+      formData.append('uid', uid);
 
-      if (file) {
-        const storageRef = firebase.storage().ref();
-        const profilePicRef = storageRef.child(`profile_pictures/${uid}`);
-        await profilePicRef.put(file);
-        photoURL = await profilePicRef.getDownloadURL();
+      // Adjust the URL to your upload endpoint
+      const response = await fetch('<?= base_url('upload_profile_pic') ?>', {
+        method: 'POST',
+        body: formData
+      });
+      const result = await response.json();
+      if (result.success && result.url) {
+        photoURL = result.url;
+      } else {
+        alert("Failed to upload profile picture.");
+        return;
       }
-
-      const updateData = {
-        bio: bio,
-        username: username
-      };
-
-      if (photoURL) {
-        updateData.photoURL = photoURL;
-      }
-
-      await firebase.firestore().collection("users").doc(uid).update(updateData);
-
-      alert("Profile saved!");
-      window.location.href = "<?= base_url('homepage') ?>";
-
-    } catch (err) {
-      alert("Error saving profile: " + err.message);
     }
+
+    const updateData = {
+      bio: bio,
+      username: username
+    };
+
+    if (photoURL) {
+      updateData.photoURL = photoURL;
+    }
+
+    await firebase.firestore().collection("users").doc(uid).update(updateData);
+
+    alert("Profile saved!");
+    window.location.href = "<?= base_url('homepage') ?>";
   });
 });
 </script>
