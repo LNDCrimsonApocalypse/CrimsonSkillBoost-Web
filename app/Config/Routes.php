@@ -130,3 +130,5 @@ $routes->get('course_descrip', 'CourseController::description');
 $routes->get('allcourses2', 'CourseController::allcourses2');
 
 
+$routes->get('editprofile', 'Auth::editprofile');
+$routes->post('upload_profile_pic', 'Auth::upload_profile_pic');

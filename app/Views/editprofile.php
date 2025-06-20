@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Profile</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 </head>
 <style>
 * {
@@ -139,6 +144,9 @@ body {
     }
 </style>
 <body>
+  <div id="loading" style="position:fixed;top:0;left:0;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.7);z-index:9999;font-size:2rem;display:none;">
+    Loading...
+  </div>
   <div class="profile-container">
     <div class="profile-card">
       <div class="profile-left">
@@ -147,38 +155,173 @@ body {
           <div class="camera-icon">📷</div>
         </label>
         <input type="file" id="profile-pic-input" accept="image/*" style="display:none;">
-      
-        <div class="profile-name">Jao Nicholas Benedicto</div>
-        <div class="profile-username">@JaoJoaBen010983</div>
+        <div class="profile-name" id="profileName"></div>
+        <div class="profile-username" id="profileUsername"></div>
       </div>
-
       <div class="profile-right">
         <h2>Edit your profile</h2>
         <p class="subtext">Upload a clear and professional image to help your professor recognize you.</p>
-
-        <div class="form-grid">
-          <input type="text" placeholder="First Name" required/>
-          <input type="text" placeholder="Middle Name" required/>
-          <input type="text" placeholder="last Name" required/>
-          <input type="text" placeholder="Extension Name" />
-          <input type="text" placeholder="Username" required />
-          <input type="email" placeholder="Email Address" required/>
-          
-             <input type="date" id="birthday" placeholder="Birthday" required />
-          
-          <select id="gender" required>
-            <option value="" disabled selected>Gender</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-          </select>
-          <textarea placeholder="Education&#10;Bachelor of Science in Computer Science&#10;Doctorate in Science Engineering"></textarea>
-        </div>
-
-        <button class="save-btn">Save</button>
-        <button class="cancel-btn">Cancel</button>
+        <form id="editProfileForm">
+          <div class="form-grid">
+            <input type="text" id="fname" placeholder="First Name" required/>
+            <input type="text" id="mname" placeholder="Middle Name" required/>
+            <input type="text" id="lname" placeholder="Last Name" required/>
+            <input type="text" id="extname" placeholder="Extension Name" />
+            <input type="text" id="username" placeholder="Username" required />
+            <input type="email" id="email" placeholder="Email Address" required disabled/>
+            <input type="date" id="birthday" placeholder="Birthday" required />
+            <select id="gender" required>
+              <option value="" disabled selected>Gender</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+            <textarea id="bio" placeholder="Education&#10;Bachelor of Science in Computer Science&#10;Doctorate in Science Engineering"></textarea>
+          </div>
+          <button type="submit" class="save-btn">Save</button>
+          <button type="button" class="cancel-btn" onclick="window.location.href='<?= base_url('dashboard') ?>'">Cancel</button>
+        </form>
       </div>
     </div>
   </div>
+<script>
+function showLoading(show) {
+  document.getElementById('loading').style.display = show ? 'flex' : 'none';
+}
+
+async function waitForFirebaseAuthInit() {
+  return new Promise(resolve => {
+    if (firebase?.apps?.length) {
+      resolve();
+    } else {
+      const interval = setInterval(() => {
+        if (firebase?.apps?.length) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 50);
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", async function () {
+  showLoading(true);
+  await waitForFirebaseAuthInit();
+
+  firebase.auth().onAuthStateChanged(async function(user) {
+    if (user) {
+      const uid = user.uid;
+      let data;
+      try {
+        const doc = await firebase.firestore().collection("users").doc(uid).get();
+        if (doc.exists) {
+          data = doc.data();
+        } else {
+          alert("User data not found. Please register again.");
+          window.location.href = "<?= base_url('register') ?>";
+          showLoading(false);
+          return;
+        }
+      } catch (e) {
+        alert("Error fetching user data: " + e.message);
+        showLoading(false);
+        return;
+      }
+
+      // Prefill form fields
+      document.getElementById("fname").value = data.fname || "";
+      document.getElementById("mname").value = data.mname || "";
+      document.getElementById("lname").value = data.lname || "";
+      document.getElementById("extname").value = data.extname || "";
+      document.getElementById("username").value = data.username || "";
+      document.getElementById("email").value = data.email || "";
+      document.getElementById("birthday").value = data.birthday || "";
+      document.getElementById("gender").value = data.gender || "";
+      document.getElementById("bio").value = data.bio || "";
+
+      // Profile display
+      const fullName = [data.fname, data.mname, data.lname, data.extname].filter(Boolean).join(" ");
+      document.getElementById("profileName").textContent = fullName || "Your name";
+      document.getElementById("profileUsername").textContent = data.username ? `@${data.username}` : "";
+      if (data.photoURL) {
+        document.getElementById("profile-pic").src = data.photoURL;
+      }
+
+      window.profileUID = uid;
+      showLoading(false);
+    } else {
+      alert("You are not logged in. Please sign in again.");
+      window.location.href = "<?= base_url('login') ?>";
+      showLoading(false);
+    }
+  });
+
+  // Profile picture preview
+  document.getElementById("profile-pic-input").addEventListener("change", function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        document.getElementById("profile-pic").src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  document.getElementById("editProfileForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    showLoading(true);
+
+    const uid = window.profileUID;
+    if (!uid) {
+      alert("User not found. Please log in again.");
+      showLoading(false);
+      return;
+    }
+
+    const fname = document.getElementById("fname").value.trim();
+    const mname = document.getElementById("mname").value.trim();
+    const lname = document.getElementById("lname").value.trim();
+    const extname = document.getElementById("extname").value.trim();
+    const username = document.getElementById("username").value.trim();
+    const birthday = document.getElementById("birthday").value;
+    const gender = document.getElementById("gender").value;
+    const bio = document.getElementById("bio").value;
+    const file = document.getElementById("profile-pic-input").files[0];
+
+    try {
+      let photoURL = null;
+      if (file) {
+        const storageRef = firebase.storage().ref();
+        const profilePicRef = storageRef.child(`profile_pictures/${uid}`);
+        await profilePicRef.put(file);
+        photoURL = await profilePicRef.getDownloadURL();
+      }
+
+      const updateData = {
+        fname: fname,
+        mname: mname,
+        lname: lname,
+        extname: extname,
+        username: username,
+        birthday: birthday,
+        gender: gender,
+        bio: bio
+      };
+      if (photoURL) {
+        updateData.photoURL = photoURL;
+      }
+
+      await firebase.firestore().collection("users").doc(uid).update(updateData);
+
+      alert("Profile updated!");
+      window.location.href = "<?= base_url('dashboard') ?>";
+    } catch (err) {
+      alert("Error saving profile: " + err.message);
+    }
+    showLoading(false);
+  });
+});
+</script>
 </body>
 </html>

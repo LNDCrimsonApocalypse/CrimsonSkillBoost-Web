@@ -101,6 +101,11 @@ class Auth extends BaseController
         return view('setup_profile');
     }
 
+    public function editprofile()
+    {
+        return view('editprofile');
+    }
+
     public function homepage()
     {
         return view('homepage');
@@ -510,6 +515,23 @@ class Auth extends BaseController
     public function upload()
     {
         return view('upload');
+    }
+
+    public function upload_profile_pic()
+    {
+        $uid = $this->request->getPost('uid');
+        $file = $this->request->getFile('profile_pic');
+        if (!$file->isValid()) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Invalid file']);
+        }
+        $newName = $uid . '_' . time() . '.' . $file->getExtension();
+        $uploadPath = FCPATH . 'public/uploads/profile_pics/';
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0777, true);
+        }
+        $file->move($uploadPath, $newName);
+        $url = base_url('public/uploads/profile_pics/' . $newName);
+        return $this->response->setJSON(['success' => true, 'url' => $url]);
     }
 
 }

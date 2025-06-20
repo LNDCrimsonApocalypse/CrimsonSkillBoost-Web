@@ -471,8 +471,10 @@ li {
 </li>
     </div>
     <div class="navbar-right">
-<img src="public/img/notifications.png" alt="Notifications" class="icon" />
-      <img src="" alt="Profile" class="navbar-profile" />
+      <img src="public/img/notifications.png" alt="Notifications" class="icon" />
+      <a href="<?= base_url('editprofile') ?>">
+        <img src="" alt="Profile" class="navbar-profile" />
+      </a>
     </div>
   </nav>
 
@@ -661,7 +663,7 @@ li {
       if (!confirm('Are you sure you want to delete this course?')) return;
       fetch('<?= site_url('course/delete/') ?>' + id, {
         method: 'POST',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        headers: { 'X-Requested-With', 'XMLHttpRequest' }
       })
       .then(res => res.json())
       .then data => {
