@@ -262,10 +262,10 @@
       <img src="public/img/Logo.png" alt="Logo" />
     </div>
     <div class="navbar-center">
-      <a href="#">HOME</a>
-      <a href="#">DASHBOARD</a>
-      <a href="#">ABOUT</a>
-      <a href="#">COURSES</a>
+        <a href="<?= base_url('/') ?>">HOME</a>
+      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+      <a href="allcourses">COURSES</a>
     </div>
     <div class="navbar-right">
          <img src="imgs/notifications.png" alt="Notifications" class="icon" />

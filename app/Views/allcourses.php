@@ -414,7 +414,7 @@
       <img src="public/img/logo.png" alt="Logo" />
     </div>
     <div class="navbar-center">
-      <a href="<?= base_url('home') ?>">HOME</a>
+     <a href="<?= base_url('/') ?>">HOME</a>
       <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
       <a href="<?= base_url('aboutus') ?>">COURSES</a>

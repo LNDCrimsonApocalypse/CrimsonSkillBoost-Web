@@ -414,15 +414,12 @@
       <img src="public/img/logo.png" alt="Logo" />
     </div>
     <div class="navbar-center">
-      <a href="<?= base_url('home') ?>">HOME</a>
-      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+       <a href="<?= base_url('/') ?>">HOME</a>
+      
       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
       <a href="<?= base_url('aboutus') ?>">COURSES</a>
     </div>
-    <div class="navbar-right">
-    <img src="public/img/notifications.png" alt="Notifications" class="icon" />
-      <img src="imgs/profile.png" alt="Profile" class="navbar-profile" />
-    </div>
+    
   </nav>
   <!-- MAIN AREA -->
   <div class="main-bg">
@@ -430,16 +427,12 @@
       <div class="courses-card">
         <div class="courses-title">COURSES</div>
         <div class="courses-toolbar">
-          <select id="courseFilter" class="dropdown-select" onchange="filterCourses()">
-  <option value="all">All Category</option>
-  <option value="active">Active</option>
-  <option value="inactive">Inactive</option>
-</select>
+       <div id="courseFilter" class="dropdown-select" onchange="filterCourses()">
+  <option>All Category</option>
+
+  </div>
           </div>
-          <div class="search-add-group">
-            <input class="search-box" type="text" placeholder="Search.." />
-            <button class="add-btn" id="openModalBtn">+ Add Courses</button>
-          </div>
+          
   
     <div class="cards-container">
   <div class="card" data-status="active">

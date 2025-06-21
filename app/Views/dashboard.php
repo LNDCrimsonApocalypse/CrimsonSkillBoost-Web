@@ -188,14 +188,15 @@ li {
            
         }
 
-    .card {
-      max-width: 1200px;
-      margin: 40px auto;
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-      padding: 32px 48px;
-    }
+    .dashboard {
+  max-width: 1200px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 32px 48px;
+}
+
 
     .container {
       display: flex;
@@ -446,6 +447,116 @@ li {
         font-size: 0.8em;
       }
     }
+ /*COURSE CARDS */
+.card {
+  width: 100%;
+  max-width: 700px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f8d1d8;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.13);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: row; /* <-- CHANGED from column to row */
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  margin-top: 20px;
+  margin-left: 80px;
+  padding: 0 20px;
+}
+.card-image img {
+  width: 100%;
+  height: auto; /* Let it scale proportionally */
+  object-fit: cover;
+  display: block;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+.card-image {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  background-color: #eee;
+}
+
+
+.card-content {
+  padding: 20px;
+  background: #f8d1d8;
+  flex: 1; /* Allow content to stretch */
+}
+
+
+.card-label {
+  font-size: 0.85rem;
+  color: #7c7c7c;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #222;
+}
+
+.card-subtitle {
+  font-size: 1rem;
+  color: #a2a2a2;
+  margin-bottom: 18px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-students {
+  font-size: 0.95rem;
+  color: #222;
+  display: flex;
+  align-items: center;
+}
+
+.card-students i {
+  margin-right: 6px;
+  font-size: 1.1em;
+}
+
+.card-btn {
+  background: #e754a2;
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 6px 18px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.card-btn:hover {
+  background: #c63d8e;
+}
+    .dropdown-select {
+      padding: 7px 18px 7px 12px;
+      border-radius: 5px;
+      border: 1.5px solid #ccc;
+      font-size: 1rem;
+      background: #fff;
+      cursor: pointer;
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 500;
+      min-width: 130px;
+    }
   </style>
 </head>
 <body>
@@ -458,32 +569,175 @@ li {
        <a href="<?= base_url('homepage_initial') ?>">HOME</a>
           <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
        <a href="<?= base_url('aboutus') ?>">ABOUT</a>
-         <li class="dropdown">
-  <label class="dropbtn" for="course-select">
-    COURSES <span class="arrow">▼</span>
-  </label>
-  <div class="dropdown-content">
-    <select id="course-select" class="custom-select">
-      <option value="<?= base_url('allcourses') ?>">ALL COURSES</option>
-      <option value="<?= base_url('courses') ?>">MY COURSES</option>
-    </select>
-  </div>
-</li>
+        <a href="<?= base_url('allcourses') ?>">COURSES</a>
     </div>
     <div class="navbar-right">
-      <img src="public/img/notifications.png" alt="Notifications" class="icon" />
-      <a href="<?= base_url('editprofile') ?>">
-        <img src="" alt="Profile" class="navbar-profile" />
-      </a>
+<img src="public/img/notifications.png" alt="Notifications" class="icon" />
+      <img src="" alt="Profile" class="navbar-profile" />
     </div>
   </nav>
 
 
-  <div class="card">
-    <?= csrf_field() ?> <!-- Add this line -->
+  <div class="dashboard">
     <main class="container">
       <section class="left-panel">
         <h2> Available Courses</h2>
+         <div class="main-bg">
+    <div class="card-container">
+      <div class="courses-card">
+    
+        <div class="courses-toolbar">
+          <select id="courseFilter" class="dropdown-select" onchange="filterCourses()">
+  <option value="all">All Category</option>
+  <option value="active">Active</option>
+  <option value="inactive">Inactive</option>
+</select>
+          </div>
+          
+  
+    <div class="cards-container">
+  <div class="card" data-status="active">
+    <div class="card-image">
+      <img src="cp1.jpg" alt="Computer Programming 1">
+    </div>
+    <div class="card-content">
+      <div class="card-label">COMPROG1</div>
+      <div class="card-title">Computer Programming 1</div>
+      <div class="card-subtitle">III - BCSAD</div>
+      <div class="card-footer">
+        <span class="card-students">
+          <i class="fa fa-users"></i> 1050 students
+        </span>
+        <button class="card-btn">View Info</button>
+      </div>
+    </div>
+  </div>
+  <!-- Repeat for each card, do NOT nest .card inside another .card -->
+  <!-- ... other cards ... -->
+<div class="card">
+  <div class="card-image">
+    <img src="cp2.jpg" alt="Computer Programming 2">
+  </div>
+  <div class="card-content">
+    <div class="card-label">COMPROG2</div>
+    <div class="card-title">Computer Programming 2</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 980 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-image">
+    <img src="im.jpg" alt="Information Management">
+  </div>
+  <div class="card-content">
+    <div class="card-label">INFOMAN</div>
+    <div class="card-title">Information Management</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 870 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="card">
+  <div class="card-image">
+    <img src="itc.jpg" alt="Introduction to Computing">
+  </div>
+  <div class="card-content">
+    <div class="card-label">ITC</div>
+    <div class="card-title">Introduction to Computing</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 1120 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-image">
+    <img src="wdt.jpg" alt="Web Development Tools">
+  </div>
+  <div class="card-content">
+    <div class="card-label">WDT</div>
+    <div class="card-title">Web Development Tools</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 760 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="card">
+  <div class="card-image">
+    <img src="wad.jpg" alt="Web Applications Development">
+  </div>
+  <div class="card-content">
+    <div class="card-label">WAD</div>
+    <div class="card-title">Web Applications Development</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 810 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-image">
+    <img src="oop.jpg" alt="Object Oriented Programming">
+  </div>
+  <div class="card-content">
+    <div class="card-label">OOP</div>
+    <div class="card-title">Object Oriented Programming</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 950 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-image">
+    <img src="mad.jpg" alt="Mobile Applications Development">
+  </div>
+  <div class="card-content">
+    <div class="card-label">MAD</div>
+    <div class="card-title">Mobile Applications Development</div>
+    <div class="card-subtitle">III - BCSAD</div>
+    <div class="card-footer">
+      <span class="card-students">
+        <i class="fa fa-users"></i> 690 students
+      </span>
+      <button class="card-btn">View Info</button>
+    </div>
+  </div>
+</div>
+  
+<!-- ... end  ... --></div>
+    <?= csrf_field() ?> <!-- Add this line -->
+    
         <?php
           // Ensure $courses is always an array
           $courses = isset($courses) && is_array($courses) ? $courses : [];
@@ -507,33 +761,59 @@ li {
       </section>
       <aside class="right-panel">
         <div class="enrollment-requests">
-          <h2>Enrollment Requests</h2>
-          <div id="enrollment-list">
-            <?php
-              // Ensure $enrollmentRequests is always an array
-              $enrollmentRequests = isset($enrollmentRequests) && is_array($enrollmentRequests) ? $enrollmentRequests : [];
-            ?>
-            <?php if (!empty($enrollmentRequests)): ?>
-              <?php foreach ($enrollmentRequests as $request): ?>
-                <div class="request-card" id="request-<?= $request['id'] ?>">
-                  <div class="request-info">
-                    <strong><?= esc($request['student_name']) ?></strong>
-                    <p>Requesting enrollment in <?= esc($request['course_name']) ?> - Section <?= esc($request['section']) ?></p>
-                  </div>
-                  <div class="request-actions">
-                    <button onclick="updateEnrollment(<?= $request['id'] ?>, 'approved')" class="btn-approve">Approve</button>
-                    <button onclick="updateEnrollment(<?= $request['id'] ?>, 'rejected')" class="btn-reject">Reject</button>
-                  </div>
-                </div>
-              <?php endforeach; ?>
-            <?php else: ?>
-              <p>No pending enrollment requests</p>
-            <?php endif; ?>
+  <h2>Enrollment Requests</h2>
+  <div id="enrollment-list">
+
+    <!--  HTML-only static card will always show -->
+    <div class="request-card">
+      <div class="request-info">
+        <strong>John Doe</strong>
+        <p>Requesting enrollment in Web Development - Section A</p>
+      </div>
+      <div class="request-actions">
+        <button class="btn-approve">Approve</button>
+        <button class="btn-reject">Reject</button>
+      </div>
+    </div>
+
+    <?php
+      // Ensure $enrollmentRequests is always an array
+      $enrollmentRequests = isset($enrollmentRequests) && is_array($enrollmentRequests) ? $enrollmentRequests : [];
+    ?>
+    <?php if (!empty($enrollmentRequests)): ?>
+      <?php foreach ($enrollmentRequests as $request): ?>
+        <div class="request-card" id="request-<?= $request['id'] ?>">
+          <div class="request-info">
+            <strong><?= esc($request['student_name']) ?></strong>
+            <p>Requesting enrollment in <?= esc($request['course_name']) ?> - Section <?= esc($request['section']) ?></p>
+          </div>
+          <div class="request-actions">
+            <button onclick="updateEnrollment(<?= $request['id'] ?>, 'approved')" class="btn-approve">Approve</button>
+            <button onclick="updateEnrollment(<?= $request['id'] ?>, 'rejected')" class="btn-reject">Reject</button>
           </div>
         </div>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <p>No pending enrollment requests</p>
+    <?php endif; ?>
+
+  </div>
+</div>
+
 
         <div class="recent-submissions">
           <h2>Recent Submissions</h2>
+           <!--  HTML-only static card will always show -->
+    <div class="request-card">
+      <div class="request-info">
+        <strong>John Doe</strong>
+        <p>Task 1</p>
+      </div>
+      <div class="request-actions">
+        <button class="btn-approve">Grade</button>
+        <button class="btn-reject">Reject</button>
+      </div>
+    </div>
           <?php
             // Ensure $submissions is always an array
             $submissions = isset($submissions) && is_array($submissions) ? $submissions : [];
@@ -663,7 +943,7 @@ li {
       if (!confirm('Are you sure you want to delete this course?')) return;
       fetch('<?= site_url('course/delete/') ?>' + id, {
         method: 'POST',
-        headers: { 'X-Requested-With', 'XMLHttpRequest' }
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
       })
       .then(res => res.json())
       .then data => {
