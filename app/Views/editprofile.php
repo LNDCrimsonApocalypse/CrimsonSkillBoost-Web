@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     await firebase.firestore().collection("users").doc(uid).update(updateData);
 
     alert("Profile updated!");
-    window.location.href = "<?= base_url('dashboard') ?>";
+    window.location.href = "<?= base_url('homepage') ?>";
     showLoading(false);
   });
 });

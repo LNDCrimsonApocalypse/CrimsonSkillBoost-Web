@@ -271,8 +271,8 @@ li {
     </div>
     <div class="nav-right">
       <img src="public/img/notifications.png" class="notification" alt="Notifications">
-     <a href="<?= base_url('editprofile') ?>"> <img src="" class="profile" alt="User"> </a>
-        <a href="<?= base_url('homepage_initial') ?>"><button id="signOutButton">Sign Out</button> </a>
+      <a href="<?= base_url('editprofile') ?>"> <img src="" id="educatorImage" class="profile" alt="User"> </a>
+      <a href="<?= base_url('homepage_initial') ?>"><button id="signOutButton">Sign Out</button> </a>
     </div>
   </div>
 
@@ -297,43 +297,43 @@ li {
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-<script>
-firebase.auth().onAuthStateChanged(async function(user) {
-  if (user) {
-    try {
-      const doc = await firebase.firestore().collection("users").doc(user.uid).get();
-      if (doc.exists) {
-        const data = doc.data();
+  <script>
+  firebase.auth().onAuthStateChanged(async function(user) {
+    if (user) {
+      try {
+        const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+        if (doc.exists) {
+          const data = doc.data();
 
-        // Full Name
-        const fullName = [data.fname, data.mname, data.lname, data.extname].filter(Boolean).join(" ");
-        document.getElementById("educatorName").textContent = fullName || "Educator";
+          // Full Name
+          const fullName = [data.fname, data.mname, data.lname, data.extname].filter(Boolean).join(" ");
+          document.getElementById("educatorName").textContent = fullName || "Educator";
 
-        // Bio
-        document.getElementById("educatorBio").textContent = data.bio || "Welcome to your dashboard.";
+          // Bio
+          document.getElementById("educatorBio").textContent = data.bio || "Welcome to your dashboard.";
 
-        // Profile Picture (if you want to display on navbar or in main)
-        const profileImg = document.querySelector(".nav-right img.profile");
-        if (profileImg && data.photoURL) {
-          profileImg.src = data.photoURL;
+          // Profile Picture (if you want to display on navbar or in main)
+          const profileImg = document.querySelector(".nav-right img.profile");
+          if (profileImg && data.photoURL) {
+            profileImg.src = data.photoURL;
+          }
+
+          // Optional: change main image if user uploaded one
+          if (data.photoURL) {
+            document.getElementById("educatorImage").src = data.photoURL;
+          }
+
+        } else {
+          alert("User profile not found. Redirecting to setup...");
+          window.location.href = "<?= base_url('setup-profile') ?>";
         }
-
-        // Optional: change main image if user uploaded one
-        if (data.photoURL) {
-          document.getElementById("educatorImage").src = data.photoURL;
-        }
-
-      } else {
-        alert("User profile not found. Redirecting to setup...");
-        window.location.href = "<?= base_url('setup-profile') ?>";
+      } catch (err) {
+        alert("Error loading profile: " + err.message);
       }
-    } catch (err) {
-      alert("Error loading profile: " + err.message);
+    } else {
+      window.location.href = "<?= base_url('login') ?>";
     }
-  } else {
-    window.location.href = "<?= base_url('login') ?>";
-  }
-});
-</script>
+  });
+  </script>
 </body>
 </html>

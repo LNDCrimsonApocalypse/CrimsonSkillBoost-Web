@@ -7,7 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 // Optional: Default route (redirect to login)
-$routes->get('/', 'Auth::initial');
+$routes->get('/', 'Auth::homepage');
 
 // Manual route definitions
 $routes->get('/login', 'Auth::login');
