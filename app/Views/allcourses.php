@@ -598,19 +598,20 @@
           <div class="modal-col-header">Year and Section</div>
           <div class="modal-col-content">
             <div class="radio-group">
-              <label><input type="radio" name="year" /> 1st Year</label>
+              <label><input type="radio" name="year" value="1" id="year1" /> 1st Year</label>
               <label><input type="radio" name="section" /> ACSAD</label>
             </div>
             <div class="radio-group">
-              <label><input type="radio" name="year" /> 2nd Year</label>
+              <label><input type="radio" name="year" value="2" id="year2" /> 2nd Year</label>
               <label><input type="radio" name="section" checked /> BCSAD</label>
             </div>
             <div class="radio-group">
-              <label><input type="radio" name="year" checked /> 3rd Year</label>
+              <label><input type="radio" name="year" value="3" id="year3" checked /> 3rd Year</label>
               <label><input type="radio" name="section" /> CCSAD</label>
             </div>
             <div class="radio-group">
-              <label><input type="radio" name="year" /> 4th Year</label>
+              <label><input type="radio" name="year" value="4" id="year4" /> 4th Year</label>
+              <label><input type="radio" name="section" /> DCSAD</label>
             </div>
           </div>
         </div>
@@ -619,24 +620,12 @@
           <div class="modal-col-header">Courses</div>
           <div class="modal-col-content">
             <div class="radio-group">
-              <label><input type="radio" name="sem" /> First Semester</label>
-              <label><input type="radio" name="sem" checked /> Second Semester</label>
+              <label><input type="radio" name="sem" value="1" id="sem1" /> First Semester</label>
+              <label><input type="radio" name="sem" value="2" id="sem2" checked /> Second Semester</label>
             </div>
-            <div class="radio-group">
-              <label><input type="radio" name="course" /> Methods II Research</label>
-              <label><input type="radio" name="course" /> Software Engineering 2</label>
-            </div>
-            <div class="radio-group">
-              <label><input type="radio" name="course" /> Programming Languages</label>
-              <label><input type="radio" name="course" checked /> Computer Programming 1</label>
-            </div>
-            <div class="radio-group">
-              <label><input type="radio" name="course" /> Architecture and Organization</label>
-              <label><input type="radio" name="course" /> Automata Theory and Formal Languages</label>
-            </div>
-            <div class="radio-group">
-              <label><input type="radio" name="course" /> Project Management</label>
-              <label><input type="radio" name="course" /> Elective 2</label>
+            <!-- Subject radio buttons will be dynamically filled here -->
+            <div id="subjectRadioGroup" class="radio-group" style="flex-direction:column;gap:6px;margin-top:12px;">
+              <!-- JS will inject subject radios here -->
             </div>
           </div>
         </div>
@@ -666,9 +655,108 @@ const openModalBtn = document.getElementById('openModalBtn');
 const closeModalBtn = document.getElementById('closeModalBtn');
 const modalOverlay = document.getElementById('modalOverlay');
 
-openModalBtn.onclick = () => modalOverlay.classList.add('active');
-closeModalBtn.onclick = () => modalOverlay.classList.remove('active');
+// Subject radio group logic
+const subjectMap = {
+  "1-1": [
+    "INTRODUCTION TO COMPUTING",
+    "COMPUTER PROGRAMMING 1",
+    "WEB DEVELOPMENT TOOLS"
+  ],
+  "1-2": [
+    "PROBABILITY AND STATISTICS",
+    "COMPUTER PROGRAMMING 2",
+    "INFORMATION MANAGEMENT",
+    "WEB APPLICATIONS DEVELOPMENT"
+  ],
+  "2-1": [
+    "ORGANIZATIONAL COMMUNICATION",
+    "DATA STRUCTURES AND ALGORITHMS",
+    "OPERATING SYSTEMS",
+    "OBJECT ORIENTED PROGRAMMING"
+  ],
+  "2-2": [
+    "MODERN PHYSICS",
+    "APPLICATIONS DEVELOPMENT AND EMERGING TECHNOLOGIES",
+    "DISCRETE STRUCTURES 1"
+  ],
+  "3-1": [
+    "DIFFERENTIAL AND INTEGRAL CALCULUS",
+    "ALGORITHMS AND COMPLEXITY",
+    "DISCRETE STRUCTURES 2",
+    "INFORMATION ASSURANCE AND SECURITY",
+    "SOFTWARE ENGINEERING 1",
+    "HUMAN COMPUTER INTERACTION",
+    "MODELING AND SIMULATION",
+    "ELECTIVE 1"
+  ],
+  "3-2": [
+    "METHODS OF RESEARCH",
+    "SOFTWARE ENGINEERING 2",
+    "PROGRAMMING LANGUAGES",
+    "NETWORKS AND COMMUNICATIONS",
+    "ARCHITECTURE AND ORGANIZATION",
+    "AUTOMATA THEORY AND FORMAL LANGUAGES",
+    "PROJECT MANAGEMENT",
+    "ELECTIVE 2"
+  ],
+  "4-1": [
+    "ADVANCED ENGLISH PRE-EMPLOYMENT TRAINING",
+    "SOCIAL ISSUES AND PROFESSIONAL PRACTICE",
+    "CS THESIS WRITING 1",
+    "ELECTIVE 3",
+    "ELECTIVE 4",
+    "ELECTIVE 5"
+  ],
+  "4-2": [
+    "PRACTICUM (486 HOURS)",
+    "CS THESIS WRITING 2"
+  ]
+};
 
+function updateSubjects() {
+  const year = document.querySelector('input[name="year"]:checked')?.value;
+  const sem = document.querySelector('input[name="sem"]:checked')?.value;
+  const group = document.getElementById('subjectRadioGroup');
+  group.innerHTML = '';
+  if (year && sem) {
+    const key = `${year}-${sem}`;
+    if (subjectMap[key]) {
+      subjectMap[key].forEach((subj, idx) => {
+        const id = `subject_${year}_${sem}_${idx}`;
+        // Create label and radio separately for correct structure
+        const label = document.createElement('label');
+        label.style.marginRight = "8px";
+        label.setAttribute('for', id);
+        // Radio
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'subject';
+        radio.value = subj;
+        radio.id = id;
+        if (idx === 0) radio.checked = true;
+        // Label text
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(' ' + subj));
+        group.appendChild(label);
+      });
+    }
+  }
+}
+
+// Attach listeners to year and sem radios
+document.querySelectorAll('input[name="year"]').forEach(radio => {
+  radio.addEventListener('change', updateSubjects);
+});
+document.querySelectorAll('input[name="sem"]').forEach(radio => {
+  radio.addEventListener('change', updateSubjects);
+});
+
+// Initialize on modal open
+openModalBtn.onclick = () => {
+  modalOverlay.classList.add('active');
+  setTimeout(updateSubjects, 0); // Ensure radios are rendered before updating
+};
+closeModalBtn.onclick = () => modalOverlay.classList.remove('active');
 window.onclick = (e) => {
   if (e.target === modalOverlay) modalOverlay.classList.remove('active');
 };
