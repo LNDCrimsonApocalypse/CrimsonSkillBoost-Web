@@ -635,7 +635,12 @@
       </div>
     </div>
     </div>
-    <script>
+    <!-- Add Firebase SDKs for JS Firestore access -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+<script>
 function filterCourses() {
   const selected = document.getElementById('courseFilter').value;
   const courses = document.querySelectorAll('.card');
@@ -762,13 +767,86 @@ window.onclick = (e) => {
 };
 
 // Dropdown page redirection
-document.getElementById('coursesDropdown').addEventListener('change', function() {
-  if (this.value === "mycourses") {
-    window.location.href = "<?= base_url('courses_view') ?>";
-  } else if (this.value === "allcourses") {
-    window.location.href = "<?= base_url('allcourses') ?>";
+// Only add event listener if the element exists
+const coursesDropdown = document.getElementById('coursesDropdown');
+if (coursesDropdown) {
+  coursesDropdown.addEventListener('change', function() {
+    if (this.value === "mycourses") {
+      window.location.href = "<?= base_url('courses_view') ?>";
+    } else if (this.value === "allcourses") {
+      window.location.href = "<?= base_url('allcourses') ?>";
+    }
+  });
+}
+
+// Add Course Handler
+document.querySelector('.modal-add-btn').onclick = async function() {
+  // Get values from modal
+  const year = document.querySelector('input[name="year"]:checked')?.value;
+  // Fix: get the checked section radio, not just parent text
+  let section = '';
+  const sectionRadio = document.querySelector('input[name="section"]:checked');
+  if (sectionRadio) {
+    // Try to get the label text for the checked section radio
+    const label = sectionRadio.closest('label');
+    if (label) {
+      section = label.textContent.replace(/^\s*|\s*$/g, '').replace(/^[^A-Za-z0-9]+/, '');
+    }
   }
-});
+  const semester = document.querySelector('input[name="sem"]:checked')?.value;
+  const subjectRadio = document.querySelector('input[name="subject"]:checked');
+  const course_name = subjectRadio ? subjectRadio.value : '';
+  const overview = prompt("Enter course overview (optional):", "");
+  const requirements = prompt("Enter course requirements (optional):", "");
+
+  // Get instructor info from Firebase Auth
+  let user;
+  try {
+    user = firebase.auth().currentUser;
+  } catch (e) {
+    user = null;
+  }
+  if (!user) {
+    alert("You must be logged in to add a course.");
+    return;
+  }
+
+  // Optionally, get instructor_name from Firestore profile
+  let instructor_name = user.email;
+  try {
+    const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+    if (doc.exists) {
+      const d = doc.data();
+      instructor_name = [d.fname, d.mname, d.lname, d.extname].filter(Boolean).join(" ") || user.email;
+    }
+  } catch (e) {}
+
+  // Validate required fields
+  if (!course_name || !year || !section || !semester) {
+    alert("Please select year, section, semester, and subject.");
+    return;
+  }
+
+  // Add to Firestore
+  try {
+    await firebase.firestore().collection("courses").add({
+      course_name: course_name,
+      created_at: new Date().toISOString(),
+      instructor_name: instructor_name,
+      user_id: user.uid,
+      overview: overview || "",
+      requirements: requirements || "",
+      year: year,
+      section: section,
+      semester: semester
+    });
+    alert("Course added successfully!");
+    closeModalBtn.click();
+    // location.reload(); // Uncomment if you want to reload
+  } catch (err) {
+    alert("Failed to add course: " + err.message);
+  }
+};
   </script>
 </body>
 </html>
