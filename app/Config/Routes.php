@@ -57,6 +57,7 @@ $routes->get('course_view/(:num)', 'Course::view/$1'); // Optional alias
 $routes->get('allcourses', 'Allcourses::index');
 
 $routes->get('lesson_view/(:num)', 'LessonView::index/$1');
+$routes->get('lesson_view', 'LessonController::index');
 
 // QUIZ FLOW
 $routes->post('quiz/start', 'Quiz::startQuizCreation');

@@ -234,7 +234,7 @@
     <div class="navbar-center">
        <a href="<?= base_url('/') ?>">HOME</a>
      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
-      <a href="<?= base_url('allcourses') ?>">COURSES</a>
+      <a href="<?= base_url('allcourses2') ?>">COURSES</a>
     </div>
   </nav>
   <!-- HERO SECTION -->
