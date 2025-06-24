@@ -1,4 +1,5 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 11:27:04 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: cp1.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
@@ -168,6 +169,9 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 CRITICAL - 2025-06-22 11:36:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+=======
+CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+>>>>>>> Stashed changes
 =======
 CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 >>>>>>> Stashed changes
@@ -178,13 +182,25 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 11:36:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+=======
+CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: wdt.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+>>>>>>> Stashed changes
 [Method: GET, Route: cp1.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
  1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
  2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 11:36:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: im.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
@@ -204,26 +220,39 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 <<<<<<< Updated upstream
 CRITICAL - 2025-06-22 11:36:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+=======
+CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+>>>>>>> Stashed changes
 [Method: GET, Route: itc.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
  1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
  2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 11:36:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+=======
+CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+>>>>>>> Stashed changes
 [Method: GET, Route: cp2.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
  1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
  2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 11:36:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: mad.jpg]
+=======
+CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: im.jpg]
+>>>>>>> Stashed changes
 in SYSTEMPATH\CodeIgniter.php on line 955.
  1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
  2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 11:36:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: wad.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
@@ -232,15 +261,36 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 CRITICAL - 2025-06-22 11:36:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+=======
+CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+>>>>>>> Stashed changes
 [Method: GET, Route: oop.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
  1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
  2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 11:47:41 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 =======
 CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+>>>>>>> Stashed changes
+=======
+CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: wad.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: mad.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-22 07:37:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 >>>>>>> Stashed changes
 [Method: GET, Route: cp1.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
@@ -248,6 +298,7 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 CRITICAL - 2025-06-22 11:47:41 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: cp2.jpg]
@@ -274,6 +325,9 @@ CRITICAL - 2025-06-22 11:47:41 --> Error: Object of class CodeIgniter\HTTP\Redir
 =======
 CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 >>>>>>> Stashed changes
+=======
+CRITICAL - 2025-06-22 07:37:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+>>>>>>> Stashed changes
 [Method: GET, Route: itc.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
  1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
@@ -281,13 +335,25 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 11:47:41 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+=======
+CRITICAL - 2025-06-22 07:37:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: wdt.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-22 07:37:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+>>>>>>> Stashed changes
 [Method: GET, Route: wad.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
  1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
  2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 11:47:42 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: oop.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
@@ -306,6 +372,9 @@ CRITICAL - 2025-06-22 11:56:00 --> Error: Object of class CodeIgniter\HTTP\Redir
 =======
 CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 >>>>>>> Stashed changes
+=======
+CRITICAL - 2025-06-22 07:37:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+>>>>>>> Stashed changes
 [Method: GET, Route: cp2.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
  1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
@@ -313,22 +382,31 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 11:56:00 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 =======
 CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+=======
+CRITICAL - 2025-06-22 07:37:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+>>>>>>> Stashed changes
 [Method: GET, Route: im.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
  1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
  2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+=======
+CRITICAL - 2025-06-22 07:37:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+>>>>>>> Stashed changes
 [Method: GET, Route: oop.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
  1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
  2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: wad.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
@@ -337,12 +415,16 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 CRITICAL - 2025-06-22 07:36:25 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+=======
+CRITICAL - 2025-06-22 07:37:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+>>>>>>> Stashed changes
 [Method: GET, Route: mad.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
  1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
  2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 07:37:23 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 >>>>>>> Stashed changes
 [Method: GET, Route: cp1.jpg]
@@ -481,6 +563,8 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
 <<<<<<< Updated upstream
 CRITICAL - 2025-06-22 12:24:20 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 =======
+=======
+>>>>>>> Stashed changes
 CRITICAL - 2025-06-22 07:40:37 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: courses_descrip]
 in SYSTEMPATH\CodeIgniter.php on line 955.
@@ -496,6 +580,9 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 CRITICAL - 2025-06-22 07:40:42 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 [Method: GET, Route: imgs/profile.png]
 in SYSTEMPATH\CodeIgniter.php on line 955.
@@ -504,8 +591,13 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 12:24:20 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: cp1.jpg]
+=======
+CRITICAL - 2025-06-22 07:40:52 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: coursedescrip]
+>>>>>>> Stashed changes
 =======
 CRITICAL - 2025-06-22 07:40:52 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: coursedescrip]
@@ -516,6 +608,7 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 CRITICAL - 2025-06-22 12:24:20 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: im.jpg]
 in SYSTEMPATH\CodeIgniter.php on line 955.
@@ -1001,6 +1094,10 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 CRITICAL - 2025-06-22 18:56:54 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: wad.jpg]
+=======
+CRITICAL - 2025-06-22 07:41:26 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: lesson_view]
+>>>>>>> Stashed changes
 =======
 CRITICAL - 2025-06-22 07:41:26 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: lesson_view]
