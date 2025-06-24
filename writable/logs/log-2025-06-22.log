@@ -910,6 +910,7 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+<<<<<<< HEAD
 CRITICAL - 2025-06-22 18:55:04 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
 [Method: GET, Route: imgs/profile.png]
 in SYSTEMPATH\CodeIgniter.php on line 955.
@@ -1107,3 +1108,5 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+=======
+>>>>>>> parent of 4d4b56c (test)
