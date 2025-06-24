@@ -344,30 +344,44 @@
       padding: 18px 28px 0 28px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 8px;
     }
-    /* Radio groups */
-    .radio-group {
-      display: flex;
-      gap: 18px;
-      align-items: flex-start;
-      margin-bottom: 8px;
-    }
-    .radio-group label {
-      font-size: 1rem;
-      color: #222;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    #courseRadioGroups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 48px; /* vertical and horizontal gap */
+  margin-top: 12px;
+}
+.radio-group {
+  display: contents; /* flatten children into grid */
+}
+.radio-group label {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: #222;
+  cursor: pointer;
+  gap: 8px;
+  margin-bottom: 0;
+  /* Remove width so it fits grid cell */
+}
+    @media (max-width: 600px) {
+      #courseRadioGroups {
+        flex-direction: column;
+        gap: 8px 0;
+      }
+      .radio-group {
+        width: 100%;
+      }
     }
     .modal-footer {
       display: flex;
       justify-content: center;
       align-items: center;
       margin-top: 32px;
+      padding: 0 10px;
     }
-    .modal-add-btn {
+    .btn {
       background: linear-gradient(90deg, #e636a4 0%, #b983ff 100%);
       color: #fff;
       border: none;
@@ -380,7 +394,7 @@
       transition: background 0.2s, box-shadow 0.2s;
       box-shadow: 0 2px 8px rgba(230,54,164,0.08);
     }
-    .modal-add-btn:hover {
+    .btn:hover {
       background: linear-gradient(90deg, #c92c8e 0%, #7f53ac 100%);
       box-shadow: 0 4px 20px rgba(230,54,164,0.14);
     }
@@ -405,6 +419,91 @@
         font-size: 1.2rem;
       }
     }
+
+    #modalOverlay2 .modal-content {
+  animation: fadeIn 0.25s;
+}
+#modalOverlay2 .modal-col-content textarea {
+  resize: vertical;
+  background: #fff0f8;
+}
+
+.course-details-grid {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding: 10px
+}
+.detail-col {
+  flex: 1;
+  min-width: 180px;
+  border: 1px solid #333;
+  border-radius: 2px;
+  background: #fff;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+.detail-label {
+  background: #e6c4e6;
+  font-weight: bold;
+  padding: 12px 16px;
+  border-bottom: 1px solid #333;
+  font-size: 1.1rem;
+}
+.detail-value {
+  padding: 14px 16px;
+  font-size: 1rem;
+  min-height: 32px;
+}
+.desc-group {
+  margin-bottom: 22px;
+  padding: 10px;
+}
+.desc-label {
+  background: #e6c4e6;
+  font-weight: bold;
+  padding: 12px 16px;
+  border: 1px solid #333;
+  border-bottom: none;
+  border-radius: 2px 2px 0 0;
+  font-size: 1.1rem;
+}
+.desc-group textarea {
+  width: 100%;
+  border: 1px solid #333;
+  border-top: none;
+  border-radius: 0 0 2px 2px;
+  padding: 14px 16px;
+  font-size: 1rem;
+  min-height: 80px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+.add-btn-gradient {
+  background: linear-gradient(90deg, #e636a4 0%, #b983ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 10px 48px;
+  cursor: pointer;
+  letter-spacing: 1.5px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(230,54,164,0.08);
+
+}
+.add-btn-gradient:hover {
+  background: linear-gradient(90deg, #c92c8e 0%, #7f53ac 100%);
+  box-shadow: 0 4px 20px rgba(230,54,164,0.14);
+}
+@media (max-width: 900px) {
+  .course-details-grid {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
   </style>
 </head>
 <body>
@@ -438,7 +537,7 @@
           </div>
           <div class="search-add-group">
             <input class="search-box" type="text" placeholder="Search.." />
-            <button class="add-btn" id="openModalBtn">+ Add Courses</button>
+        <button id="openAddCourseModal" class="add-btn">Add Course</button>
           </div>
   
     <div class="cards-container">
@@ -585,190 +684,304 @@
 
     </div>
   </div>
-   <!-- MODAL -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal-content">
-      <div class="modal-header">
-        ADD NEW COURSE
-        <button class="modal-close" id="closeModalBtn" title="Close">&times;</button>
-      </div>
-      <div class="modal-body">
-        <!-- Year and Section -->
-        <div class="modal-col">
-          <div class="modal-col-header">Year and Section</div>
-          <div class="modal-col-content">
-            <div class="radio-group">
-              <label><input type="radio" name="year" value="1" id="year1" /> 1st Year</label>
-              <label><input type="radio" name="section" /> ACSAD</label>
-            </div>
-            <div class="radio-group">
-              <label><input type="radio" name="year" value="2" id="year2" /> 2nd Year</label>
-              <label><input type="radio" name="section" checked /> BCSAD</label>
-            </div>
-            <div class="radio-group">
-              <label><input type="radio" name="year" value="3" id="year3" checked /> 3rd Year</label>
-              <label><input type="radio" name="section" /> CCSAD</label>
-            </div>
-            <div class="radio-group">
-              <label><input type="radio" name="year" value="4" id="year4" /> 4th Year</label>
-              <label><input type="radio" name="section" /> DCSAD</label>
-            </div>
-          </div>
+   <!-- MODAL 1: Step 1 -->
+<div class="modal-overlay" id="courseModalStep1">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('courseModalStep1')">&times;</span>
+    <div class="modal-header">Add a Course</div>
+    <div class="modal-body" style="display: flex; gap: 32px; justify-content: center;">
+      <!-- Left: Year and Section -->
+      <div style="flex:1; min-width:320px; border:1px solid #888; border-radius:6px; background:#fff; overflow:hidden;">
+        <div style="background:#eec8e6; font-weight:bold; font-size:1.15rem; padding:12px 18px; border-bottom:1px solid #888;">
+          Year and Section
         </div>
-        <!-- Courses -->
-        <div class="modal-col">
-          <div class="modal-col-header">Courses</div>
-          <div class="modal-col-content">
-            <div class="radio-group">
-              <label><input type="radio" name="sem" value="1" id="sem1" /> First Semester</label>
-              <label><input type="radio" name="sem" value="2" id="sem2" checked /> Second Semester</label>
-            </div>
-            <!-- Subject radio buttons will be dynamically filled here -->
-            <div id="subjectRadioGroup" class="radio-group" style="flex-direction:column;gap:6px;margin-top:12px;">
-              <!-- JS will inject subject radios here -->
-            </div>
+        <div style="display:flex; justify-content:space-between; padding:32px 28px;">
+          <div style="display:flex; flex-direction:column; gap:24px;">
+            <label><input type="radio" name="year" value="1st Year" class="year-radio"> 1st Year</label>
+            <label><input type="radio" name="year" value="2nd Year" class="year-radio"> 2nd Year</label>
+            <label><input type="radio" name="year" value="3rd Year" class="year-radio"> 3rd Year</label>
+            <label><input type="radio" name="year" value="4th Year" class="year-radio"> 4th Year</label>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:24px;">
+            <label><input type="radio" name="section" value="ACSAD"> ACSAD</label>
+            <label><input type="radio" name="section" value="BCSAD"> BCSAD</label>
+            <label><input type="radio" name="section" value="CCSAD"> CCSAD</label>
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="modal-add-btn">ADD</button>
+      <!-- Right: Courses (dynamic) -->
+      <div class="modal-col">
+    <div class="modal-col-header">Courses</div>
+    <div class="modal-col-content" id="coursesContainer">
+      <!-- Semester radios -->
+      <div class="radio-group">
+        <label><input type="radio" name="sem" value="First Semester" class="sem-radio"> First Semester</label>
+        <label><input type="radio" name="sem" value="Second Semester" class="sem-radio" checked> Second Semester</label>
       </div>
+      <!-- Courses will be injected here -->
+      <div id="courseRadioGroups"></div>
     </div>
+  </div>
     </div>
-    <script>
-function filterCourses() {
-  const selected = document.getElementById('courseFilter').value;
-  const courses = document.querySelectorAll('.card');
+    <div class="modal-footer">
+      <button class="btn" onclick="goToStep2()">Next</button>
+    </div>
+  </div>
+</div>
 
-  courses.forEach(course => {
-    const status = course.getAttribute('data-status') || 'inactive';
-    if (selected === 'all' || status === selected) {
-      course.style.display = 'block';
-    } else {
-      course.style.display = 'none';
-    }
+<!-- MODAL 2: Step 2 -->
+<div class="modal-overlay" id="courseModalStep2">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('courseModalStep2')">&times;</span>
+    <div class="modal-header">Add Course Details</div>
+    <div class="step active" id="step2">
+      <div class="course-details-grid">
+        <div class="detail-col">
+          <div class="detail-label">Course</div>
+          <div class="detail-value" id="detailCourse"></div>
+        </div>
+        <div class="detail-col">
+          <div class="detail-label">Section</div>
+          <div class="detail-value" id="detailSection"></div>
+        </div>
+        <div class="detail-col">
+          <div class="detail-label">Semester</div>
+          <div class="detail-value" id="detailSemester"></div>
+        </div>
+      </div>
+      <div class="desc-group">
+        <div class="desc-label">Description</div>
+        <textarea id="courseDescription" rows="4" placeholder="Course Description..."></textarea>
+      </div>
+      <div class="desc-group">
+        <div class="desc-label">Requirments</div>
+        <textarea id="courseRequirements" rows="4" placeholder="Requirements (optional)..."></textarea>
+      </div>
+      <div class="modal-footer" style="justify-content: flex-end;">
+        <button class="add-btn-gradient" onclick="submitCourse()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const openBtn = document.getElementById("openAddCourseModal");
+const modalStep1 = document.getElementById("courseModalStep1");
+const modalStep2 = document.getElementById("courseModalStep2");
+
+openBtn.addEventListener("click", function () {
+  modalStep1.classList.add("active");
+});
+
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove("active");
+}
+
+// Clicking outside closes the modal
+window.onclick = function (event) {
+  if (event.target === modalStep1) {
+    closeModal('courseModalStep1');
+  }
+  if (event.target === modalStep2) {
+    closeModal('courseModalStep2');
+  }
+};
+
+// Fix: Always re-attach modal-close click handler after modal is shown
+function attachModalCloseHandlers() {
+  document.querySelectorAll('.modal-close').forEach(btn => {
+    btn.onclick = function(event) {
+      event.stopPropagation();
+      const modal = this.closest('.modal-overlay');
+      if (modal) modal.classList.remove('active');
+    };
   });
 }
 
-// Modal toggle
-const openModalBtn = document.getElementById('openModalBtn');
-const closeModalBtn = document.getElementById('closeModalBtn');
-const modalOverlay = document.getElementById('modalOverlay');
+// Call this after showing any modal
+openBtn.addEventListener("click", function () {
+  modalStep1.classList.add("active");
+  setTimeout(() => {
+    attachCourseListeners();
+    updateCourses();
+    attachModalCloseHandlers();
+  }, 0);
+});
 
-// Subject radio group logic
-const subjectMap = {
-  "1-1": [
-    "INTRODUCTION TO COMPUTING",
-    "COMPUTER PROGRAMMING 1",
-    "WEB DEVELOPMENT TOOLS"
+function goToStep2() {
+  const year = document.querySelector('input[name="year"]:checked');
+  const section = document.querySelector('input[name="section"]:checked');
+  const sem = document.querySelector('input[name="sem"]:checked');
+  const course = document.querySelector('input[name="course"]:checked');
+  if (!year || !section || !sem || !course) {
+    alert('Please select year, section, semester, and course.');
+    return;
+  }
+  document.getElementById('detailCourse').innerText = course.value;
+  document.getElementById('detailSection').innerText = section.value;
+  document.getElementById('detailSemester').innerText = sem.value;
+  closeModal('courseModalStep1');
+  modalStep2.classList.add("active");
+  attachModalCloseHandlers();
+}
+
+function submitCourse() {
+  // Get details from modal
+  const course = document.getElementById('detailCourse').innerText.trim();
+  const section = document.getElementById('detailSection').innerText.trim();
+  const semester = document.getElementById('detailSemester').innerText.trim();
+  const desc = document.getElementById('courseDescription').value.trim();
+  const reqs = document.getElementById('courseRequirements').value.trim();
+
+  if (!course || !section || !semester) {
+    alert('Please fill in course, section, and semester.');
+    return;
+  }
+
+  // Create new card element
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.setAttribute('data-status', 'active');
+  card.innerHTML = `
+    <div class="card-image">
+      <img src="default-course.jpg" alt="${course}">
+    </div>
+    <div class="card-content">
+      <div class="card-label">${course.substring(0,8).toUpperCase()}</div>
+      <div class="card-title">${course}</div>
+      <div class="card-subtitle">${section} - ${semester}</div>
+      <div class="card-footer">
+        <span class="card-students">
+          <i class="fa fa-users"></i> 0 students
+        </span>
+        <button class="card-btn">View Info</button>
+      </div>
+    </div>
+  `;
+
+  // Add to cards container
+  document.querySelector('.cards-container').appendChild(card);
+
+  // Optionally, clear modal fields
+  document.getElementById('courseDescription').value = '';
+  document.getElementById('courseRequirements').value = '';
+
+  // Close modal
+  closeModal('courseModalStep2');
+
+  // Show card if filter is "all" or "active"
+  filterCourses();
+}
+
+// Course mapping by year and semester
+const courseMap = {
+  "1st Year-First Semester": [
+    ["INTRODUCTION TO COMPUTING", "COMPUTER PROGRAMMING 1"],
+    ["WEB DEVELOPMENT TOOLS", "INTRODUCTION TO COMPUTING"],
   ],
-  "1-2": [
-    "PROBABILITY AND STATISTICS",
-    "COMPUTER PROGRAMMING 2",
-    "INFORMATION MANAGEMENT",
-    "WEB APPLICATIONS DEVELOPMENT"
+  "1st Year-Second Semester": [
+    ["PROBABILITY AND STATISTICS", "COMPUTER PROGRAMMING 2"],
+    ["INFORMATION MANAGEMENT", "WEB APPLICATIONS DEVELOPMENT"]
   ],
-  "2-1": [
-    "ORGANIZATIONAL COMMUNICATION",
-    "DATA STRUCTURES AND ALGORITHMS",
-    "OPERATING SYSTEMS",
-    "OBJECT ORIENTED PROGRAMMING"
+  "2nd Year-First Semester": [
+    ["ORGANIZATIONAL COMMUNICATION", "DATA STRUCTURES AND ALGORITHMS"],
+    ["OPERATING SYSTEMS", "OBJECT ORIENTED PROGRAMMING"]
   ],
-  "2-2": [
-    "MODERN PHYSICS",
-    "APPLICATIONS DEVELOPMENT AND EMERGING TECHNOLOGIES",
-    "DISCRETE STRUCTURES 1"
+  "2nd Year-Second Semester": [
+    ["MODERN PHYSICS", "APPLICATIONS DEVELOPMENT AND EMERGING TECHNOLOGIES"],
+    ["DISCRETE STRUCTURES 1"]
   ],
-  "3-1": [
-    "DIFFERENTIAL AND INTEGRAL CALCULUS",
-    "ALGORITHMS AND COMPLEXITY",
-    "DISCRETE STRUCTURES 2",
-    "INFORMATION ASSURANCE AND SECURITY",
-    "SOFTWARE ENGINEERING 1",
-    "HUMAN COMPUTER INTERACTION",
-    "MODELING AND SIMULATION",
-    "ELECTIVE 1"
+  "3rd Year-First Semester": [
+    ["DIFFERENTIAL AND INTEGRAL CALCULUS", "ALGORITHMS AND COMPLEXITY"],
+    ["DISCRETE STRUCTURES 2", "INFORMATION ASSURANCE AND SECURITY"], 
+    ["SOFTWARE ENGINEERING 1", "HUMAN COMPUTER INTERACTION"],
+    ["MODELING AND SIMULATION", "ELECTIVE 1"]
   ],
-  "3-2": [
-    "METHODS OF RESEARCH",
-    "SOFTWARE ENGINEERING 2",
-    "PROGRAMMING LANGUAGES",
-    "NETWORKS AND COMMUNICATIONS",
-    "ARCHITECTURE AND ORGANIZATION",
-    "AUTOMATA THEORY AND FORMAL LANGUAGES",
-    "PROJECT MANAGEMENT",
-    "ELECTIVE 2"
+  "3rd Year-Second Semester": [
+    ["METHODS OF RESEARCH", "SOFTWARE ENGINEERING 2"],
+    ["PROGRAMMING LANGUAGES", "NETWORKS AND COMMUNICATIONS"],
+    ["ARCHITECTURE AND ORGANIZATION", "AUTOMATA THEORY AND FORMAL LANGUAGES"],
+    ["PROJECT MANAGEMENT", "ELECTIVE 2"]
   ],
-  "4-1": [
-    "ADVANCED ENGLISH PRE-EMPLOYMENT TRAINING",
-    "SOCIAL ISSUES AND PROFESSIONAL PRACTICE",
-    "CS THESIS WRITING 1",
-    "ELECTIVE 3",
-    "ELECTIVE 4",
-    "ELECTIVE 5"
+  "4th Year-First Semester": [
+    ["ADVANCED ENGLISH PRE-EMPLOYMENT TRAINING", "SOCIAL ISSUES AND PROFESSIONAL PRACTICE"],
+    ["CS THESIS WRITING 1", "ELECTIVE 3" ],
+    ["ELECTIVE 4", "ELECTIVE 5"]
   ],
-  "4-2": [
-    "PRACTICUM (486 HOURS)",
-    "CS THESIS WRITING 2"
+  "4th Year-Second Semester": [
+    ["PRACTICUM (486 HOURS)", "CS THESIS WRITING 2"]
   ]
 };
 
-function updateSubjects() {
-  const year = document.querySelector('input[name="year"]:checked')?.value;
-  const sem = document.querySelector('input[name="sem"]:checked')?.value;
-  const group = document.getElementById('subjectRadioGroup');
-  group.innerHTML = '';
-  if (year && sem) {
-    const key = `${year}-${sem}`;
-    if (subjectMap[key]) {
-      subjectMap[key].forEach((subj, idx) => {
-        const id = `subject_${year}_${sem}_${idx}`;
-        // Create label and radio separately for correct structure
-        const label = document.createElement('label');
-        label.style.marginRight = "8px";
-        label.setAttribute('for', id);
-        // Radio
-        const radio = document.createElement('input');
-        radio.type = 'radio';
-        radio.name = 'subject';
-        radio.value = subj;
-        radio.id = id;
-        if (idx === 0) radio.checked = true;
-        // Label text
-        label.appendChild(radio);
-        label.appendChild(document.createTextNode(' ' + subj));
-        group.appendChild(label);
-      });
-    }
-  }
+// Default courses if no match
+const defaultCourses = [
+  ["Methods II Research", "Software Engineering 2"],
+  ["Programming Languages", "Computer Programming 1"],
+  ["Architecture and Organization", "Automata Theory and Formal Languages"],
+  ["Project Management", "Elective 2"]
+];
+
+// Helper to render course radio groups
+function renderCourses(year, sem) {
+  const key = year && sem ? `${year}-${sem}` : null;
+  const courses = (key && courseMap[key]) ? courseMap[key].flat() : defaultCourses.flat();
+  const container = document.getElementById('courseRadioGroups');
+  container.innerHTML = '';
+
+  // Render each course as a label directly in the grid (2 columns)
+  courses.forEach((course, idx) => {
+    const label = document.createElement('label');
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'course';
+    input.value = course;
+    if (idx === 0) input.checked = true;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(' ' + course));
+    label.className = '';
+    container.appendChild(label);
+  });
 }
 
-// Attach listeners to year and sem radios
-document.querySelectorAll('input[name="year"]').forEach(radio => {
-  radio.addEventListener('change', updateSubjects);
-});
-document.querySelectorAll('input[name="sem"]').forEach(radio => {
-  radio.addEventListener('change', updateSubjects);
-});
+// Attach listeners to year and semester radios
+function attachCourseListeners() {
+  document.querySelectorAll('.year-radio').forEach(radio => {
+    radio.addEventListener('change', updateCourses);
+  });
+  document.querySelectorAll('.sem-radio').forEach(radio => {
+    radio.addEventListener('change', updateCourses);
+  });
+}
+
+function updateCourses() {
+  const year = document.querySelector('input[name="year"]:checked')?.value;
+  const sem = document.querySelector('input[name="sem"]:checked')?.value;
+  renderCourses(year, sem);
+}
 
 // Initialize on modal open
-openModalBtn.onclick = () => {
-  modalOverlay.classList.add('active');
-  setTimeout(updateSubjects, 0); // Ensure radios are rendered before updating
-};
-closeModalBtn.onclick = () => modalOverlay.classList.remove('active');
-window.onclick = (e) => {
-  if (e.target === modalOverlay) modalOverlay.classList.remove('active');
-};
-
-// Dropdown page redirection
-document.getElementById('coursesDropdown').addEventListener('change', function() {
-  if (this.value === "mycourses") {
-    window.location.href = "<?= base_url('courses_view') ?>";
-  } else if (this.value === "allcourses") {
-    window.location.href = "<?= base_url('allcourses') ?>";
-  }
+openBtn.addEventListener("click", function () {
+  modalStep1.classList.add("active");
+  setTimeout(() => {
+    attachCourseListeners();
+    updateCourses();
+  }, 0);
 });
+
+function filterCourses() {
+  const filter = document.getElementById('courseFilter').value;
+  document.querySelectorAll('.cards-container .card').forEach(card => {
+    const status = card.getAttribute('data-status') || 'active';
+    if (filter === 'all' || filter === status) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
   </script>
-</body>
-</html>
+
+  </div>  
+  </html>
+  </html>
+
