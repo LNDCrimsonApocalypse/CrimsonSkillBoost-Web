@@ -763,7 +763,11 @@
     </div>
   </div>
 </div>
-
+<!-- Add Firebase SDKs for JS Firestore access -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 <script>
   const openBtn = document.getElementById("openAddCourseModal");
 const modalStep1 = document.getElementById("courseModalStep1");
@@ -838,29 +842,15 @@ function submitCourse() {
     return;
   }
 
-  // Create new card element
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.setAttribute('data-status', 'active');
-  card.innerHTML = `
-    <div class="card-image">
-      <img src="default-course.jpg" alt="${course}">
-    </div>
-    <div class="card-content">
-      <div class="card-label">${course.substring(0,8).toUpperCase()}</div>
-      <div class="card-title">${course}</div>
-      <div class="card-subtitle">${section} - ${semester}</div>
-      <div class="card-footer">
-        <span class="card-students">
-          <i class="fa fa-users"></i> 0 students
-        </span>
-        <button class="card-btn">View Info</button>
-      </div>
-    </div>
-  `;
-
-  // Add to cards container
-  document.querySelector('.cards-container').appendChild(card);
+  // Add to Firestore
+  addCourseToFirestore({
+    course_name: course,
+    year: getYearValueForDb(),
+    section: section,
+    semester: getSemesterValueForDb(semester),
+    overview: desc,
+    requirements: reqs
+  });
 
   // Optionally, clear modal fields
   document.getElementById('courseDescription').value = '';
@@ -871,6 +861,71 @@ function submitCourse() {
 
   // Show card if filter is "all" or "active"
   filterCourses();
+}
+
+// Add Firebase SDKs for JS Firestore access
+// ...existing code...
+
+async function addCourseToFirestore({course_name, year, section, semester, overview, requirements}) {
+  // Get instructor info from Firebase Auth
+  let user;
+  try {
+    user = firebase.auth().currentUser;
+  } catch (e) {
+    user = null;
+  }
+  if (!user) {
+    alert("You must be logged in to add a course.");
+    return;
+  }
+
+  // Optionally, get instructor_name from Firestore profile
+  let instructor_name = user.email;
+  try {
+    const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+    if (doc.exists) {
+      const d = doc.data();
+      instructor_name = [d.fname, d.mname, d.lname, d.extname].filter(Boolean).join(" ") || user.email;
+    }
+  } catch (e) {}
+
+  // Add to Firestore
+  try {
+    await firebase.firestore().collection("courses").add({
+      course_name: course_name,
+      created_at: new Date().toISOString(),
+      instructor_name: instructor_name,
+      user_id: user.uid,
+      overview: overview || "",
+      requirements: requirements || "",
+      year: year,
+      section: section,
+      semester: semester
+    });
+    alert("Course added successfully!");
+    closeModal('courseModalStep2');
+    // location.reload(); // Uncomment if you want to reload
+  } catch (err) {
+    alert("Failed to add course: " + err.message);
+  }
+}
+
+// Helper to convert year/semester display to DB value
+function getYearValueForDb() {
+  const yearRadio = document.querySelector('input[name="year"]:checked');
+  if (!yearRadio) return '';
+  // Store as "1", "2", "3", "4"
+  if (yearRadio.value.startsWith('1')) return "1st Year";
+  if (yearRadio.value.startsWith('2')) return "2nd Year";
+  if (yearRadio.value.startsWith('3')) return "3rd Year";
+  if (yearRadio.value.startsWith('4')) return "4th Year";
+  return yearRadio.value;
+}
+function getSemesterValueForDb(sem) {
+  // Store as "1" or "2"
+  if (/first/i.test(sem)) return "1";
+  if (/second/i.test(sem)) return "2";
+  return sem;
 }
 
 // Course mapping by year and semester
