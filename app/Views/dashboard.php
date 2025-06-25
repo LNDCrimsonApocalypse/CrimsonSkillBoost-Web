@@ -650,40 +650,7 @@ li {
         <div class="enrollment-requests">
   <h2>Enrollment Requests</h2>
   <div id="enrollment-list">
-
-    <!--  HTML-only static card will always show -->
-    <div class="request-card">
-      <div class="request-info">
-        <strong>John Doe</strong>
-        <p>Requesting enrollment in Web Development - Section A</p>
-      </div>
-      <div class="request-actions">
-        <button class="btn-approve">Approve</button>
-        <button class="btn-reject">Reject</button>
-      </div>
-    </div>
-
-    <?php
-      // Ensure $enrollmentRequests is always an array
-      $enrollmentRequests = isset($enrollmentRequests) && is_array($enrollmentRequests) ? $enrollmentRequests : [];
-    ?>
-    <?php if (!empty($enrollmentRequests)): ?>
-      <?php foreach ($enrollmentRequests as $request): ?>
-        <div class="request-card" id="request-<?= $request['id'] ?>">
-          <div class="request-info">
-            <strong><?= esc($request['student_name']) ?></strong>
-            <p>Requesting enrollment in <?= esc($request['course_name']) ?> - Section <?= esc($request['section']) ?></p>
-          </div>
-          <div class="request-actions">
-            <button onclick="updateEnrollment(<?= $request['id'] ?>, 'approved')" class="btn-approve">Approve</button>
-            <button onclick="updateEnrollment(<?= $request['id'] ?>, 'rejected')" class="btn-reject">Reject</button>
-          </div>
-        </div>
-      <?php endforeach; ?>
-    <?php else: ?>
-      <p>No pending enrollment requests</p>
-    <?php endif; ?>
-
+    <!-- Enrollment requests will be rendered here by Firebase -->
   </div>
 </div>
 
@@ -750,6 +717,16 @@ li {
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 <script>
+/**
+ * This script loads enrollment requests from Firestore.
+ * It will show all requests for courses where you are the instructor (owner).
+ * It works even if the "enrollment_requests" collection does NOT have instructor_id,
+ * by joining with your courses.
+ * 
+ * If the requests are in the DOM but not visible, it's likely a CSS/layout issue.
+ * We'll force the container to always be visible and ensure the HTML is correct.
+ */
+
 /**
  * Step-by-step logic for showing user's courses from Firebase:
  * 1. Wait for DOMContentLoaded.
@@ -854,6 +831,102 @@ document.addEventListener("DOMContentLoaded", function () {
         filterSelect.addEventListener('change', loadCourses);
       }
     });
+  });
+});
+
+// --- FIREBASE ENROLLMENT REQUESTS LOGIC (JOIN WITH COURSES) ---
+function renderEnrollmentRequestCard(req, courseName, section) {
+  return `
+    <div class="request-card" id="enroll-${req.id}">
+      <div class="request-info">
+        <strong>${req.student_name || "Unknown Student"}</strong>
+        <p>Requesting enrollment in ${courseName || req.course_id || "Unknown Course"}${section ? " - Section " + section : ""}</p>
+      </div>
+      <div class="request-actions">
+        <button class="btn-approve" onclick="updateEnrollmentRequest('${req.id}', 'approved')">Approve</button>
+        <button class="btn-reject" onclick="updateEnrollmentRequest('${req.id}', 'rejected')">Reject</button>
+      </div>
+    </div>
+  `;
+}
+
+async function loadEnrollmentRequestsForInstructor(uid) {
+  const container = document.getElementById('enrollment-list');
+  if (!container) return;
+  container.innerHTML = '<div class="empty-card">Loading...</div>';
+
+  try {
+    // 1. Get all courses where user_id == uid
+    const coursesSnap = await firebase.firestore().collection("courses").where("user_id", "==", uid).get();
+    const courses = {};
+    coursesSnap.forEach(doc => {
+      const data = doc.data();
+      courses[doc.id] = {
+        name: data.course_name || "Unknown Course",
+        section: data.section || ""
+      };
+    });
+    const courseIds = Object.keys(courses);
+
+    // 2. Get all enrollment_requests where status == "pending"
+    // (We can't filter by course_id if it's not a document ID)
+    const reqSnap = await firebase.firestore()
+      .collection("enrollment_requests")
+      .where("status", "==", "pending")
+      .get();
+
+    let requests = [];
+    reqSnap.forEach(doc => {
+      let data = doc.data();
+      data.id = doc.id;
+      requests.push(data);
+    });
+
+    // Only show requests for courses you own (by name match or by ID match)
+    const filtered = requests.filter(req => {
+      // If course_id matches a course document ID, or matches a course name you own
+      return courses[req.course_id] || Object.values(courses).some(c => c.name === req.course_id);
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="empty-card">No pending enrollment requests</div>';
+    } else {
+      container.innerHTML = filtered.map(req => {
+        // If course_id matches a course document ID, use that course's name
+        if (courses[req.course_id]) {
+          return renderEnrollmentRequestCard(req, courses[req.course_id].name, courses[req.course_id].section);
+        }
+        // If course_id is actually the course name, use it directly
+        return renderEnrollmentRequestCard(req, req.course_id, req.section || "");
+      }).join('');
+    }
+  } catch (e) {
+    container.innerHTML = '<div class="empty-card">Failed to load enrollment requests.</div>';
+    console.error("Error loading enrollment requests:", e);
+  }
+}
+
+window.updateEnrollmentRequest = async function(requestId, newStatus) {
+  if (!confirm(`Are you sure you want to ${newStatus} this enrollment request?`)) return;
+  try {
+    await firebase.firestore().collection("enrollment_requests").doc(requestId).update({
+      status: newStatus
+    });
+    const card = document.getElementById('enroll-' + requestId);
+    if (card) card.remove();
+    if (!document.querySelector('#enrollment-list .request-card')) {
+      document.getElementById('enrollment-list').innerHTML = '<div class="empty-card">No pending enrollment requests</div>';
+    }
+    alert(`Enrollment request ${newStatus} successfully`);
+  } catch (e) {
+    alert('Failed to update status: ' + e.message);
+  }
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (!user) return;
+    loadEnrollmentRequestsForInstructor(user.uid);
   });
 });
 </script>

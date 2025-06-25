@@ -911,6 +911,129 @@ async function addCourseToFirestore({course_name, year, section, semester, overv
   }
 }
 
+// --- FIREBASE: DISPLAY ALL COURSES FROM FIRESTORE ---
+async function displayAllCoursesFromFirestore() {
+  const cardsContainer = document.querySelector('.cards-container');
+  if (!cardsContainer) return;
+
+  // Show loading
+  cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Loading courses...</div>';
+
+  try {
+    const snapshot = await firebase.firestore().collection("courses").get();
+    let courses = [];
+    snapshot.forEach(doc => {
+      let data = doc.data();
+      data.id = doc.id;
+      courses.push(data);
+    });
+
+    if (courses.length === 0) {
+      cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">No courses found.</div>';
+      return;
+    }
+
+    // Render each course as a card
+    cardsContainer.innerHTML = courses.map(course => {
+      const sectionSem = (course.section ? course.section : '') +
+        (course.semester ? ' - ' + (course.semester === "1" ? "First Semester" : course.semester === "2" ? "Second Semester" : course.semester) : '');
+      return `
+        <div class="card" data-status="active">
+          <div class="card-image">
+            <img src="default-course.jpg" alt="${course.course_name || ''}">
+          </div>
+          <div class="card-content">
+            <div class="card-label">${(course.course_name || '').substring(0,8).toUpperCase()}</div>
+            <div class="card-title">${course.course_name || ''}</div>
+            <div class="card-subtitle">${sectionSem}</div>
+            <div class="card-footer">
+              <span class="card-students">
+                <i class="fa fa-users"></i> 0 students
+              </span>
+              <button class="card-btn">View Info</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (e) {
+    cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Failed to load courses.</div>';
+  }
+}
+
+// --- FIREBASE: DISPLAY ONLY LOGGED-IN USER'S COURSES FROM FIRESTORE ---
+async function displayUserCoursesFromFirestore() {
+  const cardsContainer = document.querySelector('.cards-container');
+  if (!cardsContainer) return;
+
+  // Show loading
+  cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Loading courses...</div>';
+
+  try {
+    // Wait for Firebase Auth
+    await new Promise(resolve => {
+      if (firebase.auth().currentUser) return resolve();
+      const unsub = firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          unsub();
+          resolve();
+        }
+      });
+    });
+
+    const user = firebase.auth().currentUser;
+    if (!user) {
+      cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Please log in to see your courses.</div>';
+      return;
+    }
+
+    const snapshot = await firebase.firestore().collection("courses").where("user_id", "==", user.uid).get();
+    let courses = [];
+    snapshot.forEach(doc => {
+      let data = doc.data();
+      data.id = doc.id;
+      courses.push(data);
+    });
+
+    if (courses.length === 0) {
+      cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">No courses found.</div>';
+      return;
+    }
+
+    // Render each course as a card
+    cardsContainer.innerHTML = courses.map(course => {
+      const sectionSem = (course.section ? course.section : '') +
+        (course.semester ? ' - ' + (course.semester === "1" ? "First Semester" : course.semester === "2" ? "Second Semester" : course.semester) : '');
+      return `
+        <div class="card" data-status="active">
+          <div class="card-image">
+            <img src="default-course.jpg" alt="${course.course_name || ''}">
+          </div>
+          <div class="card-content">
+            <div class="card-label">${(course.course_name || '').substring(0,8).toUpperCase()}</div>
+            <div class="card-title">${course.course_name || ''}</div>
+            <div class="card-subtitle">${sectionSem}</div>
+            <div class="card-footer">
+              <span class="card-students">
+                <i class="fa fa-users"></i> 0 students
+              </span>
+              <button class="card-btn">View Info</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (e) {
+    cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Failed to load courses.</div>';
+  }
+}
+
+// Call this on page load
+document.addEventListener("DOMContentLoaded", function () {
+  // ...existing code...
+  displayUserCoursesFromFirestore();
+});
+
 // Helper to convert year/semester display to DB value
 function getYearValueForDb() {
   const yearRadio = document.querySelector('input[name="year"]:checked');
