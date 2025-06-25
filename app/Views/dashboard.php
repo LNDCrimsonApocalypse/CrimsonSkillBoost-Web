@@ -595,147 +595,34 @@ li {
           </div>
           
   
-    <div class="cards-container">
-  <div class="card" data-status="active">
-    <div class="card-image">
-      <img src="cp1.jpg" alt="Computer Programming 1">
+    <div class="cards-container" id="cardsContainer">
+      <!-- Firebase courses will be rendered here -->
     </div>
-    <div class="card-content">
-      <div class="card-label">COMPROG1</div>
-      <div class="card-title">Computer Programming 1</div>
-      <div class="card-subtitle">III - BCSAD</div>
-      <div class="card-footer">
-        <span class="card-students">
-          <i class="fa fa-users"></i> 1050 students
-        </span>
-        <button class="card-btn">View Info</button>
-      </div>
+    <!-- Remove all PHP/SQL course rendering below -->
+    <!--
+    <?= csrf_field() ?> 
+    <?php
+      // Ensure $courses is always an array
+      $courses = isset($courses) && is_array($courses) ? $courses : [];
+    ?>
+    <?php if (!empty($courses)): ?>
+      <?php foreach ($courses as $course): ?>
+        <div class="course-card" id="course-<?= $course['id'] ?>">
+          <div class="course-img"></div>
+          <div class="course-info">
+            <h3 class="course-title"><?= esc($course['course_name']) ?></h3>
+            <p>Created on <?= isset($row['created_at']) ? $row['created_at'] : 'N/A'; ?></p>
+            <a href="<?= base_url('course/view/' . $course['id']) ?>" class="btn">View</a>
+            <a href="javascript:void(0)" class="btn" onclick="openEditCourseModal(<?= $course['id'] ?>, '<?= esc(addslashes($course['course_name'])) ?>')">Edit</a>
+            <a href="javascript:void(0)" class="btn" onclick="deleteCourse(<?= $course['id'] ?>, this)">Delete</a>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <div class="empty-card">No courses found.</div>
+    <?php endif; ?>
+    -->
     </div>
-  </div>
-  <!-- Repeat for each card, do NOT nest .card inside another .card -->
-  <!-- ... other cards ... -->
-<div class="card">
-  <div class="card-image">
-    <img src="cp2.jpg" alt="Computer Programming 2">
-  </div>
-  <div class="card-content">
-    <div class="card-label">COMPROG2</div>
-    <div class="card-title">Computer Programming 2</div>
-    <div class="card-subtitle">III - BCSAD</div>
-    <div class="card-footer">
-      <span class="card-students">
-        <i class="fa fa-users"></i> 980 students
-      </span>
-      <button class="card-btn">View Info</button>
-    </div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="card-image">
-    <img src="im.jpg" alt="Information Management">
-  </div>
-  <div class="card-content">
-    <div class="card-label">INFOMAN</div>
-    <div class="card-title">Information Management</div>
-    <div class="card-subtitle">III - BCSAD</div>
-    <div class="card-footer">
-      <span class="card-students">
-        <i class="fa fa-users"></i> 870 students
-      </span>
-      <button class="card-btn">View Info</button>
-    </div>
-  </div>
-</div>
-
-
-<div class="card">
-  <div class="card-image">
-    <img src="itc.jpg" alt="Introduction to Computing">
-  </div>
-  <div class="card-content">
-    <div class="card-label">ITC</div>
-    <div class="card-title">Introduction to Computing</div>
-    <div class="card-subtitle">III - BCSAD</div>
-    <div class="card-footer">
-      <span class="card-students">
-        <i class="fa fa-users"></i> 1120 students
-      </span>
-      <button class="card-btn">View Info</button>
-    </div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="card-image">
-    <img src="wdt.jpg" alt="Web Development Tools">
-  </div>
-  <div class="card-content">
-    <div class="card-label">WDT</div>
-    <div class="card-title">Web Development Tools</div>
-    <div class="card-subtitle">III - BCSAD</div>
-    <div class="card-footer">
-      <span class="card-students">
-        <i class="fa fa-users"></i> 760 students
-      </span>
-      <button class="card-btn">View Info</button>
-    </div>
-  </div>
-</div>
-
-
-<div class="card">
-  <div class="card-image">
-    <img src="wad.jpg" alt="Web Applications Development">
-  </div>
-  <div class="card-content">
-    <div class="card-label">WAD</div>
-    <div class="card-title">Web Applications Development</div>
-    <div class="card-subtitle">III - BCSAD</div>
-    <div class="card-footer">
-      <span class="card-students">
-        <i class="fa fa-users"></i> 810 students
-      </span>
-      <button class="card-btn">View Info</button>
-    </div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="card-image">
-    <img src="oop.jpg" alt="Object Oriented Programming">
-  </div>
-  <div class="card-content">
-    <div class="card-label">OOP</div>
-    <div class="card-title">Object Oriented Programming</div>
-    <div class="card-subtitle">III - BCSAD</div>
-    <div class="card-footer">
-      <span class="card-students">
-        <i class="fa fa-users"></i> 950 students
-      </span>
-      <button class="card-btn">View Info</button>
-    </div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="card-image">
-    <img src="mad.jpg" alt="Mobile Applications Development">
-  </div>
-  <div class="card-content">
-    <div class="card-label">MAD</div>
-    <div class="card-title">Mobile Applications Development</div>
-    <div class="card-subtitle">III - BCSAD</div>
-    <div class="card-footer">
-      <span class="card-students">
-        <i class="fa fa-users"></i> 690 students
-      </span>
-      <button class="card-btn">View Info</button>
-    </div>
-  </div>
-</div>
-  
-<!-- ... end  ... --></div>
     <?= csrf_field() ?> <!-- Add this line -->
     
         <?php
@@ -859,105 +746,116 @@ li {
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
-  <script>
-    document.getElementById("signOutButton").addEventListener("click", function () {
-      firebase.auth().signOut().then(() => {
-        window.location.href = "<?= base_url('login') ?>";
-      }).catch((error) => {
-        alert("Error signing out: " + error.message);
-      });
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+<script>
+/**
+ * Step-by-step logic for showing user's courses from Firebase:
+ * 1. Wait for DOMContentLoaded.
+ * 2. Wait for Firebase to be initialized.
+ * 3. Wait for user to be authenticated.
+ * 4. Query Firestore "courses" collection where user_id == current user's uid.
+ * 5. Render each course as a .card (matching your CSS/HTML).
+ * 6. Filter by dropdown (all/active/inactive).
+ * 7. Show "No courses found" if none.
+ */
+
+function waitForFirebaseInit() {
+  return new Promise(resolve => {
+    if (window.firebase && firebase.apps && firebase.apps.length) {
+      resolve();
+    } else {
+      const interval = setInterval(() => {
+        if (window.firebase && firebase.apps && firebase.apps.length) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 50);
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  waitForFirebaseInit().then(() => {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (!user) {
+        // Not logged in, redirect or show message
+        document.getElementById('cardsContainer').innerHTML = '<div class="empty-card">Please log in to see your courses.</div>';
+        return;
+      }
+
+      const uid = user.uid;
+      const cardsContainer = document.getElementById('cardsContainer');
+      const filterSelect = document.getElementById('courseFilter');
+
+      // Render a single course card (HTML string)
+      function renderCourseCard(course) {
+        const status = course.status || 'active';
+        const sectionSem = (course.section ? course.section : '') +
+          (course.semester ? ' - ' + (course.semester === "1" ? "First Semester" : course.semester === "2" ? "Second Semester" : course.semester) : '');
+        return `
+          <div class="card" data-status="${status}">
+            <div class="card-image">
+              <img src="default-course.jpg" alt="${course.course_name || ''}">
+            </div>
+            <div class="card-content">
+              <div class="card-label">${(course.course_name || '').substring(0,8).toUpperCase()}</div>
+              <div class="card-title">${course.course_name || ''}</div>
+              <div class="card-subtitle">${sectionSem}</div>
+              <div class="card-footer">
+                <span class="card-students">
+                  <i class="fa fa-users"></i> 0 students
+                </span>
+                <button class="card-btn">View Info</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Query and render courses
+      async function loadCourses() {
+        if (!cardsContainer) return;
+        cardsContainer.innerHTML = '<div class="empty-card">Loading...</div>';
+
+        try {
+          // Query Firestore for courses belonging to this user
+          const snapshot = await firebase.firestore().collection("courses").where("user_id", "==", uid).get();
+          let courses = [];
+          snapshot.forEach(doc => {
+            let data = doc.data();
+            data.id = doc.id;
+            courses.push(data);
+          });
+
+          // Filter by dropdown
+          const filter = filterSelect ? filterSelect.value : "all";
+          let filtered = courses;
+          if (filter !== "all") {
+            filtered = courses.filter(c => (c.status || 'active') === filter);
+          }
+
+          if (filtered.length === 0) {
+            cardsContainer.innerHTML = '<div class="empty-card">No courses found.</div>';
+          } else {
+            cardsContainer.innerHTML = filtered.map(renderCourseCard).join('');
+          }
+        } catch (e) {
+          cardsContainer.innerHTML = '<div class="empty-card">Failed to load courses.</div>';
+        }
+      }
+
+      // Initial load
+      loadCourses();
+
+      // Reload on filter change
+      if (filterSelect) {
+        filterSelect.addEventListener('change', loadCourses);
+      }
     });
-
-    function updateEnrollment(id, status) {
-        if (!confirm(`Are you sure you want to ${status} this enrollment request?`)) {
-            return;
-        }
-
-        fetch(`<?= site_url('enrollment/update') ?>/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({
-                status: status
-            })
-        })
-        .then(response => response.json())
-        .then data => {
-            if (data.success) {
-                const card = document.getElementById(`request-${id}`);
-                if (card) card.remove();
-                if (document.querySelectorAll('.request-card').length === 0) {
-                    document.getElementById('enrollment-list').innerHTML = '<p>No pending enrollment requests</p>';
-                }
-                alert(`Enrollment request ${status} successfully`);
-            } else {
-                throw new Error(data.message || 'Failed to update status');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to update status: ' + error.message);
-        });
-    }
-
-    // Edit Course Modal Logic
-    function openEditCourseModal(id, name) {
-      document.getElementById('editCourseId').value = id;
-      document.getElementById('editCourseName').value = name;
-      document.getElementById('editCourseModal').style.display = 'flex';
-    }
-    function closeEditCourseModal() {
-      document.getElementById('editCourseModal').style.display = 'none';
-    }
-    document.getElementById('editCourseForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const id = document.getElementById('editCourseId').value;
-      const name = document.getElementById('editCourseName').value.trim();
-      if (!name) return alert('Course name required');
-      fetch('<?= site_url('course/update/') ?>' + id, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-        body: JSON.stringify({ course_name: name })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          // Update title in the list
-          const card = document.getElementById('course-' + id);
-          if (card) card.querySelector('.course-title').textContent = name;
-          closeEditCourseModal();
-          alert('Course updated!');
-        } else {
-          alert(data.message || 'Failed to update course');
-        }
-      })
-      .catch(() => alert('Failed to update course'));
-    });
-
-    // Delete Course Logic
-    function deleteCourse(id, btn) {
-      if (!confirm('Are you sure you want to delete this course?')) return;
-      fetch('<?= site_url('course/delete/') ?>' + id, {
-        method: 'POST',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-      })
-      .then(res => res.json())
-      .then data => {
-        if (data.success) {
-          // Remove the course card from the DOM
-          const card = document.getElementById('course-' + id);
-          if (card) card.remove();
-          alert('Course deleted!');
-        } else {
-          alert(data.message || 'Failed to delete course');
-        }
-      })
-      .catch(() => alert('Failed to delete course'));
-    }
-  </script>
+  });
+});
+</script>
 </body>
 </html>
