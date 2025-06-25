@@ -892,22 +892,72 @@ async function addCourseToFirestore({course_name, year, section, semester, overv
 
   // Add to Firestore
   try {
-    await firebase.firestore().collection("courses").add({
-      course_name: course_name,
-      created_at: new Date().toISOString(),
-      instructor_name: instructor_name,
-      user_id: user.uid,
-      overview: overview || "",
-      requirements: requirements || "",
-      year: year,
-      section: section,
-      semester: semester
-    });
-    alert("Course added successfully!");
-    closeModal('courseModalStep2');
-    // location.reload(); // Uncomment if you want to reload
-  } catch (err) {
-    alert("Failed to add course: " + err.message);
+    // --- Course code mapping ---
+    const courseCodeMap = {
+      "INTRODUCTION TO COMPUTING": "INTCOM",
+      "COMPUTER PROGRAMMING 1": "COMPROG1",
+      "WEB DEVELOPMENT TOOLS": "WEBTOOLS",
+      "PROBABILITY AND STATISTICS": "PROBSTAT",
+      "COMPUTER PROGRAMMING 2": "COMPROG2",
+      "INFORMATION MANAGEMENT": "INFOMAN",
+      "WEB APPLICATIONS DEVELOPMENT": "WEBAPPS",
+      "ORGANIZATIONAL COMMUNICATION": "ORGCOM",
+      "DATA STRUCTURES AND ALGORITHMS": "DATASTRU",
+      "OPERATING SYSTEMS": "OPERASYS",
+      "OBJECT ORIENTED PROGRAMMING": "OOP",
+      "MODERN PHYSICS": "MODPHY",
+      "APPLICATIONS DEVELOPMENT AND EMERGING TECHNOLOGIES": "APPDEV",
+      "DISCRETE STRUCTURES 1": "DISCSTRU1",
+      "DIFFERENTIAL AND INTEGRAL CALCULUS": "CALCULUS",
+      "ALGORITHMS AND COMPLEXITY": "ALGOCOM",
+      "DISCRETE STRUCTURES 2": "DISCSTRU2",
+      "INFORMATION ASSURANCE AND SECURITY": "INFOMAN",
+      "SOFTWARE ENGINEERING 1": "SOFTENG1",
+      "HUMAN COMPUTER INTERACTION": "HCI",
+      "MODELING AND SIMULATION": "MODSIMU",
+      "ELECTIVE 1": "ELEC1",
+      "METHODS OF RESEARCH": "METHODSR",
+      "SOFTWARE ENGINEERING 2": "SOFTENG2",
+      "PROGRAMMING LANGUAGES": "PROLANG",
+      "NETWORKS AND COMMUNICATIONS": "NETCOM",
+      "ARCHITECTURE AND ORGANIZATION": "ARCHORG",
+      "AUTOMATA THEORY AND FORMAL LANGUAGES": "AUTOMATA",
+      "PROJECT MANAGEMENT": "PROMNGT",
+      "ELECTIVE 2": "ELEC2",
+      "ADVANCED ENGLISH PRE-EMPLOYMENT TRAINING": "ADEPT",
+      "SOCIAL ISSUES AND PROFESSIONAL PRACTICE": "SOCIPP",
+      "CS THESIS WRITING 1": "THESIS1",
+      "ELECTIVE 3": "ELEC3",
+      "ELECTIVE 4": "ELEC4",
+      "ELECTIVE 5": "ELEC5",
+      "PRACTICUM": "PRACTI",
+      "CS THESIS WRITING 2": "THESIS2"
+    };
+    // Assign course_code (from mapping or empty string)
+    const course_code = courseCodeMap[(course_name || '').trim().toUpperCase()] || "";
+
+    // Add to Firestore
+    try {
+      await firebase.firestore().collection("courses").add({
+        course_name: course_name,
+        created_at: new Date().toISOString(),
+        instructor_name: instructor_name,
+        user_id: user.uid,
+        overview: overview || "",
+        requirements: requirements || "",
+        year: year,
+        section: section,
+        semester: semester,
+        course_code: course_code // <-- Add course_code to Firestore
+      });
+      alert("Course added successfully!");
+      closeModal('courseModalStep2');
+      // location.reload(); // Uncomment if you want to reload
+    } catch (err) {
+      alert("Failed to add course: " + err.message);
+    }
+  } catch (e) {
+    alert("Failed to add course: " + e.message);
   }
 }
 

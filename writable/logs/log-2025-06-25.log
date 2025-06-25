@@ -4778,3 +4778,143 @@ in SYSTEMPATH\CodeIgniter.php on line 955.
  2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:29:50 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: cp1.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:29:50 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: imgs/profile.png]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:29:50 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: cp2.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:29:50 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: im.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:29:50 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: wdt.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:29:50 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: itc.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:29:50 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: oop.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:29:50 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: wad.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:29:50 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: mad.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:29:52 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: default-course.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:30:20 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: cp1.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:30:20 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: imgs/profile.png]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:30:20 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: itc.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:30:20 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: wdt.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:30:20 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: im.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:30:20 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: cp2.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:30:20 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: wad.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:30:20 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: oop.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:30:20 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: mad.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-25 19:30:21 --> Error: Object of class CodeIgniter\HTTP\RedirectResponse could not be converted to string
+[Method: GET, Route: default-course.jpg]
+in SYSTEMPATH\CodeIgniter.php on line 955.
+ 1 SYSTEMPATH\CodeIgniter.php(360): CodeIgniter\CodeIgniter->display404errors(Object(CodeIgniter\Exceptions\PageNotFoundException))
+ 2 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 3 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 4 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
