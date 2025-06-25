@@ -768,16 +768,61 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Render a single course card (HTML string)
       function renderCourseCard(course) {
+        // --- Course code mapping ---
+        const courseCodeMap = {
+          "INTRODUCTION TO COMPUTING": "INTCOM",
+          "COMPUTER PROGRAMMING 1": "COMPROG1",
+          "WEB DEVELOPMENT TOOLS": "WEBTOOLS",
+          "PROBABILITY AND STATISTICS": "PROBSTAT",
+          "COMPUTER PROGRAMMING 2": "COMPROG2",
+          "INFORMATION MANAGEMENT": "INFOMAN",
+          "WEB APPLICATIONS DEVELOPMENT": "WEBAPPS",
+          "ORGANIZATIONAL COMMUNICATION": "ORGCOM",
+          "DATA STRUCTURES AND ALGORITHMS": "DATASTRU",
+          "OPERATING SYSTEMS": "OPERASYS",
+          "OBJECT ORIENTED PROGRAMMING": "OOP",
+          "MODERN PHYSICS": "MODPHY",
+          "APPLICATIONS DEVELOPMENT AND EMERGING TECHNOLOGIES": "APPDEV",
+          "DISCRETE STRUCTURES 1": "DISCSTRU1",
+          "DIFFERENTIAL AND INTEGRAL CALCULUS": "CALCULUS",
+          "ALGORITHMS AND COMPLEXITY": "ALGOCOM",
+          "DISCRETE STRUCTURES 2": "DISCSTRU2",
+          "INFORMATION ASSURANCE AND SECURITY": "INFOMAN",
+          "SOFTWARE ENGINEERING 1": "SOFTENG1",
+          "HUMAN COMPUTER INTERACTION": "HCI",
+          "MODELING AND SIMULATION": "MODSIMU",
+          "ELECTIVE 1": "ELEC1",
+          "METHODS OF RESEARCH": "METHODSR",
+          "SOFTWARE ENGINEERING 2": "SOFTENG2",
+          "PROGRAMMING LANGUAGES": "PROLANG",
+          "NETWORKS AND COMMUNICATIONS": "NETCOM",
+          "ARCHITECTURE AND ORGANIZATION": "ARCHORG",
+          "AUTOMATA THEORY AND FORMAL LANGUAGES": "AUTOMATA",
+          "PROJECT MANAGEMENT": "PROMNGT",
+          "ELECTIVE 2": "ELEC2",
+          "ADVANCED ENGLISH PRE-EMPLOYMENT TRAINING": "ADEPT",
+          "SOCIAL ISSUES AND PROFESSIONAL PRACTICE": "SOCIPP",
+          "CS THESIS WRITING 1": "THESIS1",
+          "ELECTIVE 3": "ELEC3",
+          "ELECTIVE 4": "ELEC4",
+          "ELECTIVE 5": "ELEC5",
+          "PRACTICUM": "PRACTI",
+          "CS THESIS WRITING 2": "THESIS2"
+        };
         const status = course.status || 'active';
         const sectionSem = (course.section ? course.section : '') +
           (course.semester ? ' - ' + (course.semester === "1" ? "First Semester" : course.semester === "2" ? "Second Semester" : course.semester) : '');
+        // Use course_code from DB, or fallback to mapping, or empty string
+        const code = course.course_code || courseCodeMap[(course.course_name || '').trim().toUpperCase()] || "";
         return `
           <div class="card" data-status="${status}">
             <div class="card-image">
               <img src="default-course.jpg" alt="${course.course_name || ''}">
             </div>
             <div class="card-content">
-              <div class="card-label">${(course.course_name || '').substring(0,8).toUpperCase()}</div>
+              <div class="card-label" style="font-weight:700; color:#888; letter-spacing:2px; text-transform:uppercase;">
+                ${code}
+              </div>
               <div class="card-title">${course.course_name || ''}</div>
               <div class="card-subtitle">${sectionSem}</div>
               <div class="card-footer">
