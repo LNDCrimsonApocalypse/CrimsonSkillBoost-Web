@@ -275,26 +275,26 @@
   <div class="container">
     <div class="main-content">
       <div class="card">
-        <div class="course-title">Computer Programming 1</div>
-        <div class="students-count"><i>&#128101;</i> 1,050 students</div>
-        <div class="course-desc">
-          Computer Programming 1 is an introductory course designed to teach the fundamentals of programming using a specific programming language (such as Python, Java, or C++). It covers basic concepts like variables, data types, control structures (if-else, loops), functions, and basic input/output operations. Students also learn problem-solving techniques and how to write, test, and debug simple programs.
-        </div>
-      </div>
-      <div class="card">
-        <div class="section-title">Course Overview</div>
-        <div class="section-content">
-          Explore the basics of game design and development, and start creating your own games from scratch. Gain hands-on experience with game engines, storytelling, and interactive mechanics to bring your ideas to life.
-        </div>
-      </div>
-      <div class="card">
-        <div class="section-title">Topic Overview</div>
-        <div class="topic-list">
-          <div class="topic-item">Introduction to Computer Programming</div>
-          <div class="topic-item">Definition of computer programming</div>
-          <div class="topic-item">Importance and real-world applications</div>
-        </div>
-      </div>
+       <div class="course-title"><?= esc($course['title']) ?></div>
+
+<div class="students-count">
+  <i>&#128101;</i> <?= esc($course['students']) ?> students
+</div>
+
+<div class="course-desc"><?= esc($course['description']) ?></div>
+
+<div class="section-title">Course Overview</div>
+<div class="section-content"><?= esc($course['overview']) ?></div>
+
+<div class="section-title">Topics</div>
+<?php foreach ($course['topics'] as $topic): ?>
+  <div class="topic-item"><?= esc($topic) ?></div>
+<?php endforeach; ?>
+
+<div class="section-title">Requirements</div>
+<?php foreach ($course['requirements'] as $req): ?>
+  <div class="topic-item"><?= esc($req) ?></div>
+<?php endforeach; ?>
     </div>
     <div class="sidebar">
       <div class="profile-card">

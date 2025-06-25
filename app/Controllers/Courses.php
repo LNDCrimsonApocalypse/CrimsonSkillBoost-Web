@@ -1,14 +1,31 @@
 <?php
+
 namespace App\Controllers;
 
-class Courses extends BaseController
+use App\Controllers\BaseController;
+
+class Course extends BaseController
 {
-    // ...existing code...
-
-    public function view()
+    public function info($slug)
     {
-        return view('courses_view');
-    }
+        // Mock example — fetch actual course by slug from DB or Firebase
+        $courses = [
+            'oop' => [
+                'title' => 'Object Oriented Programming',
+                'students' => 1050,
+                'description' => 'This course teaches OOP concepts...',
+                'overview' => 'You will learn about classes, objects...',
+                'topics' => ['Classes and Objects', 'Inheritance', 'Encapsulation'],
+                'requirements' => ['Basic Programming', 'Logic Thinking'],
+            ]
+        ];
 
-    // ...existing code...
+        if (!isset($courses[$slug])) {
+            return redirect()->to('/allcourses'); // Or show 404
+        }
+
+        $data['course'] = $courses[$slug];
+
+        return view('course_descrip', $data);
+    }
 }

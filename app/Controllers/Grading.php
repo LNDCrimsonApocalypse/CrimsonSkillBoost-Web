@@ -77,4 +77,16 @@ class Grading extends BaseController
             'message' => 'Grade saved successfully'
         ]);
     }
+
+    public function edit()
+    {
+        // You can pass data to the view if needed
+        return view('grading/edit');
+    }
+
+    public function studentprog()
+    {
+        // You can pass data to the view if needed
+        return view('grading/studentprog');
+    }
 }

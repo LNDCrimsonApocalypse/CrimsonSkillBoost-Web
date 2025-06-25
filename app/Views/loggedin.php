@@ -290,20 +290,10 @@ li {
       <img src="public/img/Logo.png" alt="Logo" />
     </div>
     <div class="navbar-center">
-      <a href="#">HOME</a>
-      <a href="#" >DASHBOARD</a>
-      <a href="#">ABOUT</a>
-        <li class="dropdown">
-  <label class="dropbtn" for="course-select">
-    COURSES <span class="arrow">▼</span>
-  </label>
-  <div class="dropdown-content">
-    <select id="course-select" class="custom-select">
-      <option value="web">ALL COURSES</option>
-      <option value="data">MY COURSES</option>
-    </select>
-  </div>
-</li>
+     <a href="<?= base_url('/') ?>">HOME</a>
+          <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+        <a href="<?= base_url('allcourses') ?>">COURSES</a>
     </div>
     <div class="navbar-right">
 <img src="public/img/notifications.png" alt="Notifications" class="icon" />

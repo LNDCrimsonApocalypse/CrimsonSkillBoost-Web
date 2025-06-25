@@ -257,6 +257,28 @@ li {
       font-size: 20px;
       cursor: pointer;
     }
+    .plus-btn {
+      position: fixed;
+      bottom: 38px;
+      right: 38px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #f23eb3;
+      color: #fff;
+      font-size: 2.2rem;
+      border: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      transition: background 0.18s;
+    }
+    .plus-btn:hover {
+      background: #d12c5c;
+    }
     @media (max-width: 900px) {
       .tabbar, .tabbar-row {
         flex-direction: column;
@@ -277,19 +299,10 @@ li {
       <img src="public/img/Logo.png" alt="logo" class="logo"/>
     </div>
     <div class="navbar-center">
-      <a href="#">HOME</a>
-      <a href="#">DASHBOARD</a>
-      <a href="#">ABOUT</a>
-     <li class="dropdown">
-      <button class="dropbtn">COURSES ▼</button>
-      <div class="dropdown-content">
-        <select id="course-select">
-          <option value="web">ALL COURSES </option>
-          <option value="data">MY COURSES</option>
-         
-        </select>
-      </div>
-    </li>
+      <a href="<?= base_url('/') ?>">HOME</a>
+          <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+        <a href="<?= base_url('allcourses') ?>">COURSES</a>
     </div>
     <div class="navbar-right">
       <input class="search-box" type="text" placeholder="Search.." />
@@ -339,5 +352,7 @@ li {
       </div>
     </div>
   </div>
+  <!-- Plus Button -->
+  <button class="plus-btn" title="Add Topic">+</button>
 </body>
 </html>

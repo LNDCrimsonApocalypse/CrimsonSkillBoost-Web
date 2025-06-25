@@ -101,6 +101,7 @@ $routes->group('grading', ['namespace' => 'App\Controllers'], function($routes) 
     $routes->get('overview', 'Grading::overview');
     $routes->get('student/(:num)', 'Grading::studentOverview/$1');
     $routes->post('save/(:num)', 'Grading::save/$1', ['filter' => 'ajax']);
+    $routes->get('edit', 'Grading::edit');
 });
 
 $routes->get('enrollment', 'Enrollment::index');
@@ -136,3 +137,5 @@ $routes->get('allcourses2', 'CourseController::allcourses2');
 
 $routes->get('editprofile', 'Auth::editprofile');
 $routes->post('upload_profile_pic', 'Auth::upload_profile_pic');
+$routes->get('course/info/(:segment)', 'Course::info/$1');
+$routes->get('grading/studentprog', 'Grading::studentprog');

@@ -33,10 +33,18 @@ class Enrollment extends BaseController
 
     public function requests()
     {
-        // Dummy requests
+        // Example data, replace with your actual data fetching logic
         $requests = [
-            ['id' => 1, 'student_id' => 1, 'course_id' => 1, 'section' => 'A', 'status' => 'pending']
+            [
+                'id' => 1,
+                'student_name' => 'California Magpantay',
+                'course_name' => 'Sample Course',
+                'section' => 'A',
+                'status' => 'pending'
+            ],
+            // ...add more requests as needed...
         ];
+
         return view('enrollment_req', ['requests' => $requests]);
     }
 

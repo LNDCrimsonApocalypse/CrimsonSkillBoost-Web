@@ -409,19 +409,10 @@ box-shadow:0 2px 8px #f7c6e6;
       </a>
     </div>
     <div class="navbar-center">
-      <a href="<?= base_url('homepage_initial') ?>">HOME</a>
-      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
-      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
-      <li class="dropdown">
-        <span style="font-weight: bold;">COURSES <span class="arrow">&#9660;</span></span>
-        <div class="dropdown-content">
-           <select id="course-select">
-            <option value="">Select Course</option>
-            <option value="<?= base_url('allcourses') ?>">ALL COURSES</option>
-            <option value="<?= base_url('courses') ?>">MY COURSES</option>
-          </select>
-        </div>
-      </li>
+    <a href="<?= base_url('/') ?>">HOME</a>
+          <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+        <a href="<?= base_url('allcourses') ?>">COURSES</a>
     </div>
     <div class="navbar-right">
       <input type="text" placeholder="Search.." />

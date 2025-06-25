@@ -235,23 +235,14 @@
       <img src="https://i.imgur.com/1W7sOom.png" alt="logo" class="logo"/>
     </div>
     <div class="navbar-center">
-      <a href="#">HOME</a>
-      <a href="#">DASHBOARD</a>
-      <a href="#">ABOUT</a>
-     <li class="dropdown">
-      <span>COURSES <span class="arrow">&#9660;</span></span>
-      <div class="dropdown-content">
-        <select id="course-select">
-          <option value="web">ALL COURSES </option>
-          <option value="data">MY COURSES </option>
-         
-        </select>
-      </div>
-    </li>
+      <a href="<?= base_url('/') ?>">HOME</a>
+          <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+        <a href="<?= base_url('allcourses') ?>">COURSES</a>
     </div>
     <div class="navbar-right">
       <input type="text" placeholder="Search.." />
-      <img src="imgs/notifications.png" alt="Notifications" class="icon" />
+      <img src="public/img/notifications.png" alt="Notifications" class="icon" />
       <img src="https://i.imgur.com/uIgDDDd.png" alt="profile" class="profile" />
     </div>
   </div>

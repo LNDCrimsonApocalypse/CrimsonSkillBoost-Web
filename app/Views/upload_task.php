@@ -248,15 +248,15 @@
             <img src="https://i.imgur.com/1W7sOom.png" alt="logo" class="logo"/>
         </div>
         <div class="navbar-center">
-            <a href="#">HOME</a>
-            <a href="#">DASHBOARD</a>
-            <a href="#">ABOUT</a>
-            <a href="#" class="dropdown">COURSES</a>
-            <div class="icon">🔔</div>
+            <a href="<?= base_url('/') ?>">HOME</a>
+          <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+        <a href="<?= base_url('allcourses') ?>">COURSES</a>
+        
         </div>
         <div class="navbar-right">
             <input type="text" placeholder="Search.." />
-            <img src="imgs/notifications.png" alt="Notifications" class="icon" />
+            <img src="public/img/notifications.png" alt="Notifications" class="icon" />
             <img src="imgs/profile.png" alt="Profile" class="profile" />
             <button id="signOutButton" class="logout-btn">Sign Out</button>
         </div>
@@ -264,9 +264,9 @@
 
     <!-- Tab Bar -->
     <div class="tabbar">
-        <span>Course</span>
-        <span class="active">Task</span>
-        <span>Quiz</span>
+       <a href="<?= base_url('allcourses') ?>">  <span>Course</span></a>
+    <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
+    <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
         <span>Student</span>
     </div>
 
