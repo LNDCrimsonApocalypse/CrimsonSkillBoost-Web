@@ -293,10 +293,10 @@ li {
       </a>
     </div>
     <div class="navbar-center">
-     <a href="<?= base_url('/') ?>">HOME</a>
-          <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
-       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
-        <a href="<?= base_url('allcourses') ?>">COURSES</a>
+     <<a href="<?= base_url('homepage') ?>">HOME</a>
+      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+       <a href="<?= base_url('allcourses') ?>">COURSES</a>
     </div>
     <div class="navbar-right">
       <input class="search-box" type="text" placeholder="Search.." />
@@ -311,7 +311,7 @@ li {
      <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
     <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
     <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
-    <span>Student</span>
+   <a href="<?= base_url('studentprog') ?>"> <span>Student</span></a>
   </div>
   <!-- Section Title -->
   <div class="section-title">

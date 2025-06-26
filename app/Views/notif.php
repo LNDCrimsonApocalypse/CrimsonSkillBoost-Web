@@ -314,7 +314,7 @@ li {
       </a>
     </div>
     <div class="navbar-center">
-     <a href="<?= base_url('/') ?>">HOME</a>
+     <a href="<?= base_url('homepage') ?>">HOME</a>
           <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
        <a href="<?= base_url('aboutus') ?>">ABOUT</a>
         <a href="<?= base_url('allcourses') ?>">COURSES</a>
@@ -328,10 +328,10 @@ li {
 
   <!-- Tab Bar -->
   <div class="tabbar">
-    <span>Topic</span>
-    <span >Task</span>
-    <span>Quiz</span>
-    <span>Student</span>
+    <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
+    <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
+    <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
+   <a href="<?= base_url('studentprog') ?>"> <span>Student</span></a>
   </div>
 
 <!-- Toolbar -->

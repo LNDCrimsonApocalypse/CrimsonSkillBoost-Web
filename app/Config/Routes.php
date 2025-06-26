@@ -104,6 +104,9 @@ $routes->group('grading', ['namespace' => 'App\Controllers'], function($routes) 
     $routes->get('edit', 'Grading::edit');
 });
 
+$routes->get('grading', 'Grading::index');
+$routes->get('grading/previewgrade', 'Grading::previewgrade');
+
 $routes->get('enrollment', 'Enrollment::index');
 $routes->post('enrollment/submit', 'Enrollment::submitRequest');
 $routes->post('enrollment/update/(:num)', 'Enrollment::updateRequest/$1');

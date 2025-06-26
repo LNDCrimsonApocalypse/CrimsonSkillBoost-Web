@@ -4,6 +4,12 @@ namespace App\Controllers;
 
 class Grading extends BaseController
 {
+    public function index()
+    {
+        // Pass data to the view if needed
+        return view('grading/grading');
+    }
+
     public function overview($id = null)
     {
         // Example: Fetch submissions for the given $id (e.g., task or quiz)
@@ -88,5 +94,11 @@ class Grading extends BaseController
     {
         // You can pass data to the view if needed
         return view('grading/studentprog');
+    }
+
+    public function previewgrade()
+    {
+        // You can pass data to the view if needed
+        return view('grading/previewgrade');
     }
 }

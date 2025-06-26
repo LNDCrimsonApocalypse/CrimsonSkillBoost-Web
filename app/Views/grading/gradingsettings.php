@@ -290,19 +290,10 @@
       <img src="imgs/Logo.png" alt="logo" class="logo"/>
     </div>
     <div class="navbar-center">
-      <a href="#">HOME</a>
-      <a href="#">DASHBOARD</a>
-      <a href="#">ABOUT</a>
-      <li class="dropdown">
-      <span>COURSES <span class="arrow">&#9660;</span></span>
-      <div class="dropdown-content">
-        <select id="course-select">
-          <option value="web">ALL COURSES </option>
-          <option value="data">MY COURSES </option>
-         
-        </select>
-      </div>
-    </li>
+       <a href="<?= base_url('homepage') ?>" >HOME</a> 
+      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+      <a href="<?= base_url('allcourses') ?>">COURSES</a>
 
     </div>
     <div class="navbar-right">
@@ -313,11 +304,11 @@
   </div>
 <!-- TABS -->
 <div class="tabbar">
-  <span>Topic</span>
-  <span>Task</span>
-  <span>Quiz</span>
-  <span>Student</span>
-  <span>Grade Settings</span>
+    <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
+    <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
+    <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
+   <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
+    <a href="<?= base_url('gradesettings') ?>">Grade Settings</a>
 </div>
   <!-- TABLE -->
   <div class="table-container">

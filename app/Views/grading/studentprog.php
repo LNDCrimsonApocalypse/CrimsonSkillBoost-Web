@@ -373,7 +373,7 @@
     <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
     <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
     <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
-   <a href="<?= base_url('create_quiz') ?>"><span>Student</span></a>
+   <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
     <a href="<?= base_url('gradesettings') ?>">Grade Settings</a>
   </div>
 

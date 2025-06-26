@@ -341,19 +341,10 @@ li {
       </a>
     </div>
     <div class="navbar-center">
-      <a href="<?= base_url('homepage_initial') ?>">HOME</a>
+      <a href="<?= base_url('homepage') ?>">HOME</a>
       <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
-      <div class="dropdown">
-        <span style="font-weight: bold;">COURSES <span class="arrow">&#9660;</span></span>
-        <div class="dropdown-content">
-          <select id="course-select">
-            <option value="">Select Course</option>
-            <option value="<?= base_url('allcourses') ?>">ALL COURSES</option>
-            <option value="<?= base_url('courses') ?>">MY COURSES</option>
-          </select>
-        </div>
-      </div>
+       <a href="<?= base_url('allcourses') ?>">COURSES</a>
     </div>
     <div class="navbar-right">
       <input type="text" placeholder="Search.." />
@@ -365,10 +356,10 @@ li {
 
   <!-- Tab Bar -->
 <div class="tabbar">
-     <a href="<?= base_url('allcourses') ?>"><span>Course</span></a>
+     <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
     <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
     <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
-    <span>Student</span>
+    <a href="<?= base_url('studentprog') ?>"> <span>Student</span></a>
   </div>
     <!-- Modal Overlay -->
   <div class="modal-overlay">
