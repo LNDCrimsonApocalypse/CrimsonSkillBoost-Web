@@ -892,24 +892,243 @@ async function addCourseToFirestore({course_name, year, section, semester, overv
 
   // Add to Firestore
   try {
-    await firebase.firestore().collection("courses").add({
-      course_name: course_name,
-      created_at: new Date().toISOString(),
-      instructor_name: instructor_name,
-      user_id: user.uid,
-      overview: overview || "",
-      requirements: requirements || "",
-      year: year,
-      section: section,
-      semester: semester
-    });
-    alert("Course added successfully!");
-    closeModal('courseModalStep2');
-    // location.reload(); // Uncomment if you want to reload
-  } catch (err) {
-    alert("Failed to add course: " + err.message);
+    // --- Course code mapping ---
+    const courseCodeMap = {
+      "INTRODUCTION TO COMPUTING": "INTCOM",
+      "COMPUTER PROGRAMMING 1": "COMPROG1",
+      "WEB DEVELOPMENT TOOLS": "WEBTOOLS",
+      "PROBABILITY AND STATISTICS": "PROBSTAT",
+      "COMPUTER PROGRAMMING 2": "COMPROG2",
+      "INFORMATION MANAGEMENT": "INFOMAN",
+      "WEB APPLICATIONS DEVELOPMENT": "WEBAPPS",
+      "ORGANIZATIONAL COMMUNICATION": "ORGCOM",
+      "DATA STRUCTURES AND ALGORITHMS": "DATASTRU",
+      "OPERATING SYSTEMS": "OPERASYS",
+      "OBJECT ORIENTED PROGRAMMING": "OOP",
+      "MODERN PHYSICS": "MODPHY",
+      "APPLICATIONS DEVELOPMENT AND EMERGING TECHNOLOGIES": "APPDEV",
+      "DISCRETE STRUCTURES 1": "DISCSTRU1",
+      "DIFFERENTIAL AND INTEGRAL CALCULUS": "CALCULUS",
+      "ALGORITHMS AND COMPLEXITY": "ALGOCOM",
+      "DISCRETE STRUCTURES 2": "DISCSTRU2",
+      "INFORMATION ASSURANCE AND SECURITY": "INFOMAN",
+      "SOFTWARE ENGINEERING 1": "SOFTENG1",
+      "HUMAN COMPUTER INTERACTION": "HCI",
+      "MODELING AND SIMULATION": "MODSIMU",
+      "ELECTIVE 1": "ELEC1",
+      "METHODS OF RESEARCH": "METHODSR",
+      "SOFTWARE ENGINEERING 2": "SOFTENG2",
+      "PROGRAMMING LANGUAGES": "PROLANG",
+      "NETWORKS AND COMMUNICATIONS": "NETCOM",
+      "ARCHITECTURE AND ORGANIZATION": "ARCHORG",
+      "AUTOMATA THEORY AND FORMAL LANGUAGES": "AUTOMATA",
+      "PROJECT MANAGEMENT": "PROMNGT",
+      "ELECTIVE 2": "ELEC2",
+      "ADVANCED ENGLISH PRE-EMPLOYMENT TRAINING": "ADEPT",
+      "SOCIAL ISSUES AND PROFESSIONAL PRACTICE": "SOCIPP",
+      "CS THESIS WRITING 1": "THESIS1",
+      "ELECTIVE 3": "ELEC3",
+      "ELECTIVE 4": "ELEC4",
+      "ELECTIVE 5": "ELEC5",
+      "PRACTICUM": "PRACTI",
+      "CS THESIS WRITING 2": "THESIS2"
+    };
+    // Assign course_code (from mapping or empty string)
+    const course_code = courseCodeMap[(course_name || '').trim().toUpperCase()] || "";
+
+    // Add to Firestore
+    try {
+      await firebase.firestore().collection("courses").add({
+        course_name: course_name,
+        created_at: new Date().toISOString(),
+        instructor_name: instructor_name,
+        user_id: user.uid,
+        overview: overview || "",
+        requirements: requirements || "",
+        year: year,
+        section: section,
+        semester: semester,
+        course_code: course_code // <-- Add course_code to Firestore
+      });
+      alert("Course added successfully!");
+      closeModal('courseModalStep2');
+      // location.reload(); // Uncomment if you want to reload
+    } catch (err) {
+      alert("Failed to add course: " + err.message);
+    }
+  } catch (e) {
+    alert("Failed to add course: " + e.message);
   }
 }
+
+// --- FIREBASE: DISPLAY ALL COURSES FROM FIRESTORE ---
+async function displayAllCoursesFromFirestore() {
+  const cardsContainer = document.querySelector('.cards-container');
+  if (!cardsContainer) return;
+
+  // Show loading
+  cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Loading courses...</div>';
+
+  try {
+    const snapshot = await firebase.firestore().collection("courses").get();
+    let courses = [];
+    snapshot.forEach(doc => {
+      let data = doc.data();
+      data.id = doc.id;
+      courses.push(data);
+    });
+
+    if (courses.length === 0) {
+      cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">No courses found.</div>';
+      return;
+    }
+
+    // Render each course as a card
+    cardsContainer.innerHTML = courses.map(course => {
+      const sectionSem = (course.section ? course.section : '') +
+        (course.semester ? ' - ' + (course.semester === "1" ? "First Semester" : course.semester === "2" ? "Second Semester" : course.semester) : '');
+      return `
+        <div class="card" data-status="active">
+          <div class="card-image">
+            <img src="default-course.jpg" alt="${course.course_name || ''}">
+          </div>
+          <div class="card-content">
+            <div class="card-label">${(course.course_name || '').substring(0,8).toUpperCase()}</div>
+            <div class="card-title">${course.course_name || ''}</div>
+            <div class="card-subtitle">${sectionSem}</div>
+            <div class="card-footer">
+              <span class="card-students">
+                <i class="fa fa-users"></i> 0 students
+              </span>
+              <button class="card-btn">View Info</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (e) {
+    cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Failed to load courses.</div>';
+  }
+}
+
+// --- FIREBASE: DISPLAY ONLY LOGGED-IN USER'S COURSES FROM FIRESTORE ---
+async function displayUserCoursesFromFirestore() {
+  const cardsContainer = document.querySelector('.cards-container');
+  if (!cardsContainer) return;
+
+  // Show loading
+  cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Loading courses...</div>';
+
+  try {
+    // Wait for Firebase Auth
+    await new Promise(resolve => {
+      if (firebase.auth().currentUser) return resolve();
+      const unsub = firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          unsub();
+          resolve();
+        }
+      });
+    });
+
+    const user = firebase.auth().currentUser;
+    if (!user) {
+      cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Please log in to see your courses.</div>';
+      return;
+    }
+
+    const snapshot = await firebase.firestore().collection("courses").where("user_id", "==", user.uid).get();
+    let courses = [];
+    snapshot.forEach(doc => {
+      let data = doc.data();
+      data.id = doc.id;
+      courses.push(data);
+    });
+
+    if (courses.length === 0) {
+      cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">No courses found.</div>';
+      return;
+    }
+
+    // --- Course code mapping ---
+    const courseCodeMap = {
+      "INTRODUCTION TO COMPUTING": "INTCOM",
+      "COMPUTER PROGRAMMING 1": "COMPROG1",
+      "WEB DEVELOPMENT TOOLS": "WEBTOOLS",
+      "PROBABILITY AND STATISTICS": "PROBSTAT",
+      "COMPUTER PROGRAMMING 2": "COMPROG2",
+      "INFORMATION MANAGEMENT": "INFOMAN",
+      "WEB APPLICATIONS DEVELOPMENT": "WEBAPPS",
+      "ORGANIZATIONAL COMMUNICATION": "ORGCOM",
+      "DATA STRUCTURES AND ALGORITHMS": "DATASTRU",
+      "OPERATING SYSTEMS": "OPERASYS",
+      "OBJECT ORIENTED PROGRAMMING": "OOP",
+      "MODERN PHYSICS": "MODPHY",
+      "APPLICATIONS DEVELOPMENT AND EMERGING TECHNOLOGIES": "APPDEV",
+      "DISCRETE STRUCTURES 1": "DISCSTRU1",
+      "DIFFERENTIAL AND INTEGRAL CALCULUS": "CALCULUS",
+      "ALGORITHMS AND COMPLEXITY": "ALGOCOM",
+      "DISCRETE STRUCTURES 2": "DISCSTRU2",
+      "INFORMATION ASSURANCE AND SECURITY": "INFOMAN",
+      "SOFTWARE ENGINEERING 1": "SOFTENG1",
+      "HUMAN COMPUTER INTERACTION": "HCI",
+      "MODELING AND SIMULATION": "MODSIMU",
+      "ELECTIVE 1": "ELEC1",
+      "METHODS OF RESEARCH": "METHODSR",
+      "SOFTWARE ENGINEERING 2": "SOFTENG2",
+      "PROGRAMMING LANGUAGES": "PROLANG",
+      "NETWORKS AND COMMUNICATIONS": "NETCOM",
+      "ARCHITECTURE AND ORGANIZATION": "ARCHORG",
+      "AUTOMATA THEORY AND FORMAL LANGUAGES": "AUTOMATA",
+      "PROJECT MANAGEMENT": "PROMNGT",
+      "ELECTIVE 2": "ELEC2",
+      "ADVANCED ENGLISH PRE-EMPLOYMENT TRAINING": "ADEPT",
+      "SOCIAL ISSUES AND PROFESSIONAL PRACTICE": "SOCIPP",
+      "CS THESIS WRITING 1": "THESIS1",
+      "ELECTIVE 3": "ELEC3",
+      "ELECTIVE 4": "ELEC4",
+      "ELECTIVE 5": "ELEC5",
+      "PRACTICUM": "PRACTI",
+      "CS THESIS WRITING 2": "THESIS2"
+    };
+
+    // Render each course as a card
+    cardsContainer.innerHTML = courses.map(course => {
+      const sectionSem = (course.section ? course.section : '') +
+        (course.semester ? ' - ' + (course.semester === "1" ? "First Semester" : course.semester === "2" ? "Second Semester" : course.semester) : '');
+      // Use course_code from DB, or fallback to mapping, or empty string
+      const code = course.course_code || courseCodeMap[(course.course_name || '').trim().toUpperCase()] || "";
+      return `
+        <div class="card" data-status="active">
+          <div class="card-image">
+            <img src="default-course.jpg" alt="${course.course_name || ''}">
+          </div>
+          <div class="card-content">
+            <div class="card-label" style="font-weight:700; color:#888; letter-spacing:2px; text-transform:uppercase;">
+              ${code}
+            </div>
+            <div class="card-title">${course.course_name || ''}</div>
+            <div class="card-subtitle">${sectionSem}</div>
+            <div class="card-footer">
+              <span class="card-students">
+                <i class="fa fa-users"></i> 0 students
+              </span>
+              <button class="card-btn">View Info</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (e) {
+    cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Failed to load courses.</div>';
+  }
+}
+
+// Call this on page load
+document.addEventListener("DOMContentLoaded", function () {
+  // ...existing code...
+  displayUserCoursesFromFirestore();
+});
 
 // Helper to convert year/semester display to DB value
 function getYearValueForDb() {
