@@ -1,4 +1,3 @@
-cssgrading.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -310,38 +309,132 @@ cssgrading.html
   stroke: #fff;
   stroke-width: 0;
 }
+* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.18);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  width: 600px;
+  max-width: 95vw;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  padding: 0 0 24px 0;
+  position: relative;
+  animation: fadeIn 0.2s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-30px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 22px 32px 12px 32px;
+}
+.modal-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #888;
+  letter-spacing: 1px;
+}
+.modal-close {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.18s;
+}
+.modal-close:hover {
+  color: #e636a4;
+}
+.modal-body {
+  padding: 24px 32px 0 32px;
+}
+.modal-row {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 18px;
+}
+.modal-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.modal-group label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222;
+}
+.modal-group input[type="text"],
+.modal-group input[type="date"] {
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fafafa;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 18px 32px 0 32px;
+}
+.save-btn {
+  background: #e636a4;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.18s;
+}
+.save-btn:hover {
+  background: #b983ff;
+}
+@media (max-width: 700px) {
+  .modal-content { width: 98vw; }
+  .modal-row { flex-direction: column; gap: 12px; }
+  .modal-header, .modal-body, .modal-actions { padding-left: 12px; padding-right: 12px; }
+}
 
   </style>
 </head>
 <body>
 
 <!-- NAVBAR -->
-  <div class="navbar">
+ <div class="navbar">
     <div class="navbar-logo">
-      <img src="imgs/Logo.png" alt="logo" class="logo"/>
+      <a href="<?= base_url('homepage_initial') ?>">
+        <img src="<?= base_url('public/img/Logo.png') ?>" alt="logo" class="logo"/>
+      </a>
     </div>
     <div class="navbar-center">
-      <a href="#">HOME</a>
-      <a href="#">DASHBOARD</a>
-      <a href="#">ABOUT</a>
-      <li class="dropdown">
-      <span>COURSES <span class="arrow">&#9660;</span></span>
-      <div class="dropdown-content">
-        <select id="course-select">
-          <option value="web">ALL COURSES </option>
-          <option value="data">MY COURSES </option>
-         
-        </select>
-      </div>
-    </li>
-
+    <a href="<?= base_url('/') ?>">HOME</a>
+          <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+        <a href="<?= base_url('allcourses') ?>">COURSES</a>
     </div>
     <div class="navbar-right">
       <input type="text" placeholder="Search.." />
-        <img src="imgs/notifications.png" alt="Notifications" class="icon" />
-      <img src="imgs/profile.png" alt="profile" class="profile"/>
+      <img src="<?= base_url('public/img/notifications.png') ?>" alt="Notifications" class="icon" />    
+      <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
     </div>
   </div>
+
 
 <!-- FILTERS -->
 <div class="filters">
@@ -420,6 +513,71 @@ cssgrading.html
   </table>
 </div>
 
+<!-- EDIT GRADE MODAL -->
+<div id="editGradeModal" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="modal-title">EDIT GRADE</span>
+      <span class="modal-close" onclick="closeEditModal()">&times;</span>
+    </div>
+    <form>
+      <div class="modal-body">
+        <div class="modal-row">
+          <div class="modal-group">
+            <label for="grade-name">Grade Name</label>
+            <input type="text" id="grade-name" placeholder="Grade Name" />
+          </div>
+          <div class="modal-group">
+            <label for="total-marks">Total Marks</label>
+            <input type="text" id="total-marks" placeholder="Total Marks" />
+          </div>
+        </div>
+        <div class="modal-row">
+          <div class="modal-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" placeholder="Filtered Date" />
+          </div>
+          <div class="modal-group">
+            <label for="grade-point">Grade Point</label>
+            <input type="text" id="grade-point" placeholder="Grade Point" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="save-btn">
+          <img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" alt="icon" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;">
+          Save Grade
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<script>
+function openEditModal(title) {
+  document.querySelector('#editGradeModal .modal-title').textContent = title;
+  document.getElementById('editGradeModal').style.display = 'flex';
+}
+function closeEditModal() {
+  document.getElementById('editGradeModal').style.display = 'none';
+}
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.edit-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      openEditModal('EDIT GRADE');
+    });
+  });
+  document.querySelectorAll('.add-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      openEditModal('ADD GRADE');
+    });
+  });
+});
+</script>
+
 <!-- PREVIEW AND COMMENT -->
 <div class="bottom-section">
   <div class="preview-box">
@@ -427,6 +585,10 @@ cssgrading.html
   </div>
   <div class="comment-box">
     <div class="section-title">Comment/ Suggestion:</div>
+    <form id="commentForm">
+      <textarea name="comment" rows="6" style="width:100%;resize:vertical;border-radius:6px;border:1px solid #ccc;padding:10px;font-family:'Poppins','Segoe UI',sans-serif;" placeholder="Write your comment or suggestion here..."></textarea>
+      <button type="submit" style="margin-top:10px;background:#e636a4;color:#fff;border:none;border-radius:6px;padding:8px 18px;font-weight:600;cursor:pointer;">Submit</button>
+    </form>
   </div>
 </div>
 
