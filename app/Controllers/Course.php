@@ -69,4 +69,83 @@ class Course extends BaseController
             'lessons' => $lessons
         ]);
     }
+
+    public function info($id)
+    {
+        $projectId = 'csboostcmo';
+        $collection = 'courses';
+        $url = "https://firestore.googleapis.com/v1/projects/$projectId/databases/(default)/documents/$collection/$id";
+
+        $json = @file_get_contents($url);
+
+        // DEBUG: Output the raw JSON and URL for troubleshooting
+        if (isset($_GET['debug'])) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'url' => $url,
+                'json' => $json,
+                'error' => error_get_last()
+            ]);
+            exit;
+        }
+
+        if ($json === false) {
+            $course = [
+                'title' => 'Course Not Found',
+                'students' => 0,
+                'description' => 'No description available.',
+                'overview' => '',
+                'topics' => [],
+                'requirements' => [],
+                'instructor' => 'Professor Nicholas Aguinaldo'
+            ];
+        } else {
+            $doc = json_decode($json, true);
+            $fields = $doc['fields'] ?? [];
+
+            // Requirements: handle array or string
+            $requirements = [];
+            if (isset($fields['requirements']['arrayValue']['values'])) {
+                foreach ($fields['requirements']['arrayValue']['values'] as $v) {
+                    $requirements[] = $v['stringValue'] ?? '';
+                }
+            } elseif (!empty($fields['requirements']['stringValue'])) {
+                $reqRaw = $fields['requirements']['stringValue'];
+                $requirements = preg_split('/[\n;,]+/', $reqRaw);
+                $requirements = array_map('trim', $requirements);
+                $requirements = array_filter($requirements, fn($v) => $v !== '');
+            }
+
+            // Topics: handle array or string, or fallback to empty
+            $topics = [];
+            if (isset($fields['topics']['arrayValue']['values'])) {
+                foreach ($fields['topics']['arrayValue']['values'] as $v) {
+                    $topics[] = $v['stringValue'] ?? '';
+                }
+            } elseif (!empty($fields['topics']['stringValue'])) {
+                $topicsRaw = $fields['topics']['stringValue'];
+                $topics = preg_split('/[\n;,]+/', $topicsRaw);
+                $topics = array_map('trim', $topics);
+                $topics = array_filter($topics, fn($v) => $v !== '');
+            }
+
+            // Fallback: If overview is empty, try to use description as overview
+            $overview = $fields['overview']['stringValue'] ?? '';
+            if (!$overview && !empty($fields['description']['stringValue'])) {
+                $overview = $fields['description']['stringValue'];
+            }
+
+            $course = [
+                'title' => $fields['course_name']['stringValue'] ?? 'Untitled Course',
+                'students' => 0,
+                'description' => $fields['description']['stringValue'] ?? '',
+                'overview' => $overview,
+                'topics' => $topics,
+                'requirements' => $requirements,
+                'instructor' => $fields['instructor_name']['stringValue'] ?? 'Professor Nicholas Aguinaldo'
+            ];
+        }
+
+        return view('course_descrip', ['course' => $course]);
+    }
 }

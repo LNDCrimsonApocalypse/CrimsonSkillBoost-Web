@@ -2,23 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Computer Programming 1 - Course Dashboard</title>
+  <title><?= esc($course['title']) ?> - Course Dashboard</title>
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
   <style>
-  
     body {
       margin: 0;
       background: #fcf6fd;
       font-family: 'Poppins', 'Segoe UI', sans-serif;
       color: #222;
     }
-    
-    /* NAVBAR */
     .navbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-     padding: 10px 40px;
+      padding: 10px 40px;
       background: #fff;
     }
     .navbar-left img {
@@ -45,16 +42,15 @@
       color: #000;
       font-weight: 900;
     }
-  
     .navbar-right {
       display: flex;
       align-items: center;
       gap: 22px;
     }
-     .icon {
-       width: 48px;
-            height: 48px;
-            object-fit: cover;
+    .icon {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
     }
     .navbar-profile {
       width: 48px;
@@ -64,16 +60,6 @@
       border: none;
       background: #fff;
     }
-    .profile-pic-mini {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: #e0e0e0;
-      object-fit: cover;
-      border: 2px solid #fff;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
-   
     .container {
       display: flex;
       gap: 32px;
@@ -87,14 +73,14 @@
       flex-direction: column;
       gap: 28px;
     }
-    .card {
+    .main-card {
       background: #fff;
       border-radius: 18px;
       box-shadow: 0 2px 12px rgba(160, 108, 213, 0.07);
       padding: 30px 32px;
+      margin-bottom: 0;
     }
     .course-title {
-      font-family: 'Cormorant Garamond', serif;
       font-size: 2.6rem;
       font-weight: 700;
       margin-bottom: 8px;
@@ -108,36 +94,45 @@
       align-items: center;
       gap: 6px;
     }
-    .students-count i {
-      font-size: 1.1rem;
-    }
     .course-desc {
       color: #5f5f5f;
       font-size: 1.05rem;
       margin-bottom: 0;
       line-height: 1.6;
     }
+    .section-block {
+      margin-top: 18px;
+      background: #ede3fa;
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(160, 108, 213, 0.04);
+      padding-bottom: 0;
+    }
     .section-title {
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       font-weight: 700;
-      background: #c7b3e6;
+      background: #a892e6;
       color: #3d2067;
-      padding: 8px 18px;
-      border-radius: 8px 8px 0 0;
+      padding: 10px 22px;
+      border-radius: 12px 12px 0 0;
       margin: 0;
       letter-spacing: 0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .section-content {
-      background: #f6f3fa;
+      background: #fff;
       border-radius: 0 0 12px 12px;
       padding: 18px 22px;
       font-size: 1.05rem;
       color: #3d2067;
     }
     .topic-list {
-      background: #f6f3fa;
+      background: #fff;
       border-radius: 0 0 12px 12px;
-      padding: 12px 0;
+      padding: 0;
+      margin: 0;
+      list-style: none;
     }
     .topic-item {
       padding: 14px 22px;
@@ -150,14 +145,6 @@
     }
     .topic-item:last-child {
       border-bottom: none;
-    }
-    .highlight {
-      background: #f7e6fa;
-      border-radius: 6px;
-      padding: 2px 8px;
-      font-size: 0.97rem;
-      color: #a06cd5;
-      margin-left: 12px;
     }
     .sidebar {
       flex: 1;
@@ -242,64 +229,65 @@
       .container {
         padding: 12px 2vw;
       }
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        padding: 14px 10px;
-      }
       .main-content, .sidebar {
         padding: 0;
       }
     }
-             
   </style>
 </head>
 <body>
- <!-- NAVBAR -->
+  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar-left">
-      <img src="public/img/Logo.png" alt="Logo" />
+      <img src="<?= base_url('public/img/Logo.png') ?>" alt="Logo" />
     </div>
     <div class="navbar-center">
-        <a href="<?= base_url('/') ?>">HOME</a>
+      <a href="<?= base_url('/') ?>">HOME</a>
       <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
-      <a href="allcourses">COURSES</a>
+      <a href="<?= base_url('allcourses') ?>">COURSES</a>
     </div>
     <div class="navbar-right">
-         <img src="imgs/notifications.png" alt="Notifications" class="icon" />
-      <img src="imgs/profile.png" alt="Profile" class="navbar-profile" />
+      <img src="<?= base_url('public/img/notifications.png') ?>" alt="Notifications" class="icon" />
+      <img src="<?= base_url('public/img/profile.png') ?>" alt="Profile" class="navbar-profile" />
     </div>
   </nav>
   <div class="container">
     <div class="main-content">
-      <div class="card">
-       <div class="course-title"><?= esc($course['title']) ?></div>
-
-<div class="students-count">
-  <i>&#128101;</i> <?= esc($course['students']) ?> students
-</div>
-
-<div class="course-desc"><?= esc($course['description']) ?></div>
-
-<div class="section-title">Course Overview</div>
-<div class="section-content"><?= esc($course['overview']) ?></div>
-
-<div class="section-title">Topics</div>
-<?php foreach ($course['topics'] as $topic): ?>
-  <div class="topic-item"><?= esc($topic) ?></div>
-<?php endforeach; ?>
-
-<div class="section-title">Requirements</div>
-<?php foreach ($course['requirements'] as $req): ?>
-  <div class="topic-item"><?= esc($req) ?></div>
-<?php endforeach; ?>
+      <div class="main-card">
+        <div class="course-title"><?= esc($course['title']) ?></div>
+        <div class="students-count">
+          <i>&#128101;</i> <?= esc($course['students']) ?> students
+        </div>
+        <div class="course-desc"><?= esc($course['description']) ?></div>
+      </div>
+      <div class="section-block">
+        <div class="section-title">Course Overview</div>
+        <div class="section-content"><?= esc($course['overview']) ?></div>
+      </div>
+      <div class="section-block">
+        <div class="section-title">Topic Overview</div>
+        <ul class="topic-list">
+          <?php foreach ($course['topics'] as $topic): ?>
+            <li class="topic-item"><?= esc($topic) ?></li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+      <?php if (!empty($course['requirements'])): ?>
+      <div class="section-block">
+        <div class="section-title">Requirements</div>
+        <ul class="topic-list">
+          <?php foreach ($course['requirements'] as $req): ?>
+            <li class="topic-item"><?= esc($req) ?></li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+      <?php endif; ?>
     </div>
     <div class="sidebar">
       <div class="profile-card">
-        <img src="imgs/profile.png" alt="Professor Nicholas Aguinaldo" class="profile-pic">
-        <div class="prof-name">Professor Nicholas Aguinaldo</div>
+        <img src="<?= base_url('public/img/profile.png') ?>" alt="Professor Nicholas Aguinaldo" class="profile-pic">
+        <div class="prof-name"><?= isset($course['instructor']) ? esc($course['instructor']) : 'Professor Nicholas Aguinaldo' ?></div>
         <button class="start-btn">GET YOUR STUDENT STARTED</button>
         <ul class="includes-list">
           <li><span class="step">&#128214;</span> Step-by-step lessons</li>
@@ -312,6 +300,5 @@
       </div>
     </div>
   </div>
-  
 </body>
 </html>

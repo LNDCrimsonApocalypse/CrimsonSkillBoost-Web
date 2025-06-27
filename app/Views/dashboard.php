@@ -470,6 +470,12 @@ li {
   margin-left: 80px;
   padding: 0 20px;
 }
+#noCoursesMsg {
+  display: none; /* Always hidden by default */
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
 .card-image img {
   width: 100%;
   height: auto; /* Let it scale proportionally */
@@ -572,7 +578,7 @@ li {
         <a href="<?= base_url('allcourses') ?>">COURSES</a>
     </div>
     <div class="navbar-right">
-<img src="public/img/notifications.png" alt="Notifications" class="icon" />
+      <img src="public/img/notifications.png" alt="Notifications" class="icon" onclick="window.location.href='<?= base_url('notif') ?>'" style="cursor:pointer;" />
       <img src="" alt="Profile" class="navbar-profile" />
     </div>
   </nav>
@@ -584,7 +590,6 @@ li {
         <h2> Available Courses</h2>
          <div class="main-bg">
     <div class="card-container">
-      <div class="courses-card">
     
         <div class="courses-toolbar">
           <select id="courseFilter" class="dropdown-select" onchange="filterCourses()">
@@ -597,6 +602,7 @@ li {
   
     <div class="cards-container" id="cardsContainer">
       <!-- Firebase courses will be rendered here -->
+      <div class="empty-card" id="noCoursesMsg">No courses found.</div>
     </div>
     <!-- Remove all PHP/SQL course rendering below -->
     <!--
@@ -643,7 +649,7 @@ li {
             </div>
           <?php endforeach; ?>
         <?php else: ?>
-          <div class="empty-card">No courses found.</div>
+          <!-- <div class="empty-card">No courses found.</div> -->
         <?php endif; ?>
       </section>
       <aside class="right-panel">
@@ -727,7 +733,7 @@ li {
  * We'll force the container to always be visible and ensure the HTML is correct.
  */
 
-/**
+ /**
  * Step-by-step logic for showing user's courses from Firebase:
  * 1. Wait for DOMContentLoaded.
  * 2. Wait for Firebase to be initialized.
@@ -758,13 +764,15 @@ document.addEventListener("DOMContentLoaded", function () {
     firebase.auth().onAuthStateChanged(function(user) {
       if (!user) {
         // Not logged in, redirect or show message
-        document.getElementById('cardsContainer').innerHTML = '<div class="empty-card">Please log in to see your courses.</div>';
+        document.getElementById('cardsContainer').innerHTML = '';
+        document.getElementById('noCoursesMsg').style.display = '';
         return;
       }
 
       const uid = user.uid;
       const cardsContainer = document.getElementById('cardsContainer');
       const filterSelect = document.getElementById('courseFilter');
+      const noCoursesMsg = document.getElementById('noCoursesMsg');
 
       // Render a single course card (HTML string)
       function renderCourseCard(course) {
@@ -829,7 +837,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <span class="card-students">
                   <i class="fa fa-users"></i> 0 students
                 </span>
-                <button class="card-btn">View Info</button>
+                <button class="card-btn" data-course-id="${course.id}">View Info</button>
               </div>
             </div>
           </div>
@@ -839,7 +847,12 @@ document.addEventListener("DOMContentLoaded", function () {
       // Query and render courses
       async function loadCourses() {
         if (!cardsContainer) return;
-        cardsContainer.innerHTML = '<div class="empty-card">Loading...</div>';
+        // Remove all cards except noCoursesMsg
+        Array.from(cardsContainer.children).forEach(child => {
+          if (child.id !== 'noCoursesMsg') child.remove();
+        });
+        // Always hide the message before adding cards
+        if (noCoursesMsg) noCoursesMsg.style.display = 'none';
 
         try {
           // Query Firestore for courses belonging to this user
@@ -859,12 +872,36 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           if (filtered.length === 0) {
-            cardsContainer.innerHTML = '<div class="empty-card">No courses found.</div>';
+            // Show the message if no courses
+            if (noCoursesMsg) {
+              noCoursesMsg.textContent = 'No courses found.';
+              noCoursesMsg.style.display = 'flex';
+            }
           } else {
-            cardsContainer.innerHTML = filtered.map(renderCourseCard).join('');
+            // Add cards, keep noCoursesMsg hidden
+            filtered.forEach(course => {
+              const temp = document.createElement('div');
+              temp.innerHTML = renderCourseCard(course);
+              cardsContainer.insertBefore(temp.firstElementChild, noCoursesMsg);
+            });
+            if (noCoursesMsg) noCoursesMsg.style.display = 'none';
+
+            // Add click handler for all "View Info" buttons
+            cardsContainer.querySelectorAll('.card-btn[data-course-id]').forEach(btn => {
+              btn.onclick = function() {
+                const courseId = this.getAttribute('data-course-id');
+                if (courseId) {
+                  window.location.href = '<?= base_url('course/info') ?>/' + courseId;
+                }
+              };
+            });
           }
         } catch (e) {
-          cardsContainer.innerHTML = '<div class="empty-card">Failed to load courses.</div>';
+          // Show error message
+          if (noCoursesMsg) {
+            noCoursesMsg.textContent = 'Failed to load courses.';
+            noCoursesMsg.style.display = 'flex';
+          }
         }
       }
 

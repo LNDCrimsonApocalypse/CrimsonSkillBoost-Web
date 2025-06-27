@@ -519,7 +519,7 @@
       <a href="<?= base_url('aboutus') ?>">COURSES</a>
     </div>
     <div class="navbar-right">
-    <img src="public/img/notifications.png" alt="Notifications" class="icon" />
+      <img src="public/img/notifications.png" alt="Notifications" class="icon" onclick="window.location.href='<?= base_url('notif') ?>'" style="cursor:pointer;" />
       <img src="imgs/profile.png" alt="Profile" class="navbar-profile" />
     </div>
   </nav>
