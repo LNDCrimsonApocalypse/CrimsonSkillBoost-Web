@@ -309,7 +309,23 @@
   stroke: #fff;
   stroke-width: 0;
 }
-* Modal Styles */
+ .submenu {
+      display: flex;
+      justify-content: center;
+      background: white;
+      border-bottom: 1px solid #ccc;
+    }
+    .submenu a {
+      padding: 15px 20px;
+      text-decoration: none;
+      color: black;
+      font-weight: 500;
+    }
+    .submenu a.active {
+      color: black;
+      border-bottom: 2px solid black;
+    }
+/* Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -435,6 +451,13 @@
     </div>
   </div>
 
+<div class="submenu">
+    <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
+    <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
+    <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
+   <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
+    <a href="<?= base_url('gradesettings') ?>">Grade Settings</a>
+  </div>
 
 <!-- FILTERS -->
 <div class="filters">

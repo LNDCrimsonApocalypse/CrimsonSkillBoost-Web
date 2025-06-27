@@ -8,8 +8,8 @@ use CodeIgniter\Router\RouteCollection;
 
 // Optional: Default route (redirect to login)
 $routes->get('/', 'Auth::initial');
-$routes->set404Override(function() {
-    return redirect()->to('initial');
+$routes->set404Override(function($message) {
+    return view('errors/html/custom_404', ['message' => $message]);
 });
 
 // Manual route definitions
@@ -71,7 +71,7 @@ $routes->get('quiz/result/(:num)', 'Quiz::result/$1'); // Keep specific ID route
 $routes->get('quiz/duedate/(:num)', 'Quiz::showDueDateForm/$1');
 $routes->post('quiz/save_settings/(:num)', 'Quiz::saveSettings/$1');
 $routes->get('quiz/edit/(:num)', 'Quiz::edit/$1');
-$routes->post('quiz/update/(:num)', 'Quiz::update/$1');
+$routes->post('quiz/update/(:num)', 'QuizController::update/$1');
 $routes->post('quiz/delete/(:num)', 'Quiz::delete/$1');
 $routes->get('quiz_edit/(:num)', 'QuizEdit::index/$1');
 $routes->get('quiz', 'Quiz::index');
@@ -141,4 +141,5 @@ $routes->get('allcourses2', 'CourseController::allcourses2');
 $routes->get('editprofile', 'Auth::editprofile');
 $routes->post('upload_profile_pic', 'Auth::upload_profile_pic');
 $routes->get('course/info/(:segment)', 'Course::info/$1');
+$routes->get('grading/studentprog', 'Grading::studentprog');
 $routes->get('grading/studentprog', 'Grading::studentprog');
