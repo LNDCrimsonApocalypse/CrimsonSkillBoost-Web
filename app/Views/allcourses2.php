@@ -447,7 +447,7 @@
         <span class="card-students">
           <i class="fa fa-users"></i> 1050 students
         </span>
-        <button class="card-btn">View Info</button>
+       <a href="<?= base_url('course/info/oop') ?>" class="card-btn">View Info</a>
       </div>
     </div>
   </div>

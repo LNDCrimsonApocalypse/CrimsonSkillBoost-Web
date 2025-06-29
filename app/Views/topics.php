@@ -157,6 +157,7 @@ li {
       font-size: 1.1rem;
       font-weight: 500;
       margin-left: 40px;
+
     }
     .tabbar-row{
          display: flex;
@@ -259,36 +260,329 @@ li {
     }
     .plus-btn {
       position: fixed;
-      bottom: 38px;
-      right: 38px;
-      width: 56px;
-      height: 56px;
+      bottom: 28px;
+      right: 28px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
-      background: #f23eb3;
+      background: linear-gradient(135deg, #f75bbd 0%, #e8c6eb 100%);
       color: #fff;
-      font-size: 2.2rem;
+      font-size: 2.5rem;
       border: none;
       box-shadow: 0 4px 16px rgba(0,0,0,0.13);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 100;
+      z-index: 101;
       transition: background 0.18s;
     }
     .plus-btn:hover {
-      background: #d12c5c;
+      background: linear-gradient(135deg, #e84fa7 0%, #e8c6eb 100%);
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 200;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.0);
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    .modal.show { display: flex !important; }
+    .modal-content {
+      position: fixed;
+      right: 38px;
+      bottom: 110px;
+      background: none;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .modal-box {
+      background: #fbeaf6;
+      border-radius: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+      border: 2px solid #bdb0b8;
+      overflow: hidden;
+      width: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .modal-option {
+      border: none;
+      background: none;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 18px 0;
+      cursor: pointer;
+      width: 100%;
+outline-style: solid;
+      transition: background 0.13s;
+      text-align: center;
+      letter-spacing: 0.5px;
+      border-radius: 0;
+    }
+    .modal-option.new-topic {
+      background: #f75bbd;
+      color: #fff;
+      font-weight: 800;
+      
+      box-shadow: 0 4px 8px rgba(0,0,0,0.10);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.13);
+      border-bottom: 0;
+    }
+    .modal-option.upload-topic {
+      background: #f75bbd;
+     color: #fff;
+       
+      box-shadow: 0 4px 8px rgba(0,0,0,0.10);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.13);
+      border-bottom: 0;
+    }
+    .modal-option:not(:last-child) {
+      border-bottom: none;
+    }
+  
+    /* New Topic Modal Styles */
+    .new-topic-modal-content {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+      border: none;
+      width: 1000px;
+      max-width: 1000px;
+      margin: 16px auto;
+      margin-top: 40px;
+      padding: 0 0 32px 0;
+      display: flex;
+      flex-direction: column;
+      position: center;
+      min-width: 320px;
+      min-height: 320px;
+      animation: fadeIn 0.18s;
+      z-index: 300;
+    }
+    .new-topic-modal-header {
+      padding: 32px 0 18px 0;
+      border-bottom: 2px solid #ececec;
+      text-align: center;
+    }
+    .new-topic-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #a7a1a7;
+      letter-spacing: 1px;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+    .new-topic-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 32px 36px 0 36px;
+    }
+    .topic-label {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 6px;
+      margin-top: 8px;
+    }
+    .topic-input {
+      width: 100%;
+      font-size: 1.1rem;
+      padding: 12px 10px;
+      border: 1px solid #bdbdbd;
+      border-radius: 6px;
+      font-family: 'Poppins', Arial, sans-serif;
+      margin-bottom: 2px;
+      background: #fff;
+      outline: none;
+      transition: border 0.13s;
+    }
+    .topic-input:focus {
+      border: 1.5px solid #f75bbd;
+    }
+    .topic-hint {
+      font-size: 0.95rem;
+      color: #b0aeb3;
+      margin-bottom: 10px;
+      margin-left: 2px;
+    }
+    .topic-textarea {
+      width: 100%;
+      font-size: 1.1rem;
+      padding: 12px 10px;
+      border: 1px solid #bdbdbd;
+      border-radius: 6px;
+      font-family: 'Poppins', Arial, sans-serif;
+      resize: vertical;
+      min-height: 120px;
+      background: #fff;
+      outline: none;
+      transition: border 0.13s;
+    }
+    .topic-textarea:focus {
+      border: 1.5px solid #f75bbd;
+    }
+    .create-topic-btn {
+      margin: 24px auto 0 auto;
+      background: #f75bbd;
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 7px;
+      padding: 12px 38px;
+      cursor: pointer;
+      transition: background 0.15s;
+      box-shadow: 0 2px 8px rgba(247,91,189,0.07);
+      font-family: 'Poppins', Arial, sans-serif;
+      display: block;
+    }
+    .create-topic-btn:hover {
+      background: #e84fa7;
+    }
+    /* Upload Topic Modal Styles */
+    .upload-topic-modal-content {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+      border: none;
+      width: 1000px;
+      max-width: 1000px;
+      margin: 16px auto;
+      margin-top: 40px;
+      padding: 0 0 32px 0;
+      display: flex;
+      flex-direction: column;
+      position: center;
+      min-width: 320px;
+      min-height: 320px;
+      animation: fadeIn 0.18s;
+      z-index: 300;
+    }
+    .upload-topic-modal-header {
+      padding: 32px 0 18px 0;
+      border-bottom: 2px solid #ececec;
+      text-align: center;
+    }
+    .upload-topic-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: 1px;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+    .upload-topic-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 32px 36px 0 36px;
+    }
+    .upload-label {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 6px;
+      margin-top: 8px;
+    }
+    .upload-input {
+      width: 100%;
+      font-size: 1.1rem;
+      padding: 12px 10px;
+      border: 1px solid #bdbdbd;
+      border-radius: 6px;
+      font-family: 'Poppins', Arial, sans-serif;
+      margin-bottom: 2px;
+      background: #fff;
+      outline: none;
+      transition: border 0.13s;
+    }
+    .upload-hint {
+      font-size: 0.95rem;
+      color: #b0aeb3;
+      margin-bottom: 10px;
+      margin-left: 2px;
+    }
+    .upload-dropzone {
+      border: 2px solid #bdbdbd;
+      border-radius: 8px;
+      background: #fff;
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: border 0.13s, background 0.13s;
+      padding: 24px 10px;
+      text-align: center;
+    }
+    .upload-dropzone.dragover {
+      border: 2px solid #f75bbd;
+      background: #fdeef4;
+      color: #d12c5c;
+    }
+    .upload-create-btn {
+      margin: 24px auto 0 auto;
+      background: #f75bbd;
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 7px;
+      padding: 12px 38px;
+      cursor: pointer;
+      transition: background 0.15s;
+      box-shadow: 0 2px 8px rgba(247,91,189,0.07);
+      font-family: 'Poppins', Arial, sans-serif;
+      display: block;
+    }
+    .upload-create-btn:hover {
+      background: #e84fa7;
+    }
+    @media (max-width: 600px) {
+      .modal-content { left: 10vw; top: 10vw; }
+      .modal-box { width: 90vw; }
+    }
+    @media (max-width: 700px) {
+      .new-topic-modal-content {
+        width: 98vw;
+        padding: 0 0 12px 0;
+        min-width: 0;
+      }
+      .new-topic-form {
+        padding: 12px 4vw 0 4vw;
+      }
     }
     @media (max-width: 900px) {
-      .tabbar, .tabbar-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 10px 8px;
+      .new-topic-modal-content {
+        max-width: 98vw;
+        padding: 0 0 18px 0;
       }
-      .tabbar {
-        margin-top: 10px;
+      .new-topic-form {
+        padding: 18px 4vw 0 4vw;
       }
+      .upload-topic-modal-content {
+        max-width: 98vw;
+        padding: 0 0 18px 0;
+      }
+      .upload-topic-form {
+        padding: 18px 4vw 0 4vw;
+      }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px);}
+      to { opacity: 1; transform: none;}
     }
   </style>
 </head>
@@ -315,7 +609,7 @@ li {
      <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
     <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
     <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
-    <span>Student</span>
+   <a href="<?= base_url('studentprog') ?>"> <span>Student</span></a>
   </div>
   <!-- Section Title -->
   <div class="section-title">
@@ -353,6 +647,117 @@ li {
     </div>
   </div>
   <!-- Plus Button -->
-  <button class="plus-btn" title="Add Topic">+</button>
+  <button class="plus-btn" title="Add Topic" id="openModalBtn">+</button>
+
+  <!-- Modal: Add/Upload Options -->
+  <div id="topicModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-box">
+        <button class="modal-option new-topic" id="showNewTopicModal">New Topic</button>
+        <button class="modal-option upload-topic">Upload Topic</button>
+      </div>
+    </div>
+  </div>
+  <!-- Modal: New Topic Form -->
+  <div id="newTopicModal" class="modal">
+    <div class="new-topic-modal-content">
+      <div class="new-topic-modal-header">
+        <span class="new-topic-title">NEW TOPIC</span>
+      </div>
+      <form class="new-topic-form">
+        <label class="topic-label" for="topicTitle">Topic Title</label>
+        <input class="topic-input" id="topicTitle" name="topicTitle" maxlength="32" type="text" autocomplete="off" />
+        <div class="topic-hint">The header must contain a maximum of 32 characters</div>
+        <label class="topic-label" for="topicDesc">Description</label>
+        <textarea class="topic-textarea" id="topicDesc" name="topicDesc" rows="5" placeholder="Enter a description"></textarea>
+        <button type="submit" class="create-topic-btn">Create Topic</button>
+      </form>
+    </div>
+  </div>
+  <!-- Modal: Upload Topic Form -->
+  <div id="uploadTopicModal" class="modal">
+    <div class="upload-topic-modal-content">
+      <div class="upload-topic-modal-header">
+        <span class="upload-topic-title">Upload topic</span>
+      </div>
+      <form class="upload-topic-form">
+        <label class="upload-label" for="uploadTopicTitle">Topic Title</label>
+        <input class="upload-input" id="uploadTopicTitle" name="uploadTopicTitle" maxlength="32" type="text" autocomplete="off" />
+        <div class="upload-hint">The header must contain a maximum of 32 characters</div>
+        <label class="upload-label" for="uploadFiles">Upload Files</label>
+        <div class="upload-hint">Accepted formats: PDF, PNG, JPG, ZIP (Max size: 20MB)</div>
+        <div class="upload-dropzone" id="uploadDropzone">
+          Drag files here or click to browse
+          <input type="file" id="uploadFiles" name="uploadFiles[]" multiple style="display:none" accept=".pdf,.png,.jpg,.jpeg,.zip" />
+        </div>
+        <button type="submit" class="upload-create-btn">Create Topic</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    const modal = document.getElementById('topicModal');
+    const openBtn = document.getElementById('openModalBtn');
+    openBtn.onclick = () => { modal.classList.add('show'); };
+    const newTopicModal = document.getElementById('newTopicModal');
+    const showNewTopicBtn = document.getElementById('showNewTopicModal');
+
+    showNewTopicBtn.onclick = function(e) {
+      e.preventDefault();
+      modal.classList.remove('show');
+      newTopicModal.classList.add('show');
+    };
+
+    const uploadTopicModal = document.getElementById('uploadTopicModal');
+    const showUploadTopicBtn = document.querySelector('.modal-option.upload-topic');
+
+    showUploadTopicBtn.onclick = function(e) {
+      e.preventDefault();
+      modal.classList.remove('show');
+      uploadTopicModal.classList.add('show');
+    };
+
+    // Hide modals on outside click
+    window.onclick = function(event) {
+      if (event.target === modal) modal.classList.remove('show');
+      if (event.target === newTopicModal) newTopicModal.classList.remove('show');
+      if (event.target === uploadTopicModal) uploadTopicModal.classList.remove('show');
+    };
+    // Hide modals on ESC
+    window.addEventListener('keydown', function(e) {
+      if (e.key === "Escape") {
+        modal.classList.remove('show');
+        newTopicModal.classList.remove('show');
+        uploadTopicModal.classList.remove('show');
+      }
+    });
+    // Prevent form submit (demo only)
+    document.querySelector('.new-topic-form').onsubmit = function(e) {
+      e.preventDefault();
+      newTopicModal.classList.remove('show');
+    };
+    document.querySelector('.upload-topic-form').onsubmit = function(e) {
+      e.preventDefault();
+      uploadTopicModal.classList.remove('show');
+    };
+
+    // Drag and drop logic for upload
+    const dropzone = document.getElementById('uploadDropzone');
+    const fileInput = document.getElementById('uploadFiles');
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+    dropzone.addEventListener('dragleave', e => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+    });
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      fileInput.files = e.dataTransfer.files;
+      // Optionally show file names here
+    });
+  </script>
 </body>
 </html>

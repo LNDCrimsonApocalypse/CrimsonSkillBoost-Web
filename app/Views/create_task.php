@@ -370,7 +370,7 @@ li {
       display: flex;
       justify-content: center;
     }
-    .add-content-modal-add-btn {
+    .modal-nxt-btn {
       background: linear-gradient(90deg,#e636a4 0%,#b983ff 100%);
       color: #fff;
       border: none;
@@ -381,6 +381,20 @@ li {
       letter-spacing: 1.2px;
       box-shadow: 0 2px 8px #f7c6e6;
       cursor: pointer;
+    }
+
+    /* Due Date Modal Styles */
+    #dueDateModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.08);
+      z-index: 2100;
+      justify-content: center;
+      align-items: center;
+    }
+    #dueDateModal.active {
+      display: flex;
     }
   </style>
 </head>
@@ -424,7 +438,7 @@ li {
       <button class="history">View History</button>
       <div class="buttons" style="gap: 20px; width: 100%; justify-content: center;">
         <button class="quiz"  disabled>Create a quiz</button>
-        <button class="task" style="">Create a Task</button>
+        <button class="task" id="openAddContentModal">Create a Task</button>
       </div>
     </div>
   </div>
@@ -451,14 +465,58 @@ li {
         </div>
       </div>
       <div class="add-content-modal-footer">
-        <button class="add-content-modal-add-btn">ADD</button>
+        <button class="modal-nxt-btn" id="openDueDateModal">NEXT</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Due Date Modal -->
+  <div id="dueDateModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.08); z-index:2100; justify-content:center; align-items:center;">
+    <div style="background:#fff; border-radius:14px; max-width:600px; width:95vw; padding:38px 36px 32px 36px; box-shadow:0 6px 32px rgba(0,0,0,0.13); position:relative;">
+      <button id="closeDueDateModal" style="position:absolute; top:18px; right:24px; font-size:1.5rem; background:none; border:none; cursor:pointer;">&times;</button>
+      <div style="font-size:1.5rem; font-weight:700; margin-bottom:10px;">Due date</div>
+      <div style="color:#a58cf5; font-size:1rem; margin-bottom:18px;">Recommended next steps</div>
+      <div style="display:flex; gap:24px; margin-bottom:10px;">
+        <div style="flex:1;">
+          <div style="font-weight:500; margin-bottom:6px;">Start date</div>
+          <div style="display:flex; align-items:center;">
+            <input type="date" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-weight:500; margin-bottom:6px;">End date</div>
+          <div style="display:flex; align-items:center;">
+            <input type="date" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; gap:24px; margin-bottom:10px;">
+        <input type="text" style="flex:1; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc;" placeholder="">
+        <input type="text" style="flex:1; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc;" placeholder="">
+      </div>
+      <div style="margin-bottom:18px;">
+        <label style="display:flex; align-items:center; font-size:1rem; color:#7d4ff7; font-weight:500;">
+          <input type="checkbox" checked style="margin-right:8px;">
+          Allow late submission for the following week
+        </label>
+      </div>
+      <hr style="margin:28px 0 18px 0; border:0; border-top:1.5px solid #eee;">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+        <span style="display:inline-block; width:14px; height:14px; background:#e0e0e0; border-radius:50%; margin-right:8px;"></span>
+        <span style="font-size:1.25rem; font-weight:700;">Options</span>
+      </div>
+      <div style="margin-bottom:8px; font-weight:500;">Number of attempts</div>
+      <input type="number" min="0" value="0" style="width:120px; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:4px;">
+      <div style="font-size:0.95rem; color:#a58cf5; margin-bottom:18px;">Based on best attempt</div>
+      <div style="display:flex; justify-content:flex-end;">
+        <button id="doneDueDateModal" style="background:#4be04b; color:#fff; border:none; border-radius:8px; padding:10px 32px; font-size:1.1rem; font-weight:600; cursor:pointer;">Done</button>
       </div>
     </div>
   </div>
 
   <script>
     // Modal open/close logic
-    document.querySelector('.navbar-right button').addEventListener('click', function() {
+    document.getElementById('openAddContentModal').addEventListener('click', function() {
       document.getElementById('addContentModal').classList.add('active');
     });
     document.getElementById('closeAddContentModal').addEventListener('click', function() {
@@ -467,6 +525,16 @@ li {
     // Optional: close modal when clicking outside modal content
     document.getElementById('addContentModal').addEventListener('click', function(e) {
       if (e.target === this) this.classList.remove('active');
+    });
+    document.getElementById('openDueDateModal').addEventListener('click', function() {
+      document.getElementById('addContentModal').classList.remove('active');
+      document.getElementById('dueDateModal').style.display = 'flex';
+    });
+    document.getElementById('closeDueDateModal').addEventListener('click', function() {
+      document.getElementById('dueDateModal').style.display = 'none';
+    });
+    document.getElementById('doneDueDateModal').addEventListener('click', function() {
+      document.getElementById('dueDateModal').style.display = 'none';
     });
   </script>
 </body>
