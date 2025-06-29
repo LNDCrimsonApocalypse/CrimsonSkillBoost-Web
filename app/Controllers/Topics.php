@@ -2,92 +2,19 @@
 
 namespace App\Controllers;
 
-class Course extends BaseController
+class Topics extends BaseController
 {
-    public function index()
+    public function index($id = null)
     {
-        // Dummy data instead of SQL
-        $data['courses'] = [
-            ['id' => 1, 'course_name' => 'Sample Course 1'],
-            ['id' => 2, 'course_name' => 'Sample Course 2']
-        ];
-
-        return view('courses/index', $data);
-    }
-
-    public function edit($id)
-    {
-        // Dummy data
-        $data['course'] = ['id' => $id, 'course_name' => 'Sample Course ' . $id];
-
-        return view('courses/edit', $data);
-    }
-
-    public function update($id)
-    {
-        // Simulate update success
-        if ($this->request->isAJAX()) {
-            return $this->response->setJSON([
-                'success' => true,
-                'message' => 'Course updated'
-            ]);
+        if (!$id) {
+            // Optionally redirect or show error
+            return redirect()->to('/allcourses')->with('error', 'No course ID provided');
         }
 
-        return redirect()->to('/course');
-    }
-
-    public function delete($id)
-    {
-        // Simulate delete success
-        if ($this->request->isAJAX()) {
-            return $this->response->setJSON([
-                'success' => true,
-                'message' => 'Course deleted'
-            ]);
-        }
-
-        return redirect()->to('/course');
-    }
-
-    public function view($id = null)
-    {
-        // Dummy courses and lessons
-        $courses = [
-            ['id' => 1, 'course_name' => 'Sample Course 1'],
-            ['id' => 2, 'course_name' => 'Sample Course 2']
-        ];
-        $lessons = [];
-        if ($id) {
-            $lessons = [
-                ['id' => 1, 'title' => 'Lesson 1', 'course_id' => $id],
-                ['id' => 2, 'title' => 'Lesson 2', 'course_id' => $id]
-            ];
-        }
-
-        return view('course_view', [
-            'courses' => $courses,
-            'lessons' => $lessons
-        ]);
-    }
-
-    public function info($id)
-    {
         $projectId = 'csboostcmo';
         $collection = 'courses';
         $url = "https://firestore.googleapis.com/v1/projects/$projectId/databases/(default)/documents/$collection/$id";
-
         $json = @file_get_contents($url);
-
-        // DEBUG: Output the raw JSON and URL for troubleshooting
-        if (isset($_GET['debug'])) {
-            header('Content-Type: application/json');
-            echo json_encode([
-                'url' => $url,
-                'json' => $json,
-                'error' => error_get_last()
-            ]);
-            exit;
-        }
 
         if ($json === false) {
             $course = [
@@ -104,7 +31,6 @@ class Course extends BaseController
             $doc = json_decode($json, true);
             $fields = $doc['fields'] ?? [];
 
-            // Requirements: handle array or string
             $requirements = [];
             if (isset($fields['requirements']['arrayValue']['values'])) {
                 foreach ($fields['requirements']['arrayValue']['values'] as $v) {
@@ -117,7 +43,6 @@ class Course extends BaseController
                 $requirements = array_filter($requirements, fn($v) => $v !== '');
             }
 
-            // Topics: handle array or string, or fallback to empty
             $topics = [];
             if (isset($fields['topics']['arrayValue']['values'])) {
                 foreach ($fields['topics']['arrayValue']['values'] as $v) {
@@ -130,7 +55,6 @@ class Course extends BaseController
                 $topics = array_filter($topics, fn($v) => $v !== '');
             }
 
-            // Fallback: If overview is empty, try to use description as overview
             $overview = $fields['overview']['stringValue'] ?? '';
             if (!$overview && !empty($fields['description']['stringValue'])) {
                 $overview = $fields['description']['stringValue'];
@@ -148,6 +72,27 @@ class Course extends BaseController
             ];
         }
 
-        return view('course_descrip', ['course' => $course]);
+        return view('topics', ['course' => $course]);
+    }
+
+    public function default()
+    {
+        // Fetch the first course from Firestore (or any logic you want)
+        $projectId = 'csboostcmo';
+        $collection = 'courses';
+        $url = "https://firestore.googleapis.com/v1/projects/$projectId/databases/(default)/documents/$collection";
+        $json = @file_get_contents($url);
+
+        if ($json !== false) {
+            $data = json_decode($json, true);
+            if (!empty($data['documents'][0]['name'])) {
+                // Extract the course ID from the Firestore document name
+                $parts = explode('/', $data['documents'][0]['name']);
+                $courseId = end($parts);
+                return redirect()->to('topics/' . $courseId);
+            }
+        }
+        // If no course found, fallback to allcourses
+        return redirect()->to('/allcourses');
     }
 }

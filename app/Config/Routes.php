@@ -8,9 +8,14 @@ use CodeIgniter\Router\RouteCollection;
 
 // Optional: Default route (redirect to login)
 $routes->get('/', 'Auth::initial');
-$routes->set404Override(function($message) {
-    return view('errors/html/custom_404', ['message' => $message]);
-});
+// REMOVE or comment out this line to fix the error:
+// $routes->set404Override(function() {
+//     return redirect()->to('initial');
+// });
+// Instead, use the default 404 handler or a custom view if needed:
+// $routes->set404Override(); // Use default
+// Or, if you want a custom 404 page:
+// $routes->set404Override('App\Controllers\YourCustom404::show404');
 
 // Manual route definitions
 $routes->get('/login', 'Auth::login');
@@ -44,7 +49,9 @@ $routes->get('/course/edit/(:num)', 'Course::edit/$1');
 $routes->post('/course/update/(:num)', 'Course::update/$1');
 $routes->post('/course/delete/(:num)', 'Course::delete/$1');
 $routes->get('terms', 'Auth::terms');
-$routes->get('topics', to: 'Auth::topics');
+// $routes->get('topics', to: 'Auth::topics'); // Remove or comment out this line
+$routes->get('topics', 'Topics::default');
+$routes->get('topics/(:segment)', 'Topics::index/$1');
 $routes->get(from: 'aboutus', to: 'Auth::aboutus');
 $routes->get(from: 'loggedin', to: 'Auth::loggedin');
 $routes->get(from: 'password_reset', to: 'Auth::forgetPassword');
@@ -71,7 +78,7 @@ $routes->get('quiz/result/(:num)', 'Quiz::result/$1'); // Keep specific ID route
 $routes->get('quiz/duedate/(:num)', 'Quiz::showDueDateForm/$1');
 $routes->post('quiz/save_settings/(:num)', 'Quiz::saveSettings/$1');
 $routes->get('quiz/edit/(:num)', 'Quiz::edit/$1');
-$routes->post('quiz/update/(:num)', 'QuizController::update/$1');
+$routes->post('quiz/update/(:num)', 'Quiz::update/$1');
 $routes->post('quiz/delete/(:num)', 'Quiz::delete/$1');
 $routes->get('quiz_edit/(:num)', 'QuizEdit::index/$1');
 $routes->get('quiz', 'Quiz::index');
@@ -119,7 +126,7 @@ $routes->get('enrollment/apiPending', 'Enrollment::apiPending');
 
 $routes->get('notif', 'Notif::index');
 $routes->get('recentsub', 'Recentsub::index');
-$routes->match(['get', 'post'], 'enrollment/enroll-in-course', 'Enrollment::enrollInCourse');
+$routes->match(['GET', 'POST'], 'enrollment/enroll-in-course', 'Enrollment::enrollInCourse');
 $routes->get('lesson1', 'Lesson1::index');
 $routes->get('create_task', 'CreateTask::index');
 $routes->get('duedate_task', 'DuedateTask::index');
@@ -142,4 +149,5 @@ $routes->get('editprofile', 'Auth::editprofile');
 $routes->post('upload_profile_pic', 'Auth::upload_profile_pic');
 $routes->get('course/info/(:segment)', 'Course::info/$1');
 $routes->get('grading/studentprog', 'Grading::studentprog');
+$routes->get('course/info/(:segment)', 'Course::info/$1');
 $routes->get('grading/studentprog', 'Grading::studentprog');
