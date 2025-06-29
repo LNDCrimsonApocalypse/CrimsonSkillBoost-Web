@@ -190,6 +190,9 @@
       margin-bottom: 20px;
       cursor: pointer;
       transition: background 0.18s;
+      display: block;
+      text-align: center;
+      text-decoration: none;
     }
     .start-btn:hover {
       background: #a06cd5;
@@ -288,7 +291,7 @@
       <div class="profile-card">
         <img src="<?= base_url('public/img/profile.png') ?>" alt="Professor Nicholas Aguinaldo" class="profile-pic">
         <div class="prof-name"><?= isset($course['instructor']) ? esc($course['instructor']) : 'Professor Nicholas Aguinaldo' ?></div>
-        <button class="start-btn">GET YOUR STUDENT STARTED</button>
+        <a href="<?= base_url('topics/' . (isset($course['id']) ? $course['id'] : '')) ?>" class="start-btn" style="display:block;text-align:center;text-decoration:none;">GET YOUR STUDENT STARTED</a>
         <ul class="includes-list">
           <li><span class="step">&#128214;</span> Step-by-step lessons</li>
           <li><span class="hands">&#128187;</span> Hands-on coding exercises</li>

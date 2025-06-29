@@ -50,6 +50,14 @@
     <div class="questions-container">
         <h2>Create Quiz Questions</h2>
         
+        <!-- Course Dropdown -->
+        <div style="margin-bottom:18px;">
+            <label for="courseDropdown"><b>Course:</b></label>
+            <select id="courseDropdown" name="course_id" required>
+                <option value="">Loading...</option>
+            </select>
+        </div>
+        
         <form action="<?= base_url('quiz/save_questions') ?>" method="post" id="quizForm">
             <?= csrf_field() ?>
             
@@ -62,6 +70,11 @@
         </form>
     </div>
 
+    <!-- Firebase SDKs (if not already included) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
     <script>
         let questionCount = 0;
         
@@ -96,6 +109,34 @@
             `;
             document.getElementById('questions').insertAdjacentHTML('beforeend', questionHtml);
         }
+
+        // Load only user's courses into dropdown
+        document.addEventListener("DOMContentLoaded", function() {
+            firebase.auth().onAuthStateChanged(function(user) {
+                const dropdown = document.getElementById('courseDropdown');
+                if (!user) {
+                    dropdown.innerHTML = '<option value="">Please log in</option>';
+                    dropdown.disabled = true;
+                    return;
+                }
+                firebase.firestore().collection("courses")
+                    .where("user_id", "==", user.uid)
+                    .get()
+                    .then(snapshot => {
+                        let options = '';
+                        snapshot.forEach(doc => {
+                            const data = doc.data();
+                            options += `<option value="${doc.id}">${data.course_name || doc.id}</option>`;
+                        });
+                        dropdown.innerHTML = options || '<option value="">No courses found</option>';
+                        dropdown.disabled = false;
+                    })
+                    .catch(() => {
+                        dropdown.innerHTML = '<option value="">Failed to load</option>';
+                        dropdown.disabled = true;
+                    });
+            });
+        });
 
         // Add first question automatically
         window.onload = addQuestion;

@@ -50,9 +50,23 @@
     <div class="edit-container">
         <h2>Edit Quiz: <?= esc($quiz['title']) ?></h2>
         
+        <!-- Course Dropdown -->
+        <div class="form-group">
+            <label for="courseDropdown"><b>Course:</b></label>
+            <select id="courseDropdown" name="course_id" required>
+                <option value="">Loading...</option>
+            </select>
+        </div>
+        
         <form method="post" action="<?= base_url('quiz/update/' . $quiz['id']) ?>">
             <?= csrf_field() ?>
-            
+            <input type="hidden" name="id" value="<?= esc($quiz['id']) ?>">
+            <?php if (isset($quiz['course_id'])): ?>
+                <input type="hidden" id="currentCourseId" value="<?= esc($quiz['course_id']) ?>">
+            <?php else: ?>
+                <input type="hidden" id="currentCourseId" value="">
+            <?php endif; ?>
+
             <div class="form-group">
                 <label>Quiz Title:</label>
                 <input type="text" name="title" value="<?= esc($quiz['title']) ?>" required>
@@ -93,5 +107,42 @@
             <button type="submit" class="submit-btn">Update Quiz</button>
         </form>
     </div>
+
+    <!-- Firebase SDKs (if not already included) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+    <script>
+        // Load only user's courses into dropdown and pre-select current
+        document.addEventListener("DOMContentLoaded", function() {
+            firebase.auth().onAuthStateChanged(function(user) {
+                const dropdown = document.getElementById('courseDropdown');
+                const currentCourseId = document.getElementById('currentCourseId').value;
+                if (!user) {
+                    dropdown.innerHTML = '<option value="">Please log in</option>';
+                    dropdown.disabled = true;
+                    return;
+                }
+                firebase.firestore().collection("courses")
+                    .where("user_id", "==", user.uid)
+                    .get()
+                    .then(snapshot => {
+                        let options = '';
+                        snapshot.forEach(doc => {
+                            const data = doc.data();
+                            const selected = (doc.id === currentCourseId) ? 'selected' : '';
+                            options += `<option value="${doc.id}" ${selected}>${data.course_name || doc.id}</option>`;
+                        });
+                        dropdown.innerHTML = options || '<option value="">No courses found</option>';
+                        dropdown.disabled = false;
+                    })
+                    .catch(() => {
+                        dropdown.innerHTML = '<option value="">Failed to load</option>';
+                        dropdown.disabled = true;
+                    });
+            });
+        });
+    </script>
 </body>
 </html>

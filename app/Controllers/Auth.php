@@ -494,7 +494,10 @@ class Auth extends BaseController
 
     public function topics()
     {
-        return view('topics');
+        // Redirect to allcourses or show a message, since /topics needs an ID
+        return redirect()->to('/allcourses');
+        // Or, if you want to show a message:
+        // return view('error', ['message' => 'Please select a course first.']);
     }
 
     public function aboutus()
