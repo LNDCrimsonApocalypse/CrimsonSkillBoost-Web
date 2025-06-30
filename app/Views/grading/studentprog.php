@@ -136,15 +136,70 @@
       justify-content: space-between;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
+    .table-container {
+      margin: 20px 40px;
+      background-color: #EED2EE;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    thead {
+      background-color: #EED2EE;
+      font-weight: bold;
+    }
+
+    th, td {
+      padding: 15px 20px;
+      text-align: left;
+    }
+
+    td {
+      background-color: white;
+      vertical-align: middle;
+    }
+
     .student-info {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 15px;
     }
+
     .student-info img {
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
-      width: 50px;
     }
+
+    .student-name {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .student-name small {
+      font-size: 12px;
+      color: gray;
+    }
+
+    .task-name {
+      font-weight: bold;
+    }
+
+    .action-img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: 4px solid white;
+      box-shadow: 0 0 0 2px #2196f3;
+      object-fit: cover;
+      margin-left: 10px;
+    }
+   
     .status {
       color: green;
       font-size: 0.9rem;

@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Student Task Review</title>
-  <!-- Add Poppins font from Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Grading Interface</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
     }
-
     body {
-      font-family: 'Poppins', 'Segoe UI', sans-serif;
-      background-color: #fbeef6;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #ffebf3;
       color: #333;
     }
-
-   /* Navbar */
-     .navbar {
+    /* Navbar */
+   .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -95,36 +91,38 @@
       /* Align vertically with profile */
       vertical-align: middle;
     }
-    .search-box {
-      display: flex;
-      align-items: center;
-      border: 1px solid #ccc;
+   
+    .search-input {
+      padding: 6px 12px;
       border-radius: 6px;
-      padding: 5px 10px;
-    }
-
-    .search-box input {
-      border: none;
+      border: 1px solid #ccc;
       outline: none;
-      padding: 5px;
-      font-family: 'Poppins', 'Segoe UI', sans-serif;
     }
-
-    /* FILTERS */
+    /* Tabs */
+    .tabs {
+      display: flex;
+      background: #ffeaf6;
+      padding: 12px 40px;
+      gap: 30px;
+      border-bottom: 2px solid #e0cbd6;
+    }
+    .tabs span {
+      font-weight: 600;
+      cursor: pointer;
+    }
+    /* Filters */
     .filters {
       display: flex;
-      gap: 20px;
       padding: 20px 40px;
-      background-color: white;
+      gap: 20px;
     }
-
     .filters select {
-      padding: 10px 15px;
+      padding: 6px 14px;
+      border-radius: 5px;
       border: 1px solid #ccc;
-      border-radius: 6px;
     }
-
-    /* TABLE */
+    /* Student Table */
+   /* TABLE */
     .table-container {
       margin: 20px 40px;
       background-color: #EED2EE;
@@ -188,144 +186,157 @@
       object-fit: cover;
       margin-left: 10px;
     }
-
-    /* PREVIEW / COMMENT SECTION */
-    .bottom-section {
+    /* Questions */
+    .question-section {
       display: flex;
-      padding: 20px 40px;
-      gap: 20px;
+      padding: 30px 40px;
+      gap: 40px;
     }
-
-    .preview-box, .comment-box {
-      background-color: white;
-      border: 2px dashed #ccc;
-      border-radius: 6px;
-      padding: 15px;
+    .questions, .comments {
       flex: 1;
-      min-height: 300px;
     }
-
-    .comment-box {
-      max-width: 400px;
-    }
-
-    .section-title {
-      font-weight: bold;
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-
-   
-    
-     .dropbtn {
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: black;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-}
-
-/* Dropdown container */
-.dropdown {
-  position: relative;
-}
-
-/* Dropdown menu */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: white;
-  min-width: 160px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-
-  z-index: 1;
-}
-
-/* Dropdown items */
-.dropdown-content a {
-  padding: 12px 16px;
-  display: block;
-  color: black;
-  text-decoration: none;
-}
-
-.dropdown-content a:hover {
-  background-color: #eee;
-}
-
-/* Show dropdown on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-.arrow {
-    font-size: 1.2rem;
-    margin-left: 4px;
-    vertical-align: middle;
-    /* Ensures the arrow is centered with the text */
-}
- .dropdown .arrow {
-            font-size: 1rem;
-            margin-left: 4px;
-        }
-        li{
-          font-weight: bold;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-
-        }
-        .action-buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.edit-btn, .add-btn {
-  width: 38px;
-  height: 38px;
-  border: none;
-  border-radius: 8px;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  cursor: pointer;
-  transition: box-shadow 0.18s, transform 0.18s;
-  padding: 0;
-}
-
-.edit-btn:hover, .add-btn:hover {
-  box-shadow: 0 2px 8px rgba(230,54,164,0.18);
-  transform: translateY(-2px) scale(1.05);
-}
-
-.add-btn svg rect {
-  /* Ensure the gradient background for the add button */
-  stroke: #fff;
-  stroke-width: 0;
-}
- .submenu {
+    .question-list {
       display: flex;
-      justify-content: center;
-      background: white;
-      border-bottom: 1px solid #ccc;
+      flex-direction: column;
+      gap: 28px;
     }
-    .submenu a {
-      padding: 15px 20px;
-      text-decoration: none;
-      color: black;
-      font-weight: 500;
+    .question-grid {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      background: #fff;
+      border-radius: 8px;
+      padding: 18px 18px 18px 0;
+      align-items: flex-start;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     }
-    .submenu a.active {
-      color: black;
-      border-bottom: 2px solid black;
+    .question-radio {
+      margin-top: 8px;
+      margin-left: 18px;
     }
-/* Modal Styles */
+    .question-content {
+      width: 100%;
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      background: none;
+    }
+    .question-title {
+      grid-column: 1 / span 2;
+      background: #e9eef6;
+      border-radius: 6px;
+      padding: 12px 0;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.15rem;
+      color: #555;
+    }
+    .student-answer {
+      background: #e9eef6;
+      border-radius: 6px;
+      padding: 14px 0;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #666;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.10);
+      grid-row: 2;
+      grid-column: 1 / span 1;
+    }
+    .empty-cell {
+      background: #e9eef6;
+      border-radius: 6px;
+      padding: 14px 0;
+      grid-row: 2;
+      grid-column: 2 / span 1;
+    }
+    .empty-cell2 {
+      background: #e9eef6;
+      border-radius: 6px;
+      padding: 14px 0;
+      grid-row: 3;
+      grid-column: 1 / span 2;
+    }
+     /* FILTERS */
+    .filters {
+      display: flex;
+      gap: 20px;
+      padding: 20px 40px;
+      background-color: white;
+    }
+
+    .filters select {
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    /* Buttons */
+    .save-btn {
+      background: linear-gradient(90deg, #f23eb3 0%, #cfaaff 100%);
+      border: none;
+      padding: 12px 32px 12px 44px;
+      color: #fff;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 8px rgba(242,62,179,0.09);
+      position: relative;
+      float: none;
+      margin-top: 0;
+      align-self: flex-end;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.18s;
+    }
+    .save-btn::before {
+      content: '';
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      background: url('data:image/svg+xml;utf8,<svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7zm0 2l3.004 3H17zm-5 12a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm-6-2V5h2v4h8V5h2v10z"/></svg>') no-repeat center center;
+      background-size: 22px 22px;
+      margin-right: 6px;
+    }
+    .save-btn:hover {
+      background: linear-gradient(90deg, #e85cb7 0%, #b983ff 100%);
+    }
+    .comments {
+      background: #fff3fa;
+      border-radius: 12px;
+      padding: 28px 24px 36px 24px;
+      margin-left: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .comments label {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 12px;
+      margin-left: 4px;
+    }
+    .textarea {
+      width: 100%;
+      min-width: 340px;
+      max-width: 100%;
+      min-height: 180px;
+      max-height: 320px;
+      background: #fff;
+      border-radius: 8px;
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      margin-bottom: 24px;
+      font-size: 1.1rem;
+      padding: 14px 16px;
+      resize: vertical;
+      color: #222;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+    /* Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -426,12 +437,10 @@
   .modal-row { flex-direction: column; gap: 12px; }
   .modal-header, .modal-body, .modal-actions { padding-left: 12px; padding-right: 12px; }
 }
-
   </style>
 </head>
 <body>
-
-<!-- NAVBAR -->
+  <!-- Navbar -->
  <div class="navbar">
     <div class="navbar-logo">
       <a href="<?= base_url('homepage_initial') ?>">
@@ -451,34 +460,32 @@
     </div>
   </div>
 
-<div class="submenu">
-    <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
+  <!-- Tabs -->
+  <div class="tabs">
+   <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
     <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
     <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
    <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
     <a href="<?= base_url('gradesettings') ?>">Grade Settings</a>
+    <input class="search-input" type="text" placeholder="Search..">
   </div>
 
-<!-- FILTERS -->
-<div class="filters">
-  <select>
-    <option>Course</option>
-  </select>
-  <select>
-    <option>Section</option>
-  </select>
-  <select>
-    <option>Category</option>
-  </select>
-</div>
+  <!-- Filters -->
+  <div class="filters">
+    <select>
+      <option>All Courses</option>
+    </select>
+    <select>
+      <option>Section</option>
+    </select>
+  </div>
 
-<!-- TABLE -->
-<div class="table-container">
+  <div class="table-container">
   <table>
     <thead>
       <tr>
         <th>Student Name</th>
-        <th>Task Name <span style="font-size: 16px;">⏷</span></th>
+        <th>Quiz Name <span style="font-size: 16px;">⏷</span></th>
         <th>Grade</th>
         <th>Date</th>
         <th>Grade Point</th>
@@ -492,12 +499,12 @@
             <img src="imgs/img3.png" alt="avatar">
             <div class="student-name">
               Marites Dela Cruz
-              <small>Juandelacruz@umak.edu.ph</small>
+              <small>Maritesdelacruz@umak.edu.ph</small>
             </div>
           </div>
         </td>
         <td>
-          <div class="task-name">Task 1: Intro to Programming 
+          <div class="quiz-name">Quiz 1: Intro to Programming 
             <img src="https://i.imgur.com/VLJgIQD.png" class="action-img" alt="view">
           </div>
         </td>
@@ -600,20 +607,35 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
-
-<!-- PREVIEW AND COMMENT -->
-<div class="bottom-section">
-  <div class="preview-box">
-    <div class="section-title">Preview</div>
+  <!-- Question & Comment Section -->
+  <div class="question-section">
+    <div class="questions">
+      <div class="question-list">
+        <div class="question-grid">
+          <input type="radio" class="question-radio" />
+          <div class="question-content">
+            <div class="question-title">Question Here</div>
+            <div class="student-answer">Student Answer</div>
+            <div class="empty-cell"></div>
+            <div class="empty-cell2"></div>
+          </div>
+        </div>
+        <div class="question-grid">
+          <input type="radio" class="question-radio" />
+          <div class="question-content">
+            <div class="question-title">Question Here</div>
+            <div class="empty-cell"></div>
+            <div class="student-answer">Student Answer</div>
+            <div class="empty-cell2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comments">
+      <label for="comment">Comment/ Suggestion:</label>
+      <textarea id="comment" class="textarea"></textarea>
+      <button class="save-btn">Save Grade</button>
+    </div>
   </div>
-  <div class="comment-box">
-    <div class="section-title">Comment/ Suggestion:</div>
-    <form id="commentForm">
-      <textarea name="comment" rows="6" style="width:100%;resize:vertical;border-radius:6px;border:1px solid #ccc;padding:10px;font-family:'Poppins','Segoe UI',sans-serif;" placeholder="Write your comment or suggestion here..."></textarea>
-      <button type="submit" style="margin-top:10px;background:#e636a4;color:#fff;border:none;border-radius:6px;padding:8px 18px;font-weight:600;cursor:pointer;">Submit</button>
-    </form>
-  </div>
-</div>
-
 </body>
 </html>

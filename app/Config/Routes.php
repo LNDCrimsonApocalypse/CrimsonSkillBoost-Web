@@ -116,6 +116,7 @@ $routes->group('grading', ['namespace' => 'App\Controllers'], function($routes) 
 
 $routes->get('grading', 'Grading::index');
 $routes->get('grading/previewgrade', 'Grading::previewgrade');
+$routes->get('grading/preview_quiz', 'GradingController::previewQuiz');
 
 $routes->get('enrollment', 'Enrollment::index');
 $routes->post('enrollment/submit', 'Enrollment::submitRequest');
