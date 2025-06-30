@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -314,31 +313,110 @@ li {
   </div>
 
   <!-- Page Title -->
-  <div class="title-bar">
-    Computer Programming 1 – Core Topics
+  <div class="title-bar" id="courseTitleBar">
+    <!-- Will be set by JS -->
   </div>
 
   <!-- Main Content -->
   <div class="content">
     <div class="left">
-      <div class="section-title">📘 Introduction to Programming</div>
-      <ul>
-        <li>Definition of computer programming</li>
-        <li>Importance and real-world applications</li>
-        <li>Types of programming languages (compiled vs. interpreted)</li>
-        <li>Overview of common programming paradigms (procedural, OOP, functional)</li>
-        <li>Brief history of programming languages</li>
-        <li>Flow of program execution</li>
+      <div class="section-title" id="topicTitle">
+        <!-- Will be set by JS -->
+      </div>
+      <ul id="subtopicsList">
+        <!-- Subtopics will be rendered by JS if detected -->
       </ul>
     </div>
-    <div class="right">
-      <p>
-        Programming is the foundation of modern computing. It is the process of designing, writing, testing, and maintaining a set of instructions—called a program—that a computer can follow to perform specific tasks or solve problems. Through programming, we can create applications, automate tasks, analyze data, build websites, control hardware, and more.
-      </p>
-      <p>
-        This topic introduces the key concepts every beginner needs to understand before diving into writing actual code. It covers what programming is, why it's important, the types of programming languages available, different ways to structure code (known as paradigms), a brief look at the history of programming languages, and how programs are executed by computers.
-      </p>
+    <div class="right" id="topicDescription">
+      <!-- Will be set by JS -->
     </div>
   </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+  <script>
+    // Get topicId from URL (last segment)
+    function getTopicIdFromUrl() {
+      const parts = window.location.pathname.split('/');
+      return parts[parts.length - 1];
+    }
+
+    // Parse description into subtopics if format matches
+    function parseSubtopics(description) {
+      if (!description) return null;
+      // Split by double newlines or \n\n, or by a blank line
+      const blocks = description.split(/\r?\n\r?\n/);
+      let subtopics = [];
+      for (let i = 0; i < blocks.length; i++) {
+        // Each block may contain a title and info
+        const lines = blocks[i].split(/\r?\n/).filter(Boolean);
+        if (lines.length >= 2) {
+          // First line is title, rest is info
+          subtopics.push({
+            title: lines[0],
+            info: lines.slice(1).join(' ')
+          });
+        }
+      }
+      // Only return if at least one subtopic found
+      return subtopics.length > 0 ? subtopics : null;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const topicId = getTopicIdFromUrl();
+      const db = firebase.firestore();
+
+      db.collection('courses').get().then(courseSnap => {
+        let found = false;
+        courseSnap.forEach(courseDoc => {
+          if (found) return;
+          db.collection('courses').doc(courseDoc.id).collection('topics').doc(topicId).get().then(topicDoc => {
+            if (topicDoc.exists && !found) {
+              found = true;
+              const topic = topicDoc.data();
+              document.getElementById('topicTitle').textContent = topic.title || topicId;
+              const courseName = courseDoc.data().course_name || 'Course';
+              document.getElementById('courseTitleBar').textContent = courseName + " – Core Topics";
+
+              // --- Subtopic parsing logic ---
+              const desc = topic.description || '';
+              const subtopics = parseSubtopics(desc);
+
+              if (subtopics) {
+                // Render subtopics in the left panel
+                const ul = document.getElementById('subtopicsList');
+                ul.innerHTML = '';
+                subtopics.forEach((st, idx) => {
+                  const li = document.createElement('li');
+                  li.innerHTML = `<b>${st.title}</b>`;
+                  li.style.cursor = "pointer";
+                  li.onclick = function() {
+                    // Show only this subtopic's info in the right panel
+                    document.getElementById('topicDescription').innerHTML =
+                      `<div style="margin-bottom:24px;"><b>${st.title}</b><br>${st.info}</div>`;
+                    // Highlight selected
+                    Array.from(ul.children).forEach(child => child.style.background = "#eef3fb");
+                    li.style.background = "#fff";
+                  };
+                  // First subtopic is selected by default
+                  if (idx === 0) {
+                    setTimeout(() => li.onclick(), 0);
+                  }
+                  ul.appendChild(li);
+                });
+              } else {
+                // No subtopics, show the whole description in the right panel
+                document.getElementById('subtopicsList').innerHTML = '';
+                document.getElementById('topicDescription').textContent = desc;
+              }
+            }
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>

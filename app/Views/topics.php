@@ -147,7 +147,6 @@ if (!isset($course) || !is_array($course)) {
             object-fit: cover;
         }
         .navbar-right img {
-<<<<<<< HEAD
       width: 36px;
       height: 36px;
       border-radius: 50%;
@@ -588,164 +587,6 @@ outline-style: solid;
       to { opacity: 1; transform: none;}
     }
   </style>
-=======
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            cursor: pointer;
-        }
-        .tabbar {
-            display: flex;
-            gap: 36px;
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-left: 40px;
-        }
-        .tabbar-row{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding:  40px;
-            margin-top: 18px;
-            border-bottom: 2px solid #fde8f0;
-            background: #fff;
-        }
-        .tabbar span {
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .tabbar .active {
-            color: black;
-            font-weight: bold;
-            border-bottom: 3px solid black;
-            padding-bottom: 5px;
-        }
-        .search-box {
-            padding: 7px 14px;
-            border-radius: 6px;
-            border: 1.5px solid #ccc;
-            font-size: 1rem;
-            outline: none;
-            margin-right: 0;
-            width: 170px;
-            box-sizing: border-box;
-        }
-        .section-title {
-            background-color: #e8c6eb;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px 0;
-            margin-bottom: 30px;
-        }
-        .cards {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 20px;
-            padding: 0 20px 40px;
-        }
-        .card {
-            background-color: white;
-            width: 600px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            overflow: hidden;
-            border-top: 6px solid transparent;
-            border-image: linear-gradient(to right, #f8228a, #ad9bdc);
-            border-image-slice: 1;
-        }
-        .card-content {
-            padding: 20px;
-        }
-        .card-title {
-            font-size: 18px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .card-title i {
-            font-style: normal;
-            font-weight: normal;
-            font-size: 14px;
-            margin-left: 10px;
-            cursor: pointer;
-        }
-        .card-desc {
-            color: #555;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        .card-footer {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 0 20px 15px;
-        }
-        .view-btn {
-            background-color: #f23eb3;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-        .dots {
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .plus-btn {
-            position: fixed;
-            bottom: 38px;
-            right: 38px;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: #f23eb3;
-            color: #fff;
-            font-size: 2.2rem;
-            border: none;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.13);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            transition: background 0.18s;
-        }
-        .plus-btn:hover {
-            background: #d12c5c;
-        }
-        @media (max-width: 900px) {
-            .tabbar, .tabbar-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-                padding: 10px 8px;
-            }
-            .tabbar {
-                margin-top: 10px;
-            }
-            .container {
-                flex-direction: column;
-                padding: 0 10px;
-            }
-            .main-content {
-                order: 2;
-            }
-            .sidebar {
-                order: 1;
-                width: 100%;
-            }
-        }
-    </style>
->>>>>>> 313ca0ee38aa805cd0974e7b4246c82f81924e59
 </head>
 <body>
 <!-- Navbar -->
@@ -761,7 +602,7 @@ outline-style: solid;
     </div>
     <div class="navbar-right">
         <input class="search-box" type="text" placeholder="Search.." />
-        <a href="<?= base_url('upload') ?>"><button>+ Add Content</button></a>
+        <a href="<?= base_url('upload') . '?course_id=' . urlencode($course['id']) ?>"><button>+ Add Content</button></a>
         <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
     </div>
 </div>
@@ -770,49 +611,21 @@ outline-style: solid;
     <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
     <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
     <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
-<<<<<<< HEAD
    <a href="<?= base_url('studentprog') ?>"> <span>Student</span></a>
   </div>
   <!-- Section Title -->
-  <div class="section-title">
-    Computer Programming 1 – Core Topics
+  <div class="section-title" id="sectionTitle">
+    <?= esc($course['title']) ?> – Core Topics
   </div>
   <!-- Cards -->
-  <div class="cards">
-    <div class="card">
-      <div class="card-content">
-        <div class="card-title">
-          Introduction to Programming <i>✎</i>
-        </div>
-        <div class="card-desc">
-          Learn what programming is, why it matters, and how it powers the digital world.
-        </div>
-      </div>
-      <div class="card-footer">
-        <button class="view-btn">View Info</button>
-        <span class="dots">⋮</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-content">
-        <div class="card-title">
-          Programming Environment Setup <i>✎</i>
-        </div>
-        <div class="card-desc">
-          Set up your tools and write your first lines of code using a beginner-friendly editor.
-        </div>
-      </div>
-      <div class="card-footer">
-        <button class="view-btn">View Info</button>
-        <span class="dots">⋮</span>
-      </div>
-    </div>
-  </div>
-  <!-- Plus Button -->
-  <button class="plus-btn" title="Add Topic" id="openModalBtn">+</button>
+  <div class="cards" id="topicsCards">
+    <!-- Cards will be rendered by JS -->
+</div>
+<!-- Plus Button -->
+<button class="plus-btn" title="Add Topic" id="openModalBtn">+</button>
 
-  <!-- Modal: Add/Upload Options -->
-  <div id="topicModal" class="modal">
+<!-- Modal: Add/Upload Options -->
+<div id="topicModal" class="modal">
     <div class="modal-content">
       <div class="modal-box">
         <button class="modal-option new-topic" id="showNewTopicModal">New Topic</button>
@@ -856,28 +669,30 @@ outline-style: solid;
       </form>
     </div>
   </div>
-  <script>
+  <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+<script>
+    // Modal logic
     const modal = document.getElementById('topicModal');
     const openBtn = document.getElementById('openModalBtn');
     openBtn.onclick = () => { modal.classList.add('show'); };
     const newTopicModal = document.getElementById('newTopicModal');
     const showNewTopicBtn = document.getElementById('showNewTopicModal');
-
     showNewTopicBtn.onclick = function(e) {
       e.preventDefault();
       modal.classList.remove('show');
       newTopicModal.classList.add('show');
     };
-
     const uploadTopicModal = document.getElementById('uploadTopicModal');
     const showUploadTopicBtn = document.querySelector('.modal-option.upload-topic');
-
     showUploadTopicBtn.onclick = function(e) {
       e.preventDefault();
       modal.classList.remove('show');
       uploadTopicModal.classList.add('show');
     };
-
     // Hide modals on outside click
     window.onclick = function(event) {
       if (event.target === modal) modal.classList.remove('show');
@@ -892,11 +707,104 @@ outline-style: solid;
         uploadTopicModal.classList.remove('show');
       }
     });
-    // Prevent form submit (demo only)
+
+    // --- DYNAMIC COURSE NAME AND TOPICS FROM FIREBASE (topics as subcollection) ---
+    function truncateText(text, maxLength = 80) {
+        if (!text) return '';
+        return text.length > maxLength ? text.substring(0, maxLength) + '…' : text;
+    }
+
+    function loadTopics() {
+        const courseId = "<?= esc($course['id']) ?>";
+        const sectionTitle = document.getElementById('sectionTitle');
+        const topicsCards = document.getElementById('topicsCards');
+
+        // Fetch course name
+        firebase.firestore().collection('courses').doc(courseId).get().then(function(doc) {
+            if (doc.exists && doc.data().course_name) {
+                sectionTitle.textContent = doc.data().course_name + " – Core Topics";
+            }
+        });
+
+        // Fetch topics from subcollection
+        firebase.firestore().collection('courses').doc(courseId).collection('topics').get()
+            .then(function(snapshot) {
+                if (snapshot.empty) {
+                    topicsCards.innerHTML = "<div style='padding:20px;color:#888;'>No topics found for this course.</div>";
+                } else {
+                    topicsCards.innerHTML = '';
+                    snapshot.forEach(function(doc) {
+                        const data = doc.data();
+                        // Compose lesson_view URL with course and topic IDs
+                        const lessonUrl = "<?= base_url('lesson_view') ?>" + "/" + encodeURIComponent(doc.id);
+                        topicsCards.innerHTML += `
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-title">${data.title || doc.id} <i>✎</i></div>
+                                    <div class="card-desc">${truncateText(data.description)}</div>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="${lessonUrl}" class="view-btn">View Info</a>
+                                    <span class="dots">⋮</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            });
+    }
+
+    document.addEventListener("DOMContentLoaded", loadTopics);
+
+    // --- FIREBASE NEW TOPIC LOGIC (add to subcollection) ---
     document.querySelector('.new-topic-form').onsubmit = function(e) {
       e.preventDefault();
-      newTopicModal.classList.remove('show');
+      const topicTitle = document.getElementById('topicTitle').value.trim();
+      const topicDesc = document.getElementById('topicDesc').value.trim();
+      const courseId = "<?= esc($course['id']) ?>";
+      if (!topicTitle) {
+        alert("Topic title is required.");
+        return;
+      }
+      const btn = this.querySelector('.create-topic-btn');
+      btn.disabled = true;
+      btn.textContent = "Saving...";
+
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
+          btn.disabled = false;
+          btn.textContent = "Create Topic";
+          alert("You must be logged in to add a topic.");
+          return;
+        }
+        // Add topic as a document in the topics subcollection
+        firebase.firestore().collection('courses').doc(courseId)
+          .collection('topics').add({
+            title: topicTitle,
+            description: topicDesc,
+            created_by: user.uid,
+            created_at: firebase.firestore.FieldValue.serverTimestamp()
+          })
+          .then(function() {
+            btn.disabled = false;
+            btn.textContent = "Create Topic";
+            document.getElementById('newTopicModal').classList.remove('show');
+            alert("Topic added!");
+            location.reload();
+          })
+          .catch(function(error) {
+            btn.disabled = false;
+            btn.textContent = "Create Topic";
+            if (error.code === "permission-denied") {
+              alert("You do not have permission to add topics. Please contact your administrator.");
+            } else {
+              alert("Failed to add topic: " + error.message);
+            }
+          });
+      });
     };
+
+    // Upload topic form (just closes modal for now)
     document.querySelector('.upload-topic-form').onsubmit = function(e) {
       e.preventDefault();
       uploadTopicModal.classList.remove('show');
@@ -920,39 +828,6 @@ outline-style: solid;
       fileInput.files = e.dataTransfer.files;
       // Optionally show file names here
     });
-  </script>
-=======
-    <span>Student</span>
-</div>
-<!-- Section Title -->
-<div class="section-title">
-    <?= esc($course['title']) ?> – Core Topics
-</div>
-<!-- Cards -->
-<div class="cards">
-    <?php if (!empty($course['topics'])): ?>
-        <?php foreach ($course['topics'] as $topic): ?>
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-title">
-                        <?= esc($topic) ?> <i>✎</i>
-                    </div>
-                    <div class="card-desc">
-                        <!-- Optionally, add a description if available in your data -->
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <button class="view-btn">View Info</button>
-                    <span class="dots">⋮</span>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <div style="padding:20px;color:#888;">No topics found for this course.</div>
-    <?php endif; ?>
-</div>
-<!-- Plus Button -->
-<button class="plus-btn" title="Add Topic">+</button>
->>>>>>> 313ca0ee38aa805cd0974e7b4246c82f81924e59
+</script>
 </body>
 </html>

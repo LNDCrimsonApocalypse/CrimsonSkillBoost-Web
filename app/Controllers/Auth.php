@@ -517,7 +517,8 @@ class Auth extends BaseController
 
     public function upload()
     {
-        return view('upload');
+        $courseId = $this->request->getGet('course_id');
+        return view('upload', ['course_id' => $courseId]);
     }
 
     public function upload_profile_pic()

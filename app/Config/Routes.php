@@ -66,6 +66,9 @@ $routes->get('allcourses', 'Allcourses::index');
 $routes->get('lesson_view/(:num)', 'LessonView::index/$1');
 $routes->get('lesson_view', 'LessonController::index');
 
+// Add this route to support string IDs for lesson_view (not just numeric)
+$routes->get('lesson_view/(:segment)', 'LessonView::index/$1');
+
 // QUIZ FLOW
 $routes->post('quiz/start', 'Quiz::startQuizCreation');
 $routes->get('quiz/upload', 'Quiz::showUploadForm');

@@ -264,11 +264,13 @@
     <div class="buttons">
         <form action="<?= base_url('task/start') ?>" method="post" style="display:inline;">
             <?= csrf_field() ?>
+            <input type="hidden" name="course_id" value="<?= esc($course_id) ?>">
             <button type="submit" class="task">Create a Task</button>
         </form>
 
         <form action="<?= base_url('quiz/start') ?>" method="post" style="display:inline;">
             <?= csrf_field() ?>
+            <input type="hidden" name="course_id" value="<?= esc($course_id) ?>">
             <button type="submit" class="quiz">Create a Quiz</button>
         </form>
     </div>
