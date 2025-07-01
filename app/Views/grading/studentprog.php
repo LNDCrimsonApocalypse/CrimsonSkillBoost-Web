@@ -79,22 +79,46 @@
       vertical-align: middle;
       font-weight: bold;
     }
-    .submenu {
-      display: flex;
-      justify-content: center;
-      background: white;
-      border-bottom: 1px solid #ccc;
-    }
-    .submenu a {
-      padding: 15px 20px;
-      text-decoration: none;
-      color: black;
-      font-weight: 500;
-    }
-    .submenu a.active {
-      color: black;
-      border-bottom: 2px solid black;
-    }
+      .tabbar {
+  display: flex;
+  flex-direction: row;
+  gap: 36px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  background: #fff;
+  border-bottom: 1.5px solid #f8e6f6;
+  min-height: 38px;
+  align-items: center;
+  padding: 0 0 0 24px;
+  margin: 0;
+  position: static;
+  width: 100%;
+}
+.tabbar a {
+  text-decoration: none;
+  color: #3a2352;
+  font-weight: 600;
+  font-size: 1.15rem;
+  padding: 0 8px;
+  transition: color 0.18s;
+  border-bottom: 3px solid transparent;
+  background: none;
+}
+.tabbar a:hover,
+.tabbar a.active {
+  color: #e636a4;
+  border-bottom: 3px solid #e636a4;
+}
+.tabbar span {
+  font-weight: 500;
+  cursor: pointer;
+}
+.tabbar .active {
+  color: #e636a4;
+  font-weight: bold;
+  border-bottom: 3px solid #e636a4;
+  padding-bottom: 5px;
+}
     .filters {
       display: flex;
       gap: 15px;
@@ -199,7 +223,15 @@
       object-fit: cover;
       margin-left: 10px;
     }
-   
+    .student-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .student-info img {
+      border-radius: 50%;
+      width: 50px;
+    }
     .status {
       color: green;
       font-size: 0.9rem;
@@ -424,7 +456,7 @@
     </div>
   </header>
 
-  <div class="submenu">
+  <div class="tabbar">
     <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
     <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
     <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
@@ -477,7 +509,7 @@
             </svg>
             <span class="progress-label quiz">100%</span>
           </div>
-          <button class="btn grade-quiz">Grade Quiz</button>
+          <button class="btn grade-quiz" onclick="window.location.href='<?= base_url('grading/preview_quiz') ?>'">Grade Quiz</button>
           <div class="progress-desc">Quiz Complete: 1/1</div>
         </div>
         <div class="progress-divider"></div>
@@ -490,7 +522,7 @@
             </svg>
             <span class="progress-label task">60%</span>
           </div>
-          <button class="btn grade-task">Grade Task</button>
+          <button class="btn grade-task" onclick="window.location.href='<?= base_url('grading/previewgrade') ?>'">Grade Task</button>
           <div class="progress-desc">Task Complete: Incomplete</div>
         </div>
         <div class="progress-trash">
@@ -501,6 +533,8 @@
   </div>
 </body>
 </html>
+         
+        </div>
       </div>
     </div>
   </div>

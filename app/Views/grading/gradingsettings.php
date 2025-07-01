@@ -90,26 +90,46 @@
     }
 
     /* TABS */
-    .tabbar {
-      display: flex;
-      gap: 30px;
-      padding: 10px 50px;
-      background-color: white;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .tabbar span {
-      color: rgb(0, 0, 0);
-      font-weight: 500;
-      cursor: pointer;
-    }
-
-    .tabbar .active {
-      color: black;
-      font-weight: bold;
-      border-bottom: 3px solid black;
-      padding-bottom: 5px;
-    }
+        .tabbar {
+  display: flex;
+  flex-direction: row;
+  gap: 36px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  background: #fff;
+  border-bottom: 1.5px solid #f8e6f6;
+  min-height: 38px;
+  align-items: center;
+  padding: 0 0 0 24px;
+  margin: 0;
+  position: static;
+  width: 100%;
+}
+.tabbar a {
+  text-decoration: none;
+  color: #3a2352;
+  font-weight: 600;
+  font-size: 1.15rem;
+  padding: 0 8px;
+  transition: color 0.18s;
+  border-bottom: 3px solid transparent;
+  background: none;
+}
+.tabbar a:hover,
+.tabbar a.active {
+  color: #e636a4;
+  border-bottom: 3px solid #e636a4;
+}
+.tabbar span {
+  font-weight: 500;
+  cursor: pointer;
+}
+.tabbar .active {
+  color: #e636a4;
+  font-weight: bold;
+  border-bottom: 3px solid #e636a4;
+  padding-bottom: 5px;
+}
 
   
 

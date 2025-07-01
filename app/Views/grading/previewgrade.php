@@ -309,22 +309,47 @@
   stroke: #fff;
   stroke-width: 0;
 }
- .submenu {
-      display: flex;
-      justify-content: center;
-      background: white;
-      border-bottom: 1px solid #ccc;
-    }
-    .submenu a {
-      padding: 15px 20px;
-      text-decoration: none;
-      color: black;
-      font-weight: 500;
-    }
-    .submenu a.active {
-      color: black;
-      border-bottom: 2px solid black;
-    }
+       .tabbar {
+  display: flex;
+  flex-direction: row;
+  gap: 36px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  background: #fff;
+  border-bottom: 1.5px solid #f8e6f6;
+  min-height: 38px;
+  align-items: center;
+  padding: 0 0 0 24px;
+  margin: 0;
+  position: static;
+  width: 100%;
+}
+.tabbar a {
+  text-decoration: none;
+  color: #3a2352;
+  font-weight: 600;
+  font-size: 1.15rem;
+  padding: 0 8px;
+  transition: color 0.18s;
+  border-bottom: 3px solid transparent;
+  background: none;
+}
+.tabbar a:hover,
+.tabbar a.active {
+  color: #e636a4;
+  border-bottom: 3px solid #e636a4;
+}
+.tabbar span {
+  font-weight: 500;
+  cursor: pointer;
+}
+.tabbar .active {
+  color: #e636a4;
+  font-weight: bold;
+  border-bottom: 3px solid #e636a4;
+  padding-bottom: 5px;
+}
+
 /* Modal Styles */
 .modal-overlay {
   position: fixed;
@@ -451,7 +476,7 @@
     </div>
   </div>
 
-<div class="submenu">
+<div class="tabbar">
     <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
     <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
     <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>

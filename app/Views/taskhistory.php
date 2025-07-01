@@ -242,27 +242,46 @@
       /* Align vertically with profile */
       vertical-align: middle;
     }
-    .tabbar {
-      display: flex;
-      justify-content: start;
-      gap: 30px;
-      padding: 10px 50px;
-      background-color: white;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .tabbar span {
-      font-weight: 500;
-      color: black;
-      cursor: pointer;
-    }
-
-    .tabbar .active {
-      color: black;
-      font-weight: bold;
-      border-bottom: 3px solid black;
-      padding-bottom: 5px;
-    }
+        .tabbar {
+  display: flex;
+  flex-direction: row;
+  gap: 36px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  background: #fff;
+  border-bottom: 1.5px solid #f8e6f6;
+  min-height: 38px;
+  align-items: center;
+  padding: 0 0 0 24px;
+  margin: 0;
+  position: static;
+  width: 100%;
+}
+.tabbar a {
+  text-decoration: none;
+  color: #3a2352;
+  font-weight: 600;
+  font-size: 1.15rem;
+  padding: 0 8px;
+  transition: color 0.18s;
+  border-bottom: 3px solid transparent;
+  background: none;
+}
+.tabbar a:hover,
+.tabbar a.active {
+  color: #e636a4;
+  border-bottom: 3px solid #e636a4;
+}
+.tabbar span {
+  font-weight: 500;
+  cursor: pointer;
+}
+.tabbar .active {
+  color: #e636a4;
+  font-weight: bold;
+  border-bottom: 3px solid #e636a4;
+  padding-bottom: 5px;
+}
     .dropbtn {
    font-weight: bold;
   font-size: 1.35rem;
@@ -342,19 +361,12 @@ li {
       </a>
     </div>
     <div class="navbar-center">
-      <a href="<?= base_url('homepage_initial') ?>">HOME</a>
-      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
-      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
-      <li class="dropdown">
-        <span style="font-weight: bold;">COURSES <span class="arrow">&#9660;</span></span>
-        <div class="dropdown-content">
-           <select id="course-select">
-            <option value="">Select Course</option>
-            <option value="<?= base_url('allcourses') ?>">ALL COURSES</option>
-            <option value="<?= base_url('courses') ?>">MY COURSES</option>
-          </select>
-        </div>
-      </li>
+    <div class="navbar-center">
+        <a href="<?= base_url('/') ?>">HOME</a>
+        <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+        <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+        <a href="<?= base_url('allcourses') ?>">COURSES</a>
+    </div>
     </div>
       <div class="navbar-right">
       <input type="text" placeholder="Search.." />
@@ -365,10 +377,10 @@ li {
 
   <!-- Tab Bar -->
  <div class="tabbar">
-     <a href="<?= base_url('allcourses') ?>"><span>Course</span></a>
+     <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
     <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
     <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
-    <span>Student</span>
+  <a href="<?= base_url('studentprog') ?>"> <span>Student</span></a>
   </div>
 
   <div class="title-bar">

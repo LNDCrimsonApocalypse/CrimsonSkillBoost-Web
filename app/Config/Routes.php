@@ -155,3 +155,4 @@ $routes->get('course/info/(:segment)', 'Course::info/$1');
 $routes->get('grading/studentprog', 'Grading::studentprog');
 $routes->get('course/info/(:segment)', 'Course::info/$1');
 $routes->get('grading/studentprog', 'Grading::studentprog');
+$routes->get('taskhistory', 'TaskController::taskHistory');

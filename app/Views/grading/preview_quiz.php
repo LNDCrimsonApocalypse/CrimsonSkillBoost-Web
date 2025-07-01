@@ -99,22 +99,36 @@
       outline: none;
     }
     /* Tabs */
-    .tabs {
-      display: flex;
-      background: #ffeaf6;
-      padding: 12px 40px;
-      gap: 30px;
-      border-bottom: 2px solid #e0cbd6;
+     .tabbar {
+         display: flex;
+      gap: 36px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-left: 40px;
+
     }
-    .tabs span {
-      font-weight: 600;
+    .tabbar-row{
+         display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding:  40px;
+      margin-top: 18px;
+      
+   
+    }
+    .tabbar span {
+      font-weight: 500;
+ 
       cursor: pointer;
     }
+
+    
     /* Filters */
     .filters {
       display: flex;
       padding: 20px 40px;
       gap: 20px;
+
     }
     .filters select {
       padding: 6px 14px;
@@ -461,13 +475,13 @@
   </div>
 
   <!-- Tabs -->
-  <div class="tabs">
+  <div class="tabbar">
    <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
     <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
     <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
    <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
     <a href="<?= base_url('gradesettings') ?>">Grade Settings</a>
-    <input class="search-input" type="text" placeholder="Search..">
+    
   </div>
 
   <!-- Filters -->
