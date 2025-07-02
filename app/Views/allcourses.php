@@ -983,6 +983,48 @@ async function displayAllCoursesFromFirestore() {
       return;
     }
 
+    // --- Course code mapping ---
+    const courseCodeMap = {
+      "INTRODUCTION TO COMPUTING": "INTCOM",
+      "COMPUTER PROGRAMMING 1": "COMPROG1",
+      "WEB DEVELOPMENT TOOLS": "WEBTOOLS",
+      "PROBABILITY AND STATISTICS": "PROBSTAT",
+      "COMPUTER PROGRAMMING 2": "COMPROG2",
+      "INFORMATION MANAGEMENT": "INFOMAN",
+      "WEB APPLICATIONS DEVELOPMENT": "WEBAPPS",
+      "ORGANIZATIONAL COMMUNICATION": "ORGCOM",
+      "DATA STRUCTURES AND ALGORITHMS": "DATASTRU",
+      "OPERATING SYSTEMS": "OPERASYS",
+      "OBJECT ORIENTED PROGRAMMING": "OOP",
+      "MODERN PHYSICS": "MODPHY",
+      "APPLICATIONS DEVELOPMENT AND EMERGING TECHNOLOGIES": "APPDEV",
+      "DISCRETE STRUCTURES 1": "DISCSTRU1",
+      "DIFFERENTIAL AND INTEGRAL CALCULUS": "CALCULUS",
+      "ALGORITHMS AND COMPLEXITY": "ALGOCOM",
+      "DISCRETE STRUCTURES 2": "DISCSTRU2",
+      "INFORMATION ASSURANCE AND SECURITY": "INFOMAN",
+      "SOFTWARE ENGINEERING 1": "SOFTENG1",
+      "HUMAN COMPUTER INTERACTION": "HCI",
+      "MODELING AND SIMULATION": "MODSIMU",
+      "ELECTIVE 1": "ELEC1",
+      "METHODS OF RESEARCH": "METHODSR",
+      "SOFTWARE ENGINEERING 2": "SOFTENG2",
+      "PROGRAMMING LANGUAGES": "PROLANG",
+      "NETWORKS AND COMMUNICATIONS": "NETCOM",
+      "ARCHITECTURE AND ORGANIZATION": "ARCHORG",
+      "AUTOMATA THEORY AND FORMAL LANGUAGES": "AUTOMATA",
+      "PROJECT MANAGEMENT": "PROMNGT",
+      "ELECTIVE 2": "ELEC2",
+      "ADVANCED ENGLISH PRE-EMPLOYMENT TRAINING": "ADEPT",
+      "SOCIAL ISSUES AND PROFESSIONAL PRACTICE": "SOCIPP",
+      "CS THESIS WRITING 1": "THESIS1",
+      "ELECTIVE 3": "ELEC3",
+      "ELECTIVE 4": "ELEC4",
+      "ELECTIVE 5": "ELEC5",
+      "PRACTICUM": "PRACTI",
+      "CS THESIS WRITING 2": "THESIS2"
+    };
+
     // Render each course as a card
     cardsContainer.innerHTML = courses.map(course => {
       const sectionSem = (course.section ? course.section : '') +
@@ -1000,12 +1042,23 @@ async function displayAllCoursesFromFirestore() {
               <span class="card-students">
                 <i class="fa fa-users"></i> 0 students
               </span>
-              <button class="card-btn">View Info</button>
+              <button class="card-btn" data-course-id="${course.id}">View Info</button>
             </div>
           </div>
         </div>
       `;
     }).join('');
+
+    // Add click handler for all "View Info" buttons
+    cardsContainer.querySelectorAll('.card-btn[data-course-id]').forEach(btn => {
+      btn.onclick = function() {
+        const courseId = this.getAttribute('data-course-id');
+        if (courseId) {
+          window.location.href = '<?= base_url('course/info') ?>/' + courseId;
+        }
+      };
+    });
+
   } catch (e) {
     cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Failed to load courses.</div>';
   }
@@ -1113,12 +1166,23 @@ async function displayUserCoursesFromFirestore() {
               <span class="card-students">
                 <i class="fa fa-users"></i> 0 students
               </span>
-              <button class="card-btn">View Info</button>
+              <button class="card-btn" data-course-id="${course.id}">View Info</button>
             </div>
           </div>
         </div>
       `;
     }).join('');
+
+    // Add click handler for all "View Info" buttons
+    cardsContainer.querySelectorAll('.card-btn[data-course-id]').forEach(btn => {
+      btn.onclick = function() {
+        const courseId = this.getAttribute('data-course-id');
+        if (courseId) {
+          window.location.href = '<?= base_url('course/info') ?>/' + courseId;
+        }
+      };
+    });
+
   } catch (e) {
     cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Failed to load courses.</div>';
   }
