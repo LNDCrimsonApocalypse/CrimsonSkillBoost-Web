@@ -457,7 +457,7 @@ box-shadow:0 2px 8px #f7c6e6;
     <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%;">
       <button class="history">View History</button>
       <div class="buttons" style="gap: 20px; width: 100%; justify-content: center;">
-        <button class="quiz" >Create a quiz</button>
+        <button class="quiz" onclick="window.location.href='<?= base_url('questionsquiz') ?>'">Create a quiz</button>
         <button class="task" disabled>Create a Task</button>
       </div>
     </div>

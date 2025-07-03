@@ -85,6 +85,8 @@ $routes->post('quiz/update/(:num)', 'Quiz::update/$1');
 $routes->post('quiz/delete/(:num)', 'Quiz::delete/$1');
 $routes->get('quiz_edit/(:num)', 'QuizEdit::index/$1');
 $routes->get('quiz', 'Quiz::index');
+$routes->get('questionsquiz', 'QuizController::questionsQuiz');
+$routes->get('questionsquiz2', 'QuizController::questionsQuiz2');
 
 // TASK FLOW
 $routes->post('task/start', 'Task::startTaskCreation');
