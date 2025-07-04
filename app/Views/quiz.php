@@ -416,6 +416,10 @@ box-shadow:0 2px 8px #f7c6e6;
       box-shadow: 0 2px 8px #f7c6e6;
     }
   </style>
+  <!-- Add Firestore SDK if not already present -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 </head>
 <body>
 
@@ -457,7 +461,11 @@ box-shadow:0 2px 8px #f7c6e6;
     <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%;">
       <button class="history">View History</button>
       <div class="buttons" style="gap: 20px; width: 100%; justify-content: center;">
-        <button class="quiz" onclick="window.location.href='<?= base_url('questionsquiz') ?>'">Create a quiz</button>
+        <?php if (isset($course_id) && $course_id): ?>
+          <button class="quiz" id="createQuizBtn">Create a quiz</button>
+        <?php else: ?>
+          <button class="quiz" disabled style="opacity:0.7;cursor:not-allowed;">Create a quiz</button>
+        <?php endif; ?>
         <button class="task" disabled>Create a Task</button>
       </div>
     </div>
@@ -478,7 +486,7 @@ box-shadow:0 2px 8px #f7c6e6;
       <div class="add-content-modal-import">
         <img src="public/img/image 10.png" alt="Import" class="add-content-modal-import-img">
         <div>
-          <div class="add-content-modal-import-title">Import your own content</div>
+          <div class="add-content-modal-import- title">Import your own content</div>
           <div class="add-content-modal-import-desc">Import content and get AI generated questions</div>
           <button class="add-content-modal-import-btn">Import content</button>
         </div>
@@ -504,6 +512,33 @@ box-shadow:0 2px 8px #f7c6e6;
     document.getElementById('addContentModal').addEventListener('click', function(e) {
       if (e.target === this) this.classList.remove('active');
     });
+    // Firestore logic for creating a new quiz
+    <?php if (isset($course_id) && $course_id): ?>
+    document.getElementById('createQuizBtn').onclick = async function() {
+      const db = firebase.firestore();
+      const course_id = "<?= $course_id ?>";
+      let quizTitle = prompt("Enter quiz title:", "Untitled Quiz");
+      if (quizTitle === null) return;
+      quizTitle = quizTitle.trim() || "Untitled Quiz";
+      const quizData = {
+        title: quizTitle,
+        description: "",
+        course_id: course_id,
+        created_at: new Date().toISOString(),
+        attempts: 0,
+        completed: false
+      };
+      try {
+        // Create a new quiz and get its ID
+        const quizRef = await db.collection('quizzes').add(quizData);
+        const quiz_id = quizRef.id;
+        // Redirect to questionsquiz with both course_id and quiz_id
+        window.location.href = "<?= base_url('questionsquiz') ?>?course_id=" + course_id + "&quiz_id=" + quiz_id;
+      } catch (e) {
+        alert("Failed to create quiz: " + e.message);
+      }
+    };
+    <?php endif; ?>
   </script>
 </body>
 </html>

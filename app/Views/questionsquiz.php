@@ -240,6 +240,11 @@
       font-weight: bold;
     }
   </style>
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 </head>
 <body>
 
@@ -274,34 +279,161 @@
 
   <!-- MAIN CONTENT -->
   <div class="main">
-    <textarea class="question-box" placeholder="Type question here"></textarea>
-
-    <div class="options-container">
-      <div class="option-card option-purple">
-        Type answer option here
-        <div class="icons">✎ 🗑</div>
-        <div class="radio">◯</div>
+    <form id="quizForm">
+      <textarea class="question-box" name="question" placeholder="Type question here" required></textarea>
+      <div class="options-container" id="optionsContainer">
+        <!-- Option templates will be inserted here by JS -->
       </div>
-      <div class="option-card option-blue">
-        Type answer option here
-        <div class="icons">✎ 🗑</div>
-        <div class="radio">◯</div>
-      </div>
-      <div class="option-card option-pink">
-        Type answer option here
-        <div class="icons">✎ 🗑</div>
-        <div class="radio">◯</div>
-      </div>
-      <div class="option-card option-red">
-        Type answer option here
-        <div class="icons">✎ 🗑</div>
-        <div class="radio">◯</div>
-      </div>
-      <div class="add-option">+</div>
-    </div>
-
-    <button class="save-button"onclick="window.location.href='<?= base_url('questionsquiz2') ?>'"><i>💾</i> Save Question</button>
+      <input type="hidden" name="correct_option" id="correctOptionInput" value="0">
+      <button type="submit" class="save-button"><i>💾</i> Save Question</button>
+    </form>
   </div>
+  <script>
+    // Use the global `firebase` object from firebase-config.js
+    const db = firebase.database();
 
+    // --- Option Card Template ---
+    function createOptionCard(idx, value = '', isChecked = false) {
+      const colors = ['option-purple', 'option-blue', 'option-pink', 'option-red', 'option-purple', 'option-blue'];
+      return `
+        <div class="option-card ${colors[idx % colors.length]}" data-idx="${idx}">
+          <input type="text" name="options[]" value="${value.replace(/"/g, '&quot;')}" placeholder="Type answer option here" required style="background:transparent;border:none;color:#fff;width:80%;font-size:1rem;font-weight:500;outline:none;font-family:'Poppins',sans-serif;">
+          <div class="icons">
+            <span class="edit" title="Edit" style="cursor:pointer;display:none;">✎</span>
+            <span class="delete" title="Delete" style="cursor:pointer;">🗑</span>
+          </div>
+          <div class="radio">
+            <input type="radio" name="correct" value="${idx}" ${isChecked ? 'checked' : ''} style="transform:scale(1.3);"> 
+          </div>
+        </div>
+      `;
+    }
+
+    // --- Dynamic Option Logic ---
+    const optionsContainer = document.getElementById('optionsContainer');
+    let optionCount = 0;
+    const minOptions = 2, maxOptions = 4;
+
+    function renderOptions(options = ['', ''], correctIdx = 0) {
+      optionsContainer.innerHTML = '';
+      options.forEach((val, idx) => {
+        optionsContainer.innerHTML += createOptionCard(idx, val, idx === correctIdx);
+      });
+      if (optionCount < maxOptions) {
+        const addBtn = document.createElement('div');
+        addBtn.className = 'add-option';
+        addBtn.textContent = '+';
+        addBtn.onclick = addOption;
+        optionsContainer.appendChild(addBtn);
+      }
+      attachOptionEvents();
+    }
+
+    function addOption() {
+      if (optionCount < maxOptions) {
+        const options = getOptions();
+        options.push('');
+        renderOptions(options, getCorrectIdx());
+      }
+    }
+
+    function removeOption(idx) {
+      if (optionCount > minOptions) {
+        let options = getOptions();
+        let correctIdx = getCorrectIdx();
+        options.splice(idx, 1);
+        if (correctIdx === idx) correctIdx = 0;
+        else if (correctIdx > idx) correctIdx--;
+        renderOptions(options, correctIdx);
+      }
+    }
+
+    function getOptions() {
+      return Array.from(optionsContainer.querySelectorAll('input[type="text"][name="options[]"]')).map(i => i.value);
+    }
+
+    function getCorrectIdx() {
+      const radios = optionsContainer.querySelectorAll('input[type="radio"][name="correct"]');
+      for (let i = 0; i < radios.length; i++) if (radios[i].checked) return i;
+      return 0;
+    }
+
+    function attachOptionEvents() {
+      optionCount = optionsContainer.querySelectorAll('.option-card').length;
+      optionsContainer.querySelectorAll('.option-card').forEach((card, idx) => {
+        card.querySelector('.delete').onclick = () => removeOption(idx);
+        card.querySelector('input[type="radio"]').onchange = () => {
+          document.getElementById('correctOptionInput').value = idx;
+        };
+      });
+      // Set correctOptionInput on load
+      document.getElementById('correctOptionInput').value = getCorrectIdx();
+    }
+
+    // --- Load question for editing if question_id is present ---
+    async function loadQuestionForEdit() {
+      const params = new URLSearchParams(window.location.search);
+      const course_id = params.get('course_id') || "<?= isset($course_id) ? $course_id : '' ?>";
+      const quiz_id = params.get('quiz_id') || "<?= isset($quiz_id) ? $quiz_id : '' ?>";
+      const question_id = params.get('question_id');
+      if (!quiz_id || !question_id) return;
+
+      const dbFS = firebase.firestore();
+      try {
+        const doc = await dbFS.collection('quizzes').doc(quiz_id).collection('questions').doc(question_id).get();
+        if (doc.exists) {
+          const q = doc.data();
+          document.querySelector('textarea[name="question"]').value = q.question || '';
+          renderOptions(q.options || ['', ''], q.correct_option || 0);
+          // Store editing state
+          document.getElementById('quizForm').setAttribute('data-editing', '1');
+          document.getElementById('quizForm').setAttribute('data-question-id', question_id);
+        }
+      } catch (e) {
+        alert('Failed to load question for editing: ' + e.message);
+      }
+    }
+
+    // --- Initial Render ---
+    renderOptions();
+    loadQuestionForEdit();
+
+    // --- On Form Submit, save to Firestore (add or update) ---
+    document.getElementById('quizForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const question = document.querySelector('textarea[name="question"]').value.trim();
+      const options = getOptions();
+      const correctIdx = getCorrectIdx();
+      const correct_option = correctIdx;
+      const params = new URLSearchParams(window.location.search);
+      const course_id = params.get('course_id') || "<?= isset($course_id) ? $course_id : '' ?>";
+      const quiz_id = params.get('quiz_id') || "<?= isset($quiz_id) ? $quiz_id : '' ?>";
+      const question_id = params.get('question_id');
+      if (!question || options.length < 2 || !course_id || !quiz_id) {
+        alert('Please fill all fields and ensure at least 2 options.');
+        return false;
+      }
+      const questionData = {
+        question,
+        options,
+        correct_option
+      };
+      try {
+        const dbFS = firebase.firestore();
+        if (question_id) {
+          // Update existing question
+          await dbFS.collection('quizzes').doc(quiz_id).collection('questions').doc(question_id).update(questionData);
+        } else {
+          // Add new question
+          await dbFS.collection('quizzes').doc(quiz_id).collection('questions').add(questionData);
+        }
+        // Redirect to questionsquiz2 with course_id and quiz_id
+        window.location.href = "<?= base_url('questionsquiz2') ?>?course_id=" + course_id + "&quiz_id=" + quiz_id;
+      } catch (err) {
+        alert('Failed to save question: ' + err.message);
+      }
+      return false;
+    };
+  </script>
 </body>
 </html>

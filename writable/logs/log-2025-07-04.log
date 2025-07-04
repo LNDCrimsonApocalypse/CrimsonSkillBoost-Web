@@ -1,20 +1,4 @@
-INFO - 2025-07-03 11:05:53 --> CSRF token verified.
-CRITICAL - 2025-07-03 11:05:53 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "task_assign.php"
-[Method: GET, Route: task/assign]
-in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
- 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('task_assign.php')
- 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('task_assign', [], true)
- 3 APPPATH\Controllers\Task.php(19): view('task_assign', [...])
- 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Task->showAssignForm()
- 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Task))
- 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
- 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
- 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-INFO - 2025-07-03 11:05:55 --> CSRF token verified.
-DEBUG - 2025-07-03 11:05:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
-DEBUG - 2025-07-03 11:06:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
-CRITICAL - 2025-07-03 14:50:05 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 17:43:40 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -24,9 +8,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-INFO - 2025-07-03 15:09:39 --> CSRF token verified.
-DEBUG - 2025-07-03 15:09:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
-CRITICAL - 2025-07-03 16:13:47 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 18:16:53 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -36,7 +18,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 16:13:54 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 18:37:16 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -46,9 +28,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-INFO - 2025-07-03 16:13:57 --> CSRF token verified.
-DEBUG - 2025-07-03 16:13:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
-CRITICAL - 2025-07-03 16:21:54 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 19:53:22 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -58,7 +38,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 17:35:44 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 20:27:26 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -68,7 +48,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 17:37:27 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 20:32:06 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -78,7 +58,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 17:37:39 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 20:40:14 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -88,7 +68,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 17:38:49 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 20:40:21 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -98,21 +78,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 18:15:27 --> ErrorException: Undefined variable $topic_id
-[Method: GET, Route: quiz]
-in APPPATH\Views\quiz.php on line 460.
- 1 APPPATH\Views\quiz.php(460): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $topic_id', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\quiz.php', 460)
- 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\quiz.php')
- 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
- 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('quiz', [], true)
- 5 APPPATH\Controllers\Quiz.php(12): view('quiz')
- 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Quiz->index()
- 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
- 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
-10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 18:15:52 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 20:43:42 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -122,7 +88,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 18:15:58 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 20:43:58 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -132,7 +98,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 18:16:11 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 20:45:14 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -142,21 +108,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 18:16:12 --> ErrorException: Undefined variable $topic_id
-[Method: GET, Route: quiz]
-in APPPATH\Views\quiz.php on line 460.
- 1 APPPATH\Views\quiz.php(460): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $topic_id', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\quiz.php', 460)
- 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\quiz.php')
- 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
- 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('quiz', [], true)
- 5 APPPATH\Controllers\Quiz.php(12): view('quiz')
- 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Quiz->index()
- 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
- 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
-10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 18:16:16 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 20:45:15 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -166,7 +118,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 18:16:59 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 20:45:17 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -176,7 +128,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 18:23:38 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 20:45:20 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -186,21 +138,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 18:23:39 --> ErrorException: Undefined variable $topic_id
-[Method: GET, Route: quiz]
-in APPPATH\Views\quiz.php on line 460.
- 1 APPPATH\Views\quiz.php(460): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $topic_id', 'C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\quiz.php', 460)
- 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CrimsonSkillBoost-Web\\app\\Views\\quiz.php')
- 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
- 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('quiz', [], true)
- 5 APPPATH\Controllers\Quiz.php(12): view('quiz')
- 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Quiz->index()
- 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quiz))
- 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
- 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
-10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
-11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 18:27:03 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 20:45:22 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
@@ -210,7 +148,7 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
-CRITICAL - 2025-07-03 20:52:45 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+CRITICAL - 2025-07-04 20:45:26 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
 [Method: GET, Route: public/img/Logo.png%20alt=]
 in SYSTEMPATH\Router\Router.php on line 739.
  1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')

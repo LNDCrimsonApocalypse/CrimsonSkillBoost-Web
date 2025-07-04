@@ -9,7 +9,8 @@ class Quiz extends BaseController
 {
     public function index()
     {
-        return view('quiz');
+        $course_id = $this->request->getGet('course_id');
+        return view('quiz', ['course_id' => $course_id]);
     }
 
     public function create()

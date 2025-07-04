@@ -581,6 +581,9 @@
       background: #2fc32f;
     }
   </style>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 </head>
 <body>
 
@@ -599,7 +602,7 @@
     </div>
     <div class="navbar-right">
       <input type="text" placeholder="Search.." />
-        <button class="publish-button">📄 Publish</button>
+        <button class="publish-button" id="publishQuizBtn">📄 Publish</button>
       <img src="<?= base_url('public/img/notifications.png') ?>" alt="Notifications" class="icon" />    
       <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
     </div>
@@ -626,30 +629,9 @@
 
     <!-- Right Panel -->
     <div class="question-panel">
-      <p><strong>1 question</strong> (1 point)</p>
-
-      <div class="question-summary">
-        <div class="question-type">1. Multiple Choice</div>
-        <div class="question-actions">
-          <select>
-            <option>1 pt</option>
-            <option>2 pt</option>
-            <option>3 pt</option>
-          </select>
-          <button>Edit</button>
-          <button>🗑</button>
-        </div>
-        <h4>Example Question</h4>
-
-        <div class="answer-list">
-          <div class="answer wrong">dsfjfhdsjhf</div>
-          <div class="answer correct">dfsjfhdsjhf</div>
-          <div class="answer wrong">fdsfesfa</div>
-          <div class="answer wrong">fdsfesfa</div>
-        </div>
-      </div>
-
-      <button class="add-question-btn" onclick="window.location.href='<?= base_url('questionsquiz') ?>'">+ Add Question</button>
+      <p id="questionCount"><strong>0 question</strong> (0 point)</p>
+      <div id="questionList"></div>
+      <button class="add-question-btn" id="addQuestionBtn">+ Add Question</button>
     </div>
   </div>
 
@@ -749,6 +731,110 @@
     // Hide due modal on outside click
     document.getElementById('dueModal').onclick = function(e) {
       if (e.target === this) this.classList.remove('active');
+    };
+
+    // --- Firestore dynamic question list ---
+    function getParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name) || '';
+    }
+    const course_id = getParam('course_id') || "<?= isset($course_id) ? $course_id : '' ?>";
+    const quiz_id = getParam('quiz_id') || "<?= isset($quiz_id) ? $quiz_id : '' ?>";
+    const dbFS = firebase.firestore();
+
+    async function renderQuestions() {
+      const list = document.getElementById('questionList');
+      const count = document.getElementById('questionCount');
+      list.innerHTML = '';
+      let total = 0, totalPoints = 0;
+      if (!quiz_id) {
+        count.innerHTML = "<strong>0 question</strong> (0 point)";
+        return;
+      }
+      const snap = await dbFS.collection('quizzes').doc(quiz_id).collection('questions').get();
+      if (snap.empty) {
+        count.innerHTML = "<strong>0 question</strong> (0 point)";
+        return;
+      }
+      snap.forEach((doc, idx) => {
+        const q = doc.data();
+        total++;
+        const points = q.points ? parseInt(q.points) : 1;
+        totalPoints += points;
+        let html = `<div class="question-summary" data-key="${doc.id}">
+          <div class="question-type">${idx+1}. Multiple Choice</div>
+          <div class="question-actions">
+            <select class="point-select">
+              <option value="1"${points===1?' selected':''}>1 pt</option>
+              <option value="2"${points===2?' selected':''}>2 pt</option>
+              <option value="3"${points===3?' selected':''}>3 pt</option>
+            </select>
+            <button class="edit-btn" data-qid="${doc.id}">Edit</button>
+            <button class="delete-btn">🗑</button>
+          </div>
+          <h4 class="question-text">${q.question}</h4>
+          <div class="answer-list">`;
+        if (q.options && Array.isArray(q.options)) {
+          q.options.forEach((opt, i) => {
+            html += `<div class="answer ${i == q.correct_option ? 'correct' : 'wrong'}">${opt}</div>`;
+          });
+        }
+        html += `</div></div>`;
+        list.innerHTML += html;
+      });
+      count.innerHTML = `<strong>${total} question${total !== 1 ? 's' : ''}</strong> (${totalPoints} point${totalPoints !== 1 ? 's' : ''})`;
+
+      // Attach event listeners for edit, delete, and point change
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.onclick = async function() {
+          const key = this.closest('.question-summary').getAttribute('data-key');
+          if (confirm('Delete this question?')) {
+            await dbFS.collection('quizzes').doc(quiz_id).collection('questions').doc(key).delete();
+            renderQuestions();
+          }
+        };
+      });
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.onclick = function() {
+          const question_id = this.getAttribute('data-qid');
+          // Redirect to questionsquiz with course_id, quiz_id, and question_id
+          window.location.href = "<?= base_url('questionsquiz') ?>?course_id=" + course_id + "&quiz_id=" + quiz_id + "&question_id=" + question_id;
+        };
+      });
+      document.querySelectorAll('.point-select').forEach(sel => {
+        sel.onchange = async function() {
+          const key = this.closest('.question-summary').getAttribute('data-key');
+          await dbFS.collection('quizzes').doc(quiz_id).collection('questions').doc(key).update({ points: parseInt(this.value) });
+          renderQuestions();
+        };
+      });
+    }
+
+    function loadQuestions() {
+      renderQuestions();
+    }
+
+    document.getElementById('addQuestionBtn').onclick = function() {
+      window.location.href = "<?= base_url('questionsquiz') ?>?course_id=" + course_id + "&quiz_id=" + quiz_id;
+    };
+
+    loadQuestions();
+
+    // --- Publish Quiz Button ---
+    document.getElementById('publishQuizBtn').onclick = async function() {
+      if (!course_id || !quiz_id) {
+        alert('Missing course or quiz ID.');
+        return;
+      }
+      try {
+        await dbFS.collection('quizzes').doc(quiz_id).update({
+          published: true,
+          published_at: new Date().toISOString()
+        });
+        alert('Quiz published successfully!');
+      } catch (e) {
+        alert('Failed to publish quiz: ' + e.message);
+      }
     };
   </script>
 </body>

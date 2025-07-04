@@ -626,14 +626,14 @@ outline-style: solid;
   </div>
   <!-- Section Title -->
   <div class="section-title" id="sectionTitle">
-    <?= esc($course['title']) ?> – Core Topics
+    <?= esc($course['title']) ?> – Quizzes
   </div>
   <!-- Cards -->
-  <div class="cards" id="topicsCards">
+  <div class="cards" id="quizzesCards">
     <!-- Cards will be rendered by JS -->
-</div>
+  </div>
 <!-- Plus Button -->
-<button class="plus-btn" title="Add Topic" id="openModalBtn">+</button>
+<button class="plus-btn" title="Add Quiz" id="openModalBtn">+</button>
 
 <!-- Modal: Add/Upload Options -->
 <div id="topicModal" class="modal">
@@ -767,6 +767,128 @@ outline-style: solid;
 
     document.addEventListener("DOMContentLoaded", loadTopics);
 
+    // --- FIREBASE NEW TOPIC LOGIC (add to subcollection) ---
+    document.querySelector('.new-topic-form').onsubmit = function(e) {
+      e.preventDefault();
+      const topicTitle = document.getElementById('topicTitle').value.trim();
+      const topicDesc = document.getElementById('topicDesc').value.trim();
+      const courseId = "<?= esc($course['id']) ?>";
+      if (!topicTitle) {
+        alert("Topic title is required.");
+        return;
+      }
+      const btn = this.querySelector('.create-topic-btn');
+      btn.disabled = true;
+      btn.textContent = "Saving...";
+
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
+          btn.disabled = false;
+          btn.textContent = "Create Topic";
+          alert("You must be logged in to add a topic.");
+          return;
+        }
+        // Add topic as a document in the topics subcollection
+        firebase.firestore().collection('courses').doc(courseId)
+          .collection('topics').add({
+            title: topicTitle,
+            description: topicDesc,
+            created_by: user.uid,
+            created_at: firebase.firestore.FieldValue.serverTimestamp()
+          })
+          .then(function() {
+            btn.disabled = false;
+            btn.textContent = "Create Topic";
+            document.getElementById('newTopicModal').classList.remove('show');
+            alert("Topic added!");
+            location.reload();
+          })
+          .catch(function(error) {
+            btn.disabled = false;
+            btn.textContent = "Create Topic";
+            if (error.code === "permission-denied") {
+              alert("You do not have permission to add topics. Please contact your administrator.");
+            } else {
+              alert("Failed to add topic: " + error.message);
+            }
+          });
+      });
+    };
+
+    // Upload topic form (just closes modal for now)
+    document.querySelector('.upload-topic-form').onsubmit = function(e) {
+      e.preventDefault();
+      uploadTopicModal.classList.remove('show');
+    };
+
+    // Drag and drop logic for upload
+    const dropzone = document.getElementById('uploadDropzone');
+    const fileInput = document.getElementById('uploadFiles');
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+    dropzone.addEventListener('dragleave', e => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+    });
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      fileInput.files = e.dataTransfer.files;
+      // Optionally show file names here
+    });
+
+    // --- DYNAMIC QUIZZES LIST FROM FIREBASE (quizzes filtered by course_id) ---
+    function truncateText(text, maxLength = 80) {
+        if (!text) return '';
+        return text.length > maxLength ? text.substring(0, maxLength) + '…' : text;
+    }
+
+    function loadQuizzes() {
+        const courseId = "<?= esc($course['id']) ?>";
+        const sectionTitle = document.getElementById('sectionTitle');
+        const quizzesCards = document.getElementById('quizzesCards');
+
+        // Fetch course name from Firestore and update title if available
+        firebase.firestore().collection('courses').doc(courseId).get().then(function(doc) {
+            if (doc.exists && doc.data().course_name) {
+                sectionTitle.textContent = doc.data().course_name + " – Quizzes";
+            }
+        });
+
+        // Fetch quizzes for this course
+        firebase.firestore().collection('quizzes').where('course_id', '==', courseId).get()
+            .then(function(snapshot) {
+                if (snapshot.empty) {
+                    quizzesCards.innerHTML = "<div style='padding:20px;color:#888;'>No quizzes found for this course.</div>";
+                } else {
+                    quizzesCards.innerHTML = '';
+                    snapshot.forEach(function(doc) {
+                        const data = doc.data();
+                        const quizUrl = "<?= base_url('questionsquiz2') ?>" + "?course_id=" + encodeURIComponent(courseId) + "&quiz_id=" + encodeURIComponent(doc.id);
+                        quizzesCards.innerHTML += `
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-title">${data.title || doc.id} <i>📝</i></div>
+                                    <div class="card-desc">${truncateText(data.description)}</div>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="${quizUrl}" class="view-btn">View Quiz</a>
+                                    <span class="dots">⋮</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            })
+            .catch(function(error) {
+                quizzesCards.innerHTML = "<div style='padding:20px;color:#c00;'>Error loading quizzes: " + error.message + "</div>";
+            });
+    }
+
+    document.addEventListener("DOMContentLoaded", loadQuizzes);
     // --- FIREBASE NEW TOPIC LOGIC (add to subcollection) ---
     document.querySelector('.new-topic-form').onsubmit = function(e) {
       e.preventDefault();

@@ -85,6 +85,7 @@ $routes->post('quiz/update/(:num)', 'Quiz::update/$1');
 $routes->post('quiz/delete/(:num)', 'Quiz::delete/$1');
 $routes->get('quiz_edit/(:num)', 'QuizEdit::index/$1');
 $routes->get('quiz', 'Quiz::index');
+$routes->get('Quiz', 'Quiz::index'); // <-- Add this line
 $routes->get('questionsquiz', 'QuizController::questionsQuiz');
 $routes->get('questionsquiz2', 'QuizController::questionsQuiz2');
 
@@ -158,3 +159,5 @@ $routes->get('grading/studentprog', 'Grading::studentprog');
 $routes->get('course/info/(:segment)', 'Course::info/$1');
 $routes->get('grading/studentprog', 'Grading::studentprog');
 $routes->get('taskhistory', 'TaskController::taskHistory');
+$routes->get('quiz_list', 'QuizController::quizList');
+$routes->get('topics', 'TopicController::topics');
