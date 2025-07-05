@@ -31,4 +31,9 @@ class QuizController extends Controller
         // Pass both id and title to the view
         return view('quiz_list', ['course' => ['id' => $course_id, 'title' => $course_title]]);
     }
+
+    public function resultQuiz()
+    {
+        return view('result_quiz');
+    }
 }

@@ -137,7 +137,8 @@ $routes->match(['GET', 'POST'], 'enrollment/enroll-in-course', 'Enrollment::enro
 $routes->get('lesson1', 'Lesson1::index');
 $routes->get('create_task', 'CreateTask::index');
 $routes->get('duedate_task', 'DuedateTask::index');
-$routes->get('result_task/(:num)', 'ResultTask::index/$1');
+$routes->get('result_task/(:num)', 'TaskController::resultTask/$1');
+$routes->get('result_task', 'TaskController::resultTask');
 $routes->get('taskresult', 'Taskresult::index');
 $routes->get('upload_quiz', 'UploadQuiz::index');
 $routes->get('result_quiz/(:num)', 'ResultQuiz::index/$1');
@@ -161,3 +162,4 @@ $routes->get('grading/studentprog', 'Grading::studentprog');
 $routes->get('taskhistory', 'TaskController::taskHistory');
 $routes->get('quiz_list', 'QuizController::quizList');
 $routes->get('topics', 'TopicController::topics');
+$routes->get('result_quiz', 'QuizController::resultQuiz');
