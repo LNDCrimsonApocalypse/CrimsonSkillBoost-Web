@@ -17,11 +17,10 @@ class QuizController extends Controller
         return view('questionsquiz2');
     }
 
-    // Add this method for quiz_list route
+    // Change this method to use quiz_list1 view instead of quiz_list
     public function quizList()
     {
         $course_id = $this->request->getGet('course_id');
-        // Try to fetch course title from Firestore if possible
         $course_title = 'Course';
         // If you have a model or DB connection, fetch the course title here
         // Example (pseudo-code):
@@ -29,7 +28,7 @@ class QuizController extends Controller
         // if ($course) $course_title = $course['course_name'];
 
         // Pass both id and title to the view
-        return view('quiz_list', ['course' => ['id' => $course_id, 'title' => $course_title]]);
+        return view('quiz_list1', ['course' => ['id' => $course_id, 'title' => $course_title]]);
     }
 
     public function resultQuiz()

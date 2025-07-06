@@ -520,7 +520,7 @@
     </div>
     <div class="navbar-right">
       <img src="public/img/notifications.png" alt="Notifications" class="icon" onclick="window.location.href='<?= base_url('notif') ?>'" style="cursor:pointer;" />
-      <img src="imgs/profile.png" alt="Profile" class="navbar-profile" />
+      <img src="imgs/profile.png" alt="Profile" class="navbar-profile" style="cursor:pointer;" onclick="window.location.href='<?= base_url('editprofile') ?>'" />
     </div>
   </nav>
   <!-- MAIN AREA -->

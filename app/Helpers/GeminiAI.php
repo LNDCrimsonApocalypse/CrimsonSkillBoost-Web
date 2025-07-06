@@ -1,76 +1,65 @@
 <?php
 namespace App\Helpers;
 
-use CodeIgniter\Cache\CacheInterface;
-use Exception;
+class GeminiAI
+{
+    public function generateQuizQuestions($content)
+    {
+        // Replace with your Gemini API endpoint and key
+        $apiKey = getenv('AIzaSyBQcpZt5UaWGR4UpLvSh_kQeH21wzKeMOA');
+        $endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' . $apiKey;
 
-class GeminiAI {
-    private $apiKey;
-    private $apiEndpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
-    private $cache;
-    private $rateLimitPerMin = 60;
+        $prompt = "Generate 5 multiple choice questions (with 4 options each, and indicate the correct answer index) based on the following content:\n\n" . $content;
 
-    public function __construct() {
-        $this->apiKey = getenv('GEMINI_API_KEY');
-        $this->cache = \Config\Services::cache();
-    }
+        $body = [
+            "contents" => [
+                [
+                    "parts" => [
+                        ["text" => $prompt]
+                    ]
+                ]
+            ]
+        ];
 
-    public function generateQuizQuestions($content, $numQuestions = 5) {
-        if ($this->isRateLimited()) {
-            throw new Exception('API rate limit exceeded. Please wait a minute.');
-        }
-
-        $prompt = "Create {$numQuestions} multiple choice questions based on this content. Format as JSON array with objects containing: 
-            1. question_text (string)
-            2. options (array of 4 strings)
-            3. correct_answer_index (number 0-3)
-            Content: " . substr($content, 0, 4000);
-
-        try {
-            $response = $this->makeRequest($prompt);
-            $this->incrementRateLimit();
-            return $this->parseResponse($response);
-        } catch (Exception $e) {
-            log_message('error', 'Gemini API error: ' . $e->getMessage());
-            throw new Exception('Failed to generate questions: ' . $e->getMessage());
-        }
-    }
-
-    private function isRateLimited(): bool {
-        $count = (int) $this->cache->get('gemini_api_count') ?? 0;
-        return $count >= $this->rateLimitPerMin;
-    }
-
-    private function incrementRateLimit(): void {
-        $count = (int) $this->cache->get('gemini_api_count') ?? 0;
-        $this->cache->save('gemini_api_count', $count + 1, 60);
-    }
-
-    private function makeRequest($data) {
-        $ch = curl_init($this->apiEndpoint . '?key=' . $this->apiKey);
+        $ch = curl_init($endpoint);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json'
         ]);
-
-        $response = curl_exec($ch);
+        $result = curl_exec($ch);
         curl_close($ch);
 
-        return json_decode($response, true);
-    }
+        if (!$result) return [];
 
-    private function parseResponse($response) {
-        if (!isset($response['candidates'][0]['content']['parts'][0]['text'])) {
-            return null;
-        }
+        $json = json_decode($result, true);
+        if (!isset($json['candidates'][0]['content']['parts'][0]['text'])) return [];
 
-        try {
-            $generatedText = $response['candidates'][0]['content']['parts'][0]['text'];
-            return json_decode($generatedText, true);
-        } catch (\Exception $e) {
-            return null;
+        // Expecting a JSON array of questions in the response text
+        $text = $json['candidates'][0]['content']['parts'][0]['text'];
+        // Try to decode as JSON, fallback to parsing if needed
+        $questions = json_decode($text, true);
+        if (is_array($questions)) return $questions;
+
+        // Fallback: try to parse plain text (very basic)
+        $lines = explode("\n", $text);
+        $parsed = [];
+        $q = [];
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if (preg_match('/^\d+\./', $line)) {
+                if (!empty($q)) $parsed[] = $q;
+                $q = ['question' => preg_replace('/^\d+\.\s*/', '', $line), 'options' => [], 'correct_option' => 0];
+            } elseif (preg_match('/^[A-D]\)/', $line)) {
+                $q['options'][] = preg_replace('/^[A-D]\)\s*/', '', $line);
+            } elseif (stripos($line, 'Correct answer:') !== false) {
+                // Accept both 0-based and 1-based index, fallback to 0
+                $idx = intval(trim(substr($line, strrpos($line, ':') + 1)));
+                $q['correct_option'] = max(0, $idx - 1);
+            }
         }
+        if (!empty($q)) $parsed[] = $q;
+        return $parsed;
     }
 }

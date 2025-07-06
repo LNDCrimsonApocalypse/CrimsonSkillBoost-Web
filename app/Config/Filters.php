@@ -75,7 +75,8 @@ class Filters extends BaseFilters
                     'grading/save/*',
                     'task/grade/*',
                     'course/update/*',
-                    'course/delete/*'
+                    'course/delete/*',
+                    'quiz/ai_generate', // <-- add this line
                 ]
             ]
         ],

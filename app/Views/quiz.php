@@ -486,9 +486,10 @@ box-shadow:0 2px 8px #f7c6e6;
       <div class="add-content-modal-import">
         <img src="public/img/image 10.png" alt="Import" class="add-content-modal-import-img">
         <div>
-          <div class="add-content-modal-import- title">Import your own content</div>
+          <div class="add-content-modal-import-title">Import your own content</div>
           <div class="add-content-modal-import-desc">Import content and get AI generated questions</div>
-          <button class="add-content-modal-import-btn">Import content</button>
+          <input type="file" id="importFileInput" accept=".pdf,.txt,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.zip" style="display:none"/>
+          <button class="add-content-modal-import-btn" id="importContentBtn">Import content</button>
         </div>
       </div>
       <div class="add-content-modal-footer">
@@ -539,6 +540,45 @@ box-shadow:0 2px 8px #f7c6e6;
       }
     };
     <?php endif; ?>
+
+    // Import Content AI logic
+    document.getElementById('importContentBtn').onclick = function() {
+      document.getElementById('importFileInput').click();
+    };
+
+    document.getElementById('importFileInput').onchange = async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      // Show loading indicator
+      const btn = document.getElementById('importContentBtn');
+      btn.disabled = true;
+      btn.textContent = "Uploading...";
+
+      // Prepare FormData for AJAX upload
+      const formData = new FormData();
+      formData.append('content_file', file);
+
+      try {
+        // Send file to backend for Gemini AI processing
+        const resp = await fetch("<?= base_url('quiz/ai_generate') ?>", {
+          method: 'POST',
+          body: formData
+        });
+        const data = await resp.json();
+        btn.disabled = false;
+        btn.textContent = "Import content";
+        if (data.success) {
+          // Redirect to questions page or show generated questions
+          window.location.href = "<?= base_url('quiz/questions') ?>";
+        } else {
+          alert(data.error || "Failed to generate questions.");
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = "Import content";
+        alert("Error uploading file: " + err.message);
+      }
+    };
   </script>
 </body>
 </html>

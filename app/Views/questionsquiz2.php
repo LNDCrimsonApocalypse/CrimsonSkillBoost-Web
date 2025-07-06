@@ -580,6 +580,71 @@
     .due-modal-done-btn:hover {
       background: #2fc32f;
     }
+
+    /* Gemini AI Generated Questions Modal */
+    .gemini-modal-bg {
+      display: none;
+      position: fixed;
+      z-index: 5000;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.10);
+      justify-content: center;
+      align-items: center;
+    }
+    .gemini-modal-bg.active {
+      display: flex;
+    }
+    .gemini-modal {
+      background: #fff;
+      border-radius: 12px;
+      max-width: 700px;
+      width: 98vw;
+      padding: 36px 32px 32px 32px;
+      box-shadow: 0 6px 32px rgba(0,0,0,0.13);
+      position: relative;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+    .gemini-modal-close {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #333;
+    }
+    .gemini-modal-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #111;
+    }
+    .gemini-modal-footer {
+      display: flex;
+      justify-content: center;
+      margin-top: 18px;
+    }
+    .gemini-modal-save-btn {
+      background: linear-gradient(90deg,#4caf50 0%,#8bc34a 100%);
+      color: #fff;
+      border: none;
+      border-radius: 24px;
+      padding: 14px 56px;
+      font-size: 1.08rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      box-shadow: 0 2px 8px rgba(76,175,80,0.3);
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.18s;
+    }
+    .gemini-modal-save-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
   </style>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -611,10 +676,10 @@
 
   <!-- SUB NAV -->
   <div class="tabbar">
-      <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
-    <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
-    <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
-   <a href="<?= base_url('studentprog') ?>"> <span>Student</span></a>
+      <a href="<?= base_url('topics') . '?course_id=' . urlencode($course_id ?? '') ?>"><span>Topic</span></a>
+      <a href="<?= base_url('create_task') ?>"><span>Task</span></a>
+      <a href="<?= base_url('quiz_list') . '?course_id=' . urlencode($course_id ?? '') ?>"><span>Quiz</span></a>
+      <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
   </div>
 
 
@@ -653,7 +718,8 @@
         <div>
           <div class="upload-modal-import-title">Import your own content</div>
           <div class="upload-modal-import-desc">Import content and get AI generated questions</div>
-          <button class="upload-modal-import-btn">Import content</button>
+          <input type="file" id="importFileInput" accept=".pdf,.txt,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.zip" style="display:none"/>
+          <button class="upload-modal-import-btn" id="importContentBtn">Import content</button>
         </div>
       </div>
       <div class="upload-modal-footer">
@@ -695,6 +761,19 @@
       <button class="due-modal-done-btn" id="closeDueModalBtn">Done</button>
     </div>
   </div>
+
+  <!-- Gemini AI Generated Questions Modal -->
+  <div class="gemini-modal-bg" id="geminiQuestionsModal" style="z-index:5000;">
+    <div class="gemini-modal" style="max-width:700px;">
+      <button class="gemini-modal-close" id="closeGeminiQuestionsModal">&times;</button>
+      <div class="gemini-modal-title">AI Generated Questions</div>
+      <div id="geminiQuestionsList" style="max-height:400px;overflow-y:auto;margin-bottom:18px;"></div>
+      <div class="gemini-modal-footer">
+        <button class="gemini-modal-save-btn" id="saveGeminiQuestionsBtn">Save All to Quiz</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Show modal
     document.getElementById('showUploadQuizModal').onclick = function() {
@@ -835,6 +914,116 @@
       } catch (e) {
         alert('Failed to publish quiz: ' + e.message);
       }
+    };
+
+    // --- Gemini API Integration for AI-generated questions ---
+    let geminiQuestions = [];
+    let geminiQuizId = null;
+
+    document.getElementById('importContentBtn').onclick = function() {
+      document.getElementById('importFileInput').click();
+    };
+
+    document.getElementById('importFileInput').onchange = async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const btn = document.getElementById('importContentBtn');
+      btn.disabled = true;
+      btn.textContent = "Uploading...";
+
+      const formData = new FormData();
+      formData.append('content_file', file);
+
+      try {
+        const resp = await fetch("<?= base_url('quiz/ai_generate') ?>", {
+          method: 'POST',
+          body: formData
+        });
+        let data;
+        try {
+          data = await resp.json();
+        } catch (err) {
+          btn.disabled = false;
+          btn.textContent = "Import content";
+          alert("Invalid response from server.");
+          return;
+        }
+        btn.disabled = false;
+        btn.textContent = "Import content";
+        if (data.success && Array.isArray(data.questions) && data.questions.length > 0) {
+          // Show modal with questions
+          geminiQuestions = data.questions;
+          geminiQuizId = "<?= isset($quiz_id) ? $quiz_id : '' ?>";
+          showGeminiQuestionsModal();
+        } else if (data.success && data.questions && typeof data.questions === 'string') {
+          // Sometimes backend returns a string, try to parse
+          try {
+            geminiQuestions = JSON.parse(data.questions);
+            geminiQuizId = "<?= isset($quiz_id) ? $quiz_id : '' ?>";
+            showGeminiQuestionsModal();
+          } catch (err) {
+            alert("Failed to parse questions from Gemini API.");
+          }
+        } else {
+          alert(data.error || "Failed to generate questions.");
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = "Import content";
+        alert("Error uploading file: " + err.message);
+      }
+    };
+
+    // Show Gemini Questions Modal
+    function showGeminiQuestionsModal() {
+      const modal = document.getElementById('geminiQuestionsModal');
+      const list = document.getElementById('geminiQuestionsList');
+      if (!geminiQuestions || !geminiQuestions.length) {
+        list.innerHTML = "<div style='color:#c00;'>No questions generated.</div>";
+        modal.classList.add('active');
+        return;
+      }
+      // Render questions
+      list.innerHTML = geminiQuestions.map((q, idx) => `
+        <div style="margin-bottom:18px;padding:12px 10px;background:#f8f6ff;border-radius:8px;">
+          <div style="font-weight:600;">Q${idx+1}: ${q.question || ''}</div>
+          <ul style="margin:8px 0 0 18px;">
+            ${(q.options||[]).map((opt,i) => `<li${i==q.correct_option?' style="font-weight:bold;color:#4caf50;"':''}>${opt}</li>`).join('')}
+          </ul>
+        </div>
+      `).join('');
+      modal.classList.add('active');
+    }
+
+    // Close Gemini Questions Modal
+    document.getElementById('closeGeminiQuestionsModal').onclick = function() {
+      document.getElementById('geminiQuestionsModal').classList.remove('active');
+    };
+
+    // Save all Gemini questions to Firestore
+    document.getElementById('saveGeminiQuestionsBtn').onclick = async function() {
+      if (!geminiQuizId || !geminiQuestions.length) return;
+      const dbFS = firebase.firestore();
+      const quizRef = dbFS.collection('quizzes').doc(geminiQuizId).collection('questions');
+      let successCount = 0, failCount = 0;
+      for (const q of geminiQuestions) {
+        // Defensive: ensure required fields
+        if (!q.question || !Array.isArray(q.options) || typeof q.correct_option !== 'number') continue;
+        try {
+          await quizRef.add({
+            question: q.question,
+            options: q.options,
+            correct_option: q.correct_option,
+            points: 1
+          });
+          successCount++;
+        } catch (e) {
+          failCount++;
+        }
+      }
+      alert(`Saved ${successCount} questions${failCount ? `, ${failCount} failed.` : '.'}`);
+      document.getElementById('geminiQuestionsModal').classList.remove('active');
+      renderQuestions();
     };
   </script>
 </body>

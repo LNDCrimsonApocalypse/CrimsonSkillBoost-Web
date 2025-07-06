@@ -98,33 +98,36 @@ class Quiz extends BaseController
     public function ai_generate()
     {
         $file = $this->request->getFile('content_file');
-        if (!$file->isValid()) {
-            return redirect()->back()->with('error', 'Invalid file');
+        if (!$file || !$file->isValid()) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Invalid file']);
         }
 
         try {
             $content = $this->extractContent($file);
-            $gemini = new GeminiAI();
+            if (!$content || strlen(trim($content)) < 10) {
+                throw new \Exception('File content is empty or too short for question generation.');
+            }
+            $gemini = new \App\Helpers\GeminiAI();
             $questions = $gemini->generateQuizQuestions($content);
 
-            if (empty($questions)) {
-                throw new \Exception('No questions were generated');
+            if (empty($questions) || !is_array($questions)) {
+                throw new \Exception('No questions were generated. (Debug: Gemini API may not have returned expected format. Check API key, quota, and prompt.)');
             }
 
             session()->set('generated_questions', $questions);
-            return redirect()->to('quiz/questions');
-
-        } catch (\Exception $e) {
-            log_message('error', 'Quiz generation error: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('error', 'Failed to generate quiz: ' . $e->getMessage());
+            return $this->response->setJSON(['success' => true, 'questions' => $questions]);
+        } catch (\Throwable $e) {
+            // Log the error for debugging
+            log_message('error', '[AI_GENERATE_ERROR] ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            return $this->response->setJSON(['success' => false, 'error' => $e->getMessage()]);
         }
     }
 
     private function extractContent($file)
     {
         $extension = $file->getExtension();
-        
+        log_message('debug', '[AI_GENERATE_DEBUG] Uploaded file extension: ' . $extension);
+
         switch(strtolower($extension)) {
             case 'pdf':
                 $parser = new Parser();

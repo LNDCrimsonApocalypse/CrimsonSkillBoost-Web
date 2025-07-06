@@ -502,10 +502,10 @@
 
   <!-- Tab Bar -->
    <div class="tabbar">
-     <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
-    <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
-    <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
-   <a href="<?= base_url('studentprog') ?>"> <span>Student</span></a>
+     <a href="<?= base_url('topics') . '?course_id=' . urlencode($course['id']) ?>"><span>Topic</span></a>
+    <a href="<?= base_url('create_task') ?>"><span>Task</span></a>
+    <a href="<?= base_url('quiz_list') . '?course_id=' . urlencode($course['id']) ?>"><span>Quiz</span></a>
+   <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
   </div>
 
   <div class="main">
@@ -519,29 +519,7 @@
           <option>Filtered by Date</option>
         </select>
       </div>
-
-      <div class="quiz-card">
-        <span class="enrolled-badge">1,020 Enrolled</span>
-        <img src="<?= base_url('public/img/11.png')?>" alt="Quiz Image">
-        <div class="quiz-card-content">
-          <h3>Introduction in Computer Programming 1</h3>
-          <div class="due">DUE 13TH APRIL 11:59 PM</div>
-          <div class="tags">
-            <span class="tag logical">Logical</span>
-            <span class="tag required">Required</span>
-          </div>
-          <div class="meta-row">
-            Edited 23 hrs ago
-            <span class="dot"></span>
-            <span class="questions">❓ 10 Questions</span>
-          </div>
-        </div>
-        <div class="quiz-card-footer">
-          <span class="assigned">Assigned</span>
-          <span class="running">Running</span>
-          <span class="menu">⋯</span>
-        </div>
-      </div>
+      <div id="quizCards"></div>
     </div>
 
     <div class="right-column recent-submission">
@@ -594,5 +572,94 @@
       </div>
     </div>
   </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+  <script>
+    // Render quizzes for this course
+    function truncateText(text, maxLength = 80) {
+      if (!text) return '';
+      return text.length > maxLength ? text.substring(0, maxLength) + '…' : text;
+    }
+
+    function renderQuizCards(quizzes) {
+      const quizCards = document.getElementById('quizCards');
+      if (!quizCards) return;
+      if (!quizzes.length) {
+        quizCards.innerHTML = "<div style='padding:20px;color:#888;'>No quizzes found for this course.</div>";
+        return;
+      }
+      quizCards.innerHTML = '';
+      quizzes.forEach(q => {
+        const quizUrl = "<?= base_url('questionsquiz2') ?>" + "?course_id=" + encodeURIComponent("<?= $course['id'] ?>") + "&quiz_id=" + encodeURIComponent(q.id);
+        quizCards.innerHTML += `
+          <div class="quiz-card">
+            <span class="enrolled-badge">${q.enrolled || ''}</span>
+            <img src="<?= base_url('public/img/11.png')?>" alt="Quiz Image">
+            <div class="quiz-card-content">
+              <h3>${q.title || q.id}</h3>
+              <div class="due">${q.due ? 'DUE ' + q.due : ''}</div>
+              <div class="tags">
+                <span class="tag logical">Logical</span>
+                <span class="tag required">Required</span>
+              </div>
+              <div class="meta-row">
+                ${q.edited || ''} <span class="dot"></span>
+                <span class="questions">❓ <span id="qcount-${q.id}">...</span> Questions</span>
+              </div>
+            </div>
+            <div class="quiz-card-footer">
+              <span class="assigned">${q.status === 'assigned' ? 'Assigned' : ''}</span>
+              <span class="running">${q.status === 'running' ? 'Running' : ''}</span>
+              <a href="${quizUrl}" class="view-btn">View Quiz</a>
+              <span class="menu">⋯</span>
+            </div>
+          </div>
+        `;
+      });
+
+      // Fetch number of questions for each quiz (live from Firestore subcollection)
+      quizzes.forEach(q => {
+        firebase.firestore().collection('quizzes').doc(q.id).collection('questions').get()
+          .then(snap => {
+            document.getElementById('qcount-' + q.id).textContent = snap.size;
+          })
+          .catch(() => {
+            document.getElementById('qcount-' + q.id).textContent = '0';
+          });
+      });
+    }
+
+    function loadQuizzes() {
+      // Get courseId from PHP (URL param)
+      const courseId = "<?= esc($course['id']) ?>";
+      const db = firebase.firestore();
+      // Filter quizzes by course_id
+      db.collection('quizzes').where('course_id', '==', courseId).get()
+        .then(function(snapshot) {
+          const quizzes = [];
+          snapshot.forEach(function(doc) {
+            const data = doc.data();
+            quizzes.push({
+              id: doc.id,
+              title: data.title || '',
+              due: data.due_date || '',
+              enrolled: data.enrolled || '',
+              edited: data.edited || '',
+              status: data.status || '',
+              description: data.description || ''
+            });
+          });
+          renderQuizCards(quizzes);
+        })
+        .catch(function(error) {
+          const quizCards = document.getElementById('quizCards');
+          if (quizCards) quizCards.innerHTML = "<div style='padding:20px;color:#c00;'>Error loading quizzes: " + error.message + "</div>";
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", loadQuizzes);
+  </script>
 </body>
 </html>
