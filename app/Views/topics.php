@@ -613,7 +613,7 @@ outline-style: solid;
     </div>
     <div class="navbar-right">
         <input class="search-box" type="text" placeholder="Search.." />
-        <a href="<?= base_url('quiz') . '?course_id=' . urlencode($course['id']) ?>"><button>+ Add Content</button></a>
+        <button onclick="window.location.href='<?= base_url('upload') . '?course_id=' . urlencode($course['id']) ?>'">+ Add Content</button>
         <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
     </div>
 </div>

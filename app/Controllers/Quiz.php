@@ -103,15 +103,34 @@ class Quiz extends BaseController
         }
 
         try {
+            $fileSize = $file->getSize();
+            log_message('debug', '[AI_GENERATE_DEBUG] Uploaded file size: ' . $fileSize);
+
             $content = $this->extractContent($file);
+            $contentPreview = mb_substr($content, 0, 500);
+            log_message('debug', '[AI_GENERATE_DEBUG] Extracted content (first 500 chars): ' . $contentPreview);
+
             if (!$content || strlen(trim($content)) < 10) {
-                throw new \Exception('File content is empty or too short for question generation.');
+                throw new \Exception(
+                    'File content is empty or too short for question generation. ' .
+                    'File size: ' . $fileSize . ' bytes. ' .
+                    'Extracted content preview: "' . $contentPreview . '"'
+                );
             }
             $gemini = new \App\Helpers\GeminiAI();
             $questions = $gemini->generateQuizQuestions($content);
 
-            if (empty($questions) || !is_array($questions)) {
-                throw new \Exception('No questions were generated. (Debug: Gemini API may not have returned expected format. Check API key, quota, and prompt.)');
+            // If fallback parser returns a single "question" with no options, treat as error/debug
+            if (
+                empty($questions) ||
+                !is_array($questions) ||
+                (count($questions) === 1 && isset($questions[0]['question']) && empty($questions[0]['options']))
+            ) {
+                $rawText = isset($questions[0]['question']) ? $questions[0]['question'] : '';
+                throw new \Exception(
+                    "No questions were generated. (Debug: Gemini API may not have returned expected format. Raw output: " .
+                    ($rawText ? mb_substr($rawText, 0, 1000) : '[empty]') . ")"
+                );
             }
 
             session()->set('generated_questions', $questions);
@@ -130,17 +149,27 @@ class Quiz extends BaseController
 
         switch(strtolower($extension)) {
             case 'pdf':
-                $parser = new Parser();
+                $parser = new \Smalot\PdfParser\Parser();
                 $pdf = $parser->parseFile($file->getTempName());
                 return $pdf->getText();
-            
+
             case 'txt':
                 return file_get_contents($file->getTempName());
-            
+
             case 'docx':
-                // Add docx support if needed
+                // DOCX support (requires phpoffice/phpword)
+                try {
+                    $zip = new \ZipArchive;
+                    if ($zip->open($file->getTempName()) === true) {
+                        $xml = $zip->getFromName('word/document.xml');
+                        $zip->close();
+                        $xml = str_replace(['</w:p>', '</w:tbl>'], "\n", $xml);
+                        return strip_tags($xml);
+                    }
+                } catch (\Throwable $e) {
+                    throw new \Exception('Failed to extract DOCX: ' . $e->getMessage());
+                }
                 throw new \Exception('DOCX files are not supported yet');
-            
             default:
                 throw new \Exception('Unsupported file type');
         }

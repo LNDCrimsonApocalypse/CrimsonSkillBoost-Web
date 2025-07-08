@@ -5,20 +5,19 @@ class Task extends BaseController
 {
     public function startTaskCreation()
     {
-        // Initialize task creation flow
-        return redirect()->to('task/assign');
+        // Store course_id in session for later steps
+        $courseId = $this->request->getPost('course_id');
+        if ($courseId) {
+            session()->set('course_id', $courseId);
+        }
+        // Do not redirect or return JSON; just end for modal flow
+        exit;
     }
 
     public function showAssignForm()
     {
-        // Dummy courses
-        $courses = [
-            ['id' => 1, 'course_name' => 'Sample Course 1'],
-            ['id' => 2, 'course_name' => 'Sample Course 2']
-        ];
-        return view('task_assign', [
-            'courses' => $courses
-        ]);
+        // Not used in modal flow
+        exit;
     }
 
     public function processAssign()

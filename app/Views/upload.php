@@ -262,13 +262,8 @@
     </div>
     <div class="instruction">Create your first Task</div>
     <div class="buttons">
-        <form action="<?= base_url('task/start') ?>" method="post" style="display:inline;">
-            <?= csrf_field() ?>
-            <input type="hidden" name="course_id" value="<?= esc($course_id) ?>">
-            <button type="submit" class="task">Create a Task</button>
-        </form>
-
-        <a href="<?= base_url('Quiz') . '?course_id=' . urlencode($course_id) ?>" class="quiz" style="display:inline-block; text-align:center; padding:12px 20px; border-radius:6px; font-size:16px; font-weight:bold; font-family:'Poppins', Arial, sans-serif; background-color:#e636a4; color:white; box-shadow:0 2px 8px #f7c6e6; width:180px;">Create a Quiz</a>
+        <a href="<?= base_url('quiz') . '?course_id=' . urlencode($course_id) ?>" class="quiz" style="display:inline-block; text-align:center; padding:12px 20px; border-radius:6px; font-size:16px; font-weight:bold; font-family:'Poppins', Arial, sans-serif; background-color:#e636a4; color:white; box-shadow:0 2px 8px #f7c6e6; width:180px;">Create a Quiz</a>
+        <a href="<?= base_url('create_task') . '?course_id=' . urlencode($course_id) ?>" class="task" style="display:inline-block; text-align:center; padding:12px 20px; border-radius:6px; font-size:16px; font-weight:bold; font-family:'Poppins', Arial, sans-serif; background-color:#e636a4; color:white; box-shadow:0 2px 8px #f7c6e6; width:180px;">Create a Task</a>
     </div>
   </div>
 

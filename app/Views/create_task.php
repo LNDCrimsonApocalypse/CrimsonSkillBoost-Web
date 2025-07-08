@@ -469,7 +469,7 @@ li {
       <div style="margin-bottom:12px;">
         <label for="taskName" class="add-content-modal-label">Task Name:</label>
         <input id="taskName" type="text" class="add-content-modal-input">
-        <span class="add-content-modal-clear">Clear all</span>
+        <span class="add-content-modal-clear" id="clearTaskModal">Clear all</span>
       </div>
       <div class="add-content-modal-note">
         Accepted formats: PDF, PNG, PPT, SLIDE, JPG, ZIP (Max size: 50MB)
@@ -479,7 +479,7 @@ li {
         <div>
           <div class="add-content-modal-import-title">Import your own content</div>
           <div class="add-content-modal-import-desc">Import content and get AI generated questions</div>
-          <button class="add-content-modal-import-btn">Import content</button>
+          <button class="add-content-modal-import-btn" id="importContentBtn">Import content</button>
         </div>
       </div>
       <div class="add-content-modal-footer">
@@ -532,6 +532,10 @@ li {
     </div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
   <script>
     // Modal open/close logic
     document.getElementById('openAddContentModal').addEventListener('click', function() {
@@ -540,20 +544,123 @@ li {
     document.getElementById('closeAddContentModal').addEventListener('click', function() {
       document.getElementById('addContentModal').classList.remove('active');
     });
-    // Optional: close modal when clicking outside modal content
+    document.getElementById('clearTaskModal').addEventListener('click', function() {
+      document.getElementById('taskName').value = '';
+    });
     document.getElementById('addContentModal').addEventListener('click', function(e) {
       if (e.target === this) this.classList.remove('active');
     });
+
+    // Show Due Date Modal on NEXT
     document.getElementById('openDueDateModal').addEventListener('click', function() {
+      // Validate task name before proceeding
+      const taskName = document.getElementById('taskName').value.trim();
+      if (!taskName) {
+        alert('Task name is required.');
+        return;
+      }
       document.getElementById('addContentModal').classList.remove('active');
       document.getElementById('dueDateModal').style.display = 'flex';
     });
+
     document.getElementById('closeDueDateModal').addEventListener('click', function() {
       document.getElementById('dueDateModal').style.display = 'none';
     });
-    document.getElementById('doneDueDateModal').addEventListener('click', function() {
-      document.getElementById('dueDateModal').style.display = 'none';
+
+    // --- FIREBASE TASK CREATION LOGIC ---
+    document.getElementById('doneDueDateModal').addEventListener('click', async function() {
+      // Collect all task info
+      const taskName = document.getElementById('taskName').value.trim();
+      // Find the due date modal's inputs
+      const dueModal = document.getElementById('dueDateModal');
+      const dateInputs = dueModal.querySelectorAll('input[type="date"]');
+      const startDate = dateInputs[0] ? dateInputs[0].value : '';
+      const endDate = dateInputs[1] ? dateInputs[1].value : '';
+      const attemptsInput = dueModal.querySelector('input[type="number"]');
+      const attempts = attemptsInput ? parseInt(attemptsInput.value, 10) : 0;
+      const allowLate = dueModal.querySelector('input[type="checkbox"]')?.checked || false;
+
+      if (!taskName) {
+        alert('Task name is required.');
+        return;
+      }
+      // Optionally, collect more fields here (description, file, etc.)
+      const courseId = (new URLSearchParams(window.location.search)).get('course_id') || null;
+      const db = firebase.firestore();
+      const taskData = {
+        title: taskName,
+        description: '', // Add description field if you want
+        created_at: new Date().toISOString(),
+        course_id: courseId,
+        start_date: startDate,
+        end_date: endDate,
+        attempts: attempts,
+        allow_late: allowLate
+      };
+      try {
+        let ref;
+        if (courseId) {
+          ref = await db.collection('courses').doc(courseId).collection('tasks').add(taskData);
+        } else {
+          ref = await db.collection('tasks').add(taskData);
+        }
+        document.getElementById('dueDateModal').style.display = 'none';
+        alert('Task created successfully!');
+        // Optionally redirect to task list or clear modal
+        // window.location.href = "<?= base_url('create_task') ?>";
+      } catch (e) {
+        alert('Failed to create task: ' + e.message);
+      }
     });
+
+    // Import content button (now opens file dialog and saves file info to Firestore)
+    document.getElementById('importContentBtn').onclick = function(e) {
+      e.preventDefault();
+      // Create a hidden file input if not already present
+      let fileInput = document.getElementById('importContentFileInput');
+      if (!fileInput) {
+        fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.pdf,.png,.jpg,.jpeg,.ppt,.pptx,.zip';
+        fileInput.style.display = 'none';
+        fileInput.id = 'importContentFileInput';
+        document.body.appendChild(fileInput);
+      }
+      fileInput.value = ''; // reset
+      fileInput.onchange = async function() {
+        if (!fileInput.files.length) return;
+        const file = fileInput.files[0];
+        const taskName = document.getElementById('taskName').value.trim();
+        if (!taskName) {
+          alert('Task name is required before importing content.');
+          return;
+        }
+        const courseId = (new URLSearchParams(window.location.search)).get('course_id') || null;
+        const db = firebase.firestore();
+        const taskData = {
+          title: taskName,
+          description: '',
+          created_at: new Date().toISOString(),
+          course_id: courseId,
+          file_name: file.name,
+          file_type: file.type,
+          file_size: file.size
+        };
+        try {
+          let ref;
+          if (courseId) {
+            ref = await db.collection('courses').doc(courseId).collection('tasks').add(taskData);
+          } else {
+            ref = await db.collection('tasks').add(taskData);
+          }
+          // Do NOT close the modal here
+          alert('Task with file info saved! (File is not uploaded to storage in this demo)');
+        } catch (e) {
+          alert('Failed to create task: ' + e.message);
+        }
+      };
+      fileInput.click();
+    };
   </script>
 </body>
 </html>
