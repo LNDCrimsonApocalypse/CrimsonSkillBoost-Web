@@ -299,8 +299,8 @@
 
             await Promise.race([loginPromise, timeoutPromise]);
             
-            // Redirect will happen automatically via the auth state observer
-            
+            // Redirect manually after successful login
+            window.location.href = '<?= base_url('dashboard') ?>';
         } catch (error) {
             console.error('Login error:', error);
             hideLoading();
@@ -316,13 +316,6 @@
             }
             
             alert(errorMessage);
-        }
-    });
-
-    // Add auth state observer
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            window.location.href = '<?= base_url('dashboard') ?>';
         }
     });
   </script>

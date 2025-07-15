@@ -230,7 +230,7 @@
     .question-content {
       width: 100%;
       display: grid;
-      grid-template-rows: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
       background: none;
@@ -244,32 +244,47 @@
       font-weight: 600;
       font-size: 1.15rem;
       color: #555;
+      margin-bottom: 10px;
     }
     .student-answer {
       background: #e9eef6;
       border-radius: 6px;
       padding: 14px 0;
       text-align: center;
-      font-weight: 700;
+      font-weight: 900;
       font-size: 1.1rem;
-      color: #666;
+      color: #e636a4;
       box-shadow: 0 3px 6px rgba(0,0,0,0.10);
       grid-row: 2;
-      grid-column: 1 / span 1;
-    }
-    .empty-cell {
-      background: #e9eef6;
-      border-radius: 6px;
-      padding: 14px 0;
-      grid-row: 2;
-      grid-column: 2 / span 1;
-    }
-    .empty-cell2 {
-      background: #e9eef6;
-      border-radius: 6px;
-      padding: 14px 0;
-      grid-row: 3;
       grid-column: 1 / span 2;
+      margin-bottom: 10px;
+      border: 2px solid #e636a4;
+    }
+    .choice-box {
+      background: #f5f5fa;
+      border-radius: 8px;
+      padding: 14px 0;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: #444;
+      margin: 0 6px 10px 6px;
+      border: 2px solid transparent;
+      transition: border 0.18s, background 0.18s;
+    }
+    .choice-box.selected {
+      background: #ffeefb;
+      color: #e636a4;
+      border: 2px solid #e636a4;
+      font-weight: 900;
+    }
+    .choice-box.correct {
+      background: #e7ffe7;
+      color: #22b573;
+      border: 2px solid #22b573;
+    }
+    .empty-cell, .empty-cell2 {
+      display: none;
     }
      /* FILTERS */
     .filters {
@@ -507,52 +522,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>
-          <div class="student-info">
-            <img src="imgs/img3.png" alt="avatar">
-            <div class="student-name">
-              Marites Dela Cruz
-              <small>Maritesdelacruz@umak.edu.ph</small>
-            </div>
-          </div>
-        </td>
-        <td>
-          <div class="quiz-name">Quiz 1: Intro to Programming 
-            <img src="https://i.imgur.com/VLJgIQD.png" class="action-img" alt="view">
-          </div>
-        </td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td >_ / _ </td>
-        <td class="actions-cell">
- <!-- Place this inside your <td> or relevant cell -->
-<div class="action-buttons">
-  <button class="edit-btn" title="Edit">
-    <!-- Pencil SVG icon -->
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <rect width="24" height="24" rx="6" fill="#fff"/>
-      <path d="M15.232 6.232a2 2 0 0 1 2.828 2.828l-7.5 7.5-3.328.5.5-3.328 7.5-7.5z" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </button>
-  <button class="add-btn" title="Add">
-    <!-- Plus SVG icon -->
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <rect width="24" height="24" rx="6" fill="url(#pink-gradient)"/>
-      <path d="M12 8v8M8 12h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-      <defs>
-        <linearGradient id="pink-gradient" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#e636a4"/>
-          <stop offset="1" stop-color="#b983ff"/>
-        </linearGradient>
-      </defs>
-    </svg>
-  </button>
-</div>
-
-</td>
-      </tr>
+      <!-- Firebase grades will be loaded here -->
     </tbody>
   </table>
 </div>
@@ -624,32 +594,167 @@ document.addEventListener('DOMContentLoaded', function() {
   <!-- Question & Comment Section -->
   <div class="question-section">
     <div class="questions">
-      <div class="question-list">
-        <div class="question-grid">
-          <input type="radio" class="question-radio" />
-          <div class="question-content">
-            <div class="question-title">Question Here</div>
-            <div class="student-answer">Student Answer</div>
-            <div class="empty-cell"></div>
-            <div class="empty-cell2"></div>
-          </div>
-        </div>
-        <div class="question-grid">
-          <input type="radio" class="question-radio" />
-          <div class="question-content">
-            <div class="question-title">Question Here</div>
-            <div class="empty-cell"></div>
-            <div class="student-answer">Student Answer</div>
-            <div class="empty-cell2"></div>
-          </div>
-        </div>
+      <div class="question-list" id="questionList">
+        <!-- Questions from Firebase will be loaded here -->
       </div>
     </div>
     <div class="comments">
       <label for="comment">Comment/ Suggestion:</label>
       <textarea id="comment" class="textarea"></textarea>
-      <button class="save-btn">Save Grade</button>
+      <button class="save-btn" id="saveGradeBtn">Save Grade</button>
+      <div id="saveStatus" style="margin-top:10px;font-weight:bold;color:#22b573;display:none;">Grade saved!</div>
     </div>
   </div>
+
+  <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+<script>
+const db = firebase.firestore();
+
+// Replace with your quizId
+const quizId = "PGaPAv1P5KpAt1ngPxSy"; // Example quizId
+
+function loadFirebaseGrades() {
+  const tableBody = document.querySelector('tbody');
+  tableBody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+
+  db.collection('quizzes').doc(quizId).collection('submissions').get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        tableBody.innerHTML = '<tr><td colspan="6">No submissions found</td></tr>';
+        return;
+      }
+      let rows = '';
+      snapshot.forEach(doc => {
+        const sub = doc.data();
+        // Calculate grade point based on score and totalPossiblePoints
+        const percent = sub.score && sub.totalPossiblePoints ? Math.round((sub.score / sub.totalPossiblePoints) * 100) : 0;
+        let gradePoint = '-';
+        if (percent >= 97) gradePoint = '1.0';
+        else if (percent >= 94) gradePoint = '1.25';
+        else if (percent >= 91) gradePoint = '1.5';
+        else if (percent >= 88) gradePoint = '1.75';
+        else if (percent >= 85) gradePoint = '2.0';
+        // Add more grade logic as needed
+
+        rows += `
+          <tr>
+            <td>${sub.userId || '-'}</td>
+            <td>${sub.title || 'Quiz'}</td>
+            <td>${percent}%</td>
+            <td>${sub.timestamp ? new Date(sub.timestamp).toLocaleDateString() : '-'}</td>
+            <td>${gradePoint}</td>
+            <td>${sub.score || 0} / ${sub.totalPossiblePoints || 0}</td>
+          </tr>
+        `;
+      });
+      tableBody.innerHTML = rows;
+    })
+    .catch(err => {
+      tableBody.innerHTML = `<tr><td colspan="6">Error loading grades: ${err.message}</td></tr>`;
+    });
+}
+
+function loadQuizQuestions() {
+  const questionList = document.getElementById('questionList');
+  questionList.innerHTML = '<div style="padding:10px;">Loading questions...</div>';
+  db.collection('quizzes').doc(quizId).collection('questions').get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        questionList.innerHTML = '<div style="padding:10px;color:#888;">No questions found.</div>';
+        return;
+      }
+      let html = '';
+      let qNum = 1;
+      snapshot.forEach(doc => {
+        const q = doc.data();
+        const correctOption = typeof q.correct_option === 'number' ? q.correct_option : null;
+        const options = Array.isArray(q.options) ? q.options : [];
+        const questionText = q.question || 'Question';
+        let userAnswerIdx = null;
+        if (typeof q.userAnswer === 'number') userAnswerIdx = q.userAnswer;
+        else if (typeof q.studentAnswer === 'number') userAnswerIdx = q.studentAnswer;
+        else if (typeof q.selectedOption === 'number') userAnswerIdx = q.selectedOption;
+
+        // Student answer box
+        let studentAnswerHtml = '<div class="student-answer"><strong>User Answer:</strong><br><em>No answer</em></div>';
+        if (userAnswerIdx !== null && options[userAnswerIdx] !== undefined) {
+          studentAnswerHtml = `<div class="student-answer"><strong>User Answer:</strong><br>${options[userAnswerIdx]}</div>`;
+        }
+
+        // Choices grid (4 boxes)
+        let choicesHtml = '';
+        for (let i = 0; i < options.length; i++) {
+          let classes = 'choice-box';
+          if (i === userAnswerIdx) classes += ' selected';
+          if (i === correctOption) classes += ' correct';
+          choicesHtml += `<div class="${classes}">${String.fromCharCode(65+i)}. ${options[i]}</div>`;
+        }
+        // Ensure 4 boxes
+        for (let i = options.length; i < 4; i++) {
+          choicesHtml += `<div class="choice-box" style="opacity:0.5;">${String.fromCharCode(65+i)}. -</div>`;
+        }
+
+        html += `
+          <div class="question-grid">
+            <div style="margin-top:8px;margin-right:8px;font-weight:bold;display:flex;align-items:center;justify-content:center;">${qNum++}.</div>
+            <div class="question-content">
+              <div class="question-title">${questionText}</div>
+              ${studentAnswerHtml}
+              ${choicesHtml}
+            </div>
+          </div>
+        `;
+      });
+      questionList.innerHTML = html;
+    })
+    .catch(err => {
+      questionList.innerHTML = `<div style="padding:10px;color:#c00;">Error loading questions: ${err.message}</div>`;
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadFirebaseGrades();
+  loadQuizQuestions();
+
+  const saveBtn = document.getElementById('saveGradeBtn');
+  const commentBox = document.getElementById('comment');
+  const saveStatus = document.getElementById('saveStatus');
+
+  if (saveBtn && commentBox) {
+    saveBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const comment = commentBox.value.trim();
+      // Save to Firestore under quizzes/{quizId}/comments/{autoId}
+      if (!comment) {
+        saveStatus.style.display = 'none';
+        return;
+      }
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+      db.collection('quizzes').doc(quizId).collection('comments').add({
+        comment: comment,
+        createdAt: new Date()
+      }).then(() => {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save Grade';
+        saveStatus.style.display = 'block';
+        saveStatus.textContent = 'Grade saved!';
+        setTimeout(() => { saveStatus.style.display = 'none'; }, 2000);
+        commentBox.value = '';
+      }).catch(() => {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save Grade';
+        saveStatus.style.display = 'block';
+        saveStatus.style.color = '#e63636';
+        saveStatus.textContent = 'Failed to save. Try again.';
+        setTimeout(() => { saveStatus.style.display = 'none'; saveStatus.style.color = '#22b573'; }, 2000);
+      });
+    });
+  }
+});
+</script>
 </body>
 </html>

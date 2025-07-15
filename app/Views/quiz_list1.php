@@ -524,51 +524,8 @@
 
     <div class="right-column recent-submission">
       <h3>Recent Submission</h3>
-
-      <div class="submission">
-        <div class="name">
-          <img src="imgs/img3.png">
-          Marites Dela Cruz
-        </div>
-        <div class="score">1/1</div>
-        <div class="progress"><div class="progress-bar" style="width: 100%"></div></div>
-      </div>
-
-      <!-- Dummy data for students -->
-      <div class="submission">
-        <div class="name">STUDENT NAME</div>
-        <div class="score">1/1</div>
-        <div class="progress"><div class="progress-bar" style="width: 100%"></div></div>
-      </div>
-      <div class="submission">
-        <div class="name">STUDENT NAME</div>
-        <div class="score">0/1</div>
-        <div class="progress"><div class="progress-bar" style="width: 0%"></div></div>
-      </div>
-      <div class="submission">
-        <div class="name">STUDENT NAME</div>
-        <div class="score">1/1</div>
-        <div class="progress"><div class="progress-bar" style="width: 100%"></div></div>
-      </div>
-      <div class="submission">
-        <div class="name">STUDENT NAME</div>
-        <div class="score">1/1</div>
-        <div class="progress"><div class="progress-bar" style="width: 100%"></div></div>
-      </div>
-      <div class="submission">
-        <div class="name">STUDENT NAME</div>
-        <div class="score">1/1</div>
-        <div class="progress"><div class="progress-bar" style="width: 100%"></div></div>
-      </div>
-      <div class="submission">
-        <div class="name">STUDENT NAME</div>
-        <div class="score">0/1</div>
-        <div class="progress"><div class="progress-bar" style="width: 0%"></div></div>
-      </div>
-      <div class="submission">
-        <div class="name">STUDENT NAME</div>
-        <div class="score">1/1</div>
-        <div class="progress"><div class="progress-bar" style="width: 100%"></div></div>
+      <div id="submissionList">
+        <!-- Firebase submissions will be loaded here -->
       </div>
     </div>
   </div>
@@ -583,7 +540,10 @@
       return text.length > maxLength ? text.substring(0, maxLength) + '…' : text;
     }
 
+    let quizzesGlobal = [];
+
     function renderQuizCards(quizzes) {
+      quizzesGlobal = quizzes; // Save for submissions
       const quizCards = document.getElementById('quizCards');
       if (!quizCards) return;
       if (!quizzes.length) {
@@ -598,7 +558,7 @@
             <span class="enrolled-badge">${q.enrolled || ''}</span>
             <img src="<?= base_url('public/img/11.png')?>" alt="Quiz Image">
             <div class="quiz-card-content">
-              <h3>${q.title || q.id}</h3>
+              <h3><a href="${quizUrl}" style="color:inherit;text-decoration:none;">${q.title || q.id}</a></h3>
               <div class="due">${q.due ? 'DUE ' + q.due : ''}</div>
               <div class="tags">
                 <span class="tag logical">Logical</span>
@@ -612,7 +572,6 @@
             <div class="quiz-card-footer">
               <span class="assigned">${q.status === 'assigned' ? 'Assigned' : ''}</span>
               <span class="running">${q.status === 'running' ? 'Running' : ''}</span>
-              <a href="${quizUrl}" class="view-btn">View Quiz</a>
               <span class="menu">⋯</span>
             </div>
           </div>
@@ -629,6 +588,13 @@
             document.getElementById('qcount-' + q.id).textContent = '0';
           });
       });
+
+      // Load all submissions from all quizzes
+      if (quizzes.length > 0) {
+        loadAllSubmissions(quizzes.map(q => q.id));
+      } else {
+        document.getElementById('submissionList').innerHTML = "<div style='padding:10px;color:#888;'>No submissions.</div>";
+      }
     }
 
     function loadQuizzes() {
@@ -657,6 +623,75 @@
           const quizCards = document.getElementById('quizCards');
           if (quizCards) quizCards.innerHTML = "<div style='padding:20px;color:#c00;'>Error loading quizzes: " + error.message + "</div>";
         });
+    }
+
+    function loadAllSubmissions(quizIds) {
+      const db = firebase.firestore();
+      const submissionList = document.getElementById('submissionList');
+      submissionList.innerHTML = '<div style="padding:10px;">Loading...</div>';
+      if (!quizIds.length) {
+        submissionList.innerHTML = "<div style='padding:10px;color:#888;'>No submissions found.</div>";
+        return;
+      }
+      // Fetch quiz titles for mapping quizId -> quizName
+      let quizTitleMap = {};
+      let quizTitlePromises = quizIds.map(quizId =>
+        db.collection('quizzes').doc(quizId).get().then(doc => {
+          quizTitleMap[quizId] = (doc.exists && doc.data().title) ? doc.data().title : quizId;
+        })
+      );
+      Promise.all(quizTitlePromises).then(() => {
+        let allPromises = quizIds.map(quizId =>
+          db.collection('quizzes').doc(quizId).collection('submissions').get()
+            .then(snapshot => {
+              let submissions = [];
+              snapshot.forEach(doc => {
+                const sub = doc.data();
+                sub._quizId = quizId;
+                submissions.push(sub);
+              });
+              return submissions;
+            })
+        );
+        Promise.all(allPromises)
+          .then(results => {
+            // Flatten all submissions from all quizzes
+            const allSubs = [].concat(...results);
+            if (!allSubs.length) {
+              submissionList.innerHTML = "<div style='padding:10px;color:#888;'>No submissions found.</div>";
+              return;
+            }
+            // Sort by timestamp descending if available
+            allSubs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            let html = '';
+            allSubs.forEach(sub => {
+              const score = (sub.score !== undefined && sub.totalPossiblePoints !== undefined)
+                ? `${sub.score}/${sub.totalPossiblePoints}`
+                : '-';
+              const percent = sub.score && sub.totalPossiblePoints
+                ? Math.round((sub.score / sub.totalPossiblePoints) * 100)
+                : 0;
+              // Use username and quiz title instead of IDs
+              // Make the whole submission div clickable and go to preview_quiz
+              const previewUrl = "<?= base_url('grading/preview_quiz') ?>";
+              html += `
+                <div class="submission" style="cursor:pointer;" onclick="window.location.href='${previewUrl}'">
+                  <div class="name">
+                    ${sub.profilePic ? `<img src="${sub.profilePic}" />` : ''}
+                    ${sub.studentName || sub.username || 'Student'}
+                    <span style="font-size:11px;color:#888;margin-left:6px;">${quizTitleMap[sub._quizId] ? '(' + quizTitleMap[sub._quizId] + ')' : ''}</span>
+                  </div>
+                  <div class="score">${score}</div>
+                  <div class="progress"><div class="progress-bar" style="width: ${percent}%"></div></div>
+                </div>
+              `;
+            });
+            submissionList.innerHTML = html;
+          })
+          .catch(err => {
+            submissionList.innerHTML = `<div style='padding:10px;color:#c00;'>Error loading submissions: ${err.message}</div>`;
+          });
+      });
     }
 
     document.addEventListener("DOMContentLoaded", loadQuizzes);

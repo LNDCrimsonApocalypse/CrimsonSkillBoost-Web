@@ -449,7 +449,7 @@ box-shadow:0 2px 8px #f7c6e6;
  <div class="tabbar">
      <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
     <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
-    <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
+    <a href="<?= base_url('quiz_list') . '?course_id=' . urlencode($course_id ?? '') ?>"><span>Quiz</span></a>
    <a href="<?= base_url('studentprog') ?>"> <span>Student</span></a>
   </div>
 

@@ -511,52 +511,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>
-          <div class="student-info">
-            <img src="imgs/img3.png" alt="avatar">
-            <div class="student-name">
-              Marites Dela Cruz
-              <small>Juandelacruz@umak.edu.ph</small>
-            </div>
-          </div>
-        </td>
-        <td>
-          <div class="task-name">Task 1: Intro to Programming 
-            <img src="https://i.imgur.com/VLJgIQD.png" class="action-img" alt="view">
-          </div>
-        </td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td >_ / _ </td>
-        <td class="actions-cell">
- <!-- Place this inside your <td> or relevant cell -->
-<div class="action-buttons">
-  <button class="edit-btn" title="Edit">
-    <!-- Pencil SVG icon -->
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <rect width="24" height="24" rx="6" fill="#fff"/>
-      <path d="M15.232 6.232a2 2 0 0 1 2.828 2.828l-7.5 7.5-3.328.5.5-3.328 7.5-7.5z" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </button>
-  <button class="add-btn" title="Add">
-    <!-- Plus SVG icon -->
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <rect width="24" height="24" rx="6" fill="url(#pink-gradient)"/>
-      <path d="M12 8v8M8 12h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-      <defs>
-        <linearGradient id="pink-gradient" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#e636a4"/>
-          <stop offset="1" stop-color="#b983ff"/>
-        </linearGradient>
-      </defs>
-    </svg>
-  </button>
-</div>
-
-</td>
-      </tr>
+      <!-- Firebase grades will be loaded here -->
     </tbody>
   </table>
 </div>
@@ -624,6 +579,60 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+</script>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+<script>
+const db = firebase.firestore();
+
+// Replace with your quizId (or taskId if you use a different collection for tasks)
+const quizId = "PGaPAv1P5KpAt1ngPxSy"; // Example quizId
+
+function loadFirebaseGrades() {
+  const tableBody = document.querySelector('tbody');
+  tableBody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+
+  db.collection('quizzes').doc(quizId).collection('submissions').get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        tableBody.innerHTML = '<tr><td colspan="6">No submissions found</td></tr>';
+        return;
+      }
+      let rows = '';
+      snapshot.forEach(doc => {
+        const sub = doc.data();
+        // Calculate grade point based on score and totalPossiblePoints
+        const percent = sub.score && sub.totalPossiblePoints ? Math.round((sub.score / sub.totalPossiblePoints) * 100) : 0;
+        let gradePoint = '-';
+        if (percent >= 97) gradePoint = '1.0';
+        else if (percent >= 94) gradePoint = '1.25';
+        else if (percent >= 91) gradePoint = '1.5';
+        else if (percent >= 88) gradePoint = '1.75';
+        else if (percent >= 85) gradePoint = '2.0';
+        // Add more grade logic as needed
+
+        rows += `
+          <tr>
+            <td>${sub.userId || '-'}</td>
+            <td>${sub.title || 'Task'}</td>
+            <td>${percent}%</td>
+            <td>${sub.timestamp ? new Date(sub.timestamp).toLocaleDateString() : '-'}</td>
+            <td>${gradePoint}</td>
+            <td>${sub.score || 0} / ${sub.totalPossiblePoints || 0}</td>
+          </tr>
+        `;
+      });
+      tableBody.innerHTML = rows;
+    })
+    .catch(err => {
+      tableBody.innerHTML = `<tr><td colspan="6">Error loading grades: ${err.message}</td></tr>`;
+    });
+}
+
+document.addEventListener('DOMContentLoaded', loadFirebaseGrades);
 </script>
 
 <!-- PREVIEW AND COMMENT -->
