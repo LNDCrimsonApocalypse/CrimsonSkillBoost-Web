@@ -663,40 +663,9 @@ li {
 
         <div class="recent-submissions">
           <h2>Recent Submissions</h2>
-           <!--  HTML-only static card will always show -->
-    <div class="request-card">
-      <div class="request-info">
-        <strong>John Doe</strong>
-        <p>Task 1</p>
-      </div>
-      <div class="request-actions">
-        <button class="btn-approve">Grade</button>
-        <button class="btn-reject">Reject</button>
-      </div>
-    </div>
-          <?php
-            // Ensure $submissions is always an array
-            $submissions = isset($submissions) && is_array($submissions) ? $submissions : [];
-          ?>
-          <?php if (!empty($submissions)): ?>
-            <?php foreach ($submissions as $submission): ?>
-              <div class="submission-card">
-                <div class="submission-icon">
-                  <?= substr($submission['student_name'], 0, 1) ?>
-                </div>
-                <div class="submission-details">
-                  <strong><?= esc($submission['student_name']) ?></strong>
-                  <p><?= esc($submission['task_title']) ?></p>
-                  <small><?= date('M d, Y h:i A', strtotime($submission['submitted_at'])) ?></small>
-                  <a href="<?= base_url('grading/student/' . $submission['student_id']) ?>" class="grade-btn">Grade</a>
-                </div>
-              </div>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <div class="submission-card">
-              <p>No recent submissions</p>
-            </div>
-          <?php endif; ?>
+          <div id="submissionList">
+            <!-- Firebase submissions will be loaded here -->
+          </div>
         </div>
       </aside>
     </main>
@@ -1009,6 +978,152 @@ document.addEventListener("DOMContentLoaded", function () {
   firebase.auth().onAuthStateChanged(function(user) {
     if (!user) return;
     loadEnrollmentRequestsForInstructor(user.uid);
+  });
+});
+
+// --- RECENT SUBMISSIONS PANEL LOGIC (Task + Quiz) ---
+// 🔹 Full Code: Load Enrollment Requests with User Full Names
+async function loadEnrollmentRequestsForInstructor(uid) {
+  const db = firebase.firestore();
+  const container = document.getElementById('enrollment-list');
+  container.innerHTML = '<div class="empty-card">Loading...</div>';
+
+  try {
+    const coursesSnap = await db.collection("courses")
+      .where("user_id", "==", uid).get();
+
+    const courses = {};
+    coursesSnap.forEach(doc => {
+      const d = doc.data();
+      courses[doc.id] = { name: d.course_name || "Unknown", section: d.section || "" };
+    });
+
+    const reqSnap = await db.collection("enrollment_requests")
+      .where("status", "==", "pending").get();
+
+    let requests = reqSnap.docs.map(d => ({ id: d.id, ...(d.data()) }));
+    requests = requests.filter(req =>
+      courses[req.course_id] || Object.values(courses).some(c => c.name === req.course_id)
+    );
+
+    if (requests.length === 0) {
+      container.innerHTML = '<div class="empty-card">No pending enrollment requests</div>';
+      return;
+    }
+
+    const studentIds = [...new Set(requests.map(r => r.student_id))];
+    const usersSnap = await db.collection('users')
+      .where(firebase.firestore.FieldPath.documentId(), 'in', studentIds)
+      .get();
+
+    const userMap = {};
+    usersSnap.forEach(doc => {
+      userMap[doc.id] = doc.data().fullName || "Unknown Student";
+    });
+
+    container.innerHTML = requests
+      .map(req => {
+        const studentName = userMap[req.student_id] || req.student_name || "Unknown Student";
+        const courseInfo = courses[req.course_id] || { name: req.course_id, section: req.section || "" };
+        return `
+          <div class="request-card" id="enroll-${req.id}">
+            <div class="request-info">
+              <strong>${studentName}</strong>
+              <p>Requesting enrollment in ${courseInfo.name}${courseInfo.section ? ' – Section ' + courseInfo.section : ''}</p>
+            </div>
+            <div class="request-actions">
+              <button class="btn-approve" onclick="updateEnrollmentRequest('${req.id}', 'approved')">Approve</button>
+              <button class="btn-reject"  onclick="updateEnrollmentRequest('${req.id}', 'rejected')">Reject</button>
+            </div>
+          </div>
+        `;
+      })
+      .join('');
+
+  } catch (e) {
+    container.innerHTML = '<div class="empty-card">Failed to load enrollment requests</div>';
+    console.error(e);
+  }
+}
+
+
+// 🔹 Full Code: Load Recent Submissions with Student Names
+async function loadRecentSubmissionsDashboard() {
+  const db = firebase.firestore();
+  const submissionList = document.getElementById('submissionList');
+  submissionList.innerHTML = '<div style="padding:16px;">Loading...</div>';
+
+  try {
+    const submissionsSnap = await db.collectionGroup('submissions')
+      .orderBy('timestamp', 'desc')
+      .limit(10).get();
+
+    const submissions = submissionsSnap.docs.map(doc => {
+      const d = doc.data();
+      return {
+        subId: doc.id,
+        ...d,
+        userId: d.userId || d.student_id || '',
+        timestamp: d.timestamp?.toDate?.() || null
+      };
+    });
+
+    const studentIds = [...new Set(submissions.map(s => s.userId))];
+    const usersSnap = await db.collection('users')
+      .where(firebase.firestore.FieldPath.documentId(), 'in', studentIds)
+      .get();
+
+    const userMap = {};
+    usersSnap.forEach(doc => {
+      userMap[doc.id] = doc.data().fullName || doc.id;
+    });
+
+    submissionList.innerHTML = submissions.map(sub => {
+      const name = userMap[sub.userId] || sub.studentName || 'Student';
+      const percent = sub.score && sub.totalPossiblePoints
+        ? Math.round((sub.score / sub.totalPossiblePoints) * 100) : 0;
+      const scoreText = (sub.score != null && sub.totalPossiblePoints != null)
+        ? `${sub.score}/${sub.totalPossiblePoints}` : '-';
+
+      return `
+        <div class="submission-card">
+          <div class="submission-icon">${name[0]}</div>
+          <div class="submission-details">
+            <strong>${name}</strong>
+            <p>${sub.title} <span style="color:#888;font-size:0.95em;">(${sub.type})</span></p>
+            <small>${sub.timestamp ? new Date(sub.timestamp).toLocaleString() : ''}</small>
+            <div>
+              <span class="score">${scoreText}</span>
+              <div class="progress" style="display:inline-block;width:60px;height:8px;vertical-align:middle;margin-left:8px;">
+                <div class="progress-bar" style="width:${percent}%;height:100%;background:#4caf50;border-radius:5px;"></div>
+              </div>
+              <a href="#" class="grade-btn" onclick="event.preventDefault(); openSubmissionPreview('${sub.type}','${sub.courseId}','${sub.taskOrQuizId}','${sub.subId}')">Grade</a>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+  } catch (e) {
+    submissionList.innerHTML = `<div style="padding:16px;color:#c00;">Error: ${e.message}</div>`;
+    console.error(e);
+  }
+}
+
+// Dummy preview handler (replace with your own logic)
+window.openSubmissionPreview = function(type, courseId, id, subId) {
+  if (type === 'Task') {
+    // Redirect to grading/previewgrade or similar
+    window.location.href = "<?= base_url('grading/previewgrade') ?>";
+  } else if (type === 'Quiz') {
+    window.location.href = "<?= base_url('grading/preview_quiz') ?>";
+  }
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+  // ...existing code...
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) loadRecentSubmissionsDashboard();
   });
 });
 </script>

@@ -620,7 +620,7 @@ outline-style: solid;
 <!-- Tabs -->
 <div class="tabbar">
     <a href="<?= base_url('topics') . '?course_id=' . urlencode($course['id']) ?>"><span>Topic</span></a>
-    <a href="<?= base_url('create_task') ?>"><span>Task</span></a>
+    <a href="<?= base_url('task_list') . '?course_id=' . urlencode($course['id']) ?>"><span>Task</span></a>
     <a href="<?= base_url('quiz_list') . '?course_id=' . urlencode($course['id']) ?>"><span>Quiz</span></a>
     <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
   </div>
@@ -747,7 +747,7 @@ outline-style: solid;
                     snapshot.forEach(function(doc) {
                         const data = doc.data();
                         // Compose lesson_view URL with course and topic IDs
-                        const lessonUrl = "<?= base_url('lesson_view') ?>" + "/" + encodeURIComponent(doc.id);
+                        const lessonUrl = "<?= base_url('lesson_view') ?>" + "/" + encodeURIComponent(doc.id) + "?course_id=<?= urlencode($course['id']) ?>";
                         topicsCards.innerHTML += `
                             <div class="card">
                                 <div class="card-content">

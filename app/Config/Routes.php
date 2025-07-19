@@ -163,3 +163,7 @@ $routes->get('taskhistory', 'TaskController::taskHistory');
 $routes->get('quiz_list', 'QuizController::quizList');
 $routes->get('topics', 'TopicController::topics');
 $routes->get('result_quiz', 'QuizController::resultQuiz');
+
+// Add these lines for task_list support
+$routes->get('task_list', 'TaskList::index');
+$routes->get('TaskList', 'TaskList::index');

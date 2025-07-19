@@ -304,24 +304,23 @@ li {
     </div>
     <div class="navbar-center">
       <a href="<?= base_url('homepage') ?>">HOME</a>
-          <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
-       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
-        <a href="<?= base_url('allcourses') ?>">COURSES</a>
-     
+      <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
+      <a href="<?= base_url('aboutus') ?>">ABOUT</a>
+      <a href="<?= base_url('allcourses') ?>">COURSES</a>
     </div>
-   <div class="navbar-right">
+    <div class="navbar-right">
       <input class="search-box" type="text" placeholder="Search.." />
-      <button id="openModalBtn">+ Add Content</button>
+      <button onclick="window.location.href='<?= base_url('upload') ?>' + (window.location.search ? window.location.search : '')">+ Add Content</button>
       <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
     </div>
   </div>
 
   <!-- Tabs -->
   <div class="tabbar">
-     <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
-    <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
-    <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
-     <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
+    <a href="<?= base_url('topics') ?>"+(window.location.search ? window.location.search : '')><span>Topic</span></a>
+    <a href="<?= base_url('task_list') ?>"+(window.location.search ? window.location.search : '')><span>Task</span></a>
+    <a href="<?= base_url('quiz_list') ?>"+(window.location.search ? window.location.search : '')><span>Quiz</span></a>
+    <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
   </div>
 
   <!-- Page Title -->

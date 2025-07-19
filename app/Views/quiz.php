@@ -439,7 +439,7 @@ box-shadow:0 2px 8px #f7c6e6;
     </div>
     <div class="navbar-right">
       <input type="text" placeholder="Search.." />
-      <button onclick="window.location.href='<?= base_url('upload') . '?course_id=' . urlencode($course_id ?? '') ?>'">+ Add Content</button>
+      <button onclick="window.location.href='<?= base_url('upload') . (isset($_GET['course_id']) ? '?course_id=' . urlencode($_GET['course_id']) : '') ?>'">+ Add Content</button>
       <img src="<?= base_url('public/img/notifications.png') ?>" alt="Notifications" class="icon" />    
       <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
     </div>
@@ -447,10 +447,10 @@ box-shadow:0 2px 8px #f7c6e6;
 
   <!-- Tab Bar -->
  <div class="tabbar">
-     <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
-    <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
-    <a href="<?= base_url('quiz_list') . '?course_id=' . urlencode($course_id ?? '') ?>"><span>Quiz</span></a>
-   <a href="<?= base_url('studentprog') ?>"> <span>Student</span></a>
+     <a href="<?= base_url('topics') . (isset($_GET['course_id']) ? '?course_id=' . urlencode($_GET['course_id']) : '') ?>"><span>Topic</span></a>
+     <a href="<?= base_url('task_list') . (isset($_GET['course_id']) ? '?course_id=' . urlencode($_GET['course_id']) : '') ?>"><span>Task</span></a>
+     <a href="<?= base_url('quiz_list') . (isset($_GET['course_id']) ? '?course_id=' . urlencode($_GET['course_id']) : '') ?>"><span>Quiz</span></a>
+     <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
   </div>
 
 <div class="container">

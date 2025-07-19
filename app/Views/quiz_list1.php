@@ -502,9 +502,9 @@
 
   <!-- Tab Bar -->
    <div class="tabbar">
-     <a href="<?= base_url('topics') . '?course_id=' . urlencode($course['id']) ?>"><span>Topic</span></a>
-    <a href="<?= base_url('create_task') ?>"><span>Task</span></a>
-    <a href="<?= base_url('quiz_list') . '?course_id=' . urlencode($course['id']) ?>"><span>Quiz</span></a>
+     <a href="<?= base_url('topics') . '?course_id=' . urlencode($course_id) ?>"><span>Topic</span></a>
+    <a href="<?= base_url('task_list') . '?course_id=' . urlencode($course_id) ?>"><span>Task</span></a>
+    <a href="<?= base_url('quiz_list') . '?course_id=' . urlencode($course_id) ?>"><span>Quiz</span></a>
    <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
   </div>
 
@@ -599,7 +599,7 @@
 
     function loadQuizzes() {
       // Get courseId from PHP (URL param)
-      const courseId = "<?= esc($course['id']) ?>";
+      const courseId = "<?= esc($course_id) ?>";
       const db = firebase.firestore();
       // Filter quizzes by course_id
       db.collection('quizzes').where('course_id', '==', courseId).get()
