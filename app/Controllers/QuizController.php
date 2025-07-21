@@ -27,8 +27,11 @@ class QuizController extends Controller
         // $course = $this->courseModel->find($course_id);
         // if ($course) $course_title = $course['course_name'];
 
-        // Pass both id and title to the view
-        return view('quiz_list1', ['course' => ['id' => $course_id, 'title' => $course_title]]);
+        // Pass both id and title to the view, and also $course_id as a top-level variable
+        return view('quiz_list1', [
+            'course' => ['id' => $course_id, 'title' => $course_title],
+            'course_id' => $course_id // <-- add this line
+        ]);
     }
 
     public function resultQuiz()

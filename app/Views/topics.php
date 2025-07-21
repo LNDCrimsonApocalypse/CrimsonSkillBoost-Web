@@ -746,12 +746,15 @@ outline-style: solid;
                     topicsCards.innerHTML = '';
                     snapshot.forEach(function(doc) {
                         const data = doc.data();
-                        // Compose lesson_view URL with course and topic IDs
                         const lessonUrl = "<?= base_url('lesson_view') ?>" + "/" + encodeURIComponent(doc.id) + "?course_id=<?= urlencode($course['id']) ?>";
+                        // Add data attributes for edit
                         topicsCards.innerHTML += `
-                            <div class="card">
+                            <div class="card" data-topic-id="${doc.id}" data-title="${encodeURIComponent(data.title || '')}" data-desc="${encodeURIComponent(data.description || '')}">
                                 <div class="card-content">
-                                    <div class="card-title">${data.title || doc.id} <i>✎</i></div>
+                                    <div class="card-title">
+                                      ${data.title || doc.id}
+                                      <i class="edit-topic-btn" style="cursor:pointer;" title="Edit" data-topic-id="${doc.id}">✎</i>
+                                    </div>
                                     <div class="card-desc">${truncateText(data.description)}</div>
                                 </div>
                                 <div class="card-footer">
@@ -761,13 +764,49 @@ outline-style: solid;
                             </div>
                         `;
                     });
+                    // Attach edit click handlers after rendering
+                    document.querySelectorAll('.edit-topic-btn').forEach(btn => {
+                        btn.onclick = function(e) {
+                            e.preventDefault();
+                            const card = this.closest('.card');
+                            const topicId = card.getAttribute('data-topic-id');
+                            const title = decodeURIComponent(card.getAttribute('data-title') || '');
+                            const desc = decodeURIComponent(card.getAttribute('data-desc') || '');
+                            openEditTopicModal(topicId, title, desc);
+                        };
+                    });
                 }
             });
     }
 
     document.addEventListener("DOMContentLoaded", loadTopics);
 
-    // --- FIREBASE NEW TOPIC LOGIC (add to subcollection) ---
+    // --- Modal logic for create/edit topic ---
+    let editingTopicId = null;
+
+    function openEditTopicModal(topicId, title, desc) {
+      editingTopicId = topicId;
+      // Open the modal and pre-fill fields
+      document.getElementById('topicTitle').value = title || '';
+      document.getElementById('topicDesc').value = desc || '';
+      document.querySelector('.new-topic-title').textContent = "EDIT TOPIC";
+      document.querySelector('.create-topic-btn').textContent = "Save Changes";
+      document.getElementById('newTopicModal').classList.add('show');
+    }
+
+    // When opening for new topic, reset editing state
+    showNewTopicBtn.onclick = function(e) {
+      e.preventDefault();
+      modal.classList.remove('show');
+      editingTopicId = null;
+      document.getElementById('topicTitle').value = '';
+      document.getElementById('topicDesc').value = '';
+      document.querySelector('.new-topic-title').textContent = "NEW TOPIC";
+      document.querySelector('.create-topic-btn').textContent = "Create Topic";
+      newTopicModal.classList.add('show');
+    };
+
+    // --- FIREBASE NEW/EDIT TOPIC LOGIC (add or update subcollection) ---
     document.querySelector('.new-topic-form').onsubmit = function(e) {
       e.preventDefault();
       const topicTitle = document.getElementById('topicTitle').value.trim();
@@ -779,18 +818,39 @@ outline-style: solid;
       }
       const btn = this.querySelector('.create-topic-btn');
       btn.disabled = true;
-      btn.textContent = "Saving...";
+      btn.textContent = editingTopicId ? "Saving..." : "Saving...";
 
       firebase.auth().onAuthStateChanged(function(user) {
         if (!user) {
           btn.disabled = false;
-          btn.textContent = "Create Topic";
-          alert("You must be logged in to add a topic.");
+          btn.textContent = editingTopicId ? "Save Changes" : "Create Topic";
+          alert("You must be logged in to add or edit a topic.");
           return;
         }
-        // Add topic as a document in the topics subcollection
-        firebase.firestore().collection('courses').doc(courseId)
-          .collection('topics').add({
+        const topicsRef = firebase.firestore().collection('courses').doc(courseId).collection('topics');
+        if (editingTopicId) {
+          // Edit mode: update existing topic
+          topicsRef.doc(editingTopicId).update({
+            title: topicTitle,
+            description: topicDesc,
+            updated_by: user.uid,
+            updated_at: firebase.firestore.FieldValue.serverTimestamp()
+          })
+          .then(function() {
+            btn.disabled = false;
+            btn.textContent = "Save Changes";
+            document.getElementById('newTopicModal').classList.remove('show');
+            alert("Topic updated!");
+            location.reload();
+          })
+          .catch(function(error) {
+            btn.disabled = false;
+            btn.textContent = "Save Changes";
+            alert("Failed to update topic: " + error.message);
+          });
+        } else {
+          // Create mode: add new topic
+          topicsRef.add({
             title: topicTitle,
             description: topicDesc,
             created_by: user.uid,
@@ -812,6 +872,7 @@ outline-style: solid;
               alert("Failed to add topic: " + error.message);
             }
           });
+        }
       });
     };
 
