@@ -505,7 +505,7 @@
      <a href="<?= base_url('topics') . '?course_id=' . urlencode($course_id) ?>"><span>Topic</span></a>
     <a href="<?= base_url('task_list') . '?course_id=' . urlencode($course_id) ?>"><span>Task</span></a>
     <a href="<?= base_url('quiz_list') . '?course_id=' . urlencode($course_id) ?>"><span>Quiz</span></a>
-   <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
+   <a href="<?= base_url('studentprog') . '?course_id=' . urlencode($course_id) ?>"><span>Student</span></a>
   </div>
 
   <div class="main">
@@ -648,13 +648,14 @@
               snapshot.forEach(doc => {
                 const sub = doc.data();
                 sub._quizId = quizId;
+                sub._subId = doc.id;
                 submissions.push(sub);
               });
               return submissions;
             })
         );
         Promise.all(allPromises)
-          .then(results => {
+          .then(async results => {
             // Flatten all submissions from all quizzes
             const allSubs = [].concat(...results);
             if (!allSubs.length) {
@@ -663,6 +664,22 @@
             }
             // Sort by timestamp descending if available
             allSubs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+            // --- Fetch user names for all unique userIds ---
+            const userIds = [...new Set(allSubs.map(sub => sub.userId || sub.student_id).filter(Boolean))];
+            let userMap = {};
+            if (userIds.length) {
+              for (let i = 0; i < userIds.length; i += 10) {
+                const batch = userIds.slice(i, i + 10);
+                const usersSnap = await db.collection('users')
+                  .where(firebase.firestore.FieldPath.documentId(), 'in', batch)
+                  .get();
+                usersSnap.forEach(doc => {
+                  userMap[doc.id] = doc.data().fullName || doc.data().name || doc.id;
+                });
+              }
+            }
+
             let html = '';
             allSubs.forEach(sub => {
               const score = (sub.score !== undefined && sub.totalPossiblePoints !== undefined)
@@ -671,15 +688,17 @@
               const percent = sub.score && sub.totalPossiblePoints
                 ? Math.round((sub.score / sub.totalPossiblePoints) * 100)
                 : 0;
-              // Use username and quiz title instead of IDs
-              // Make the whole submission div clickable and go to preview_quiz
+              // Use actual student name if available
+              const uid = sub.userId || sub.student_id;
+              const studentName = userMap[uid] || sub.studentName || sub.username || 'Student';
+              const quizTitle = quizTitleMap[sub._quizId] ? '(' + quizTitleMap[sub._quizId] + ')' : '';
               const previewUrl = "<?= base_url('grading/preview_quiz') ?>";
               html += `
                 <div class="submission" style="cursor:pointer;" onclick="window.location.href='${previewUrl}'">
                   <div class="name">
                     ${sub.profilePic ? `<img src="${sub.profilePic}" />` : ''}
-                    ${sub.studentName || sub.username || 'Student'}
-                    <span style="font-size:11px;color:#888;margin-left:6px;">${quizTitleMap[sub._quizId] ? '(' + quizTitleMap[sub._quizId] + ')' : ''}</span>
+                    ${studentName}
+                    <span style="font-size:11px;color:#888;margin-left:6px;">${quizTitle}</span>
                   </div>
                   <div class="score">${score}</div>
                   <div class="progress"><div class="progress-bar" style="width: ${percent}%"></div></div>

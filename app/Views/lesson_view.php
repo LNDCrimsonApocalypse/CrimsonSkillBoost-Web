@@ -349,6 +349,21 @@ li {
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
   <script>
+
+    firebase.auth().onAuthStateChanged(async function(user) {
+      if (user) {
+        try {
+          const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+          if (doc.exists) {
+            const data = doc.data();
+            const profileImg = document.getElementById("navbar-profile-pic");
+            if (profileImg) {
+              profileImg.src = data.photoURL || "public/img/profile.png";
+            }
+          }
+        } catch (err) {}
+      }
+    });
     // Get topicId from URL (last segment)
     function getTopicIdFromUrl() {
       const parts = window.location.pathname.split('/');

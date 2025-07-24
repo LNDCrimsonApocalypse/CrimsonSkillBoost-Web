@@ -579,7 +579,7 @@ li {
     </div>
     <div class="navbar-right">
       <img src="public/img/notifications.png" alt="Notifications" class="icon" onclick="window.location.href='<?= base_url('notif') ?>'" style="cursor:pointer;" />
-      <img src="" alt="Profile" class="navbar-profile" style="cursor:pointer;" onclick="window.location.href='<?= base_url('editprofile') ?>'" />
+      <img src="" id="navbar-profile-pic" alt="Profile" class="navbar-profile" style="cursor:pointer;" onclick="window.location.href='<?= base_url('editprofile') ?>'" />
     </div>
   </nav>
 
@@ -691,6 +691,22 @@ li {
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+<script>
+firebase.auth().onAuthStateChanged(async function(user) {
+  if (user) {
+    try {
+      const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+      if (doc.exists) {
+        const data = doc.data();
+        const profileImg = document.getElementById("navbar-profile-pic");
+        if (profileImg) {
+          profileImg.src = data.photoURL || "public/img/profile.png";
+        }
+      }
+    } catch (err) {}
+  }
+});
+</script>
 <script>
 /**
  * This script loads enrollment requests from Firestore.
@@ -1018,7 +1034,7 @@ async function loadEnrollmentRequestsForInstructor(uid) {
 
     const userMap = {};
     usersSnap.forEach(doc => {
-      userMap[doc.id] = doc.data().fullName || "Unknown Student";
+      userMap[doc.id] = doc.data().fullName || doc.data().name || doc.id;
     });
 
     container.innerHTML = requests
@@ -1060,23 +1076,58 @@ async function loadRecentSubmissionsDashboard() {
 
     const submissions = submissionsSnap.docs.map(doc => {
       const d = doc.data();
+      let title = d.title || '';
+      let type = d.type || '';
+      let courseId = '';
+      let taskOrQuizId = '';
+      // Parse Firestore path: .../courses/{courseId}/tasks/{taskId}/submissions/{subId} or .../courses/{courseId}/quizzes/{quizId}/submissions/{subId}
+      const path = doc.ref.path.split('/');
+      if (path.length >= 6) {
+        courseId = path[1];
+        taskOrQuizId = path[3];
+        type = path[2] === 'tasks' ? 'Task' : (path[2] === 'quizzes' ? 'Quiz' : '');
+      }
       return {
         subId: doc.id,
         ...d,
         userId: d.userId || d.student_id || '',
-        timestamp: d.timestamp?.toDate?.() || null
+        timestamp: d.timestamp?.toDate?.() || null,
+        courseId,
+        taskOrQuizId,
+        type,
+        title
       };
     });
 
-    const studentIds = [...new Set(submissions.map(s => s.userId))];
-    const usersSnap = await db.collection('users')
-      .where(firebase.firestore.FieldPath.documentId(), 'in', studentIds)
-      .get();
+    // --- Fetch user names for all unique userIds ---
+    const studentIds = [...new Set(submissions.map(s => s.userId).filter(Boolean))];
+    let userMap = {};
+    if (studentIds.length) {
+      for (let i = 0; i < studentIds.length; i += 10) {
+        const batch = studentIds.slice(i, i + 10);
+        const usersSnap = await db.collection('users')
+          .where(firebase.firestore.FieldPath.documentId(), 'in', batch)
+          .get();
+        usersSnap.forEach(doc => {
+          userMap[doc.id] = doc.data().fullName || doc.data().name || doc.id;
+        });
+      }
+    }
 
-    const userMap = {};
-    usersSnap.forEach(doc => {
-      userMap[doc.id] = doc.data().fullName || doc.id;
-    });
+    // --- Fetch missing task/quiz titles in batch ---
+    const missingTitles = submissions.filter(s => !s.title && s.courseId && s.taskOrQuizId);
+    let titleMap = {};
+    for (const s of missingTitles) {
+      const parentCol = s.type === 'Task' ? 'tasks' : (s.type === 'Quiz' ? 'quizzes' : null);
+      if (!parentCol) continue;
+      const docRef = db.collection('courses').doc(s.courseId).collection(parentCol).doc(s.taskOrQuizId);
+      try {
+        const docSnap = await docRef.get();
+        if (docSnap.exists) {
+          titleMap[s.taskOrQuizId] = docSnap.data().title || docSnap.data().name || s.taskOrQuizId;
+        }
+      } catch (e) {}
+    }
 
     submissionList.innerHTML = submissions.map(sub => {
       const name = userMap[sub.userId] || sub.studentName || 'Student';
@@ -1084,13 +1135,15 @@ async function loadRecentSubmissionsDashboard() {
         ? Math.round((sub.score / sub.totalPossiblePoints) * 100) : 0;
       const scoreText = (sub.score != null && sub.totalPossiblePoints != null)
         ? `${sub.score}/${sub.totalPossiblePoints}` : '-';
-
+      // Use fetched title if missing, and show (Quiz) or (Task)
+      const activityTitle = sub.title || titleMap[sub.taskOrQuizId] || sub.taskOrQuizId || '';
+      const activityType = sub.type ? `(${sub.type})` : '';
       return `
         <div class="submission-card">
           <div class="submission-icon">${name[0]}</div>
           <div class="submission-details">
             <strong>${name}</strong>
-            <p>${sub.title} <span style="color:#888;font-size:0.95em;">(${sub.type})</span></p>
+            <p>${activityTitle ? activityTitle : ''} <span style="color:#888;font-size:0.95em;">${activityType}</span></p>
             <small>${sub.timestamp ? new Date(sub.timestamp).toLocaleString() : ''}</small>
             <div>
               <span class="score">${scoreText}</span>

@@ -271,7 +271,7 @@ li {
     </div>
     <div class="nav-right">
       <img src="public/img/notifications.png" class="notification" alt="Notifications">
-      <a href="<?= base_url('editprofile') ?>"> <img src="" id="educatorImage" class="profile" alt="User"> </a>
+      <a href="<?= base_url('editprofile') ?>"> <img src="" id="navbar-profile-pic" class="profile" alt="User"> </a>
       <a href="<?= base_url('homepage_initial') ?>"><button id="signOutButton">Sign Out</button> </a>
     </div>
   </div>
@@ -293,29 +293,33 @@ li {
   <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
-
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
   <script>
-  firebase.auth().onAuthStateChanged(async function(user) {
-    if (user) {
-      try {
-        const doc = await firebase.firestore().collection("users").doc(user.uid).get();
-        if (doc.exists) {
-          const data = doc.data();
-
-          // Full Name
-          const fullName = [data.fname, data.mname, data.lname, data.extname].filter(Boolean).join(" ");
-          document.getElementById("educatorName").textContent = fullName || "Educator";
-
-          // Bio
-          document.getElementById("educatorBio").textContent = data.bio || "Welcome to your dashboard.";
-
-          // Profile Picture (if you want to display on navbar or in main)
-          const profileImg = document.querySelector(".nav-right img.profile");
-          if (profileImg && data.photoURL) {
+firebase.auth().onAuthStateChanged(async function(user) {
+  if (user) {
+    try {
+      const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+      if (doc.exists) {
+        const data = doc.data();
+        const profileImg = document.getElementById("navbar-profile-pic");
+        if (profileImg) {
+          profileImg.src = data.photoURL || "public/img/profile.png";
+        }
+      }
+    } catch (err) {}
+  }
+});
+  </script>
+</body>
+</html>
             profileImg.src = data.photoURL;
+          }
+
+          // Profile Picture in navbar
+          const profileImg = document.getElementById("navbar-profile-pic");
+          if (profileImg) {
+            profileImg.src = data.photoURL || "public/img/profile.png";
           }
 
           // Optional: change main image if user uploaded one

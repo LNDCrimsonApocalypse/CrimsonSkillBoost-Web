@@ -145,7 +145,8 @@ $routes->get('result_quiz/(:num)', 'ResultQuiz::index/$1');
 $routes->post('send-verification-code', 'Auth::send_verification_code');
 $routes->post('auth/resend_verification', 'AuthController::resendVerification');
 
-$routes->get('studentprog', 'Studentprog::index');
+$routes->get('studentprog', 'Grading::studentprog'); // Use Grading controller for main route
+$routes->get('studentprog/(:segment)', 'Grading::studentprog/$1'); // For /studentprog/{course_id}
 $routes->get('courses_view', 'Courses::view');
 $routes->get('editprofile', 'ProfileController::editProfile');
 $routes->get('course-description', 'CourseController::description');

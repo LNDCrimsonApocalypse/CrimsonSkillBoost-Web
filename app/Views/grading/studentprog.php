@@ -452,16 +452,18 @@
     </div>
     <div class="navbar-right">
       <input class="search-box" type="text" placeholder="Search.." />
-      <img src="<?= base_url('img/profile.png') ?>" alt="profile" class="profile"/>
+      <a href="<?= base_url('editprofile') ?>">
+        <img src="" id="navbar-profile-pic" alt="profile" class="profile" style="cursor:pointer;" />
+      </a>
     </div>
   </header>
 
   <div class="tabbar">
-    <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
-    <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
-    <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
-   <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
-    <a href="<?= base_url('gradesettings') ?>">Grade Settings</a>
+    <a href="<?= base_url('topics') . '?course_id=' . urlencode($course_id ?? '') ?>"><span>Topic</span></a>
+    <a href="<?= base_url('task_list') . '?course_id=' . urlencode($course_id ?? '') ?>"> <span>Task</span></a>
+    <a href="<?= base_url('quiz_list') . '?course_id=' . urlencode($course_id ?? '') ?>"><span>Quiz</span></a>
+    <a href="<?= base_url('studentprog') . '?course_id=' . urlencode($course_id ?? '') ?>"><span>Student</span></a>
+    <a href="<?= base_url('gradesettings') ?>"><span>Grade Settings</span></a>
   </div>
 
   <div class="filters">
@@ -489,54 +491,140 @@
 
   <div class="progress">
     <h2>STUDENT PROGRESS</h2>
-    <div class="progress-table">
-      <div class="student-info student-info-large">
-        <img src="<?= base_url('public/img/profile_student.png') ?>" alt="Student" class="student-avatar">
-        <div>
-          <strong class="student-name">Juan Dela Cruz</strong><br>
-          <span class="email">juandelacruz@umak.edu.ph</span>
-          <span class="student-status">• Active</span>
-        </div>
-      </div>
-      <div class="last-updated">Last updated: 1hr ago</div>
-      <div class="progress-actions">
-        <div class="progress-col">
-          <div class="progress-circle quiz">
-            <svg width="60" height="60">
-              <circle cx="30" cy="30" r="26" stroke="#e0e0e0" stroke-width="6" fill="none"/>
-              <circle cx="30" cy="30" r="26" stroke="#0a8800" stroke-width="6" fill="none"
-                stroke-dasharray="<?= 2 * pi() * 26 ?>" stroke-dashoffset="<?= 2 * pi() * 26 * (1-1) ?>" />
-            </svg>
-            <span class="progress-label quiz">100%</span>
-          </div>
-          <button class="btn grade-quiz" onclick="window.location.href='<?= base_url('grading/preview_quiz') ?>'">Grade Quiz</button>
-          <div class="progress-desc">Quiz Complete: 1/1</div>
-        </div>
-        <div class="progress-divider"></div>
-        <div class="progress-col">
-          <div class="progress-circle task">
-            <svg width="60" height="60">
-              <circle cx="30" cy="30" r="26" stroke="#e0e0e0" stroke-width="6" fill="none"/>
-              <circle cx="30" cy="30" r="26" stroke="#22b573" stroke-width="6" fill="none"
-                stroke-dasharray="<?= 2 * pi() * 26 ?>" stroke-dashoffset="<?= 2 * pi() * 26 * (1-0.6) ?>" />
-            </svg>
-            <span class="progress-label task">60%</span>
-          </div>
-          <button class="btn grade-task" onclick="window.location.href='<?= base_url('grading/previewgrade') ?>'">Grade Task</button>
-          <div class="progress-desc">Task Complete: Incomplete</div>
-        </div>
-        <div class="progress-trash">
-          <span class="trash">🗑️</span>
-        </div>
-      </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Quiz Completion</th>
+            <th>Task Completion</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="studentProgressBody">
+          <!-- Student progress rows will be loaded by JS -->
+        </tbody>
+      </table>
     </div>
   </div>
 </body>
 </html>
-         
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+<script>
+firebase.auth().onAuthStateChanged(async function(user) {
+  if (user) {
+    try {
+      const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+      if (doc.exists) {
+        const data = doc.data();
+        const profileImg = document.getElementById("navbar-profile-pic");
+        if (profileImg) {
+          profileImg.src = data.photoURL || "public/img/profile.png";
+        }
+      }
+    } catch (err) {}
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Use course_id from PHP, fallback to query string if empty
+  let courseId = "<?= isset($course_id) ? esc($course_id) : '' ?>";
+  if (!courseId) {
+    const params = new URLSearchParams(window.location.search);
+    courseId = params.get('course_id') || '';
+  }
+  const tbody = document.getElementById('studentProgressBody');
+  if (!tbody) return;
+
+  async function loadStudentProgress() {
+    const db = firebase.firestore();
+    // Get all students enrolled in this course
+    let students = [];
+    try {
+      // Use courseId in Firestore queries
+      const enrollSnap = await db.collection('enrollment_requests')
+        .where('course_id', '==', courseId)
+        .where('status', '==', 'approved')
+        .get();
+      const studentIds = [];
+      enrollSnap.forEach(doc => {
+        const data = doc.data();
+        if (data.student_id) studentIds.push(data.student_id);
+      });
+      // Fetch user info
+      let userMap = {};
+      if (studentIds.length) {
+        for (let i = 0; i < studentIds.length; i += 10) {
+          const batch = studentIds.slice(i, i + 10);
+          const usersSnap = await db.collection('users')
+            .where(firebase.firestore.FieldPath.documentId(), 'in', batch)
+            .get();
+          usersSnap.forEach(doc => {
+            userMap[doc.id] = doc.data();
+          });
+        }
+      }
+      // For each student, get quiz/task completion
+      let rows = '';
+      // Get all quizzes for this course
+      const quizzesSnap = await db.collection('quizzes').where('course_id', '==', courseId).get();
+      const quizIds = quizzesSnap.docs.map(doc => doc.id);
+      const quizTotal = quizIds.length;
+      // Get all tasks for this course
+      const tasksSnap = await db.collection('courses').doc(courseId).collection('tasks').get();
+      const taskIds = tasksSnap.docs.map(doc => doc.id);
+      const taskTotal = taskIds.length;
+
+      for (const studentId of studentIds) {
+        const user = userMap[studentId] || {};
+        const name = user.fullName || user.name || 'Student';
+        const email = user.email || '';
+        // Quiz completion count
+        let quizComplete = 0;
+        for (const quizId of quizIds) {
+          const subSnap = await db.collection('quizzes').doc(quizId).collection('submissions').where('userId', '==', studentId).get();
+          if (!subSnap.empty) quizComplete++;
+        }
+        // Task completion count
+        let taskComplete = 0;
+        for (const taskId of taskIds) {
+          const subSnap = await db.collection('courses').doc(courseId).collection('tasks').doc(taskId).collection('submissions').where('userId', '==', studentId).get();
+          if (!subSnap.empty) taskComplete++;
+        }
+        rows += `
+          <tr>
+            <td>
+              <div class="student-info">
+                <img src="${user.profilePic || '<?= base_url('public/img/profile_student.png') ?>'}" alt="Student">
+                <div class="student-name">${name}</div>
+              </div>
+            </td>
+            <td>${email}</td>
+            <td><span class="status">Active</span></td>
+            <td>${quizComplete}/${quizTotal}</td>
+            <td>${taskComplete}/${taskTotal}</td>
+            <td>
+              <button class="btn grade-quiz" onclick="window.location.href='<?= base_url('grading/preview_quiz') ?>'">Grade Quiz</button>
+              <button class="btn grade-task" onclick="window.location.href='<?= base_url('grading/previewgrade') ?>'">Grade Task</button>
+            </td>
+          </tr>
+        `;
+      }
+      tbody.innerHTML = rows || `<tr><td colspan="6" style="text-align:center;color:#888;">No students found.</td></tr>`;
+    } catch (e) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#c00;">Error loading student progress.</td></tr>`;
+    }
+  }
+
+  if (courseId) {
+    loadStudentProgress();
+  } else {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#888;">No course selected.</td></tr>`;
+  }
+});
+</script>

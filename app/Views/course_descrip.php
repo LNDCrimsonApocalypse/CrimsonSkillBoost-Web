@@ -252,7 +252,7 @@
     </div>
     <div class="navbar-right">
       <img src="<?= base_url('public/img/notifications.png') ?>" alt="Notifications" class="icon" />
-      <img src="<?= base_url('public/img/profile.png') ?>" alt="Profile" class="navbar-profile" />
+      <img src="" id="navbar-profile-pic" alt="Profile" class="navbar-profile" style="cursor:pointer;" onclick="window.location.href='<?= base_url('editprofile') ?>'" />
     </div>
   </nav>
   <div class="container">
@@ -270,10 +270,8 @@
       </div>
       <div class="section-block">
         <div class="section-title">Topic Overview</div>
-        <ul class="topic-list">
-          <?php foreach ($course['topics'] as $topic): ?>
-            <li class="topic-item"><?= esc($topic) ?></li>
-          <?php endforeach; ?>
+        <ul class="topic-list" id="topicList">
+          <!-- Topics will be loaded by JS -->
         </ul>
       </div>
       <?php if (!empty($course['requirements'])): ?>
@@ -289,7 +287,7 @@
     </div>
     <div class="sidebar">
       <div class="profile-card">
-        <img src="<?= base_url('public/img/profile.png') ?>" alt="Professor Nicholas Aguinaldo" class="profile-pic">
+        <img src="<?= base_url('public/img/profile.png') ?>" id="sidebar-profile-pic" alt="Professor Nicholas Aguinaldo" class="profile-pic">
         <div class="prof-name"><?= isset($course['instructor']) ? esc($course['instructor']) : 'Professor Nicholas Aguinaldo' ?></div>
         <a href="<?= base_url('topics/' . (isset($course['id']) ? $course['id'] : '')) ?>" class="start-btn" style="display:block;text-align:center;text-decoration:none;">GET YOUR STUDENT STARTED</a>
         <ul class="includes-list">
@@ -303,5 +301,31 @@
       </div>
     </div>
   </div>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+  <script>
+  firebase.auth().onAuthStateChanged(async function(user) {
+    if (user) {
+      try {
+        const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+        if (doc.exists) {
+          const data = doc.data();
+          // Sidebar profile image
+          const sidebarImg = document.getElementById("sidebar-profile-pic");
+          if (sidebarImg) {
+            sidebarImg.src = data.photoURL || "public/img/profile.png";
+          }
+          // Top right navbar profile image
+          const navbarImg = document.getElementById("navbar-profile-pic");
+          if (navbarImg) {
+            navbarImg.src = data.photoURL || "public/img/profile.png";
+          }
+        }
+      } catch (err) {}
+    }
+  });
+  </script>
 </body>
 </html>

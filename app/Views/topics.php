@@ -614,7 +614,7 @@ outline-style: solid;
     <div class="navbar-right">
         <input class="search-box" type="text" placeholder="Search.." />
         <button onclick="window.location.href='<?= base_url('upload') . '?course_id=' . urlencode($course['id']) ?>'">+ Add Content</button>
-        <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
+        <img src="<?= base_url('public/img/profile.png') ?>" id="navbar-profile-pic" alt="profile" class="profile"/>
     </div>
 </div>
 <!-- Tabs -->
@@ -622,7 +622,7 @@ outline-style: solid;
     <a href="<?= base_url('topics') . '?course_id=' . urlencode($course['id']) ?>"><span>Topic</span></a>
     <a href="<?= base_url('task_list') . '?course_id=' . urlencode($course['id']) ?>"><span>Task</span></a>
     <a href="<?= base_url('quiz_list') . '?course_id=' . urlencode($course['id']) ?>"><span>Quiz</span></a>
-    <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
+    <a href="<?= base_url('studentprog') . '?course_id=' . urlencode($course['id']) ?>"><span>Student</span></a>
   </div>
   <!-- Section Title -->
   <div class="section-title" id="sectionTitle">
@@ -686,6 +686,20 @@ outline-style: solid;
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 <script>
+firebase.auth().onAuthStateChanged(async function(user) {
+  if (user) {
+    try {
+      const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+      if (doc.exists) {
+        const data = doc.data();
+        const profileImg = document.getElementById("navbar-profile-pic");
+        if (profileImg) {
+          profileImg.src = data.photoURL || "public/img/profile.png";
+        }
+      }
+    } catch (err) {}
+  }
+});
     // Modal logic
     const modal = document.getElementById('topicModal');
     const openBtn = document.getElementById('openModalBtn');

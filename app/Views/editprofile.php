@@ -50,11 +50,14 @@ body {
 }
 
 .profile-img {
-  width: 160px;
-  height: 160px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
   border-radius: 50%;
   border: 4px solid #eee;
+  display: block;
+  margin: 0 auto;
+  background: #f5f5f5;
 }
 
 .profile-name {
@@ -151,7 +154,7 @@ body {
     <div class="profile-card">
       <div class="profile-left">
         <label for="profile-pic-input" style="cursor:pointer; display:inline-block; margin-top: 50px;">
-          <img id="profile-pic" src="https://ui-avatars.com/api/?name=User&background=cccccc&color=fff&size=160" alt="Profile Picture">
+          <img id="profile-pic" class="profile-img" src="https://ui-avatars.com/api/?name=User&background=cccccc&color=fff&size=120" alt="Profile Picture">
           <div class="camera-icon">📷</div>
         </label>
         <input type="file" id="profile-pic-input" accept="image/*" style="display:none;">
@@ -291,21 +294,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     let photoURL = null;
 
     if (file) {
-      // Use FormData to send the file to your PHP endpoint
-      const formData = new FormData();
-      formData.append('profile_pic', file);
-      formData.append('uid', uid);
-
-      // Adjust the URL to your upload endpoint
-      const response = await fetch('<?= base_url('upload_profile_pic') ?>', {
-        method: 'POST',
-        body: formData
-      });
-      const result = await response.json();
-      if (result.success && result.url) {
-        photoURL = result.url;
-      } else {
-        alert("Failed to upload profile picture.");
+      try {
+        // Upload to Firebase Storage (per-user folder)
+        const storageRef = firebase.storage().ref();
+        const fileRef = storageRef.child(`profile_pics/${uid}/${Date.now()}_${file.name}`);
+        const snapshot = await fileRef.put(file);
+        photoURL = await snapshot.ref.getDownloadURL();
+        document.getElementById("profile-pic").src = photoURL;
+      } catch (err) {
+        alert("Failed to upload profile picture: " + err.message);
         showLoading(false);
         return;
       }

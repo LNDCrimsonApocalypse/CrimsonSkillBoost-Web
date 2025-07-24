@@ -90,10 +90,13 @@ class Grading extends BaseController
         return view('grading/edit');
     }
 
-    public function studentprog()
+    public function studentprog($course_id = null)
     {
-        // You can pass data to the view if needed
-        return view('grading/studentprog');
+        // Support both /studentprog/{course_id} and /studentprog?course_id=...
+        if (!$course_id) {
+            $course_id = $this->request->getGet('course_id');
+        }
+        return view('grading/studentprog', ['course_id' => $course_id]);
     }
 
     public function previewgrade()

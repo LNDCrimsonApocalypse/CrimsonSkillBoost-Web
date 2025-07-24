@@ -187,13 +187,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   firebase.auth().onAuthStateChanged(async function(user) {
     if (user) {
       const uid = user.uid;
-      console.log("Firebase Auth user:", user);
-
       let data;
 
       try {
         const doc = await firebase.firestore().collection("users").doc(uid).get();
-        console.log("Firestore doc.exists:", doc.exists, "doc.data:", doc.data());
         if (doc.exists) {
           data = doc.data();
         } else {
@@ -208,16 +205,15 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
       }
 
-      // ✅ Update UI with Firestore data
+      // Display profile info
       const fullName = [data.fname, data.mname, data.lname, data.extname].filter(Boolean).join(" ");
       document.getElementById("displayFullName").textContent = fullName || "Your name";
-      document.getElementById("displayUsername").textContent = data.username ? `@${data.username}` : ""; // Traditional username display
+      document.getElementById("displayUsername").textContent = data.username ? `@${data.username}` : "";
       document.getElementById("bio").value = data.bio || "";
       if (data.photoURL) {
         document.getElementById("profile-pic").src = data.photoURL;
       }
 
-      // ✅ Save UID for later use
       window.profileUID = uid;
       showLoading(false);
 
@@ -228,12 +224,26 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   });
 
+  // Profile picture preview
+  document.getElementById("profile-pic-input").addEventListener("change", function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        document.getElementById("profile-pic").src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
   document.getElementById("profileForm").addEventListener("submit", async function(e) {
     e.preventDefault();
+    showLoading(true);
 
     const uid = window.profileUID;
     if (!uid) {
       alert("User not found. Please log in again.");
+      showLoading(false);
       return;
     }
 
@@ -243,21 +253,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     let photoURL = null;
 
     if (file) {
-      // Use FormData to send the file to your PHP endpoint
-      const formData = new FormData();
-      formData.append('profile_pic', file);
-      formData.append('uid', uid);
-
-      // Adjust the URL to your upload endpoint
-      const response = await fetch('<?= base_url('upload_profile_pic') ?>', {
-        method: 'POST',
-        body: formData
-      });
-      const result = await response.json();
-      if (result.success && result.url) {
-        photoURL = result.url;
-      } else {
-        alert("Failed to upload profile picture.");
+      try {
+        // Upload to Firebase Storage (per-user folder)
+        const storageRef = firebase.storage().ref();
+        const fileRef = storageRef.child(`profile_pics/${uid}/${Date.now()}_${file.name}`);
+        const snapshot = await fileRef.put(file);
+        photoURL = await snapshot.ref.getDownloadURL();
+        document.getElementById("profile-pic").src = photoURL;
+      } catch (err) {
+        alert("Failed to upload profile picture: " + err.message);
+        showLoading(false);
         return;
       }
     }
@@ -266,7 +271,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       bio: bio,
       username: username
     };
-
     if (photoURL) {
       updateData.photoURL = photoURL;
     }
@@ -275,6 +279,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     alert("Profile saved!");
     window.location.href = "<?= base_url('homepage') ?>";
+    showLoading(false);
   });
 });
 </script>

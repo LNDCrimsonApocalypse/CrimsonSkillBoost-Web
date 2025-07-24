@@ -287,7 +287,9 @@ csseditgrade.html
     <div class="navbar-right">
       <input type="text" placeholder="Search.." />
         <img src="imgs/notifications.png" alt="Notifications" class="icon" />
-      <img src="imgs/profile.png" alt="profile" class="profile"/>
+      <a href="<?= base_url('editprofile') ?>">
+        <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile" style="cursor:pointer;" />
+      </a>
     </div>
   </div>
 

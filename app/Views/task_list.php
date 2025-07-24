@@ -379,7 +379,7 @@ $course_id = isset($course['id']) && $course['id'] ? $course['id'] : (isset($_GE
     <a href="<?= base_url('topics') . '?course_id=' . urlencode($course_id) ?>"><span>Topic</span></a>
     <a href="<?= base_url('task_list') . '?course_id=' . urlencode($course_id) ?>"><span>Task</span></a>
     <a href="<?= base_url('quiz_list') . '?course_id=' . urlencode($course_id) ?>"><span>Quiz</span></a>
-    <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
+    <a href="<?= base_url('studentprog') . '?course_id=' . urlencode($course_id) ?>"><span>Student</span></a>
   </div>
 
   <div class="main">
@@ -520,12 +520,31 @@ $course_id = isset($course['id']) && $course['id'] ? $course['id'] : (isset($_GE
           submissionList.innerHTML = '<div style="padding:16px;color:#888;">No recent submissions.</div>';
           return;
         }
+
+        // --- Fetch user names for all unique userIds ---
+        const userIds = [...new Set(submissions.map(sub => sub.userId || sub.student_id).filter(Boolean))];
+        let userMap = {};
+        if (userIds.length) {
+          // Firestore 'in' queries limited to 10, so batch if needed
+          for (let i = 0; i < userIds.length; i += 10) {
+            const batch = userIds.slice(i, i + 10);
+            const usersSnap = await db.collection('users')
+              .where(firebase.firestore.FieldPath.documentId(), 'in', batch)
+              .get();
+            usersSnap.forEach(doc => {
+              userMap[doc.id] = doc.data().fullName || doc.data().name || doc.id;
+            });
+          }
+        }
+
         let html = '';
         submissions.forEach(sub => {
+          const uid = sub.userId || sub.student_id;
+          const studentName = userMap[uid] || 'Student';
           html += `
             <div class="recent-sub-row" data-task-id="${sub.taskId}" data-sub-id="${sub.subId}">
               <div class="recent-sub-info">
-                <div><strong>${sub.userId || 'Student'}</strong> <span style="color:#888;">${sub.fileName || ''}</span></div>
+                <div><strong>${studentName}</strong> <span style="color:#888;">${sub.fileName || ''}</span></div>
                 <div style="font-size:0.97rem;color:#888;">${sub.taskTitle ? 'Task: ' + sub.taskTitle + ' | ' : ''}${sub.timestamp ? new Date(sub.timestamp).toLocaleString() : ''}</div>
                 <div>
                   <a href="${sub.fileUrl || '#'}" target="_blank" style="color:#4b4bf0;text-decoration:underline;">View File</a>
