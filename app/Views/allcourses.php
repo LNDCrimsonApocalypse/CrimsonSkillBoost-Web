@@ -1199,10 +1199,10 @@ function getYearValueForDb() {
   const yearRadio = document.querySelector('input[name="year"]:checked');
   if (!yearRadio) return '';
   // Store as "1", "2", "3", "4"
-  if (yearRadio.value.startsWith('1')) return "1st Year";
-  if (yearRadio.value.startsWith('2')) return "2nd Year";
-  if (yearRadio.value.startsWith('3')) return "3rd Year";
-  if (yearRadio.value.startsWith('4')) return "4th Year";
+  if (yearRadio.value.startsWith('1')) return "First Year";
+  if (yearRadio.value.startsWith('2')) return "Second Year";
+  if (yearRadio.value.startsWith('3')) return "Third Year";
+  if (yearRadio.value.startsWith('4')) return "Fourth Year";
   return yearRadio.value;
 }
 function getSemesterValueForDb(sem) {
