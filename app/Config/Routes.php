@@ -50,12 +50,12 @@ $routes->post('/course/update/(:num)', 'Course::update/$1');
 $routes->post('/course/delete/(:num)', 'Course::delete/$1');
 $routes->get('terms', 'Auth::terms');
 // $routes->get('topics', to: 'Auth::topics'); // Remove or comment out this line
-$routes->get('topics', 'Topics::default');
+$routes->get('topics', 'TopicController::topics');
 $routes->get('topics/(:segment)', 'Topics::index/$1');
-$routes->get(from: 'aboutus', to: 'Auth::aboutus');
-$routes->get(from: 'loggedin', to: 'Auth::loggedin');
-$routes->get(from: 'password_reset', to: 'Auth::forgetPassword');
-$routes->get(from: 'course/view/(:num)', to: 'Course::view/$1');
+$routes->get('aboutus', 'Auth::aboutus');
+$routes->get('loggedin', 'Auth::loggedin');
+$routes->get('password_reset', 'Auth::forgetPassword');
+$routes->get('course/view/(:num)', 'Course::view/$1');
 $routes->get('lesson/view/(:num)', 'LessonController::view/$1');
 $routes->get('/upload', 'Auth::upload');
 $routes->get('course_view', 'Course::view');
@@ -120,6 +120,7 @@ $routes->group('grading', ['namespace' => 'App\Controllers'], function($routes) 
 $routes->get('grading', 'Grading::index');
 $routes->get('grading/previewgrade', 'Grading::previewgrade');
 $routes->get('grading/preview_quiz', 'GradingController::previewQuiz');
+$routes->get('grading/preview_task', 'GradingController::previewTask'); // <-- Add this line
 
 $routes->get('enrollment', 'Enrollment::index');
 $routes->post('enrollment/submit', 'Enrollment::submitRequest');
@@ -148,7 +149,7 @@ $routes->post('auth/resend_verification', 'AuthController::resendVerification');
 $routes->get('studentprog', 'Grading::studentprog'); // Use Grading controller for main route
 $routes->get('studentprog/(:segment)', 'Grading::studentprog/$1'); // For /studentprog/{course_id}
 $routes->get('courses_view', 'Courses::view');
-$routes->get('editprofile', 'ProfileController::editProfile');
+$routes->get('editprofile', 'Auth::editprofile');
 $routes->get('course-description', 'CourseController::description');
 $routes->get('course_descrip', 'CourseController::description');
 $routes->get('allcourses2', 'CourseController::allcourses2');

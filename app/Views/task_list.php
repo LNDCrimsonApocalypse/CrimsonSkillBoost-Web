@@ -351,6 +351,132 @@ $course_id = isset($course['id']) && $course['id'] ? $course['id'] : (isset($_GE
       color: #22b573;
       margin-left: 6px;
     }
+
+    /* Edit Task Modal Styles */
+    #editTaskModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.18);
+      z-index: 2200;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #editTaskModal > div {
+      background: #fff;
+      border-radius: 14px;
+      max-width: 480px;
+      width: 95vw;
+      padding: 38px 36px 32px 36px;
+      box-shadow: 0 6px 32px rgba(0, 0, 0, 0.13);
+      position: relative;
+    }
+
+    #closeEditTaskModal {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    #editTaskModal label {
+      font-weight: 500;
+    }
+
+    #editTaskModal input,
+    #editTaskModal textarea {
+      width: 90%;
+      margin-left: 12px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1.2px solid #ccc;
+      font-size: 1rem;
+    }
+
+    #editTaskModal textarea {
+      min-height: 80px;
+    }
+
+    #saveEditTaskBtn {
+      background: #4be04b;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* View Submissions Modal Styles */
+    #viewSubmissionsModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.18);
+      z-index: 2300;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #viewSubmissionsModal > div {
+      background: #fff;
+      border-radius: 14px;
+      max-width: 600px;
+      width: 95vw;
+      padding: 38px 36px 32px 36px;
+      box-shadow: 0 6px 32px rgba(0, 0, 0, 0.13);
+      position: relative;
+    }
+
+    #closeViewSubmissionsModal {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    #viewSubmissionsModal label {
+      font-weight: 500;
+    }
+
+    #viewSubmissionsModal input,
+    #viewSubmissionsModal textarea {
+      width: 90%;
+      margin-left: 12px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1.2px solid #ccc;
+      font-size: 1rem;
+    }
+
+    #viewSubmissionsModal textarea {
+      min-height: 80px;
+    }
+
+    #saveViewSubmissionsBtn {
+      background: #4be04b;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -404,6 +530,42 @@ $course_id = isset($course['id']) && $course['id'] ? $course['id'] : (isset($_GE
     </div>
   </div>
 
+  <!-- Edit Task Modal -->
+  <div id="editTaskModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.18); z-index:2200; justify-content:center; align-items:center;">
+    <div style="background:#fff; border-radius:14px; max-width:480px; width:95vw; padding:38px 36px 32px 36px; box-shadow:0 6px 32px rgba(0,0,0,0.13); position:relative;">
+      <button id="closeEditTaskModal" style="position:absolute; top:18px; right:24px; font-size:1.5rem; background:none; border:none; cursor:pointer;">&times;</button>
+      <div style="font-size:1.3rem; font-weight:700; margin-bottom:18px;">Edit Task</div>
+      <div style="margin-bottom:12px;">
+        <label for="editTaskName" style="font-weight:500;">Task Name:</label>
+        <input id="editTaskName" type="text" style="width:90%;margin-left:12px;padding:6px 10px;border-radius:6px;border:1.2px solid #ccc;font-size:1rem;">
+      </div>
+      <div style="margin-bottom:18px;">
+        <label for="editTaskDesc" style="font-weight:500;">Description:</label>
+        <textarea id="editTaskDesc" style="width:90%;margin-left:12px;padding:6px 10px;border-radius:6px;border:1.2px solid #ccc;font-size:1rem;min-height:80px;"></textarea>
+      </div>
+      <div style="margin-bottom:18px;">
+        <label style="font-weight:500;">Current File:</label>
+        <span id="editTaskCurrentFile"></span>
+      </div>
+      <div style="margin-bottom:18px;">
+        <label for="editTaskFile" style="font-weight:500;">Replace File:</label>
+        <input id="editTaskFile" type="file" accept=".pdf,.png,.jpg,.jpeg,.ppt,.pptx,.zip" style="margin-left:12px;">
+      </div>
+      <div style="display:flex;justify-content:flex-end;">
+        <button id="saveEditTaskBtn" style="background:#4be04b;color:#fff;border:none;border-radius:8px;padding:10px 32px;font-size:1.1rem;font-weight:600;cursor:pointer;">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Submissions Modal -->
+  <div id="viewSubmissionsModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.18); z-index:2300; justify-content:center; align-items:center;">
+    <div style="background:#fff; border-radius:14px; max-width:600px; width:95vw; padding:38px 36px 32px 36px; box-shadow:0 6px 32px rgba(0, 0, 0, 0.13); position:relative;">
+      <button id="closeViewSubmissionsModal" style="position:absolute; top:18px; right:24px; font-size:1.5rem; background:none; border:none; cursor:pointer;">&times;</button>
+      <div style="font-size:1.3rem; font-weight:700; margin-bottom:18px;" id="viewSubmissionsTitle">Submissions</div>
+      <div id="viewSubmissionsList" style="max-height:400px;overflow-y:auto;"></div>
+    </div>
+  </div>
+
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
@@ -414,6 +576,11 @@ $course_id = isset($course['id']) && $course['id'] ? $course['id'] : (isset($_GE
       return text.length > maxLength ? text.substring(0, maxLength) + '…' : text;
     }
 
+    // Store current editing task info
+    let currentEditTaskId = null;
+    let currentEditTaskRef = null;
+
+    // Add Edit button to each task card
     function renderTaskCards(tasks) {
       const taskCards = document.getElementById('taskCards');
       if (!taskCards) return;
@@ -425,7 +592,7 @@ $course_id = isset($course['id']) && $course['id'] ? $course['id'] : (isset($_GE
       tasks.forEach(t => {
         const fileLink = t.file_url ? `<a href="${t.file_url}" target="_blank">${t.file_name || 'Download'}</a>` : '';
         taskCards.innerHTML += `
-          <div class="task-card">
+          <div class="task-card" data-task-id="${t.id}">
             <img src="<?= base_url('public/img/11.png')?>" alt="Task Image">
             <div class="task-card-content">
               <h3>${t.title || t.id}</h3>
@@ -444,12 +611,36 @@ $course_id = isset($course['id']) && $course['id'] ? $course['id'] : (isset($_GE
             <div class="task-card-footer">
               <span>${t.file_size ? (Math.round(t.file_size/1024/1024*100)/100) + ' MB' : ''}</span>
               <span>
-                <button style="background:#4b4bf0;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-weight:600;cursor:pointer;margin-right:8px;" onclick="showSubmissionsModal('<?= esc($course_id) ?>','${t.id}','${t.title || t.id}')">View Submissions</button>
+                <button style="background:#4b4bf0;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-weight:600;cursor:pointer;margin-right:8px;" onclick="openTaskSubmissions('${t.id}')">View Submissions</button>
+                <button class="edit-task-btn" data-task-id="${t.id}" style="background:#e636a4;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-weight:600;cursor:pointer;margin-right:8px;">Edit</button>
                 <span class="menu">⋯</span>
               </span>
             </div>
           </div>
         `;
+      });
+
+      // Attach edit button handlers
+      document.querySelectorAll('.edit-task-btn').forEach(btn => {
+        btn.onclick = function(e) {
+          e.preventDefault();
+          const taskId = btn.getAttribute('data-task-id');
+          const task = tasks.find(t => t.id === taskId);
+          if (!task) return;
+          currentEditTaskId = taskId;
+          currentEditTaskRef = task;
+          document.getElementById('editTaskName').value = task.title || '';
+          document.getElementById('editTaskDesc').value = task.description || '';
+          // Show current file
+          const fileSpan = document.getElementById('editTaskCurrentFile');
+          if (task.file_url) {
+            fileSpan.innerHTML = `<a href="${task.file_url}" target="_blank">${task.file_name || 'Download'}</a>`;
+          } else {
+            fileSpan.textContent = 'No file uploaded';
+          }
+          document.getElementById('editTaskFile').value = '';
+          document.getElementById('editTaskModal').style.display = 'flex';
+        };
       });
     }
 
@@ -596,6 +787,76 @@ $course_id = isset($course['id']) && $course['id'] ? $course['id'] : (isset($_GE
       loadTasks();
       loadRecentSubmissions();
     });
+
+    // Modal close logic
+    document.getElementById('closeEditTaskModal').onclick = function() {
+      document.getElementById('editTaskModal').style.display = 'none';
+      currentEditTaskId = null;
+      currentEditTaskRef = null;
+    };
+    document.getElementById('editTaskModal').onclick = function(e) {
+      if (e.target === this) this.style.display = 'none';
+    };
+
+    // Save edit logic
+    document.getElementById('saveEditTaskBtn').onclick = async function() {
+      const newTitle = document.getElementById('editTaskName').value.trim();
+      const newDesc = document.getElementById('editTaskDesc').value.trim();
+      const fileInput = document.getElementById('editTaskFile');
+      if (!currentEditTaskId) return;
+      const courseId = "<?= esc($course_id) ?>";
+      const db = firebase.firestore();
+      const taskRef = db.collection('courses').doc(courseId).collection('tasks').doc(currentEditTaskId);
+
+      let updateData = {
+        title: newTitle,
+        description: newDesc
+      };
+
+      // If a new file is selected, upload it and update file fields
+      if (fileInput.files && fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const storageRef = firebase.storage().ref();
+        const timestamp = Date.now();
+        const fileRef = storageRef.child(`educator_uploads/${courseId}/${timestamp}_${file.name}`);
+        try {
+          const uploadTaskSnapshot = await fileRef.put(file);
+          const downloadURL = await uploadTaskSnapshot.ref.getDownloadURL();
+          updateData.file_url = downloadURL;
+          updateData.file_name = file.name;
+          updateData.file_type = file.type;
+          updateData.file_size = file.size;
+        } catch (e) {
+          alert('Failed to upload file: ' + e.message);
+          return;
+        }
+      }
+
+      try {
+        await taskRef.update(updateData);
+        document.getElementById('editTaskModal').style.display = 'none';
+        loadTasks();
+      } catch (e) {
+        alert('Failed to update task: ' + e.message);
+      }
+    };
+
+    // Show submissions modal for a task
+    window.openTaskSubmissions = function(taskId) {
+      const courseId = "<?= esc($course_id) ?>";
+      // Redirect to preview_task with only course_id and task_id
+      window.location.href = "<?= base_url('grading/preview_task') ?>" +
+        "?course_id=" + encodeURIComponent(courseId) +
+        "&task_id=" + encodeURIComponent(taskId);
+    };
+
+    // Modal close logic for submissions modal
+    document.getElementById('closeViewSubmissionsModal').onclick = function() {
+      document.getElementById('viewSubmissionsModal').style.display = 'none';
+    };
+    document.getElementById('viewSubmissionsModal').onclick = function(e) {
+      if (e.target === this) this.style.display = 'none';
+    };
   </script>
 </body>
 </html>
