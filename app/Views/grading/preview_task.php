@@ -114,6 +114,26 @@
       flex-direction: column;
       align-items: flex-start;
     }
+    .grade-point-input {
+      width: 60px;
+      padding: 6px 8px;
+      border: 2px solid #3a8dde;
+      border-radius: 6px;
+      color: #2563eb;
+      font-weight: bold;
+      background: #eaf3ff;
+      text-align: center;
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .grade-point-input:focus {
+      border: 2px solid #2563eb;
+      background: #dbeafe;
+    }
+    .table-row-selected {
+      background: #e0e7ff !important;
+    }
     .comments label {
       font-size: 1.25rem;
       font-weight: 700;
@@ -221,6 +241,100 @@ function getQueryParam(name) {
 const courseId = getQueryParam('course_id');
 const taskId = getQueryParam('task_id');
 
+let submissions = [];
+let userMap = {};
+let selectedIdx = 0; // Track selected submission index
+
+function renderTableAndPreview() {
+  const tableBody = document.querySelector('tbody');
+  let html = '';
+  submissions.forEach((sub, idx) => {
+    const percent = sub.score && sub.totalPossiblePoints ? Math.round((sub.score / sub.totalPossiblePoints) * 100) : 0;
+    let gradePoint = sub.gradePoint !== undefined ? sub.gradePoint : '-';
+    const studentName = userMap[sub.userId || sub.student_id] || sub.userName || sub.userId || '-';
+    let filePreview = '';
+    if (sub.fileUrl) {
+      const ext = (sub.fileName || '').split('.').pop().toLowerCase();
+      if (['png','jpg','jpeg','gif'].includes(ext)) {
+        filePreview = `<a href="${sub.fileUrl}" target="_blank"><img src="${sub.fileUrl}" alt="File" style="max-width:60px;max-height:60px;border-radius:6px;"></a>`;
+      } else if (ext === 'pdf') {
+        filePreview = `<a href="${sub.fileUrl}" target="_blank">PDF</a>`;
+      } else {
+        filePreview = `<a href="${sub.fileUrl}" target="_blank">Download</a>`;
+      }
+    } else {
+      filePreview = '<span style="color:#888;">No file</span>';
+    }
+    html += `
+      <tr data-idx="${idx}" class="${idx === selectedIdx ? 'table-row-selected' : ''}">
+        <td>${studentName}</td>
+        <td>${sub.taskTitle || sub.title || 'Task'}</td>
+        <td>${percent}%</td>
+        <td>${sub.timestamp ? new Date(sub.timestamp).toLocaleDateString() : '-'}</td>
+        <td>
+          <input type="text" class="grade-point-input" value="${gradePoint !== '-' ? gradePoint : ''}" placeholder="-" data-idx="${idx}" />
+        </td>
+        <td>${sub.score || 0} / ${sub.totalPossiblePoints || 0}</td>
+        <td>${filePreview}</td>
+      </tr>
+    `;
+  });
+  tableBody.innerHTML = html;
+
+  // Add click listeners for row selection
+  tableBody.querySelectorAll('tr').forEach(row => {
+    row.addEventListener('click', function(e) {
+      // Prevent row click when clicking inside input
+      if (e.target.classList.contains('grade-point-input')) return;
+      selectedIdx = parseInt(this.getAttribute('data-idx'));
+      renderTableAndPreview();
+      loadCommentForSelected();
+    });
+  });
+
+  // Add input listeners for grade point
+  tableBody.querySelectorAll('.grade-point-input').forEach(input => {
+    input.addEventListener('click', e => e.stopPropagation());
+    input.addEventListener('change', function() {
+      const idx = parseInt(this.getAttribute('data-idx'));
+      let val = this.value.trim();
+      // Optionally validate grade point format here
+      submissions[idx].gradePoint = val;
+      // Save grade point to Firestore
+      saveGradePoint(submissions[idx]);
+    });
+  });
+
+  // Render preview for selected submission
+  renderPreviewBox();
+}
+
+function renderPreviewBox() {
+  const previewBox = document.getElementById('taskPreviewBox');
+  const sub = submissions[selectedIdx];
+  let preview = '';
+  if (sub && sub.fileUrl) {
+    const ext = (sub.fileName || '').split('.').pop().toLowerCase();
+    if (['png','jpg','jpeg','gif'].includes(ext)) {
+      preview = `<img src="${sub.fileUrl}" alt="Task File" style="max-width:100%;max-height:320px;border-radius:8px;margin-top:12px;">`;
+    } else if (ext === 'pdf') {
+      preview = `<iframe src="${sub.fileUrl}" style="width:100%;height:320px;border:none;margin-top:12px;"></iframe>`;
+    } else {
+      preview = `<a href="${sub.fileUrl}" target="_blank" style="color:#e636a4;font-weight:600;">Download File</a>`;
+    }
+  } else {
+    preview = '<div style="color:#888;">No file uploaded.</div>';
+  }
+  previewBox.innerHTML = `<div class="section-title">Preview</div>${preview}`;
+}
+
+function saveGradePoint(sub) {
+  if (!sub._id) return;
+  db.collection('courses').doc(courseId).collection('tasks').doc(taskId)
+    .collection('submissions').doc(sub._id)
+    .set({ gradePoint: sub.gradePoint }, { merge: true });
+}
+
 function loadTaskSubmissions() {
   const tableBody = document.querySelector('tbody');
   tableBody.innerHTML = '<tr><td colspan="7">Loading...</td></tr>';
@@ -235,7 +349,7 @@ function loadTaskSubmissions() {
         document.getElementById('taskPreviewBox').innerHTML = '<div class="section-title">Preview</div><div style="color:#888;">No file uploaded.</div>';
         return;
       }
-      let submissions = [];
+      submissions = [];
       let userIds = [];
       snapshot.forEach(doc => {
         const sub = doc.data();
@@ -244,7 +358,7 @@ function loadTaskSubmissions() {
         if (sub.userId || sub.student_id) userIds.push(sub.userId || sub.student_id);
       });
       userIds = [...new Set(userIds)];
-      let userMap = {};
+      userMap = {};
       if (userIds.length) {
         for (let i = 0; i < userIds.length; i += 10) {
           const batch = userIds.slice(i, i + 10);
@@ -256,62 +370,28 @@ function loadTaskSubmissions() {
           });
         }
       }
-      let html = '';
-      let firstPreview = '';
-      submissions.forEach((sub, idx) => {
-        const percent = sub.score && sub.totalPossiblePoints ? Math.round((sub.score / sub.totalPossiblePoints) * 100) : 0;
-        let gradePoint = '-';
-        if (percent >= 97) gradePoint = '1.0';
-        else if (percent >= 94) gradePoint = '1.25';
-        else if (percent >= 91) gradePoint = '1.5';
-        else if (percent >= 88) gradePoint = '1.75';
-        else if (percent >= 85) gradePoint = '2.0';
-        const studentName = userMap[sub.userId || sub.student_id] || sub.userName || sub.userId || '-';
-        let filePreview = '';
-        if (sub.fileUrl) {
-          const ext = (sub.fileName || '').split('.').pop().toLowerCase();
-          if (['png','jpg','jpeg','gif'].includes(ext)) {
-            filePreview = `<a href="${sub.fileUrl}" target="_blank"><img src="${sub.fileUrl}" alt="File" style="max-width:60px;max-height:60px;border-radius:6px;"></a>`;
-          } else if (ext === 'pdf') {
-            filePreview = `<a href="${sub.fileUrl}" target="_blank">PDF</a>`;
-          } else {
-            filePreview = `<a href="${sub.fileUrl}" target="_blank">Download</a>`;
-          }
-        } else {
-          filePreview = '<span style="color:#888;">No file</span>';
-        }
-        html += `
-          <tr>
-            <td>${studentName}</td>
-            <td>${sub.taskTitle || sub.title || 'Task'}</td>
-            <td>${percent}%</td>
-            <td>${sub.timestamp ? new Date(sub.timestamp).toLocaleDateString() : '-'}</td>
-            <td>${gradePoint}</td>
-            <td>${sub.score || 0} / ${sub.totalPossiblePoints || 0}</td>
-            <td>${filePreview}</td>
-          </tr>
-        `;
-        // Show preview for the first submission by default
-        if (idx === 0) {
-          if (sub.fileUrl) {
-            if (['png','jpg','jpeg','gif'].includes((sub.fileName || '').split('.').pop().toLowerCase())) {
-              firstPreview = `<img src="${sub.fileUrl}" alt="Task File" style="max-width:100%;max-height:320px;border-radius:8px;margin-top:12px;">`;
-            } else if ((sub.fileName || '').split('.').pop().toLowerCase() === 'pdf') {
-              firstPreview = `<iframe src="${sub.fileUrl}" style="width:100%;height:320px;border:none;margin-top:12px;"></iframe>`;
-            } else {
-              firstPreview = `<a href="${sub.fileUrl}" target="_blank" style="color:#e636a4;font-weight:600;">Download File</a>`;
-            }
-          } else {
-            firstPreview = '<div style="color:#888;">No file uploaded.</div>';
-          }
-        }
-      });
-      tableBody.innerHTML = html;
-      document.getElementById('taskPreviewBox').innerHTML = `<div class="section-title">Preview</div>${firstPreview}`;
+      selectedIdx = 0;
+      renderTableAndPreview();
+      loadCommentForSelected();
     })
     .catch(err => {
       tableBody.innerHTML = `<tr><td colspan="7">Error loading submissions: ${err.message}</td></tr>`;
       document.getElementById('taskPreviewBox').innerHTML = '<div class="section-title">Preview</div><div style="color:#c00;">Error loading preview.</div>';
+    });
+}
+
+function loadCommentForSelected() {
+  const commentBox = document.getElementById('comment');
+  commentBox.value = '';
+  const sub = submissions[selectedIdx];
+  if (!sub || !sub._id) return;
+  db.collection('courses').doc(courseId).collection('tasks').doc(taskId)
+    .collection('submissions').doc(sub._id)
+    .collection('comments').orderBy('createdAt', 'desc').limit(1).get()
+    .then(snapshot => {
+      if (!snapshot.empty) {
+        commentBox.value = snapshot.docs[0].data().comment || '';
+      }
     });
 }
 
@@ -331,25 +411,29 @@ if (saveBtn && commentBox) {
     }
     saveBtn.disabled = true;
     saveBtn.textContent = 'Saving...';
-    // Save to Firestore under tasks/{taskId}/comments/{autoId}
-    db.collection('courses').doc(courseId).collection('tasks').doc(taskId).collection('comments').add({
-      comment: comment,
-      createdAt: new Date()
-    }).then(() => {
-      saveBtn.disabled = false;
-      saveBtn.textContent = 'Save Grade';
-      saveStatus.style.display = 'block';
-      saveStatus.textContent = 'Grade saved!';
-      setTimeout(() => { saveStatus.style.display = 'none'; }, 2000);
-      commentBox.value = '';
-    }).catch(() => {
-      saveBtn.disabled = false;
-      saveBtn.textContent = 'Save Grade';
-      saveStatus.style.display = 'block';
-      saveStatus.style.color = '#e63636';
-      saveStatus.textContent = 'Failed to save. Try again.';
-      setTimeout(() => { saveStatus.style.display = 'none'; saveStatus.style.color = '#22b573'; }, 2000);
-    });
+    // Save to Firestore under submissions/{subId}/comments/{autoId}
+    const sub = submissions[selectedIdx];
+    if (!sub || !sub._id) return;
+    db.collection('courses').doc(courseId).collection('tasks').doc(taskId)
+      .collection('submissions').doc(sub._id)
+      .collection('comments').add({
+        comment: comment,
+        createdAt: new Date()
+      }).then(() => {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save Grade';
+        saveStatus.style.display = 'block';
+        saveStatus.textContent = 'Grade saved!';
+        setTimeout(() => { saveStatus.style.display = 'none'; }, 2000);
+        // commentBox.value = ''; // keep comment for editing
+      }).catch(() => {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save Grade';
+        saveStatus.style.display = 'block';
+        saveStatus.style.color = '#e63636';
+        saveStatus.textContent = 'Failed to save. Try again.';
+        setTimeout(() => { saveStatus.style.display = 'none'; saveStatus.style.color = '#22b573'; }, 2000);
+      });
   });
 }
 </script>

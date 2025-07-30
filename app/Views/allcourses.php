@@ -530,7 +530,7 @@
         <div class="courses-title">COURSES</div>
         <div class="courses-toolbar">
           <select id="courseFilter" class="dropdown-select" onchange="filterCourses()">
-  <option value="all">All Category</option>
+  <option value="all">All Categories</option>
   <option value="active">Active</option>
   <option value="inactive">Inactive</option>
 </select>
@@ -1151,8 +1151,9 @@ async function displayUserCoursesFromFirestore() {
         (course.semester ? ' - ' + (course.semester === "1" ? "First Semester" : course.semester === "2" ? "Second Semester" : course.semester) : '');
       // Use course_code from DB, or fallback to mapping, or empty string
       const code = course.course_code || courseCodeMap[(course.course_name || '').trim().toUpperCase()] || "";
+      const status = course.status === "inactive" ? "inactive" : "active";
       return `
-        <div class="card" data-status="active">
+        <div class="card" data-status="${status}" data-course-id="${course.id}">
           <div class="card-image">
             <img src="default-course.jpg" alt="${course.course_name || ''}">
           </div>
@@ -1167,6 +1168,7 @@ async function displayUserCoursesFromFirestore() {
                 <i class="fa fa-users"></i> 0 students
               </span>
               <button class="card-btn" data-course-id="${course.id}">View Info</button>
+              ${status === "active" ? `<button class="card-btn done-btn" data-course-id="${course.id}" style="background:#bbb;color:#fff;margin-left:8px;">Done</button>` : ""}
             </div>
           </div>
         </div>
@@ -1174,11 +1176,33 @@ async function displayUserCoursesFromFirestore() {
     }).join('');
 
     // Add click handler for all "View Info" buttons
-    cardsContainer.querySelectorAll('.card-btn[data-course-id]').forEach(btn => {
+    cardsContainer.querySelectorAll('.card-btn[data-course-id]:not(.done-btn)').forEach(btn => {
       btn.onclick = function() {
         const courseId = this.getAttribute('data-course-id');
         if (courseId) {
           window.location.href = '<?= base_url('course/info') ?>/' + courseId;
+        }
+      };
+    });
+
+    // Add click handler for "Done" buttons
+    cardsContainer.querySelectorAll('.done-btn').forEach(btn => {
+      btn.onclick = async function(e) {
+        e.stopPropagation();
+        const courseId = this.getAttribute('data-course-id');
+        if (!courseId) return;
+        // Update Firestore
+        try {
+          await firebase.firestore().collection("courses").doc(courseId).set({ status: "inactive" }, { merge: true });
+          // Update UI
+          const card = this.closest('.card');
+          if (card) {
+            card.setAttribute('data-status', 'inactive');
+            this.remove(); // Remove the Done button
+          }
+          filterCourses();
+        } catch (err) {
+          alert("Failed to mark as done: " + err.message);
         }
       };
     });

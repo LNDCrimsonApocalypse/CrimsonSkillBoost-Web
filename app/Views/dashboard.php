@@ -593,7 +593,7 @@ li {
     
         <div class="courses-toolbar">
           <select id="courseFilter" class="dropdown-select" onchange="filterCourses()">
-  <option value="all">All Category</option>
+  <option value="all">All Categories</option>
   <option value="active">Active</option>
   <option value="inactive">Inactive</option>
 </select>
