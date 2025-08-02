@@ -684,7 +684,11 @@ outline-style: solid;
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+<!-- Add PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
 <script>
 firebase.auth().onAuthStateChanged(async function(user) {
   if (user) {
@@ -890,30 +894,117 @@ firebase.auth().onAuthStateChanged(async function(user) {
       });
     };
 
-    // Upload topic form (just closes modal for now)
-    document.querySelector('.upload-topic-form').onsubmit = function(e) {
-      e.preventDefault();
-      uploadTopicModal.classList.remove('show');
-    };
+    // --- UPLOAD TOPIC LOGIC: SIMPLE FILE UPLOAD ---
+const uploadForm = document.querySelector('.upload-topic-form');
+const uploadTitleInput = document.getElementById('uploadTopicTitle');
+const uploadDropzone = document.getElementById('uploadDropzone');
+const uploadFileInput = document.getElementById('uploadFiles');
 
-    // Drag and drop logic for upload
-    const dropzone = document.getElementById('uploadDropzone');
-    const fileInput = document.getElementById('uploadFiles');
-    dropzone.addEventListener('click', () => fileInput.click());
-    dropzone.addEventListener('dragover', e => {
-      e.preventDefault();
-      dropzone.classList.add('dragover');
+// Remove PDF extraction logic and textarea if present
+function clearUploadTextArea() {
+  const descArea = document.getElementById('uploadPdfTextArea');
+  if (descArea) descArea.remove();
+}
+
+// Show selected file names in the dropzone
+function showSelectedFileNames() {
+  const files = Array.from(uploadFileInput.files);
+  if (files.length) {
+    uploadDropzone.textContent = files.map(f => f.name).join(', ');
+  } else {
+    uploadDropzone.textContent = "Drag files here or click to browse";
+  }
+}
+
+uploadFileInput.addEventListener('change', function() {
+  clearUploadTextArea();
+  showSelectedFileNames();
+});
+uploadDropzone.addEventListener('click', () => uploadFileInput.click());
+uploadDropzone.addEventListener('dragover', e => {
+  e.preventDefault();
+  uploadDropzone.classList.add('dragover');
+});
+uploadDropzone.addEventListener('dragleave', e => {
+  e.preventDefault();
+  uploadDropzone.classList.remove('dragover');
+});
+uploadDropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadDropzone.classList.remove('dragover');
+  uploadFileInput.files = e.dataTransfer.files;
+  clearUploadTextArea();
+  showSelectedFileNames();
+});
+
+// Upload topic form submit: Upload file(s) to Firebase Storage, then save topic
+uploadForm.onsubmit = function(e) {
+  e.preventDefault();
+  const topicTitle = uploadTitleInput.value.trim();
+  const files = Array.from(uploadFileInput.files);
+  const courseId = "<?= esc($course['id']) ?>";
+  if (!topicTitle) {
+    alert("Topic title is required.");
+    return;
+  }
+  if (!files.length) {
+    alert("Please select at least one file to upload.");
+    return;
+  }
+  const btn = uploadForm.querySelector('.upload-create-btn');
+  btn.disabled = true;
+  btn.textContent = "Uploading...";
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (!user) {
+      btn.disabled = false;
+      btn.textContent = "Create Topic";
+      alert("You must be logged in to add a topic.");
+      return;
+    }
+    // Upload all files, collect download URLs
+    const storage = firebase.storage();
+    const uploadPromises = files.map(file => {
+      const storageRef = storage.ref(`courses/${courseId}/topics/${Date.now()}_${file.name}`);
+      return storageRef.put(file).then(snapshot => snapshot.ref.getDownloadURL());
     });
-    dropzone.addEventListener('dragleave', e => {
-      e.preventDefault();
-      dropzone.classList.remove('dragover');
-    });
-    dropzone.addEventListener('drop', e => {
-      e.preventDefault();
-      dropzone.classList.remove('dragover');
-      fileInput.files = e.dataTransfer.files;
-      // Optionally show file names here
-    });
+    Promise.all(uploadPromises)
+      .then(urls => {
+        // Build description with links to files
+        let desc = urls.map((url, i) => {
+          const file = files[i];
+          const ext = file.name.split('.').pop().toLowerCase();
+          if (['png','jpg','jpeg'].includes(ext)) {
+            return `<div><a href="${url}" target="_blank"><img src="${url}" alt="${file.name}" style="max-width:100%;height:auto;"/></a></div>`;
+          } else if (ext === 'pdf') {
+            return `<div><a href="${url}" target="_blank">View PDF: ${file.name}</a></div>`;
+          } else {
+            return `<div><a href="${url}" target="_blank">Download: ${file.name}</a></div>`;
+          }
+        }).join('');
+        // Save topic to Firestore
+        const topicsRef = firebase.firestore().collection('courses').doc(courseId).collection('topics');
+        return topicsRef.add({
+          title: topicTitle,
+          description: desc,
+          created_by: user.uid,
+          created_at: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      })
+      .then(() => {
+        btn.disabled = false;
+        btn.textContent = "Create Topic";
+        uploadTopicModal.classList.remove('show');
+        alert("Topic added!");
+        location.reload();
+      })
+      .catch(error => {
+        btn.disabled = false;
+        btn.textContent = "Create Topic";
+        alert("Failed to upload or add topic: " + error.message);
+      });
+  });
+};
 </script>
 </body>
 </html>

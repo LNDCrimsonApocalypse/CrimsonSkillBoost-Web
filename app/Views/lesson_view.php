@@ -411,7 +411,50 @@ li {
               const desc = topic.description || '';
               const subtopics = parseSubtopics(desc);
 
-              if (subtopics) {
+              // --- Enhanced file detection and rendering ---
+              // Find all file links in the description
+              const fileLinks = [];
+              // Match <a href="...">...</a>
+              const linkRegex = /<a\s+href="([^"]+)"[^>]*>(.*?)<\/a>/gi;
+              let match;
+              while ((match = linkRegex.exec(desc)) !== null) {
+                fileLinks.push({ url: match[1], label: match[2] });
+              }
+
+              if (fileLinks.length > 0) {
+                document.getElementById('subtopicsList').innerHTML = '';
+                let html = `<div style="margin-bottom:16px;"><b>${topic.title || topicId}</b></div>`;
+                fileLinks.forEach(link => {
+                  const url = link.url;
+                  const label = link.label;
+                  const ext = url.split('.').pop().toLowerCase().split('?')[0];
+                  if (ext === 'pdf') {
+                    html += `
+                      <div style="margin-bottom:18px;">
+                        <iframe src="${url}#toolbar=1&navpanes=0&scrollbar=1"
+                          style="width:100%;min-height:70vh;border:1px solid #ccc;border-radius:8px;background:#fff;"
+                          allowfullscreen></iframe>
+                        <div style="margin-top:8px;">
+                          <a href="${url}" target="_blank" style="color:#e636a4;font-weight:bold;">Open PDF in new tab</a>
+                        </div>
+                      </div>
+                    `;
+                  } else if (['png','jpg','jpeg','gif','bmp','webp'].includes(ext)) {
+                    html += `
+                      <div style="margin-bottom:18px;">
+                        <img src="${url}" alt="${label}" style="max-width:100%;height:auto;border-radius:8px;border:1px solid #eee;"/>
+                      </div>
+                    `;
+                  } else {
+                    html += `
+                      <div style="margin-bottom:18px;">
+                        <a href="${url}" target="_blank" style="color:#3a2352;font-weight:bold;">${label || 'Download file'}</a>
+                      </div>
+                    `;
+                  }
+                });
+                document.getElementById('topicDescription').innerHTML = html;
+              } else if (subtopics) {
                 // Render subtopics in the left panel
                 const ul = document.getElementById('subtopicsList');
                 ul.innerHTML = '';
@@ -436,7 +479,7 @@ li {
               } else {
                 // No subtopics, show the whole description in the right panel
                 document.getElementById('subtopicsList').innerHTML = '';
-                document.getElementById('topicDescription').textContent = desc;
+                document.getElementById('topicDescription').innerHTML = desc;
               }
             }
           });

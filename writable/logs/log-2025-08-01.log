@@ -28,3 +28,223 @@ in SYSTEMPATH\Router\Router.php on line 739.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 16:22:22 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 16:23:51 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 16:34:09 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 17:50:08 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 17:50:40 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 17:54:04 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 17:55:25 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 18:00:12 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 18:08:46 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 18:11:25 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 18:37:27 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 18:38:22 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 18:48:43 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 18:48:51 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 18:51:56 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 19:04:10 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 19:04:37 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 19:04:47 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 19:13:21 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 19:13:40 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 19:14:11 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-08-01 19:14:32 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "Logo.png alt="
+[Method: GET, Route: public/img/Logo.png%20alt=]
+in SYSTEMPATH\Router\Router.php on line 739.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('public/img/Logo.png alt=')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('public/img/Logo.png alt=')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
