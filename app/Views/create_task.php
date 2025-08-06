@@ -538,6 +538,8 @@ li {
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
   <script>
+    let selectedTaskFile = null;
+
     // Modal open/close logic
     document.getElementById('openAddContentModal').addEventListener('click', function() {
       document.getElementById('addContentModal').classList.add('active');
@@ -585,9 +587,31 @@ li {
         alert('Task name is required.');
         return;
       }
-      // Optionally, collect more fields here (description, file, etc.)
       const courseId = (new URLSearchParams(window.location.search)).get('course_id') || null;
       const db = firebase.firestore();
+      let fileData = {};
+
+      // Upload file if selected
+      if (selectedTaskFile) {
+        try {
+          const storageRef = firebase.storage().ref();
+          const timestamp = Date.now();
+          const fileRef = storageRef.child(`educator_uploads/${courseId || 'general'}/${timestamp}_${selectedTaskFile.name}`);
+          const uploadTaskSnapshot = await fileRef.put(selectedTaskFile);
+          const downloadURL = await uploadTaskSnapshot.ref.getDownloadURL();
+          fileData = {
+            file_name: selectedTaskFile.name,
+            file_type: selectedTaskFile.type,
+            file_size: selectedTaskFile.size,
+            file_url: downloadURL
+          };
+        } catch (error) {
+          alert('❌ Failed to upload file: ' + error.message);
+          return;
+        }
+      }
+
+      // Create Firestore entry with file info (if any)
       const taskData = {
         title: taskName,
         description: '', // Add description field if you want
@@ -596,7 +620,8 @@ li {
         start_date: startDate,
         end_date: endDate,
         attempts: attempts,
-        allow_late: allowLate
+        allow_late: allowLate,
+        ...fileData
       };
       try {
         let ref;
@@ -607,6 +632,7 @@ li {
         }
         document.getElementById('dueDateModal').style.display = 'none';
         alert('Task created successfully!');
+        selectedTaskFile = null; // reset after creation
         // Optionally redirect to task list or clear modal
         // window.location.href = "<?= base_url('create_task') ?>";
       } catch (e) {
@@ -617,8 +643,6 @@ li {
     // Import content button (now uploads file to Storage and saves Firestore entry with downloadURL)
     document.getElementById('importContentBtn').onclick = function(e) {
       e.preventDefault();
-
-      // Create a hidden file input if not already present
       let fileInput = document.getElementById('importContentFileInput');
       if (!fileInput) {
         fileInput = document.createElement('input');
@@ -628,63 +652,15 @@ li {
         fileInput.id = 'importContentFileInput';
         document.body.appendChild(fileInput);
       }
-      fileInput.value = ''; // reset
-
-      fileInput.onchange = async function() {
+      fileInput.value = '';
+      fileInput.onchange = function() {
         if (!fileInput.files.length) {
-          console.log('No file selected.');
+          selectedTaskFile = null;
           return;
         }
-        const file = fileInput.files[0];
-        console.log('Selected file:', file);
-
-        const taskName = document.getElementById('taskName').value.trim();
-        if (!taskName) {
-          alert('Task name is required before importing content.');
-          return;
-        }
-
-        const courseId = (new URLSearchParams(window.location.search)).get('course_id') || 'general';
-        const storageRef = firebase.storage().ref();
-        const timestamp = Date.now();
-        const fileRef = storageRef.child(`educator_uploads/${courseId}/${timestamp}_${file.name}`);
-
-        try {
-          console.log('Uploading file to Firebase Storage...');
-          const uploadTaskSnapshot = await fileRef.put(file);
-          console.log('Upload complete:', uploadTaskSnapshot);
-
-          const downloadURL = await uploadTaskSnapshot.ref.getDownloadURL();
-          console.log('Download URL:', downloadURL);
-
-          // ✅ Save Firestore entry with downloadURL
-          const db = firebase.firestore();
-          const taskData = {
-            title: taskName,
-            description: '',
-            created_at: new Date().toISOString(),
-            course_id: courseId,
-            file_name: file.name,
-            file_type: file.type,
-            file_size: file.size,
-            file_url: downloadURL // 👈 store the URL
-          };
-
-          let ref;
-          if (courseId) {
-            ref = await db.collection('courses').doc(courseId).collection('tasks').add(taskData);
-          } else {
-            ref = await db.collection('tasks').add(taskData);
-          }
-
-          console.log('Firestore entry created:', ref);
-          alert('✅ Task created & file uploaded successfully!');
-        } catch (error) {
-          console.error('Upload error:', error);
-          alert('❌ Failed to upload file: ' + error.message);
-        }
+        selectedTaskFile = fileInput.files[0];
+        alert('File selected: ' + selectedTaskFile.name);
       };
-
       fileInput.click();
     };
   </script>
