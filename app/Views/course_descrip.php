@@ -271,7 +271,7 @@
       <div class="section-block">
         <div class="section-title">Topic Overview</div>
         <ul class="topic-list" id="topicList">
-          <!-- Topics will be loaded by JS -->
+          <li>Loading topics...</li>
         </ul>
       </div>
       <?php if (!empty($course['requirements'])): ?>
@@ -325,6 +325,31 @@
         }
       } catch (err) {}
     }
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const courseId = "<?= esc($course['id']) ?>";
+    const topicList = document.getElementById('topicList');
+    firebase.firestore().collection('courses').doc(courseId).collection('topics').get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          topicList.innerHTML = "<li>No topics found.</li>";
+        } else {
+          topicList.innerHTML = "";
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            const title = data.title || doc.id;
+            const url = "<?= base_url('lesson_view') ?>/" + encodeURIComponent(doc.id) + "?course_id=<?= urlencode($course['id']) ?>";
+            const li = document.createElement('li');
+            li.className = "topic-item";
+            li.innerHTML = `<a href="${url}" style="text-decoration:none;color:#e636a4;font-weight:bold;">${title}</a>`;
+            topicList.appendChild(li);
+          });
+        }
+      })
+      .catch(() => {
+        topicList.innerHTML = "<li>Error loading topics.</li>";
+      });
   });
   </script>
 </body>
