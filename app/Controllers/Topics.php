@@ -11,7 +11,7 @@ class Topics extends BaseController
             return redirect()->to('/allcourses')->with('error', 'No course ID provided');
         }
 
-        $projectId = 'csboostcmo';
+        $projectId = 'cmo-boost-2';
         $collection = 'courses';
         $url = "https://firestore.googleapis.com/v1/projects/$projectId/databases/(default)/documents/$collection/$id";
         $json = @file_get_contents($url);
@@ -78,7 +78,7 @@ class Topics extends BaseController
     public function default()
     {
         // Fetch the first course from Firestore (or any logic you want)
-        $projectId = 'csboostcmo';
+        $projectId = 'cmo-boost-2';
         $collection = 'courses';
         $url = "https://firestore.googleapis.com/v1/projects/$projectId/databases/(default)/documents/$collection";
         $json = @file_get_contents($url);

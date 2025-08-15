@@ -13,6 +13,6 @@
     "DB_NAME": "3306",
     "DB_USER": "root",
     "DB_PASS": "",
-    "FIREBASE_DATABASE_URL": "https://csboostcmo-default-rtdb.firebaseio.com/"
+    "FIREBASE_DATABASE_URL": "https://cmo-boost-2-default-rtdb.asia-southeast1.firebasedatabase.app/"
   }
 }

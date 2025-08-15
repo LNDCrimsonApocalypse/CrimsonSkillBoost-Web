@@ -72,7 +72,7 @@ class Course extends BaseController
 
     public function info($id)
     {
-        $projectId = 'csboostcmo';
+        $projectId = 'cmo-boost-2';
         $collection = 'courses';
         $url = "https://firestore.googleapis.com/v1/projects/$projectId/databases/(default)/documents/$collection/$id";
 

@@ -7,7 +7,7 @@ use \Firebase\JWT\JWK;
 // Read JSON input
 $input = json_decode(file_get_contents('php://input'), true);
 
-$firebaseProjectId = 'csboostcmo'; // CHANGE THIS
+$firebaseProjectId = 'cmo-boost-2'; // CHANGE THIS
 $idToken = $input['idToken'] ?? '';
 
 if (!$idToken) {
@@ -38,7 +38,7 @@ try {
 
     // Database connection
     // $pdo = new PDO("mysql:host=localhost;dbname=cmoboost", "your_user", "your_password");
-    $pdo = new PDO("mysql:host=localhost;dbname=cmoboost", null, null);
+    $pdo = new PDO("mysql:host=localhost;dbname=cmo-boost-2", null, null);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Insert or update user profile

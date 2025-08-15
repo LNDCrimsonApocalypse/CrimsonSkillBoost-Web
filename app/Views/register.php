@@ -384,6 +384,7 @@ button:hover {
       const termsAccepted = document.getElementById("terms").checked;
       const msg = document.getElementById("message");
 
+      msg.style.color = "red";
       msg.textContent = "";
 
       if (!termsAccepted) {
@@ -394,55 +395,70 @@ button:hover {
         msg.textContent = "Passwords do not match.";
         return;
       }
+      if (password.length < 6) {
+        msg.textContent = "Password must be at least 6 characters.";
+        return;
+      }
 
-    try {
-  const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-  const user = userCredential.user;
+      try {
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
 
-  await firebase.firestore().collection("users").doc(user.uid).set({
-    email: email,
-    fname: fname,
-    mname: mname,
-    lname: lname,
-    extname: extname,
-    username: username, // <-- Save the username entered by the user
-    birthday: birthday,
-    gender: gender,
-    bio: ""
-  });
+        await firebase.firestore().collection("users").doc(user.uid).set({
+          email: email,
+          fname: fname,
+          mname: mname,
+          lname: lname,
+          extname: extname,
+          username: username,
+          birthday: birthday,
+          gender: gender,
+          bio: ""
+        });
 
-  // ✅ SAVE INFO TO SESSION AND LOCAL STORAGE
-  const signupInfoObj = {
-    uid: user.uid,
-    email: email,
-    fname: fname,
-    mname: mname,
-    lname: lname,
-    extname: extname,
-    username: username, // <-- Save username in signupInfoObj as well
-    birthday: birthday,
-    gender: gender
-  };
-  sessionStorage.setItem("firebase_uid", user.uid);
-  sessionStorage.setItem("signupInfo", JSON.stringify(signupInfoObj));
-  localStorage.setItem("signupInfo", JSON.stringify(signupInfoObj));
+        // SAVE INFO TO SESSION AND LOCAL STORAGE
+        const signupInfoObj = {
+          uid: user.uid,
+          email: email,
+          fname: fname,
+          mname: mname,
+          lname: lname,
+          extname: extname,
+          username: username,
+          birthday: birthday,
+          gender: gender
+        };
+        sessionStorage.setItem("firebase_uid", user.uid);
+        sessionStorage.setItem("signupInfo", JSON.stringify(signupInfoObj));
+        localStorage.setItem("signupInfo", JSON.stringify(signupInfoObj));
 
-  // ✅ SEND EMAIL VERIFICATION
-  await user.sendEmailVerification({
-    url: "<?= base_url('setup_profile') ?>",
-    handleCodeInApp: false
-  });
+        // SEND EMAIL VERIFICATION
+        await user.sendEmailVerification({
+          url: "<?= base_url('setup_profile') ?>",
+          handleCodeInApp: false
+        });
 
-  // ✅ SHOW VERIFICATION MODAL
-  showVerificationModal();
-  msg.style.color = "green";
-  msg.textContent = "Verification email sent! Please check your inbox.";
-  document.getElementById("registerForm").reset();
+        // SHOW VERIFICATION MODAL
+        showVerificationModal();
+        msg.style.color = "green";
+        msg.textContent = "Verification email sent! Please check your inbox.";
+        document.getElementById("registerForm").reset();
 
-} catch (error) {
-  msg.style.color = "red";
-  msg.textContent = "Error: " + error.message;
-}
+      } catch (error) {
+        let errorMsg = "Error: ";
+        if (error.code === "auth/email-already-in-use") {
+          errorMsg = "This email is already registered.";
+        } else if (error.code === "auth/invalid-email") {
+          errorMsg = "Invalid email address.";
+        } else if (error.code === "auth/weak-password") {
+          errorMsg = "Password is too weak (minimum 6 characters).";
+        } else if (error.code === "auth/network-request-failed") {
+          errorMsg = "Network error. Please check your connection.";
+        } else {
+          errorMsg += error.message;
+        }
+        msg.textContent = errorMsg;
+      }
     });
     function closeVerificationModal() {
   // Change to hide modal by removing 'show' class

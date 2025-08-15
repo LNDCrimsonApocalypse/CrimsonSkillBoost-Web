@@ -28,7 +28,7 @@ class Auth extends BaseController
             ])->setStatusCode(400);
         }
 
-        $FIREBASE_API_KEY = "AIzaSyAQ87eb5RehN6PiJggR711yMfGrY39ulYU";
+        $FIREBASE_API_KEY = "AIzaSyB0HJXzRaGTOZZdIyUXV5DBch2d3Pd4wyg";
         $verifyUrl = "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={$FIREBASE_API_KEY}";
 
         $client = \Config\Services::curlrequest();
@@ -305,7 +305,7 @@ class Auth extends BaseController
             ])->setStatusCode(400);
         }
 
-        $FIREBASE_API_KEY = "AIzaSyAQ87eb5RehN6PiJggR711yMfGrY39ulYU";
+        $FIREBASE_API_KEY = "AIzaSyB0HJXzRaGTOZZdIyUXV5DBch2d3Pd4wyg";
         $verifyUrl = "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={$FIREBASE_API_KEY}";
 
         $client = \Config\Services::curlrequest();
@@ -336,7 +336,7 @@ class Auth extends BaseController
         ];
 
         // Your Realtime Database URL (set this in .env or config)
-        $firebaseDbUrl = getenv('https://csboostcmo-default-rtdb.firebaseio.com/');
+        $firebaseDbUrl = getenv('https://cmo-boost-2-default-rtdb.asia-southeast1.firebasedatabase.app/');
         $path = "/users/{$uid}.json";
 
         $putResponse = $client->setBody(json_encode($profile))
@@ -369,7 +369,7 @@ class Auth extends BaseController
             }
 
             // Firebase ID token verification
-            $FIREBASE_API_KEY = "AIzaSyAQ87eb5RehN6PiJggR711yMfGrY39ulYU";
+            $FIREBASE_API_KEY = "AIzaSyB0HJXzRaGTOZZdIyUXV5DBch2d3Pd4wyg";
             $verifyUrl = "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={$FIREBASE_API_KEY}";
 
             $client = \Config\Services::curlrequest();
@@ -435,7 +435,7 @@ class Auth extends BaseController
         }
 
         // Firebase token verification
-        $FIREBASE_API_KEY = "AIzaSyAQ87eb5RehN6PiJggR711yMfGrY39ulYU";
+        $FIREBASE_API_KEY = "AIzaSyB0HJXzRaGTOZZdIyUXV5DBch2d3Pd4wyg";
         $verifyUrl = "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={$FIREBASE_API_KEY}";
 
         $client = \Config\Services::curlrequest();
