@@ -343,183 +343,54 @@
           <th></th>
         </tr>
       </thead>
-      <tbody id="gradeSettingsBody">
-        <!-- Grade settings will be loaded here -->
+      <tbody>
+        <tr>
+          <td>EXCELLENT</td>
+          <td>1.0</td>
+          <td>97 - 100</td>
+          <td>
+            <button class="action-btn edit">EDIT</button>
+            <button class="action-btn delete">DELETE</button>
+          </td>
+        </tr>
+        <tr>
+          <td>SUPERIOR</td>
+          <td>1.25</td>
+          <td>94-96</td>
+          <td>
+            <button class="action-btn edit">EDIT</button>
+            <button class="action-btn delete">DELETE</button>
+          </td>
+        </tr>
+        <tr>
+          <td>SUPERIOR</td>
+          <td>1.50</td>
+          <td>91-93</td>
+          <td>
+            <button class="action-btn edit">EDIT</button>
+            <button class="action-btn delete">DELETE</button>
+          </td>
+        </tr>
+        <tr>
+          <td>VERY GOOD</td>
+          <td>1.75</td>
+          <td>88-90</td>
+          <td>
+            <button class="action-btn edit">EDIT</button>
+            <button class="action-btn delete">DELETE</button>
+          </td>
+        </tr>
+        <tr>
+          <td>VERY GOOD</td>
+          <td>2.00</td>
+          <td>85-87</td>
+          <td>
+            <button class="action-btn edit">EDIT</button>
+            <button class="action-btn delete">DELETE</button>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
-
-  <!-- Edit Grade Modal -->
-  <div id="editGradeModal" class="modal-overlay" style="display:none;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="modal-title">Edit Grade Setting</span>
-        <span class="modal-close" onclick="closeEditGradeModal()">&times;</span>
-      </div>
-      <form id="editGradeForm" style="margin:0;">
-        <div class="modal-body">
-          <div class="modal-row">
-            <div class="modal-group">
-              <label for="editGradeName">Grade Name</label>
-              <input type="text" id="editGradeName" required />
-            </div>
-            <div class="modal-group">
-              <label for="editGradePoint">Grade Point</label>
-              <input type="number" step="0.01" id="editGradePoint" required />
-            </div>
-          </div>
-          <div class="modal-row">
-            <div class="modal-group">
-              <label for="editGradeRange">Grade Range % (e.g. 97-100)</label>
-              <input type="text" id="editGradeRange" required />
-            </div>
-          </div>
-        </div>
-        <div class="modal-actions">
-          <button type="submit" class="save-btn">Save</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Add Grade Modal -->
-  <div id="addGradeModal" class="modal-overlay" style="display:none;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="modal-title">Add Grade Setting</span>
-        <span class="modal-close" onclick="closeAddGradeModal()">&times;</span>
-      </div>
-      <form id="addGradeForm" style="margin:0;">
-        <div class="modal-body">
-          <div class="modal-row">
-            <div class="modal-group">
-              <label for="addGradeName">Grade Name</label>
-              <input type="text" id="addGradeName" required />
-            </div>
-            <div class="modal-group">
-              <label for="addGradePoint">Grade Point</label>
-              <input type="number" step="0.01" id="addGradePoint" required />
-            </div>
-          </div>
-          <div class="modal-row">
-            <div class="modal-group">
-              <label for="addGradeRange">Grade Range % (e.g. 97-100)</label>
-              <input type="text" id="addGradeRange" required />
-            </div>
-          </div>
-        </div>
-        <div class="modal-actions">
-          <button type="submit" class="save-btn">Add</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <button id="addGradeBtn" class="action-btn" style="margin: 24px 0 0 24px;">+ Add Grade</button>
-
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
-  <script>
-    const db = firebase.firestore();
-    let editingGradeId = null;
-
-    function loadGradeSettings() {
-      const tbody = document.getElementById('gradeSettingsBody');
-      tbody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
-      db.collection('settings').doc('grade_settings').collection('grades').orderBy('grade_point').get()
-        .then(snapshot => {
-          if (snapshot.empty) {
-            tbody.innerHTML = '<tr><td colspan="4" style="color:#888;">No grade settings found.</td></tr>';
-            return;
-          }
-          let html = '';
-          snapshot.forEach(doc => {
-            const g = doc.data();
-            html += `
-              <tr>
-                <td>${g.grade_name || ''}</td>
-                <td>${g.grade_point || ''}</td>
-                <td>${g.grade_range || ''}</td>
-                <td>
-                  <button class="action-btn edit" onclick="openEditGradeModal('${doc.id}', '${g.grade_name || ''}', '${g.grade_point || ''}', '${g.grade_range || ''}')">EDIT</button>
-                  <button class="action-btn delete" onclick="deleteGradeSetting('${doc.id}')">DELETE</button>
-                </td>
-              </tr>
-            `;
-          });
-          tbody.innerHTML = html;
-        })
-        .catch(err => {
-          tbody.innerHTML = `<tr><td colspan="4" style="color:#c00;">Error: ${err.message}</td></tr>`;
-        });
-    }
-
-    function openEditGradeModal(id, name, point, range) {
-      editingGradeId = id;
-      document.getElementById('editGradeName').value = name;
-      document.getElementById('editGradePoint').value = point;
-      document.getElementById('editGradeRange').value = range;
-      document.getElementById('editGradeModal').style.display = 'flex';
-    }
-    function closeEditGradeModal() {
-      document.getElementById('editGradeModal').style.display = 'none';
-      editingGradeId = null;
-    }
-    document.getElementById('editGradeForm').onsubmit = async function(e) {
-      e.preventDefault();
-      if (!editingGradeId) return;
-      const name = document.getElementById('editGradeName').value.trim();
-      const point = parseFloat(document.getElementById('editGradePoint').value);
-      const range = document.getElementById('editGradeRange').value.trim();
-      await db.collection('settings').doc('grade_settings').collection('grades').doc(editingGradeId).update({
-        grade_name: name,
-        grade_point: point,
-        grade_range: range
-      });
-      closeEditGradeModal();
-      loadGradeSettings();
-    };
-
-    function deleteGradeSetting(id) {
-      if (!confirm('Delete this grade setting?')) return;
-      db.collection('settings').doc('grade_settings').collection('grades').doc(id).delete().then(loadGradeSettings);
-    }
-
-    // Add Grade Modal logic
-    function openAddGradeModal() {
-      document.getElementById('addGradeName').value = '';
-      document.getElementById('addGradePoint').value = '';
-      document.getElementById('addGradeRange').value = '';
-      document.getElementById('addGradeModal').style.display = 'flex';
-    }
-    function closeAddGradeModal() {
-      document.getElementById('addGradeModal').style.display = 'none';
-    }
-    document.getElementById('addGradeBtn').onclick = openAddGradeModal;
-    document.getElementById('addGradeForm').onsubmit = async function(e) {
-      e.preventDefault();
-      const name = document.getElementById('addGradeName').value.trim();
-      const point = parseFloat(document.getElementById('addGradePoint').value);
-      const range = document.getElementById('addGradeRange').value.trim();
-      await db.collection('settings').doc('grade_settings').collection('grades').add({
-        grade_name: name,
-        grade_point: point,
-        grade_range: range
-      });
-      closeAddGradeModal();
-      loadGradeSettings();
-    };
-
-    // Modal close logic
-    document.getElementById('editGradeModal').onclick = function(e) {
-      if (e.target === this) closeEditGradeModal();
-    };
-    document.getElementById('addGradeModal').onclick = function(e) {
-      if (e.target === this) closeAddGradeModal();
-    };
-
-    document.addEventListener('DOMContentLoaded', loadGradeSettings);
-  </script>
 </body>
 </html>

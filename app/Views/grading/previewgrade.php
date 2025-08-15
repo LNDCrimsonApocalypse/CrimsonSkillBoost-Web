@@ -590,49 +590,44 @@ document.addEventListener('DOMContentLoaded', function() {
 <script>
 const db = firebase.firestore();
 
-// --- Get quiz_id and submission_id from URL ---
-function getQueryParam(name) {
-  const url = new URL(window.location.href);
-  return url.searchParams.get(name);
-}
-const quizId = getQueryParam('quiz_id');
-const submissionId = getQueryParam('submission_id');
+// Replace with your quizId (or taskId if you use a different collection for tasks)
+const quizId = "PGaPAv1P5KpAt1ngPxSy"; // Example quizId
 
 function loadFirebaseGrades() {
   const tableBody = document.querySelector('tbody');
   tableBody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
 
-  if (!quizId || !submissionId) {
-    tableBody.innerHTML = '<tr><td colspan="6">Invalid quiz or submission ID</td></tr>';
-    return;
-  }
-
-  db.collection('quizzes').doc(quizId).collection('submissions').doc(submissionId).get()
-    .then(doc => {
-      if (!doc.exists) {
-        tableBody.innerHTML = '<tr><td colspan="6">Submission not found</td></tr>';
+  db.collection('quizzes').doc(quizId).collection('submissions').get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        tableBody.innerHTML = '<tr><td colspan="6">No submissions found</td></tr>';
         return;
       }
-      const sub = doc.data();
-      const percent = sub.score && sub.totalPossiblePoints ? Math.round((sub.score / sub.totalPossiblePoints) * 100) : 0;
-      let gradePoint = '-';
-      if (percent >= 97) gradePoint = '1.0';
-      else if (percent >= 94) gradePoint = '1.25';
-      else if (percent >= 91) gradePoint = '1.5';
-      else if (percent >= 88) gradePoint = '1.75';
-      else if (percent >= 85) gradePoint = '2.0';
-      // Add more grade logic as needed
+      let rows = '';
+      snapshot.forEach(doc => {
+        const sub = doc.data();
+        // Calculate grade point based on score and totalPossiblePoints
+        const percent = sub.score && sub.totalPossiblePoints ? Math.round((sub.score / sub.totalPossiblePoints) * 100) : 0;
+        let gradePoint = '-';
+        if (percent >= 97) gradePoint = '1.0';
+        else if (percent >= 94) gradePoint = '1.25';
+        else if (percent >= 91) gradePoint = '1.5';
+        else if (percent >= 88) gradePoint = '1.75';
+        else if (percent >= 85) gradePoint = '2.0';
+        // Add more grade logic as needed
 
-      tableBody.innerHTML = `
-        <tr>
-          <td>${sub.userId || '-'}</td>
-          <td>${sub.title || 'Task'}</td>
-          <td>${percent}%</td>
-          <td>${sub.timestamp ? new Date(sub.timestamp).toLocaleDateString() : '-'}</td>
-          <td>${gradePoint}</td>
-          <td>${sub.score || 0} / ${sub.totalPossiblePoints || 0}</td>
-        </tr>
-      `;
+        rows += `
+          <tr>
+            <td>${sub.userId || '-'}</td>
+            <td>${sub.title || 'Task'}</td>
+            <td>${percent}%</td>
+            <td>${sub.timestamp ? new Date(sub.timestamp).toLocaleDateString() : '-'}</td>
+            <td>${gradePoint}</td>
+            <td>${sub.score || 0} / ${sub.totalPossiblePoints || 0}</td>
+          </tr>
+        `;
+      });
+      tableBody.innerHTML = rows;
     })
     .catch(err => {
       tableBody.innerHTML = `<tr><td colspan="6">Error loading grades: ${err.message}</td></tr>`;
