@@ -233,7 +233,9 @@
 <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 <script>
 const db = firebase.firestore();
+const userId = window.currentUserId || "<?= isset($userId) ? $userId : '' ?>"; // Set this in your layout or controller
 
+// Fix: define courseId and taskId from URL query params
 function getQueryParam(name) {
   const url = new URL(window.location.href);
   return url.searchParams.get(name);
@@ -241,16 +243,50 @@ function getQueryParam(name) {
 const courseId = getQueryParam('course_id');
 const taskId = getQueryParam('task_id');
 
+let gradeSettings = [];
 let submissions = [];
 let userMap = {};
-let selectedIdx = 0; // Track selected submission index
+let selectedIdx = 0;
+
+async function fetchGradeSettings() {
+  if (!userId) return [];
+  const gradesSnap = await db.collection('settings').doc(`grade_settings_${userId}`).collection('grades').orderBy('grade_point').get();
+  let grades = [];
+  gradesSnap.forEach(doc => {
+    const g = doc.data();
+    // Expecting: grade_name, grade_point, grade_range (e.g. "97-100")
+    if (g.grade_range && typeof g.grade_point !== 'undefined' && g.grade_name) {
+      // Parse range
+      const [min, max] = g.grade_range.split('-').map(x => parseFloat(x));
+      grades.push({
+        ...g,
+        min: min,
+        max: max
+      });
+    }
+  });
+  // Sort descending by min
+  grades.sort((a, b) => b.min - a.min);
+  return grades;
+}
+
+function getGradeInfo(percent) {
+  for (const g of gradeSettings) {
+    if (percent >= g.min && percent <= g.max) {
+      return { gradePoint: g.grade_point, gradeName: g.grade_name };
+    }
+  }
+  return { gradePoint: '', gradeName: '' };
+}
 
 function renderTableAndPreview() {
   const tableBody = document.querySelector('tbody');
   let html = '';
   submissions.forEach((sub, idx) => {
-    const percent = sub.score && sub.totalPossiblePoints ? Math.round((sub.score / sub.totalPossiblePoints) * 100) : 0;
-    let gradePoint = sub.gradePoint !== undefined ? sub.gradePoint : '-';
+    let grade = typeof sub.score === 'number' ? sub.score : '';
+    // Show grade as percent (1 = 1%, 90 = 90%)
+    let percent = grade !== '' ? grade : '';
+    const { gradePoint, gradeName } = getGradeInfo(percent);
     const studentName = userMap[sub.userId || sub.student_id] || sub.userName || sub.userId || '-';
     let filePreview = '';
     if (sub.fileUrl) {
@@ -269,43 +305,48 @@ function renderTableAndPreview() {
       <tr data-idx="${idx}" class="${idx === selectedIdx ? 'table-row-selected' : ''}">
         <td>${studentName}</td>
         <td>${sub.taskTitle || sub.title || 'Task'}</td>
-        <td>${percent}%</td>
+        <td>
+          <input type="number" class="score-input" min="0" max="100" value="${grade}" placeholder="Grade (%)" data-idx="${idx}" style="width:70px; color:green; font-weight:bold;" />
+        </td>
         <td>${sub.timestamp ? new Date(sub.timestamp).toLocaleDateString() : '-'}</td>
         <td>
-          <input type="text" class="grade-point-input" value="${gradePoint !== '-' ? gradePoint : ''}" placeholder="-" data-idx="${idx}" />
+          <span class="grade-point-value" style="font-weight:bold;">${gradePoint}</span>
         </td>
-        <td>${sub.score || 0} / ${sub.totalPossiblePoints || 0}</td>
+        <td>
+          <span class="grade-name-value" style="font-weight:bold;">
+            ${percent !== '' ? percent + '%' : ''}
+          </span>
+        </td>
         <td>${filePreview}</td>
       </tr>
     `;
   });
   tableBody.innerHTML = html;
 
-  // Add click listeners for row selection
+  // Row selection
   tableBody.querySelectorAll('tr').forEach(row => {
     row.addEventListener('click', function(e) {
-      // Prevent row click when clicking inside input
-      if (e.target.classList.contains('grade-point-input')) return;
+      if (e.target.classList.contains('score-input')) return;
       selectedIdx = parseInt(this.getAttribute('data-idx'));
       renderTableAndPreview();
       loadCommentForSelected();
     });
   });
 
-  // Add input listeners for grade point
-  tableBody.querySelectorAll('.grade-point-input').forEach(input => {
+  // Save grade on change
+  tableBody.querySelectorAll('.score-input').forEach(input => {
     input.addEventListener('click', e => e.stopPropagation());
     input.addEventListener('change', function() {
       const idx = parseInt(this.getAttribute('data-idx'));
-      let val = this.value.trim();
-      // Optionally validate grade point format here
-      submissions[idx].gradePoint = val;
-      // Save grade point to Firestore
-      saveGradePoint(submissions[idx]);
+      let gradeVal = parseFloat(this.value);
+      if (isNaN(gradeVal)) gradeVal = 0;
+      submissions[idx].score = gradeVal;
+      // Save to Firestore
+      saveGradeScore(submissions[idx]);
+      renderTableAndPreview();
     });
   });
 
-  // Render preview for selected submission
   renderPreviewBox();
 }
 
@@ -328,11 +369,13 @@ function renderPreviewBox() {
   previewBox.innerHTML = `<div class="section-title">Preview</div>${preview}`;
 }
 
-function saveGradePoint(sub) {
+function saveGradeScore(sub) {
   if (!sub._id) return;
   db.collection('courses').doc(courseId).collection('tasks').doc(taskId)
     .collection('submissions').doc(sub._id)
-    .set({ gradePoint: sub.gradePoint }, { merge: true });
+    .set({
+      score: sub.score
+    }, { merge: true });
 }
 
 function loadTaskSubmissions() {
@@ -395,7 +438,12 @@ function loadCommentForSelected() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', loadTaskSubmissions);
+async function loadAll() {
+  gradeSettings = await fetchGradeSettings();
+  loadTaskSubmissions();
+}
+
+document.addEventListener('DOMContentLoaded', loadAll);
 
 const saveBtn = document.getElementById('saveGradeBtn');
 const commentBox = document.getElementById('comment');

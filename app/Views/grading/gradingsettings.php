@@ -421,105 +421,106 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
   <script>
-    const db = firebase.firestore();
-    let editingGradeId = null;
+const db = firebase.firestore();
+const userId = window.currentUserId || "<?= isset($userId) ? $userId : '' ?>"; // Set this in your layout or controller
+let editingGradeId = null;
 
-    function loadGradeSettings() {
-      const tbody = document.getElementById('gradeSettingsBody');
-      tbody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
-      db.collection('settings').doc('grade_settings').collection('grades').orderBy('grade_point').get()
-        .then(snapshot => {
-          if (snapshot.empty) {
-            tbody.innerHTML = '<tr><td colspan="4" style="color:#888;">No grade settings found.</td></tr>';
-            return;
-          }
-          let html = '';
-          snapshot.forEach(doc => {
-            const g = doc.data();
-            html += `
-              <tr>
-                <td>${g.grade_name || ''}</td>
-                <td>${g.grade_point || ''}</td>
-                <td>${g.grade_range || ''}</td>
-                <td>
-                  <button class="action-btn edit" onclick="openEditGradeModal('${doc.id}', '${g.grade_name || ''}', '${g.grade_point || ''}', '${g.grade_range || ''}')">EDIT</button>
-                  <button class="action-btn delete" onclick="deleteGradeSetting('${doc.id}')">DELETE</button>
-                </td>
-              </tr>
-            `;
-          });
-          tbody.innerHTML = html;
-        })
-        .catch(err => {
-          tbody.innerHTML = `<tr><td colspan="4" style="color:#c00;">Error: ${err.message}</td></tr>`;
-        });
-    }
-
-    function openEditGradeModal(id, name, point, range) {
-      editingGradeId = id;
-      document.getElementById('editGradeName').value = name;
-      document.getElementById('editGradePoint').value = point;
-      document.getElementById('editGradeRange').value = range;
-      document.getElementById('editGradeModal').style.display = 'flex';
-    }
-    function closeEditGradeModal() {
-      document.getElementById('editGradeModal').style.display = 'none';
-      editingGradeId = null;
-    }
-    document.getElementById('editGradeForm').onsubmit = async function(e) {
-      e.preventDefault();
-      if (!editingGradeId) return;
-      const name = document.getElementById('editGradeName').value.trim();
-      const point = parseFloat(document.getElementById('editGradePoint').value);
-      const range = document.getElementById('editGradeRange').value.trim();
-      await db.collection('settings').doc('grade_settings').collection('grades').doc(editingGradeId).update({
-        grade_name: name,
-        grade_point: point,
-        grade_range: range
+function loadGradeSettings() {
+  const tbody = document.getElementById('gradeSettingsBody');
+  tbody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
+  db.collection('settings').doc(`grade_settings_${userId}`).collection('grades').orderBy('grade_point').get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        tbody.innerHTML = '<tr><td colspan="4" style="color:#888;">No grade settings found.</td></tr>';
+        return;
+      }
+      let html = '';
+      snapshot.forEach(doc => {
+        const g = doc.data();
+        html += `
+          <tr>
+            <td>${g.grade_name || ''}</td>
+            <td>${g.grade_point || ''}</td>
+            <td>${g.grade_range || ''}</td>
+            <td>
+              <button class="action-btn edit" onclick="openEditGradeModal('${doc.id}', '${g.grade_name || ''}', '${g.grade_point || ''}', '${g.grade_range || ''}')">EDIT</button>
+              <button class="action-btn delete" onclick="deleteGradeSetting('${doc.id}')">DELETE</button>
+            </td>
+          </tr>
+        `;
       });
-      closeEditGradeModal();
-      loadGradeSettings();
-    };
+      tbody.innerHTML = html;
+    })
+    .catch(err => {
+      tbody.innerHTML = `<tr><td colspan="4" style="color:#c00;">Error: ${err.message}</td></tr>`;
+    });
+}
 
-    function deleteGradeSetting(id) {
-      if (!confirm('Delete this grade setting?')) return;
-      db.collection('settings').doc('grade_settings').collection('grades').doc(id).delete().then(loadGradeSettings);
-    }
+function openEditGradeModal(id, name, point, range) {
+  editingGradeId = id;
+  document.getElementById('editGradeName').value = name;
+  document.getElementById('editGradePoint').value = point;
+  document.getElementById('editGradeRange').value = range;
+  document.getElementById('editGradeModal').style.display = 'flex';
+}
+function closeEditGradeModal() {
+  document.getElementById('editGradeModal').style.display = 'none';
+  editingGradeId = null;
+}
+document.getElementById('editGradeForm').onsubmit = async function(e) {
+  e.preventDefault();
+  if (!editingGradeId) return;
+  const name = document.getElementById('editGradeName').value.trim();
+  const point = parseFloat(document.getElementById('editGradePoint').value);
+  const range = document.getElementById('editGradeRange').value.trim();
+  await db.collection('settings').doc(`grade_settings_${userId}`).collection('grades').doc(editingGradeId).update({
+    grade_name: name,
+    grade_point: point,
+    grade_range: range
+  });
+  closeEditGradeModal();
+  loadGradeSettings();
+};
 
-    // Add Grade Modal logic
-    function openAddGradeModal() {
-      document.getElementById('addGradeName').value = '';
-      document.getElementById('addGradePoint').value = '';
-      document.getElementById('addGradeRange').value = '';
-      document.getElementById('addGradeModal').style.display = 'flex';
-    }
-    function closeAddGradeModal() {
-      document.getElementById('addGradeModal').style.display = 'none';
-    }
-    document.getElementById('addGradeBtn').onclick = openAddGradeModal;
-    document.getElementById('addGradeForm').onsubmit = async function(e) {
-      e.preventDefault();
-      const name = document.getElementById('addGradeName').value.trim();
-      const point = parseFloat(document.getElementById('addGradePoint').value);
-      const range = document.getElementById('addGradeRange').value.trim();
-      await db.collection('settings').doc('grade_settings').collection('grades').add({
-        grade_name: name,
-        grade_point: point,
-        grade_range: range
-      });
-      closeAddGradeModal();
-      loadGradeSettings();
-    };
+function deleteGradeSetting(id) {
+  if (!confirm('Delete this grade setting?')) return;
+  db.collection('settings').doc(`grade_settings_${userId}`).collection('grades').doc(id).delete().then(loadGradeSettings);
+}
 
-    // Modal close logic
-    document.getElementById('editGradeModal').onclick = function(e) {
-      if (e.target === this) closeEditGradeModal();
-    };
-    document.getElementById('addGradeModal').onclick = function(e) {
-      if (e.target === this) closeAddGradeModal();
-    };
+// Add Grade Modal logic
+function openAddGradeModal() {
+  document.getElementById('addGradeName').value = '';
+  document.getElementById('addGradePoint').value = '';
+  document.getElementById('addGradeRange').value = '';
+  document.getElementById('addGradeModal').style.display = 'flex';
+}
+function closeAddGradeModal() {
+  document.getElementById('addGradeModal').style.display = 'none';
+}
+document.getElementById('addGradeBtn').onclick = openAddGradeModal;
+document.getElementById('addGradeForm').onsubmit = async function(e) {
+  e.preventDefault();
+  const name = document.getElementById('addGradeName').value.trim();
+  const point = parseFloat(document.getElementById('addGradePoint').value);
+  const range = document.getElementById('addGradeRange').value.trim();
+  await db.collection('settings').doc(`grade_settings_${userId}`).collection('grades').add({
+    grade_name: name,
+    grade_point: point,
+    grade_range: range
+  });
+  closeAddGradeModal();
+  loadGradeSettings();
+};
 
-    document.addEventListener('DOMContentLoaded', loadGradeSettings);
+// Modal close logic
+document.getElementById('editGradeModal').onclick = function(e) {
+  if (e.target === this) closeEditGradeModal();
+};
+document.getElementById('addGradeModal').onclick = function(e) {
+  if (e.target === this) closeAddGradeModal();
+};
+
+document.addEventListener('DOMContentLoaded', loadGradeSettings);
   </script>
 </body>
 </html>

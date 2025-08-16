@@ -771,11 +771,16 @@ $course_id = isset($course['id']) && $course['id'] ? $course['id'] : (isset($_GE
       status.style.color = '#888';
       try {
         const db = firebase.firestore();
-        await db.collection('courses').doc(courseId).collection('tasks').doc(taskId).collection('submissions').doc(subId).update({
-          score: score
-        });
+        await db.collection('courses').doc(courseId).collection('tasks').doc(taskId).collection('submissions').doc(subId)
+          .set({
+            score: score
+          }, { merge: true });
         status.textContent = 'Saved!';
         status.style.color = '#22b573';
+        setTimeout(() => {
+          status.textContent = '';
+          loadRecentSubmissions();
+        }, 1000);
       } catch (e) {
         status.textContent = 'Failed';
         status.style.color = '#e63636';
