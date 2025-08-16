@@ -104,4 +104,10 @@ class Grading extends BaseController
         // You can pass data to the view if needed
         return view('grading/previewgrade');
     }
+
+    public function gradingsettings()
+    {
+        // You can pass user info if needed, e.g. $userId = session('user_id');
+        return view('grading/gradingsettings');
+    }
 }

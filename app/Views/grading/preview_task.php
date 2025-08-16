@@ -158,6 +158,84 @@
       color: #222;
       font-family: 'Poppins', Arial, sans-serif;
     }
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+    .modal-close {
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #aaa;
+    }
+    .modal-close:hover {
+      color: #333;
+    }
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .modal-row {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+    }
+    .modal-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .modal-group label {
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .modal-group input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .modal-group input:focus {
+      border: 1px solid #3a8dde;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+    /* End of modal styles */
     @media (max-width: 900px) {
       .bottom-section { flex-direction: column; gap: 20px; padding: 20px 10px; }
       .table-container { margin: 10px 0; }
@@ -201,14 +279,14 @@
 <div class="table-container">
   <table>
     <thead>
-      <tr>
+      <tr style="background:#f5d6ee;">
         <th>Student Name</th>
-        <th>Task Name <span style="font-size: 16px;">⏷</span></th>
-        <th>Grade</th>
+        <th>Task Name</th>
+        <th>Grade Name</th>
         <th>Date</th>
         <th>Grade Point</th>
         <th>Total Marks</th>
-        <th>File</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -226,6 +304,45 @@
     <textarea id="comment" class="textarea"></textarea>
     <button class="save-btn" id="saveGradeBtn">Save Grade</button>
     <div id="saveStatus" style="margin-top:10px;font-weight:bold;color:#22b573;display:none;">Grade saved!</div>
+  </div>
+</div>
+<!-- Add/Edit Grade Modal -->
+<div id="gradeModal" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="modal-title" id="gradeModalTitle">EDIT GRADE</span>
+      <span class="modal-close" onclick="closeGradeModal()">&times;</span>
+    </div>
+    <form id="gradeForm">
+      <div class="modal-body">
+        <div class="modal-row">
+          <div class="modal-group">
+            <label for="modal-grade-name">Grade Name</label>
+            <input type="text" id="modal-grade-name" placeholder="Grade Name" required />
+          </div>
+          <div class="modal-group">
+            <label for="modal-date">Date</label>
+            <input type="date" id="modal-date" required />
+          </div>
+        </div>
+        <div class="modal-row">
+          <div class="modal-group">
+            <label for="modal-grade-point">Grade Point</label>
+            <input type="number" step="0.01" id="modal-grade-point" placeholder="Grade Point" required />
+          </div>
+          <div class="modal-group">
+            <label for="modal-total-marks">Total Marks</label>
+            <input type="text" id="modal-total-marks" placeholder="e.g. 98/100" required />
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="submit" class="save-btn" id="modalSaveBtn">
+          <img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" alt="icon" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;">
+          <span id="modalSaveBtnText">Update Grade</span>
+        </button>
+      </div>
+    </form>
   </div>
 </div>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -283,11 +400,15 @@ function renderTableAndPreview() {
   const tableBody = document.querySelector('tbody');
   let html = '';
   submissions.forEach((sub, idx) => {
-    let grade = typeof sub.score === 'number' ? sub.score : '';
-    // Show grade as percent (1 = 1%, 90 = 90%)
-    let percent = grade !== '' ? grade : '';
-    const { gradePoint, gradeName } = getGradeInfo(percent);
     const studentName = userMap[sub.userId || sub.student_id] || sub.userName || sub.userId || '-';
+    const taskName = sub.taskTitle || sub.title || 'Task';
+    const gradeName = sub.gradeName || '';
+    const date = sub.date || (sub.timestamp ? new Date(sub.timestamp).toLocaleDateString() : '-');
+    const gradePoint = sub.gradePoint || '';
+    let totalMarks = sub.totalMarks || '';
+    if (!totalMarks && typeof sub.score === 'number' && typeof sub.totalPossiblePoints === 'number') {
+      totalMarks = `${sub.score}/${sub.totalPossiblePoints}`;
+    }
     let filePreview = '';
     if (sub.fileUrl) {
       const ext = (sub.fileName || '').split('.').pop().toLowerCase();
@@ -299,25 +420,31 @@ function renderTableAndPreview() {
         filePreview = `<a href="${sub.fileUrl}" target="_blank">Download</a>`;
       }
     } else {
-      filePreview = '<span style="color:#888;">No file</span>';
+      filePreview = '';
     }
     html += `
-      <tr data-idx="${idx}" class="${idx === selectedIdx ? 'table-row-selected' : ''}">
-        <td>${studentName}</td>
-        <td>${sub.taskTitle || sub.title || 'Task'}</td>
+      <tr data-idx="${idx}">
         <td>
-          <input type="number" class="score-input" min="0" max="100" value="${grade}" placeholder="Grade (%)" data-idx="${idx}" style="width:70px; color:green; font-weight:bold;" />
+          <div style="display:flex;align-items:center;gap:12px;">
+            <img src="${sub.profileUrl || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(studentName)}" alt="profile" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+            <div>
+              <div style="font-weight:600;">${studentName}</div>
+              <div style="font-size:0.95em;color:#888;">${sub.email || ''}</div>
+            </div>
+          </div>
         </td>
-        <td>${sub.timestamp ? new Date(sub.timestamp).toLocaleDateString() : '-'}</td>
         <td>
-          <span class="grade-point-value" style="font-weight:bold;">${gradePoint}</span>
+          <div style="font-weight:600;">${taskName}</div>
         </td>
+        <td style="font-weight:600;">${gradeName}</td>
+        <td>${date}</td>
+        <td>${gradePoint}</td>
+        <td style="font-weight:600;">${totalMarks}</td>
         <td>
-          <span class="grade-name-value" style="font-weight:bold;">
-            ${percent !== '' ? percent + '%' : ''}
-          </span>
+          <button class="edit-btn" style="background:none;border:none;cursor:pointer;" onclick="openGradeModal(${idx})" title="Edit Grade">
+            <img src="https://cdn-icons-png.flaticon.com/512/1159/1159633.png" alt="edit" style="width:18px;height:18px;">
+          </button>
         </td>
-        <td>${filePreview}</td>
       </tr>
     `;
   });
@@ -326,24 +453,10 @@ function renderTableAndPreview() {
   // Row selection
   tableBody.querySelectorAll('tr').forEach(row => {
     row.addEventListener('click', function(e) {
-      if (e.target.classList.contains('score-input')) return;
+      if (e.target.classList.contains('edit-btn') || e.target.closest('.edit-btn')) return;
       selectedIdx = parseInt(this.getAttribute('data-idx'));
       renderTableAndPreview();
       loadCommentForSelected();
-    });
-  });
-
-  // Save grade on change
-  tableBody.querySelectorAll('.score-input').forEach(input => {
-    input.addEventListener('click', e => e.stopPropagation());
-    input.addEventListener('change', function() {
-      const idx = parseInt(this.getAttribute('data-idx'));
-      let gradeVal = parseFloat(this.value);
-      if (isNaN(gradeVal)) gradeVal = 0;
-      submissions[idx].score = gradeVal;
-      // Save to Firestore
-      saveGradeScore(submissions[idx]);
-      renderTableAndPreview();
     });
   });
 
@@ -484,6 +597,61 @@ if (saveBtn && commentBox) {
       });
   });
 }
+
+// Modal logic
+let editingIdx = null;
+function openGradeModal(idx = null) {
+  editingIdx = idx;
+  const modal = document.getElementById('gradeModal');
+  const title = document.getElementById('gradeModalTitle');
+  const saveBtnText = document.getElementById('modalSaveBtnText');
+  if (idx !== null) {
+    // Edit
+    const sub = submissions[idx];
+    title.textContent = 'EDIT GRADE';
+    saveBtnText.textContent = 'Update Grade';
+    document.getElementById('modal-grade-name').value = sub.gradeName || '';
+    document.getElementById('modal-date').value = sub.date || '';
+    document.getElementById('modal-grade-point').value = sub.gradePoint || '';
+    document.getElementById('modal-total-marks').value = sub.totalMarks || (typeof sub.score === 'number' && typeof sub.totalPossiblePoints === 'number' ? `${sub.score}/${sub.totalPossiblePoints}` : '');
+  } else {
+    // Add
+    title.textContent = 'ADD GRADE';
+    saveBtnText.textContent = 'Save Grade';
+    document.getElementById('modal-grade-name').value = '';
+    document.getElementById('modal-date').value = '';
+    document.getElementById('modal-grade-point').value = '';
+    document.getElementById('modal-total-marks').value = '';
+  }
+  modal.style.display = 'flex';
+}
+function closeGradeModal() {
+  document.getElementById('gradeModal').style.display = 'none';
+  editingIdx = null;
+}
+
+document.getElementById('gradeForm').onsubmit = async function(e) {
+  e.preventDefault();
+  const gradeName = document.getElementById('modal-grade-name').value.trim();
+  const date = document.getElementById('modal-date').value;
+  const gradePoint = document.getElementById('modal-grade-point').value.trim();
+  const totalMarks = document.getElementById('modal-total-marks').value.trim();
+
+  if (editingIdx !== null) {
+    const sub = submissions[editingIdx];
+    if (!sub || !sub._id) return;
+    await db.collection('courses').doc(courseId).collection('tasks').doc(taskId)
+      .collection('submissions').doc(sub._id)
+      .set({
+        gradeName: gradeName,
+        date: date,
+        gradePoint: gradePoint,
+        totalMarks: totalMarks
+      }, { merge: true });
+  }
+  closeGradeModal();
+  loadTaskSubmissions();
+};
 </script>
 </body>
 </html>

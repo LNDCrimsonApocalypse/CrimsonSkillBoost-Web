@@ -169,3 +169,7 @@ $routes->get('result_quiz', 'QuizController::resultQuiz');
 // Add these lines for task_list support
 $routes->get('task_list', 'TaskList::index');
 $routes->get('TaskList', 'TaskList::index');
+
+// Add these lines for grade settings support
+$routes->get('gradesettings', 'Grading::gradingsettings');
+$routes->get('grading/gradingsettings', 'Grading::gradingsettings');
