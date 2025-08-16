@@ -541,63 +541,164 @@
     }
 
     let quizzesGlobal = [];
+let selectedQuizId = null;
 
-    function renderQuizCards(quizzes) {
-      quizzesGlobal = quizzes; // Save for submissions
-      const quizCards = document.getElementById('quizCards');
-      if (!quizCards) return;
-      if (!quizzes.length) {
-        quizCards.innerHTML = "<div style='padding:20px;color:#888;'>No quizzes found for this course.</div>";
+function renderQuizCards(quizzes) {
+  quizzesGlobal = quizzes;
+  const quizCards = document.getElementById('quizCards');
+  if (!quizCards) return;
+  if (!quizzes.length) {
+    quizCards.innerHTML = "<div style='padding:20px;color:#888;'>No quizzes found for this course.</div>";
+    document.getElementById('submissionList').innerHTML = "<div style='padding:10px;color:#888;'>No submissions.</div>";
+    return;
+  }
+  quizCards.innerHTML = '';
+  quizzes.forEach(q => {
+    const quizUrl = "<?= base_url('questionsquiz2') ?>" + "?course_id=" + encodeURIComponent("<?= $course['id'] ?>") + "&quiz_id=" + encodeURIComponent(q.id);
+    quizCards.innerHTML += `
+      <div class="quiz-card" data-quiz-id="${q.id}" style="cursor:pointer;">
+        <span class="enrolled-badge">${q.enrolled || ''}</span>
+        <img src="<?= base_url('public/img/11.png')?>" alt="Quiz Image">
+        <div class="quiz-card-content">
+          <h3><a href="${quizUrl}" style="color:inherit;text-decoration:none;">${q.title || q.id}</a></h3>
+          <div class="due">${q.due ? 'DUE ' + q.due : ''}</div>
+          <div class="tags">
+            <span class="tag logical">Logical</span>
+            <span class="tag required">Required</span>
+          </div>
+          <div class="meta-row">
+            ${q.edited || ''} <span class="dot"></span>
+            <span class="questions">❓ <span id="qcount-${q.id}">...</span> Questions</span>
+          </div>
+        </div>
+        <div class="quiz-card-footer">
+          <span class="assigned">${q.status === 'assigned' ? 'Assigned' : ''}</span>
+          <span class="running">${q.status === 'running' ? 'Running' : ''}</span>
+          <button style="background:#4b4bf0;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-weight:600;cursor:pointer;margin-left:8px;" onclick="openQuizSubmissions('${q.id}')">View Submissions</button>
+          <span class="menu">⋯</span>
+        </div>
+      </div>
+    `;
+  });
+
+  // Fetch number of questions for each quiz (live from Firestore subcollection)
+  quizzes.forEach(q => {
+    firebase.firestore().collection('quizzes').doc(q.id).collection('questions').get()
+      .then(snap => {
+        document.getElementById('qcount-' + q.id).textContent = snap.size;
+      })
+      .catch(() => {
+        document.getElementById('qcount-' + q.id).textContent = '0';
+      });
+  });
+
+  // Add click handler to quiz cards for filtering submissions
+  Array.from(quizCards.getElementsByClassName('quiz-card')).forEach(card => {
+    card.onclick = function(e) {
+      // Prevent click if View Submissions button is clicked
+      if (e.target.tagName === 'BUTTON') return;
+      const quizId = card.getAttribute('data-quiz-id');
+      selectedQuizId = quizId;
+      Array.from(quizCards.getElementsByClassName('quiz-card')).forEach(c => c.style.boxShadow = '');
+      card.style.boxShadow = '0 0 0 3px #e636a4';
+      loadSubmissionsForQuiz(quizId);
+    };
+  });
+
+  // By default, select the first quiz
+  selectedQuizId = quizzes[0].id;
+  quizCards.getElementsByClassName('quiz-card')[0].style.boxShadow = '0 0 0 3px #e636a4';
+  loadSubmissionsForQuiz(selectedQuizId);
+}
+
+// Add this function to handle the View Submissions button
+window.openQuizSubmissions = function(quizId) {
+  const courseId = "<?= esc($course_id) ?>";
+  window.location.href = "<?= base_url('grading/preview_quiz') ?>" +
+    "?course_id=" + encodeURIComponent(courseId) +
+    "&quiz_id=" + encodeURIComponent(quizId);
+};
+
+function loadSubmissionsForQuiz(quizId) {
+  const db = firebase.firestore();
+  const submissionList = document.getElementById('submissionList');
+  submissionList.innerHTML = '<div style="padding:10px;">Loading...</div>';
+  db.collection('quizzes').doc(quizId).collection('submissions').get()
+    .then(async snapshot => {
+      if (snapshot.empty) {
+        submissionList.innerHTML = "<div style='padding:10px;color:#888;'>No submissions found.</div>";
         return;
       }
-      quizCards.innerHTML = '';
-      quizzes.forEach(q => {
-        const quizUrl = "<?= base_url('questionsquiz2') ?>" + "?course_id=" + encodeURIComponent("<?= $course['id'] ?>") + "&quiz_id=" + encodeURIComponent(q.id);
-        quizCards.innerHTML += `
-          <div class="quiz-card">
-            <span class="enrolled-badge">${q.enrolled || ''}</span>
-            <img src="<?= base_url('public/img/11.png')?>" alt="Quiz Image">
-            <div class="quiz-card-content">
-              <h3><a href="${quizUrl}" style="color:inherit;text-decoration:none;">${q.title || q.id}</a></h3>
-              <div class="due">${q.due ? 'DUE ' + q.due : ''}</div>
-              <div class="tags">
-                <span class="tag logical">Logical</span>
-                <span class="tag required">Required</span>
-              </div>
-              <div class="meta-row">
-                ${q.edited || ''} <span class="dot"></span>
-                <span class="questions">❓ <span id="qcount-${q.id}">...</span> Questions</span>
-              </div>
+      let submissions = [];
+      snapshot.forEach(doc => {
+        const sub = doc.data();
+        sub._quizId = quizId;
+        sub._subId = doc.id;
+        submissions.push(sub);
+      });
+
+      // Sort by timestamp descending if available
+      submissions.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+      // Fetch user names for all unique userIds
+      const userIds = [...new Set(submissions.map(sub => sub.userId || sub.student_id).filter(Boolean))];
+      let userMap = {};
+      if (userIds.length) {
+        for (let i = 0; i < userIds.length; i += 10) {
+          const batch = userIds.slice(i, i + 10);
+          const usersSnap = await db.collection('users')
+            .where(firebase.firestore.FieldPath.documentId(), 'in', batch)
+            .get();
+          usersSnap.forEach(doc => {
+            userMap[doc.id] = doc.data().fullName || doc.data().name || doc.id;
+          });
+        }
+      }
+
+      let html = '';
+      submissions.forEach(sub => {
+        const score = (sub.score !== undefined && sub.totalPossiblePoints !== undefined)
+          ? `${sub.score}/${sub.totalPossiblePoints}`
+          : '-';
+        const percent = sub.score && sub.totalPossiblePoints
+          ? Math.round((sub.score / sub.totalPossiblePoints) * 100)
+          : 0;
+        const uid = sub.userId || sub.student_id;
+        const studentName = userMap[uid] || sub.studentName || sub.username || 'Student';
+        html += `
+          <div class="submission"
+               style="cursor:pointer;"
+               data-quiz-id="${sub._quizId}"
+               data-submission-id="${sub._subId}">
+            <div class="name">
+              ${sub.profilePic ? `<img src="${sub.profilePic}" />` : ''}
+              ${studentName}
             </div>
-            <div class="quiz-card-footer">
-              <span class="assigned">${q.status === 'assigned' ? 'Assigned' : ''}</span>
-              <span class="running">${q.status === 'running' ? 'Running' : ''}</span>
-              <span class="menu">⋯</span>
-            </div>
+            <div class="score">${score}</div>
+            <div class="progress"><div class="progress-bar" style="width: ${percent}%"></div></div>
           </div>
         `;
       });
+      submissionList.innerHTML = html;
 
-      // Fetch number of questions for each quiz (live from Firestore subcollection)
-      quizzes.forEach(q => {
-        firebase.firestore().collection('quizzes').doc(q.id).collection('questions').get()
-          .then(snap => {
-            document.getElementById('qcount-' + q.id).textContent = snap.size;
-          })
-          .catch(() => {
-            document.getElementById('qcount-' + q.id).textContent = '0';
-          });
-      });
+      // Add a single click handler for all submissions
+      submissionList.onclick = function(e) {
+        let el = e.target;
+        while (el && !el.classList.contains('submission')) el = el.parentElement;
+        if (el && el.dataset.quizId && el.dataset.submissionId) {
+          const previewUrl = "<?= base_url('grading/preview_quiz') ?>" +
+            "?quiz_id=" + encodeURIComponent(el.dataset.quizId) +
+            "&submission_id=" + encodeURIComponent(el.dataset.submissionId);
+          window.location.href = previewUrl;
+        }
+      };
+    })
+    .catch(err => {
+      submissionList.innerHTML = `<div style='padding:10px;color:#c00;'>Error loading submissions: ${err.message}</div>`;
+    });
+}
 
-      // Load all submissions from all quizzes
-      if (quizzes.length > 0) {
-        loadAllSubmissions(quizzes.map(q => q.id));
-      } else {
-        document.getElementById('submissionList').innerHTML = "<div style='padding:10px;color:#888;'>No submissions.</div>";
-      }
-    }
-
-    function loadQuizzes() {
+function loadQuizzes() {
       // Get courseId from PHP (URL param)
       const courseId = "<?= esc($course_id) ?>";
       const db = firebase.firestore();
@@ -623,94 +724,6 @@
           const quizCards = document.getElementById('quizCards');
           if (quizCards) quizCards.innerHTML = "<div style='padding:20px;color:#c00;'>Error loading quizzes: " + error.message + "</div>";
         });
-    }
-
-    function loadAllSubmissions(quizIds) {
-      const db = firebase.firestore();
-      const submissionList = document.getElementById('submissionList');
-      submissionList.innerHTML = '<div style="padding:10px;">Loading...</div>';
-      if (!quizIds.length) {
-        submissionList.innerHTML = "<div style='padding:10px;color:#888;'>No submissions found.</div>";
-        return;
-      }
-      // Fetch quiz titles for mapping quizId -> quizName
-      let quizTitleMap = {};
-      let quizTitlePromises = quizIds.map(quizId =>
-        db.collection('quizzes').doc(quizId).get().then(doc => {
-          quizTitleMap[quizId] = (doc.exists && doc.data().title) ? doc.data().title : quizId;
-        })
-      );
-      Promise.all(quizTitlePromises).then(() => {
-        let allPromises = quizIds.map(quizId =>
-          db.collection('quizzes').doc(quizId).collection('submissions').get()
-            .then(snapshot => {
-              let submissions = [];
-              snapshot.forEach(doc => {
-                const sub = doc.data();
-                sub._quizId = quizId;
-                sub._subId = doc.id;
-                submissions.push(sub);
-              });
-              return submissions;
-            })
-        );
-        Promise.all(allPromises)
-          .then(async results => {
-            // Flatten all submissions from all quizzes
-            const allSubs = [].concat(...results);
-            if (!allSubs.length) {
-              submissionList.innerHTML = "<div style='padding:10px;color:#888;'>No submissions found.</div>";
-              return;
-            }
-            // Sort by timestamp descending if available
-            allSubs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-
-            // --- Fetch user names for all unique userIds ---
-            const userIds = [...new Set(allSubs.map(sub => sub.userId || sub.student_id).filter(Boolean))];
-            let userMap = {};
-            if (userIds.length) {
-              for (let i = 0; i < userIds.length; i += 10) {
-                const batch = userIds.slice(i, i + 10);
-                const usersSnap = await db.collection('users')
-                  .where(firebase.firestore.FieldPath.documentId(), 'in', batch)
-                  .get();
-                usersSnap.forEach(doc => {
-                  userMap[doc.id] = doc.data().fullName || doc.data().name || doc.id;
-                });
-              }
-            }
-
-            let html = '';
-            allSubs.forEach(sub => {
-              const score = (sub.score !== undefined && sub.totalPossiblePoints !== undefined)
-                ? `${sub.score}/${sub.totalPossiblePoints}`
-                : '-';
-              const percent = sub.score && sub.totalPossiblePoints
-                ? Math.round((sub.score / sub.totalPossiblePoints) * 100)
-                : 0;
-              // Use actual student name if available
-              const uid = sub.userId || sub.student_id;
-              const studentName = userMap[uid] || sub.studentName || sub.username || 'Student';
-              const quizTitle = quizTitleMap[sub._quizId] ? '(' + quizTitleMap[sub._quizId] + ')' : '';
-              const previewUrl = "<?= base_url('grading/preview_quiz') ?>";
-              html += `
-                <div class="submission" style="cursor:pointer;" onclick="window.location.href='${previewUrl}'">
-                  <div class="name">
-                    ${sub.profilePic ? `<img src="${sub.profilePic}" />` : ''}
-                    ${studentName}
-                    <span style="font-size:11px;color:#888;margin-left:6px;">${quizTitle}</span>
-                  </div>
-                  <div class="score">${score}</div>
-                  <div class="progress"><div class="progress-bar" style="width: ${percent}%"></div></div>
-                </div>
-              `;
-            });
-            submissionList.innerHTML = html;
-          })
-          .catch(err => {
-            submissionList.innerHTML = `<div style='padding:10px;color:#c00;'>Error loading submissions: ${err.message}</div>`;
-          });
-      });
     }
 
     document.addEventListener("DOMContentLoaded", loadQuizzes);

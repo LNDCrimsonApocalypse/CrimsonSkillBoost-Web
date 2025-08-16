@@ -615,23 +615,63 @@ document.addEventListener('DOMContentLoaded', function() {
 <script>
 const db = firebase.firestore();
 
-// Replace with your quizId
-const quizId = "PGaPAv1P5KpAt1ngPxSy"; // Example quizId
+function getQueryParam(name) {
+  const url = new URL(window.location.href);
+  return url.searchParams.get(name);
+}
+const courseId = getQueryParam('course_id');
+const quizId = getQueryParam('quiz_id');
 
-function loadFirebaseGrades() {
-  const tableBody = document.querySelector('tbody');
-  tableBody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+// Fix: Only use tbody inside the correct table
+function getTableBody() {
+  return document.querySelector('.table-container tbody');
+}
 
-  db.collection('quizzes').doc(quizId).collection('submissions').get()
-    .then(snapshot => {
+function getPreviewBox() {
+  return document.querySelector('.preview-box');
+}
+
+function loadQuizSubmissions() {
+  const tableBody = getTableBody();
+  const previewBox = getPreviewBox();
+  if (!tableBody) return;
+  tableBody.innerHTML = '<tr><td colspan="7">Loading...</td></tr>';
+  if (!quizId) {
+    tableBody.innerHTML = '<tr><td colspan="7">Invalid quiz ID</td></tr>';
+    if (previewBox) previewBox.innerHTML = '<div class="section-title">Preview</div><div style="color:#888;">No submission to preview.</div>';
+    return;
+  }
+  db.collection('quizzes').doc(quizId).collection('submissions').orderBy('timestamp', 'desc').get()
+    .then(async snapshot => {
       if (snapshot.empty) {
-        tableBody.innerHTML = '<tr><td colspan="6">No submissions found</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="7">No submissions found</td></tr>';
+        if (previewBox) previewBox.innerHTML = '<div class="section-title">Preview</div><div style="color:#888;">No submission to preview.</div>';
         return;
       }
-      let rows = '';
+      let submissions = [];
+      let userIds = [];
       snapshot.forEach(doc => {
         const sub = doc.data();
-        // Calculate grade point based on score and totalPossiblePoints
+        sub._id = doc.id;
+        submissions.push(sub);
+        if (sub.userId || sub.student_id) userIds.push(sub.userId || sub.student_id);
+      });
+      userIds = [...new Set(userIds)];
+      let userMap = {};
+      if (userIds.length) {
+        for (let i = 0; i < userIds.length; i += 10) {
+          const batch = userIds.slice(i, i + 10);
+          const usersSnap = await db.collection('users')
+            .where(firebase.firestore.FieldPath.documentId(), 'in', batch)
+            .get();
+          usersSnap.forEach(doc => {
+            userMap[doc.id] = doc.data().fullName || doc.data().name || doc.id;
+          });
+        }
+      }
+      let html = '';
+      let firstSubmission = null;
+      submissions.forEach((sub, idx) => {
         const percent = sub.score && sub.totalPossiblePoints ? Math.round((sub.score / sub.totalPossiblePoints) * 100) : 0;
         let gradePoint = '-';
         if (percent >= 97) gradePoint = '1.0';
@@ -639,11 +679,10 @@ function loadFirebaseGrades() {
         else if (percent >= 91) gradePoint = '1.5';
         else if (percent >= 88) gradePoint = '1.75';
         else if (percent >= 85) gradePoint = '2.0';
-        // Add more grade logic as needed
-
-        rows += `
+        const studentName = userMap[sub.userId || sub.student_id] || sub.userName || sub.userId || '-';
+        html += `
           <tr>
-            <td>${sub.userId || '-'}</td>
+            <td>${studentName}</td>
             <td>${sub.title || 'Quiz'}</td>
             <td>${percent}%</td>
             <td>${sub.timestamp ? new Date(sub.timestamp).toLocaleDateString() : '-'}</td>
@@ -651,112 +690,67 @@ function loadFirebaseGrades() {
             <td>${sub.score || 0} / ${sub.totalPossiblePoints || 0}</td>
           </tr>
         `;
+        if (idx === 0) firstSubmission = sub;
       });
-      tableBody.innerHTML = rows;
+      tableBody.innerHTML = html;
+
+      // Show preview of the first submission's answers
+      if (previewBox) {
+        if (firstSubmission && firstSubmission.questions) {
+          loadQuizQuestionsPreview(quizId, firstSubmission, previewBox);
+        } else {
+          previewBox.innerHTML = '<div class="section-title">Preview</div><div style="color:#888;">No answers to preview.</div>';
+        }
+      }
     })
     .catch(err => {
-      tableBody.innerHTML = `<tr><td colspan="6">Error loading grades: ${err.message}</td></tr>`;
+      const tableBody = getTableBody();
+      const previewBox = getPreviewBox();
+      if (tableBody) tableBody.innerHTML = `<tr><td colspan="7">Error loading submissions: ${err.message}</td></tr>`;
+      if (previewBox) previewBox.innerHTML = '<div class="section-title">Preview</div><div style="color:#c00;">Error loading preview.</div>';
     });
 }
 
-function loadQuizQuestions() {
-  const questionList = document.getElementById('questionList');
-  questionList.innerHTML = '<div style="padding:10px;">Loading questions...</div>';
-  db.collection('quizzes').doc(quizId).collection('questions').get()
-    .then(snapshot => {
-      if (snapshot.empty) {
-        questionList.innerHTML = '<div style="padding:10px;color:#888;">No questions found.</div>';
-        return;
-      }
-      let html = '';
-      let qNum = 1;
-      snapshot.forEach(doc => {
-        const q = doc.data();
-        const correctOption = typeof q.correct_option === 'number' ? q.correct_option : null;
-        const options = Array.isArray(q.options) ? q.options : [];
-        const questionText = q.question || 'Question';
-        let userAnswerIdx = null;
-        if (typeof q.userAnswer === 'number') userAnswerIdx = q.userAnswer;
-        else if (typeof q.studentAnswer === 'number') userAnswerIdx = q.studentAnswer;
-        else if (typeof q.selectedOption === 'number') userAnswerIdx = q.selectedOption;
-
-        // Student answer box
-        let studentAnswerHtml = '<div class="student-answer"><strong>User Answer:</strong><br><em>No answer</em></div>';
-        if (userAnswerIdx !== null && options[userAnswerIdx] !== undefined) {
-          studentAnswerHtml = `<div class="student-answer"><strong>User Answer:</strong><br>${options[userAnswerIdx]}</div>`;
-        }
-
-        // Choices grid (4 boxes)
-        let choicesHtml = '';
-        for (let i = 0; i < options.length; i++) {
-          let classes = 'choice-box';
-          if (i === userAnswerIdx) classes += ' selected';
-          if (i === correctOption) classes += ' correct';
-          choicesHtml += `<div class="${classes}">${String.fromCharCode(65+i)}. ${options[i]}</div>`;
-        }
-        // Ensure 4 boxes
-        for (let i = options.length; i < 4; i++) {
-          choicesHtml += `<div class="choice-box" style="opacity:0.5;">${String.fromCharCode(65+i)}. -</div>`;
-        }
-
-        html += `
-          <div class="question-grid">
-            <div style="margin-top:8px;margin-right:8px;font-weight:bold;display:flex;align-items:center;justify-content:center;">${qNum++}.</div>
-            <div class="question-content">
-              <div class="question-title">${questionText}</div>
-              ${studentAnswerHtml}
-              ${choicesHtml}
-            </div>
-          </div>
-        `;
-      });
-      questionList.innerHTML = html;
-    })
-    .catch(err => {
-      questionList.innerHTML = `<div style="padding:10px;color:#c00;">Error loading questions: ${err.message}</div>`;
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  loadFirebaseGrades();
-  loadQuizQuestions();
-
-  const saveBtn = document.getElementById('saveGradeBtn');
-  const commentBox = document.getElementById('comment');
-  const saveStatus = document.getElementById('saveStatus');
-
-  if (saveBtn && commentBox) {
-    saveBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      const comment = commentBox.value.trim();
-      // Save to Firestore under quizzes/{quizId}/comments/{autoId}
-      if (!comment) {
-        saveStatus.style.display = 'none';
-        return;
-      }
-      saveBtn.disabled = true;
-      saveBtn.textContent = 'Saving...';
-      db.collection('quizzes').doc(quizId).collection('comments').add({
-        comment: comment,
-        createdAt: new Date()
-      }).then(() => {
-        saveBtn.disabled = false;
-        saveBtn.textContent = 'Save Grade';
-        saveStatus.style.display = 'block';
-        saveStatus.textContent = 'Grade saved!';
-        setTimeout(() => { saveStatus.style.display = 'none'; }, 2000);
-        commentBox.value = '';
-      }).catch(() => {
-        saveBtn.disabled = false;
-        saveBtn.textContent = 'Save Grade';
-        saveStatus.style.display = 'block';
-        saveStatus.style.color = '#e63636';
-        saveStatus.textContent = 'Failed to save. Try again.';
-        setTimeout(() => { saveStatus.style.display = 'none'; saveStatus.style.color = '#22b573'; }, 2000);
-      });
-    });
+function loadQuizQuestionsPreview(quizId, submission, previewBox) {
+  if (!submission.questions) {
+    previewBox.innerHTML = '<div class="section-title">Preview</div><div style="color:#888;">No answers to preview.</div>';
+    return;
   }
-});
+  let html = '<div class="section-title">Preview</div>';
+  Object.values(submission.questions).forEach((q, idx) => {
+    const questionText = q.question || 'Question';
+    const options = Array.isArray(q.options) ? q.options : [];
+    const correctOption = typeof q.correct_option === 'number' ? q.correct_option : null;
+    const userAnswerIdx = typeof q.userAnswer === 'number' ? q.userAnswer : null;
+    let studentAnswerHtml = '<div class="student-answer"><strong>User Answer:</strong><br><em>No answer</em></div>';
+    if (userAnswerIdx !== null && options[userAnswerIdx] !== undefined) {
+      studentAnswerHtml = `<div class="student-answer"><strong>User Answer:</strong><br>${options[userAnswerIdx]}</div>`;
+    }
+    let choicesHtml = '';
+    for (let i = 0; i < options.length; i++) {
+      let classes = 'choice-box';
+      if (i === userAnswerIdx) classes += ' selected';
+      if (i === correctOption) classes += ' correct';
+      choicesHtml += `<div class="${classes}">${String.fromCharCode(65+i)}. ${options[i]}</div>`;
+    }
+    for (let i = options.length; i < 4; i++) {
+      choicesHtml += `<div class="choice-box" style="opacity:0.5;">${String.fromCharCode(65+i)}. -</div>`;
+    }
+    html += `
+      <div class="question-grid" style="margin-bottom:18px;">
+        <div style="margin-top:8px;margin-right:8px;font-weight:bold;display:flex;align-items:center;justify-content:center;">${idx+1}.</div>
+        <div class="question-content">
+          <div class="question-title">${questionText}</div>
+          ${studentAnswerHtml}
+          ${choicesHtml}
+        </div>
+      </div>
+    `;
+  });
+  previewBox.innerHTML = html;
+}
+
+document.addEventListener('DOMContentLoaded', loadQuizSubmissions);
 </script>
 </body>
 </html>
