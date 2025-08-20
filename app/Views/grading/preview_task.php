@@ -630,12 +630,25 @@ function closeGradeModal() {
   editingIdx = null;
 }
 
+// ...existing code...
+
 document.getElementById('gradeForm').onsubmit = async function(e) {
   e.preventDefault();
   const gradeName = document.getElementById('modal-grade-name').value.trim();
   const date = document.getElementById('modal-date').value;
   const gradePoint = document.getElementById('modal-grade-point').value.trim();
   const totalMarks = document.getElementById('modal-total-marks').value.trim();
+
+  // Parse score from totalMarks (e.g. "98/100" => score: 98, totalPossiblePoints: 100)
+  let score = 0, totalPossiblePoints = 0;
+  if (totalMarks.includes('/')) {
+    const [scoreStr, totalStr] = totalMarks.split('/');
+    score = parseFloat(scoreStr);
+    totalPossiblePoints = parseFloat(totalStr);
+  } else if (!isNaN(parseFloat(totalMarks))) {
+    score = parseFloat(totalMarks);
+    totalPossiblePoints = 100; // fallback if only one value is given
+  }
 
   if (editingIdx !== null) {
     const sub = submissions[editingIdx];
@@ -646,7 +659,9 @@ document.getElementById('gradeForm').onsubmit = async function(e) {
         gradeName: gradeName,
         date: date,
         gradePoint: gradePoint,
-        totalMarks: totalMarks
+        totalMarks: totalMarks,
+        score: score,
+        totalPossiblePoints: totalPossiblePoints
       }, { merge: true });
   }
   closeGradeModal();
