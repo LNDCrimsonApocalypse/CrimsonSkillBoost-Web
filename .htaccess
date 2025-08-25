@@ -1,27 +1,24 @@
-# ----------------------------------------------------------------------
-# CodeIgniter .htaccess for InfinityFree
-# ----------------------------------------------------------------------
-
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # IMPORTANT: If your project is in a subfolder, set RewriteBase
-    # Example: /CrimsonSkillBoost-Web/
-    # If it's directly in htdocs/public_html, use just /
-    # If RewriteBase causes 500 error, comment it out.
+    # If your app is in a subfolder, set RewriteBase
     RewriteBase /
+
+    # --- Exclude firebase-config.js so it's served directly ---
+    RewriteCond %{REQUEST_URI} ^/firebase-config\.js$ [NC]
+    RewriteRule ^ - [L]
 
     # Redirect Trailing Slashes...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Force non-www (optional, comment if not needed)
+    # Force non-www (optional)
     RewriteCond %{HTTPS} !=on
     RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
     RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
 
-    # Send non-existent files and directories to index.php
+    # Rewrite all other requests to index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ index.php/$1 [L,QSA]
@@ -32,8 +29,4 @@
 </IfModule>
 
 <IfModule !mod_rewrite.c>
-    ErrorDocument 404 /index.php
-</IfModule>
-
-# Disable server signature
-ServerSignature Off
+    ErrorDocument 404 /index.
