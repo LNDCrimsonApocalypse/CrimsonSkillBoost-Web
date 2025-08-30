@@ -1,4 +1,3 @@
-
 <html> 
     <head>
         <title>"Terms and Conditions"</title>
@@ -99,7 +98,7 @@
     <p>
       The <a href="#">Privacy Policy</a> explains how we collect, use, and protect your data when you create an account. For example, we use this information to enhance learning experiences, provide personalized recommendations, and improve platform features.
     </p>
-    <button class="agree-btn">I agree</button>
+    <button class="agree-btn" onclick="window.location.href='<?= base_url('register') ?>'">I agree</button>
   </div>
 
 </html>
