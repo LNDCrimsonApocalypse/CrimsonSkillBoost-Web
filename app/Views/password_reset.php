@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Password Reset</title>
+  <!-- Add Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
   <style>
     * {
       box-sizing: border-box;
@@ -94,97 +98,53 @@ background: rgba(234, 130, 240, 0.37);
   <div class="container" id="step1">
     
     <h2>Forgot Password?</h2>
-    <p>Enter your email address and we'll send you a code to reset your password.</p>
+    <p>Enter your email address and we'll send you a link to reset your password.</p>
     <input type="email" id="email" placeholder="Email Address" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
-    <button onclick="validateEmail()">Send Code</button>
-  </div>
-
-  <!-- Verification Code -->
-  <div class="container" id="step2" style="display:none;">
-    <h2>Enter Verification Code</h2>
-    <p>We've sent a code to your email</p>
-    <div class="code-group">
-      <input class="code-input" maxlength="1">
-      <input class="code-input" maxlength="1">
-      <input class="code-input" maxlength="1">
-      <input class="code-input" maxlength="1">
-    </div>
-    <button onclick="nextStep(3)">Verify</button>
-  </div>
-
-  <!-- Set New Password -->
-  <div class="container" id="step3" style="display:none;">
-    <h2>Set New Password</h2>
-    <p>Create a strong password that you haven't used before.</p>
-    <input type="password" id="newPassword" placeholder="New Password" required>
-    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
-    <button onclick="validatePassword()">Reset Password</button>
+    <button onclick="sendResetEmail()">Send Reset Link</button>
   </div>
 
   <!-- Success Modal -->
-  <div class="modal" id="step4" style="display:none;">
+  <div class="modal" id="step2" style="display:none;">
     <div class="modal-content">
-      <h2>Code Verified!</h2>
-      <p>Password Reset Successful</p>
-      <p>You can now log in with your new password.</p>
+      <h2>Reset Link Sent!</h2>
+      <p>Please check your email for a link to reset your password.</p>
+      <button onclick="closeModal()">OK</button>
     </div>
   </div>
 
   <script>
-    function nextStep(step) {
-      for (let i = 1; i <= 4; i++) {
-        document.getElementById('step' + i).style.display = 'none';
-      }
-      document.getElementById('step' + step).style.display = step === 4 ? 'flex' : 'block';
-    }
-
-    function validateEmail() {
+    function sendResetEmail() {
       const emailInput = document.getElementById('email');
+      const email = emailInput.value.trim();
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailPattern.test(emailInput.value)) {
+      if (!emailPattern.test(email)) {
         alert('Please enter a valid email address.');
         return;
       }
-      nextStep(2);
+      firebase.auth().sendPasswordResetEmail(email)
+        .then(() => {
+          // Show modal
+          document.getElementById('step1').style.display = 'none';
+          document.getElementById('step2').style.display = 'flex';
+        })
+        .catch((error) => {
+          let msg = "Error: ";
+          if (error.code === "auth/user-not-found") {
+            msg = "No account found with this email.";
+          } else if (error.code === "auth/invalid-email") {
+            msg = "Invalid email address.";
+          } else {
+            msg += error.message;
+          }
+          alert(msg);
+        });
     }
 
-    function validatePassword() {
-      const password = document.getElementById('newPassword').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-      const passwordPattern = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,16}$/;
-
-      if (!passwordPattern.test(password)) {
-        alert('Password must be 8-16 characters long, contain at least one number and one uppercase letter.');
-        return;
-      }
-
-      if (password !== confirmPassword) {
-        alert('Passwords do not match.');
-        return;
-      }
-
-      nextStep(4);
+    function closeModal() {
+      document.getElementById('step2').style.display = 'none';
+      document.getElementById('step1').style.display = 'block';
+      document.getElementById('email').value = '';
     }
-     const inputs = document.querySelectorAll('.code-group input');
-
-  inputs.forEach((input, index) => {
-    input.addEventListener('input', () => {
-      const value = input.value;
-
-      // Only allow digits
-      input.value = value.replace(/[^0-9]/g, '');
-
-      if (input.value && index < inputs.length - 1) {
-        inputs[index + 1].focus();
-      }
-    });
-
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Backspace' && !input.value && index > 0) {
-        inputs[index - 1].focus();
-      }
-    });
-  });
   </script>
 </body>
 </html>
