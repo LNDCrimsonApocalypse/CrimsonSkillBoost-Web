@@ -228,7 +228,7 @@
     <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar-left">
-      <img class="navbar-logo" src="public/img/logo.png" alt="Logo" />
+      <img class="navbar-logo" src="public/img/Logo.png" alt="Logo" />
       <span class="navbar-brand">CRIMSONSkillBoost</span>
     </div>
     <div class="navbar-center">

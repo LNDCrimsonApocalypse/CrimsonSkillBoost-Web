@@ -245,7 +245,7 @@
       <img src="<?= base_url('public/img/Logo.png') ?>" alt="Logo" />
     </div>
     <div class="navbar-center">
-      <a href="<?= base_url('/') ?>">HOME</a>
+      <a href="<?= base_url('homepage') ?>">HOME</a>
       <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
       <a href="<?= base_url('aboutus') ?>">ABOUT</a>
       <a href="<?= base_url('allcourses') ?>">COURSES</a>

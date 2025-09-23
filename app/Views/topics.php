@@ -606,7 +606,7 @@ outline-style: solid;
         <img src="<?= base_url('public/img/Logo.png') ?> alt="logo" class="logo"/>
     </div>
     <div class="navbar-center">
-        <a href="<?= base_url('/') ?>">HOME</a>
+        <a href="<?= base_url('homepage') ?>">HOME</a>
         <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
         <a href="<?= base_url('aboutus') ?>">ABOUT</a>
         <a href="<?= base_url('allcourses') ?>">COURSES</a>
@@ -671,10 +671,10 @@ outline-style: solid;
         <input class="upload-input" id="uploadTopicTitle" name="uploadTopicTitle" maxlength="32" type="text" autocomplete="off" />
         <div class="upload-hint">The header must contain a maximum of 32 characters</div>
         <label class="upload-label" for="uploadFiles">Upload Files</label>
-        <div class="upload-hint">Accepted formats: PDF, PNG, JPG, ZIP (Max size: 20MB)</div>
+        <div class="upload-hint">Accepted format: PDF only (Max size: 20MB)</div>
         <div class="upload-dropzone" id="uploadDropzone">
-          Drag files here or click to browse
-          <input type="file" id="uploadFiles" name="uploadFiles[]" multiple style="display:none" accept=".pdf,.png,.jpg,.jpeg,.zip" />
+          Drag PDF files here or click to browse
+          <input type="file" id="uploadFiles" name="uploadFiles[]" multiple style="display:none" accept=".pdf" />
         </div>
         <button type="submit" class="upload-create-btn">Create Topic</button>
       </form>
@@ -910,9 +910,13 @@ function clearUploadTextArea() {
 function showSelectedFileNames() {
   const files = Array.from(uploadFileInput.files);
   if (files.length) {
-    uploadDropzone.textContent = files.map(f => f.name).join(', ');
+    // Only show PDF files
+    const pdfFiles = files.filter(f => f.type === "application/pdf" || f.name.toLowerCase().endsWith('.pdf'));
+    uploadDropzone.textContent = pdfFiles.length
+      ? pdfFiles.map(f => f.name).join(', ')
+      : "Only PDF files are allowed.";
   } else {
-    uploadDropzone.textContent = "Drag files here or click to browse";
+    uploadDropzone.textContent = "Drag PDF files here or click to browse";
   }
 }
 
@@ -948,8 +952,15 @@ uploadForm.onsubmit = function(e) {
     return;
   }
   if (!files.length) {
-    alert("Please select at least one file to upload.");
+    alert("Please select at least one PDF file to upload.");
     return;
+  }
+  // Restrict to PDF only
+  for (const file of files) {
+    if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith('.pdf')) {
+      alert("Only PDF files are allowed.");
+      return;
+    }
   }
   const btn = uploadForm.querySelector('.upload-create-btn');
   btn.disabled = true;
@@ -973,14 +984,7 @@ uploadForm.onsubmit = function(e) {
         // Build description with links to files
         let desc = urls.map((url, i) => {
           const file = files[i];
-          const ext = file.name.split('.').pop().toLowerCase();
-          if (['png','jpg','jpeg'].includes(ext)) {
-            return `<div><a href="${url}" target="_blank"><img src="${url}" alt="${file.name}" style="max-width:100%;height:auto;"/></a></div>`;
-          } else if (ext === 'pdf') {
-            return `<div><a href="${url}" target="_blank">View PDF: ${file.name}</a></div>`;
-          } else {
-            return `<div><a href="${url}" target="_blank">Download: ${file.name}</a></div>`;
-          }
+          return `<div><a href="${url}" target="_blank">View PDF: ${file.name}</a></div>`;
         }).join('');
         // Save topic to Firestore
         const topicsRef = firebase.firestore().collection('courses').doc(courseId).collection('topics');

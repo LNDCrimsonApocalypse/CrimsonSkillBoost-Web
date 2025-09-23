@@ -355,7 +355,7 @@ li {
 <body>
 <div class="navbar">
     <div class="navbar-logo">
-      <a href="<?= base_url('homepage_initial') ?>">
+      <a href="<?= base_url('homepage') ?>">
         <img src="<?= base_url('public/img/Logo.png') ?>" alt="logo" class="logo"/>
       </a>
     </div>

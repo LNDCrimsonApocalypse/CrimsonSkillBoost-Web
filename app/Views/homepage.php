@@ -261,7 +261,7 @@ li {
 
   <div class="navbar">
     <div class="nav-left">
-      <img src="<?= base_url('public/img/logo.png') ?>" class="logo" alt="Logo">
+      <img src="<?= base_url('public/img/Logo.png') ?>" class="logo" alt="Logo">
     </div>
     <div class="nav-center">
       <a href="<?= base_url('/') ?>">HOME</a>

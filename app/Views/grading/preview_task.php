@@ -246,12 +246,12 @@
 <!-- NAVBAR -->
 <div class="navbar">
   <div class="navbar-logo">
-    <a href="<?= base_url('homepage_initial') ?>">
+    <a href="<?= base_url('homepage') ?>">
       <img src="<?= base_url('public/img/Logo.png') ?>" alt="logo" class="logo"/>
     </a>
   </div>
   <div class="navbar-center">
-    <a href="<?= base_url('/') ?>">HOME</a>
+    <a href="<?= base_url('homepage') ?>">HOME</a>
     <a href="<?= base_url('dashboard') ?>">DASHBOARD</a>
     <a href="<?= base_url('aboutus') ?>">ABOUT</a>
     <a href="<?= base_url('allcourses') ?>">COURSES</a>
@@ -265,11 +265,11 @@
   </div>
 </div>
 <div class="tabbar">
-  <a href="<?= base_url('topics') ?>"><span>Topic</span></a>
-  <a href="<?= base_url('create_task') ?>"> <span>Task</span></a>
-  <a href="<?= base_url('create_quiz') ?>"><span>Quiz</span></a>
-  <a href="<?= base_url('studentprog') ?>"><span>Student</span></a>
-  <a href="<?= base_url('gradesettings') ?>">Grade Settings</a>
+    <a id="tab-topic" href="#"><span>Topic</span></a>
+    <a id="tab-task" href="#"><span>Task</span></a>
+    <a id="tab-quiz" href="#"><span>Quiz</span></a>
+    <a id="tab-student" href="#"><span>Student</span></a>
+    <a href="<?= base_url('gradesettings') ?>">Grade Settings</a>
 </div>
 <div class="filters">
   <select><option>Course</option></select>
@@ -630,8 +630,6 @@ function closeGradeModal() {
   editingIdx = null;
 }
 
-// ...existing code...
-
 document.getElementById('gradeForm').onsubmit = async function(e) {
   e.preventDefault();
   const gradeName = document.getElementById('modal-grade-name').value.trim();
@@ -667,6 +665,21 @@ document.getElementById('gradeForm').onsubmit = async function(e) {
   closeGradeModal();
   loadTaskSubmissions();
 };
+
+// Dynamically set tabbar links using course_id from URL
+(function() {
+  function getQueryParam(name) {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(name);
+  }
+  const courseId = getQueryParam('course_id');
+  if (courseId) {
+    document.getElementById('tab-topic').href = "<?= base_url('topics') ?>" + "?course_id=" + encodeURIComponent(courseId);
+    document.getElementById('tab-task').href = "<?= base_url('task_list') ?>" + "?course_id=" + encodeURIComponent(courseId);
+    document.getElementById('tab-quiz').href = "<?= base_url('quiz_list') ?>" + "?course_id=" + encodeURIComponent(courseId);
+    document.getElementById('tab-student').href = "<?= base_url('studentprog') ?>" + "?course_id=" + encodeURIComponent(courseId);
+  }
+})();
 </script>
 </body>
 </html>

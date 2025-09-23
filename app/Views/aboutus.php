@@ -227,7 +227,7 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar-left">
-     <img src="public/img/logo.png" alt="Logo"  class="navbar-logo" />
+     <img src="public/img/Logo.png" alt="Logo"  class="navbar-logo" />
     </div>
     <div class="navbar-center">
      <a href="<?= base_url('homepage') ?>" >HOME</a> 
