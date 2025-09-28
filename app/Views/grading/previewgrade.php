@@ -460,7 +460,7 @@
  <div class="navbar">
     <div class="navbar-logo">
       <a href="<?= base_url('homepage') ?>">
-        <img src="<?= base_url('public/img/Logo.png') ?>" alt="logo" class="logo"/>
+        <img src="<?= base_url('public/img/logo.png') ?>" alt="logo" class="logo"/>
       </a>
     </div>
     <div class="navbar-center">
@@ -589,6 +589,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
 <script>
 const db = firebase.firestore();
+const userId = window.currentUserId || "<?= isset($userId) ? $userId : '' ?>";
 
 // --- Get quiz_id and submission_id from URL ---
 function getQueryParam(name) {
@@ -598,7 +599,37 @@ function getQueryParam(name) {
 const quizId = getQueryParam('quiz_id');
 const submissionId = getQueryParam('submission_id');
 
-function loadFirebaseGrades() {
+// --- Fetch grade settings from Firestore ---
+let gradeSettings = [];
+async function fetchGradeSettings() {
+  if (!userId) return [];
+  const gradesSnap = await db.collection('settings').doc(`grade_settings_${userId}`).collection('grades').get();
+  let grades = [];
+  gradesSnap.forEach(doc => {
+    const g = doc.data();
+    if (g.grade_range && typeof g.grade_point !== 'undefined' && g.grade_name) {
+      const [min, max] = g.grade_range.split('-').map(x => parseFloat(x));
+      grades.push({
+        ...g,
+        min: min,
+        max: max
+      });
+    }
+  });
+  grades.sort((a, b) => b.min - a.min);
+  return grades;
+}
+
+function getGradeInfo(percent) {
+  for (const g of gradeSettings) {
+    if (percent >= g.min && percent <= g.max) {
+      return { gradePoint: g.grade_point, gradeName: g.grade_name };
+    }
+  }
+  return { gradePoint: '', gradeName: '' };
+}
+
+async function loadFirebaseGrades() {
   const tableBody = document.querySelector('tbody');
   tableBody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
 
@@ -606,6 +637,9 @@ function loadFirebaseGrades() {
     tableBody.innerHTML = '<tr><td colspan="6">Invalid quiz or submission ID</td></tr>';
     return;
   }
+
+  // Fetch grade settings first
+  gradeSettings = await fetchGradeSettings();
 
   db.collection('quizzes').doc(quizId).collection('submissions').doc(submissionId).get()
     .then(doc => {
@@ -615,21 +649,15 @@ function loadFirebaseGrades() {
       }
       const sub = doc.data();
       const percent = sub.score && sub.totalPossiblePoints ? Math.round((sub.score / sub.totalPossiblePoints) * 100) : 0;
-      let gradePoint = '-';
-      if (percent >= 97) gradePoint = '1.0';
-      else if (percent >= 94) gradePoint = '1.25';
-      else if (percent >= 91) gradePoint = '1.5';
-      else if (percent >= 88) gradePoint = '1.75';
-      else if (percent >= 85) gradePoint = '2.0';
-      // Add more grade logic as needed
+      const gradeInfo = getGradeInfo(percent);
 
       tableBody.innerHTML = `
         <tr>
           <td>${sub.userId || '-'}</td>
           <td>${sub.title || 'Task'}</td>
-          <td>${percent}%</td>
+          <td>${gradeInfo.gradeName || '-'}</td>
           <td>${sub.timestamp ? new Date(sub.timestamp).toLocaleDateString() : '-'}</td>
-          <td>${gradePoint}</td>
+          <td>${gradeInfo.gradePoint || '-'}</td>
           <td>${sub.score || 0} / ${sub.totalPossiblePoints || 0}</td>
         </tr>
       `;

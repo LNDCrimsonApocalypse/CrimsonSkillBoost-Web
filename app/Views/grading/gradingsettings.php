@@ -301,13 +301,115 @@
   margin: 0;
 
         }
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.18);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: #fff;
+      border-radius: 10px;
+      width: 600px;
+      max-width: 95vw;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      padding: 0 0 24px 0;
+      position: relative;
+      animation: fadeIn 0.2s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding: 22px 32px 12px 32px;
+    }
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #888;
+      letter-spacing: 1px;
+    }
+    .modal-close {
+      font-size: 1.7rem;
+      font-weight: bold;
+      color: #888;
+      cursor: pointer;
+      transition: color 0.18s;
+    }
+    .modal-close:hover {
+      color: #e636a4;
+    }
+    .modal-body {
+      padding: 24px 32px 0 32px;
+    }
+    .modal-row {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 18px;
+    }
+    .modal-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .modal-group label {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #222;
+    }
+    .modal-group input[type="text"],
+    .modal-group input[type="number"] {
+      padding: 10px 12px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #fafafa;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      padding: 18px 32px 0 32px;
+    }
+    .save-btn {
+      background: #e636a4;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.18s;
+    }
+    .save-btn:hover {
+      background: #b983ff;
+    }
+    @media (max-width: 700px) {
+      .modal-content { width: 98vw; }
+      .modal-row { flex-direction: column; gap: 12px; }
+      .modal-header, .modal-body, .modal-actions { padding-left: 12px; padding-right: 12px; }
+    }
   </style>
 </head>
 <body>
  <!-- NAVBAR -->
   <div class="navbar">
     <div class="navbar-logo">
-      <img src="imgs/Logo.png" alt="logo" class="logo"/>
+      <a href="<?= base_url('homepage') ?>">
+        <img src="<?= base_url('public/img/Logo.png') ?>" alt="logo" class="logo"/>
+      </a>
     </div>
     <div class="navbar-center">
        <a href="<?= base_url('homepage') ?>" >HOME</a> 
@@ -456,17 +558,36 @@ function loadGradeSettings() {
     });
 }
 
+function showModal(modalId) {
+  document.body.style.overflow = 'hidden';
+  document.getElementById(modalId).style.display = 'flex';
+}
+function hideModal(modalId) {
+  document.body.style.overflow = '';
+  document.getElementById(modalId).style.display = 'none';
+}
+
 function openEditGradeModal(id, name, point, range) {
   editingGradeId = id;
   document.getElementById('editGradeName').value = name;
   document.getElementById('editGradePoint').value = point;
   document.getElementById('editGradeRange').value = range;
-  document.getElementById('editGradeModal').style.display = 'flex';
+  showModal('editGradeModal');
 }
 function closeEditGradeModal() {
-  document.getElementById('editGradeModal').style.display = 'none';
+  hideModal('editGradeModal');
   editingGradeId = null;
 }
+function openAddGradeModal() {
+  document.getElementById('addGradeName').value = '';
+  document.getElementById('addGradePoint').value = '';
+  document.getElementById('addGradeRange').value = '';
+  showModal('addGradeModal');
+}
+function closeAddGradeModal() {
+  hideModal('addGradeModal');
+}
+
 document.getElementById('editGradeForm').onsubmit = async function(e) {
   e.preventDefault();
   if (!editingGradeId) return;
@@ -488,15 +609,6 @@ function deleteGradeSetting(id) {
 }
 
 // Add Grade Modal logic
-function openAddGradeModal() {
-  document.getElementById('addGradeName').value = '';
-  document.getElementById('addGradePoint').value = '';
-  document.getElementById('addGradeRange').value = '';
-  document.getElementById('addGradeModal').style.display = 'flex';
-}
-function closeAddGradeModal() {
-  document.getElementById('addGradeModal').style.display = 'none';
-}
 document.getElementById('addGradeBtn').onclick = openAddGradeModal;
 document.getElementById('addGradeForm').onsubmit = async function(e) {
   e.preventDefault();
@@ -512,13 +624,19 @@ document.getElementById('addGradeForm').onsubmit = async function(e) {
   loadGradeSettings();
 };
 
-// Modal close logic
+// Modal close logic (improved for modal experience)
 document.getElementById('editGradeModal').onclick = function(e) {
   if (e.target === this) closeEditGradeModal();
 };
 document.getElementById('addGradeModal').onclick = function(e) {
   if (e.target === this) closeAddGradeModal();
 };
+window.addEventListener('keydown', function(e) {
+  if (e.key === "Escape") {
+    closeEditGradeModal();
+    closeAddGradeModal();
+  }
+});
 
 document.addEventListener('DOMContentLoaded', loadGradeSettings);
   </script>

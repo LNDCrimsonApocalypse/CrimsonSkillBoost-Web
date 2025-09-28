@@ -318,21 +318,21 @@
         <div class="modal-row">
           <div class="modal-group">
             <label for="modal-grade-name">Grade Name</label>
-            <input type="text" id="modal-grade-name" placeholder="Grade Name" required />
+            <input type="text" id="modal-grade-name" placeholder="Grade Name" />
           </div>
           <div class="modal-group">
             <label for="modal-date">Date</label>
-            <input type="date" id="modal-date" required />
+            <input type="date" id="modal-date" />
           </div>
         </div>
         <div class="modal-row">
           <div class="modal-group">
             <label for="modal-grade-point">Grade Point</label>
-            <input type="number" step="0.01" id="modal-grade-point" placeholder="Grade Point" required />
+            <input type="number" step="0.01" id="modal-grade-point" placeholder="Grade Point" />
           </div>
           <div class="modal-group">
             <label for="modal-total-marks">Total Marks</label>
-            <input type="text" id="modal-total-marks" placeholder="e.g. 98/100" required />
+            <input type="text" id="modal-total-marks" placeholder="e.g. 98/100" />
           </div>
         </div>
       </div>
@@ -366,29 +366,34 @@ let userMap = {};
 let selectedIdx = 0;
 
 async function fetchGradeSettings() {
-  if (!userId) return [];
-  const gradesSnap = await db.collection('settings').doc(`grade_settings_${userId}`).collection('grades').orderBy('grade_point').get();
+  // Fetch from /settings/grade_settings_/grades
+  const gradesSnap = await db.collection('settings').doc('grade_settings_').collection('grades').get();
   let grades = [];
   gradesSnap.forEach(doc => {
     const g = doc.data();
-    // Expecting: grade_name, grade_point, grade_range (e.g. "97-100")
     if (g.grade_range && typeof g.grade_point !== 'undefined' && g.grade_name) {
-      // Parse range
-      const [min, max] = g.grade_range.split('-').map(x => parseFloat(x));
-      grades.push({
-        ...g,
-        min: min,
-        max: max
-      });
+      const nums = g.grade_range.match(/\d+(\.\d+)?/g);
+      if (nums && nums.length >= 2) {
+        const min = Number(nums[0]);
+        const max = Number(nums[1]);
+        if (!isNaN(min) && !isNaN(max)) {
+          grades.push({
+            ...g,
+            min: min,
+            max: max
+          });
+        }
+      }
     }
   });
-  // Sort descending by min
-  grades.sort((a, b) => b.min - a.min);
+  grades.sort((a, b) => b.max - a.max || b.min - a.min);
   return grades;
 }
 
 function getGradeInfo(percent) {
+  percent = parseFloat(percent);
   for (const g of gradeSettings) {
+    // Use inclusive range
     if (percent >= g.min && percent <= g.max) {
       return { gradePoint: g.grade_point, gradeName: g.grade_name };
     }
@@ -402,9 +407,16 @@ function renderTableAndPreview() {
   submissions.forEach((sub, idx) => {
     const studentName = userMap[sub.userId || sub.student_id] || sub.userName || sub.userId || '-';
     const taskName = sub.taskTitle || sub.title || 'Task';
-    const gradeName = sub.gradeName || '';
+    // Calculate percent and grade info
+    let percent = 0;
+    if (typeof sub.score === 'number' && typeof sub.totalPossiblePoints === 'number' && sub.totalPossiblePoints > 0) {
+      percent = (sub.score / sub.totalPossiblePoints) * 100;
+    }
+    const gradeInfo = getGradeInfo(percent);
+    // Use manual grade if set, else computed
+    const gradeName = sub.gradeName || gradeInfo.gradeName || '';
+    const gradePoint = sub.gradePoint || gradeInfo.gradePoint || '';
     const date = sub.date || (sub.timestamp ? new Date(sub.timestamp).toLocaleDateString() : '-');
-    const gradePoint = sub.gradePoint || '';
     let totalMarks = sub.totalMarks || '';
     if (!totalMarks && typeof sub.score === 'number' && typeof sub.totalPossiblePoints === 'number') {
       totalMarks = `${sub.score}/${sub.totalPossiblePoints}`;
@@ -467,14 +479,17 @@ function renderPreviewBox() {
   const previewBox = document.getElementById('taskPreviewBox');
   const sub = submissions[selectedIdx];
   let preview = '';
-  if (sub && sub.fileUrl) {
-    const ext = (sub.fileName || '').split('.').pop().toLowerCase();
+  // Support both fileUrl and file_url, fileName and file_name
+  const fileUrl = sub ? (sub.fileUrl || sub.file_url) : null;
+  const fileName = sub ? (sub.fileName || sub.file_name || '') : '';
+  if (sub && fileUrl) {
+    const ext = fileName.split('.').pop().toLowerCase();
     if (['png','jpg','jpeg','gif'].includes(ext)) {
-      preview = `<img src="${sub.fileUrl}" alt="Task File" style="max-width:100%;max-height:320px;border-radius:8px;margin-top:12px;">`;
+      preview = `<img src="${fileUrl}" alt="Task File" style="max-width:100%;max-height:320px;border-radius:8px;margin-top:12px;">`;
     } else if (ext === 'pdf') {
-      preview = `<iframe src="${sub.fileUrl}" style="width:100%;height:320px;border:none;margin-top:12px;"></iframe>`;
+      preview = `<iframe src="${fileUrl}" style="width:100%;height:320px;border:none;margin-top:12px;" frameborder="0"></iframe>`;
     } else {
-      preview = `<a href="${sub.fileUrl}" target="_blank" style="color:#e636a4;font-weight:600;">Download File</a>`;
+      preview = `<a href="${fileUrl}" target="_blank" style="color:#e636a4;font-weight:600;">Download File</a>`;
     }
   } else {
     preview = '<div style="color:#888;">No file uploaded.</div>';
@@ -554,6 +569,92 @@ function loadCommentForSelected() {
 async function loadAll() {
   gradeSettings = await fetchGradeSettings();
   loadTaskSubmissions();
+
+  const totalMarksInput = document.getElementById('modal-total-marks');
+  if (totalMarksInput) {
+    totalMarksInput.addEventListener('input', updateGradeFieldsFromMarks);
+    totalMarksInput.addEventListener('focus', updateGradeFieldsFromMarks);
+    totalMarksInput.addEventListener('blur', updateGradeFieldsFromMarks);
+    totalMarksInput.addEventListener('change', updateGradeFieldsFromMarks);
+  }
+}
+
+// Helper function to update grade name/point based on total marks input
+function updateGradeFieldsFromMarks() {
+  const totalMarksInput = document.getElementById('modal-total-marks');
+  const gradeNameInput = document.getElementById('modal-grade-name');
+  const gradePointInput = document.getElementById('modal-grade-point');
+  const modalSaveBtn = document.getElementById('modalSaveBtn');
+  let debugDiv = document.getElementById('gradeDebug');
+  if (!debugDiv) {
+    debugDiv = document.createElement('div');
+    debugDiv.id = 'gradeDebug';
+    debugDiv.style.fontSize = '0.95em';
+    debugDiv.style.color = '#c00';
+    debugDiv.style.marginTop = '8px';
+    gradePointInput.parentNode.appendChild(debugDiv);
+  }
+
+  if (!totalMarksInput || !gradeNameInput || !gradePointInput) return;
+
+  // Fix: ensure gradeSettings is an array and has length
+  if (!Array.isArray(gradeSettings) || gradeSettings.length === 0) {
+    gradeNameInput.value = 'No grade settings!';
+    gradePointInput.value = '';
+    gradeNameInput.style.background = '#ffeaea';
+    gradePointInput.style.background = '#ffeaea';
+    gradeNameInput.disabled = true;
+    gradePointInput.disabled = true;
+    totalMarksInput.disabled = true;
+    if (modalSaveBtn) modalSaveBtn.disabled = true;
+    debugDiv.innerHTML = `Grade settings not loaded.<br>
+      <a href="<?= base_url('gradesettings') ?>" target="_blank" style="color:#2196f3;text-decoration:underline;">Set up grade settings</a>`;
+    return;
+  } else {
+    // Fix: re-enable inputs if gradeSettings is present
+    gradeNameInput.disabled = false;
+    gradePointInput.disabled = false;
+    totalMarksInput.disabled = false;
+    if (modalSaveBtn) modalSaveBtn.disabled = false;
+    debugDiv.textContent = '';
+  }
+
+  const val = totalMarksInput.value.trim();
+  let score = null, total = null, percent = null;
+  gradeNameInput.value = '';
+  gradePointInput.value = '';
+  gradeNameInput.style.background = '';
+  gradePointInput.style.background = '';
+
+  if (val.includes('/')) {
+    const [scoreStr, totalStr] = val.split('/');
+    score = parseFloat(scoreStr);
+    total = parseFloat(totalStr);
+  } else if (!isNaN(parseFloat(val)) && val !== '') {
+    score = parseFloat(val);
+    total = 100;
+  }
+  if (score !== null && total !== null && !isNaN(score) && !isNaN(total) && total > 0) {
+    percent = (score / total) * 100;
+    const info = getGradeInfo(percent);
+    if (info.gradeName) {
+      gradeNameInput.value = info.gradeName;
+      gradeNameInput.style.background = '#eaf3ff';
+    } else {
+      gradeNameInput.value = 'No matching grade!';
+      gradeNameInput.style.background = '#ffeaea';
+    }
+    if (info.gradePoint) {
+      gradePointInput.value = info.gradePoint;
+      gradePointInput.style.background = '#eaf3ff';
+    } else {
+      gradePointInput.value = '';
+      gradePointInput.style.background = '#ffeaea';
+    }
+  } else {
+    gradeNameInput.value = '';
+    gradePointInput.value = '';
+  }
 }
 
 document.addEventListener('DOMContentLoaded', loadAll);
@@ -623,6 +724,12 @@ function openGradeModal(idx = null) {
     document.getElementById('modal-grade-point').value = '';
     document.getElementById('modal-total-marks').value = '';
   }
+  // Always trigger autofill after modal opens
+  setTimeout(() => {
+    updateGradeFieldsFromMarks();
+    // Focus total marks to trigger autofill visually
+    document.getElementById('modal-total-marks').focus();
+  }, 100); // Slightly longer delay to ensure gradeSettings is loaded
   modal.style.display = 'flex';
 }
 function closeGradeModal() {
@@ -632,10 +739,33 @@ function closeGradeModal() {
 
 document.getElementById('gradeForm').onsubmit = async function(e) {
   e.preventDefault();
-  const gradeName = document.getElementById('modal-grade-name').value.trim();
+  // Always update autofill before saving
+  updateGradeFieldsFromMarks();
+
+  let gradeName = document.getElementById('modal-grade-name').value.trim();
+  let gradePoint = document.getElementById('modal-grade-point').value.trim();
   const date = document.getElementById('modal-date').value;
-  const gradePoint = document.getElementById('modal-grade-point').value.trim();
   const totalMarks = document.getElementById('modal-total-marks').value.trim();
+
+  // If gradeName or gradePoint are still empty, recalculate
+  if (!gradeName || !gradePoint) {
+    const val = totalMarks;
+    let score = null, total = null, percent = null;
+    if (val.includes('/')) {
+      const [scoreStr, totalStr] = val.split('/');
+      score = parseFloat(scoreStr);
+      total = parseFloat(totalStr);
+    } else if (!isNaN(parseFloat(val)) && val !== '') {
+      score = parseFloat(val);
+      total = 100;
+    }
+    if (score !== null && total !== null && !isNaN(score) && !isNaN(total) && total > 0) {
+      percent = (score / total) * 100;
+      const info = getGradeInfo(percent);
+      gradeName = info.gradeName || '';
+      gradePoint = info.gradePoint || '';
+    }
+  }
 
   // Parse score from totalMarks (e.g. "98/100" => score: 98, totalPossiblePoints: 100)
   let score = 0, totalPossiblePoints = 0;

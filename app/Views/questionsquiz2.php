@@ -171,7 +171,8 @@
     }
 
     .main {
-      display: flex;
+      /* Remove flex layout to avoid empty left panel issues */
+      display: block;
       padding: 40px;
       gap: 30px;
     }
@@ -203,7 +204,8 @@
 
     /* Right Panel */
     .question-panel {
-      flex: 1;
+      /* Remove flex: 1; */
+      width: 100%;
     }
 
     .question-summary {
@@ -685,18 +687,13 @@
 
   <!-- MAIN CONTENT -->
   <div class="main">
-    <!-- Left Menu -->
-    <div class="left-menu">
-      <h4>Quiz Option</h4>
-      <div id="showUploadQuizModal" style="cursor:pointer;">Upload Quiz</div>
-      <div>Generate AI</div>
-    </div>
-
     <!-- Right Panel -->
     <div class="question-panel">
       <p id="questionCount"><strong>0 question</strong> (0 point)</p>
       <div id="questionList"></div>
       <button class="add-question-btn" id="addQuestionBtn">+ Add Question</button>
+      <!-- Add this button to trigger upload modal if needed -->
+      <button style="display:none;" id="showUploadQuizModal"></button>
     </div>
   </div>
 
@@ -813,13 +810,18 @@
     };
 
     // --- Firestore dynamic question list ---
+    // Ensure Firestore is initialized
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const dbFS = firebase.firestore();
+
     function getParam(name) {
       const params = new URLSearchParams(window.location.search);
       return params.get(name) || '';
     }
     const course_id = getParam('course_id') || "<?= isset($course_id) ? $course_id : '' ?>";
     const quiz_id = getParam('quiz_id') || "<?= isset($quiz_id) ? $quiz_id : '' ?>";
-    const dbFS = firebase.firestore();
 
     async function renderQuestions() {
       const list = document.getElementById('questionList');
@@ -828,65 +830,74 @@
       let total = 0, totalPoints = 0;
       if (!quiz_id) {
         count.innerHTML = "<strong>0 question</strong> (0 point)";
+        list.innerHTML = "<div style='color:#888;padding:20px;'>No quiz selected.</div>";
+        console.warn("Quiz ID is missing.");
         return;
       }
-      const snap = await dbFS.collection('quizzes').doc(quiz_id).collection('questions').get();
-      if (snap.empty) {
-        count.innerHTML = "<strong>0 question</strong> (0 point)";
-        return;
-      }
-      snap.forEach((doc, idx) => {
-        const q = doc.data();
-        total++;
-        const points = q.points ? parseInt(q.points) : 1;
-        totalPoints += points;
-        let html = `<div class="question-summary" data-key="${doc.id}">
-          <div class="question-type">${idx+1}. Multiple Choice</div>
-          <div class="question-actions">
-            <select class="point-select">
-              <option value="1"${points===1?' selected':''}>1 pt</option>
-              <option value="2"${points===2?' selected':''}>2 pt</option>
-              <option value="3"${points===3?' selected':''}>3 pt</option>
-            </select>
-            <button class="edit-btn" data-qid="${doc.id}">Edit</button>
-            <button class="delete-btn">🗑</button>
-          </div>
-          <h4 class="question-text">${q.question}</h4>
-          <div class="answer-list">`;
-        if (q.options && Array.isArray(q.options)) {
-          q.options.forEach((opt, i) => {
-            html += `<div class="answer ${i == q.correct_option ? 'correct' : 'wrong'}">${opt}</div>`;
-          });
+      try {
+        const snap = await dbFS.collection('quizzes').doc(quiz_id).collection('questions').get();
+        if (snap.empty) {
+          count.innerHTML = "<strong>0 question</strong> (0 point)";
+          list.innerHTML = "<div style='color:#888;padding:20px;'>No questions found for this quiz.</div>";
+          return;
         }
-        html += `</div></div>`;
-        list.innerHTML += html;
-      });
-      count.innerHTML = `<strong>${total} question${total !== 1 ? 's' : ''}</strong> (${totalPoints} point${totalPoints !== 1 ? 's' : ''})`;
-
-      // Attach event listeners for edit, delete, and point change
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.onclick = async function() {
-          const key = this.closest('.question-summary').getAttribute('data-key');
-          if (confirm('Delete this question?')) {
-            await dbFS.collection('quizzes').doc(quiz_id).collection('questions').doc(key).delete();
-            renderQuestions();
+        snap.forEach((doc, idx) => {
+          const q = doc.data();
+          total++;
+          const points = q.points ? parseInt(q.points) : 1;
+          totalPoints += points;
+          let html = `<div class="question-summary" data-key="${doc.id}">
+            <div class="question-type">${idx+1}. Multiple Choice</div>
+            <div class="question-actions">
+              <select class="point-select">
+                <option value="1"${points===1?' selected':''}>1 pt</option>
+                <option value="2"${points===2?' selected':''}>2 pt</option>
+                <option value="3"${points===3?' selected':''}>3 pt</option>
+              </select>
+              <button class="edit-btn" data-qid="${doc.id}">Edit</button>
+              <button class="delete-btn">🗑</button>
+            </div>
+            <h4 class="question-text">${q.question}</h4>
+            <div class="answer-list">`;
+          if (q.options && Array.isArray(q.options)) {
+            q.options.forEach((opt, i) => {
+              html += `<div class="answer ${i == q.correct_option ? 'correct' : 'wrong'}">${opt}</div>`;
+            });
           }
-        };
-      });
-      document.querySelectorAll('.edit-btn').forEach(btn => {
-        btn.onclick = function() {
-          const question_id = this.getAttribute('data-qid');
-          // Redirect to questionsquiz with course_id, quiz_id, and question_id
-          window.location.href = "<?= base_url('questionsquiz') ?>?course_id=" + course_id + "&quiz_id=" + quiz_id + "&question_id=" + question_id;
-        };
-      });
-      document.querySelectorAll('.point-select').forEach(sel => {
-        sel.onchange = async function() {
-          const key = this.closest('.question-summary').getAttribute('data-key');
-          await dbFS.collection('quizzes').doc(quiz_id).collection('questions').doc(key).update({ points: parseInt(this.value) });
-          renderQuestions();
-        };
-      });
+          html += `</div></div>`;
+          list.innerHTML += html;
+        });
+        count.innerHTML = `<strong>${total} question${total !== 1 ? 's' : ''}</strong> (${totalPoints} point${totalPoints !== 1 ? 's' : ''})`;
+
+        // Attach event listeners for edit, delete, and point change
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.onclick = async function() {
+            const key = this.closest('.question-summary').getAttribute('data-key');
+            if (confirm('Delete this question?')) {
+              await dbFS.collection('quizzes').doc(quiz_id).collection('questions').doc(key).delete();
+              renderQuestions();
+            }
+          };
+        });
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+          btn.onclick = function() {
+            const question_id = this.getAttribute('data-qid');
+            // Redirect to questionsquiz with course_id, quiz_id, and question_id
+            window.location.href = "<?= base_url('questionsquiz') ?>?course_id=" + course_id + "&quiz_id=" + quiz_id + "&question_id=" + question_id;
+          };
+        });
+        document.querySelectorAll('.point-select').forEach(sel => {
+          sel.onchange = async function() {
+            const key = this.closest('.question-summary').getAttribute('data-key');
+            await dbFS.collection('quizzes').doc(quiz_id).collection('questions').doc(key).update({ points: parseInt(this.value) });
+            renderQuestions();
+          };
+        });
+      } catch (err) {
+        count.innerHTML = "<strong>0 question</strong> (0 point)";
+        list.innerHTML = "<div style='color:#c00;padding:20px;'>Error loading questions: " + err.message + "</div>";
+        console.error("Firestore error:", err);
+      }
     }
 
     function loadQuestions() {
@@ -897,7 +908,9 @@
       window.location.href = "<?= base_url('questionsquiz') ?>?course_id=" + course_id + "&quiz_id=" + quiz_id;
     };
 
-    loadQuestions();
+    document.addEventListener('DOMContentLoaded', function() {
+      loadQuestions();
+    });
 
     // --- Publish Quiz Button ---
     document.getElementById('publishQuizBtn').onclick = async function() {

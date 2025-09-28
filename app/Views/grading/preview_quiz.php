@@ -517,6 +517,7 @@
         <th>Student Name</th>
         <th>Quiz Name <span style="font-size: 16px;">⏷</span></th>
         <th>Grade</th>
+        <th>Grade Name</th> <!-- Added column -->
         <th>Date</th>
         <th>Grade Point</th>
         <th>Total Marks</th>
@@ -630,7 +631,48 @@ function getPreviewBox() {
   return document.querySelector('.preview-box');
 }
 
-function loadQuizSubmissions() {
+let gradeSettings = [];
+
+async function fetchGradeSettings() {
+  // Fetch from /settings/grade_settings_/grades
+  const gradesSnap = await db.collection('settings').doc('grade_settings_').collection('grades').get();
+  let grades = [];
+  gradesSnap.forEach(doc => {
+    const g = doc.data();
+    if (g.grade_range && typeof g.grade_point !== 'undefined' && g.grade_name) {
+      const nums = g.grade_range.match(/\d+(\.\d+)?/g);
+      if (nums && nums.length >= 2) {
+        const min = Number(nums[0]);
+        const max = Number(nums[1]);
+        if (!isNaN(min) && !isNaN(max)) {
+          grades.push({
+            ...g,
+            min: min,
+            max: max
+          });
+        }
+      }
+    }
+  });
+  grades.sort((a, b) => b.max - a.max || b.min - a.min);
+  return grades;
+}
+
+function getGradeInfo(percent) {
+  percent = parseFloat(percent);
+  // TEMP DEBUG: log percent and gradeSettings
+  console.log('Quiz percent:', percent, 'gradeSettings:', gradeSettings);
+  for (const g of gradeSettings) {
+    if (percent >= g.min && percent <= g.max) {
+      return { gradePoint: g.grade_point, gradeName: g.grade_name };
+    }
+  }
+  // Fallback if no matching grade
+  return { gradePoint: '-', gradeName: 'No matching grade' };
+}
+
+async function loadQuizSubmissions() {
+  gradeSettings = await fetchGradeSettings();
   const tableBody = getTableBody();
   const previewBox = getPreviewBox();
   if (!tableBody) return;
@@ -671,22 +713,22 @@ function loadQuizSubmissions() {
       let html = '';
       let firstSubmission = null;
       submissions.forEach((sub, idx) => {
-        const percent = sub.score && sub.totalPossiblePoints ? Math.round((sub.score / sub.totalPossiblePoints) * 100) : 0;
-        let gradePoint = '-';
-        if (percent >= 97) gradePoint = '1.0';
-        else if (percent >= 94) gradePoint = '1.25';
-        else if (percent >= 91) gradePoint = '1.5';
-        else if (percent >= 88) gradePoint = '1.75';
-        else if (percent >= 85) gradePoint = '2.0';
+        // Convert raw score to percent for gradeSettings matching
+        // Example: score=1, total=2 => percent=50
+        const score = typeof sub.score === 'number' ? sub.score : 0;
+        const total = typeof sub.totalPossiblePoints === 'number' && sub.totalPossiblePoints > 0 ? sub.totalPossiblePoints : 100;
+        const percent = total > 0 ? (score / total) * 100 : 0;
+        const gradeInfo = getGradeInfo(percent);
         const studentName = userMap[sub.userId || sub.student_id] || sub.userName || sub.userId || '-';
         html += `
           <tr>
             <td>${studentName}</td>
             <td>${sub.title || 'Quiz'}</td>
-            <td>${percent}%</td>
+            <td>${percent.toFixed(2)}%</td>
+            <td>${gradeInfo.gradeName || '-'}</td>
             <td>${sub.timestamp ? new Date(sub.timestamp).toLocaleDateString() : '-'}</td>
-            <td>${gradePoint}</td>
-            <td>${sub.score || 0} / ${sub.totalPossiblePoints || 0}</td>
+            <td>${gradeInfo.gradePoint || '-'}</td>
+            <td>${score} / ${total}</td>
           </tr>
         `;
         if (idx === 0) firstSubmission = sub;
