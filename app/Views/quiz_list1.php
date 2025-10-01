@@ -493,7 +493,7 @@
     </div>
     <div class="navbar-right">
       <input type="text" placeholder="Search.." />
-      <button>+ Add Content</button>
+      <button onclick="window.location.href='<?= base_url('quiz') . '?course_id=' . urlencode($course_id) ?>'">+ Add Content</button>
       <img src="<?= base_url('public/img/notifications.png') ?>" alt="Notifications" class="icon" />    
       <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
     </div>

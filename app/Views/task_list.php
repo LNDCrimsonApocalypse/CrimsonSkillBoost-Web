@@ -494,7 +494,7 @@ $course_id = isset($course['id']) && $course['id'] ? $course['id'] : (isset($_GE
     </div>
     <div class="navbar-right">
       <input type="text" placeholder="Search.." />
-      <button onclick="window.location.href='<?= base_url('upload') . '?course_id=' ?><?= urlencode($course_id) ?>'">+ Add Content</button>
+      <button onclick="window.location.href='<?= base_url('create_task') . '?course_id=' . urlencode($course_id) ?>'">+ Add Content</button>
       <img src="<?= base_url('public/img/notifications.png') ?>" alt="Notifications" class="icon" />    
       <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
     </div>
