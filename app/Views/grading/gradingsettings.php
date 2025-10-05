@@ -517,7 +517,9 @@
     </div>
   </div>
 
-  <button id="addGradeBtn" class="action-btn" style="margin: 24px 0 0 24px;">+ Add Grade</button>
+  <div style="display:flex; justify-content:center; margin-top:24px;">
+    <button id="addGradeBtn" class="action-btn">+ Add Grade</button>
+  </div>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>

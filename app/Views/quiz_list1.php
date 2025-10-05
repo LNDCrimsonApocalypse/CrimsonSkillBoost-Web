@@ -502,10 +502,10 @@
 
   <!-- Tab Bar -->
    <div class="tabbar">
-     <a href="<?= base_url('topics') . '?course_id=' . urlencode($course_id) ?>"><span>Topic</span></a>
-    <a href="<?= base_url('task_list') . '?course_id=' . urlencode($course_id) ?>"><span>Task</span></a>
-    <a href="<?= base_url('quiz_list') . '?course_id=' . urlencode($course_id) ?>"><span>Quiz</span></a>
-   <a href="<?= base_url('studentprog') . '?course_id=' . urlencode($course_id) ?>"><span>Student</span></a>
+     <a href="<?= base_url('topics') ?>/<?= urlencode($course_id) ?>"><span>Topic</span></a>
+    <a href="<?= base_url('task_list') ?>?course_id=<?= urlencode($course_id) ?>"><span>Task</span></a>
+    <a href="<?= base_url('quiz_list') ?>?course_id=<?= urlencode($course_id) ?>"><span>Quiz</span></a>
+   <a href="<?= base_url('studentprog') ?>?course_id=<?= urlencode($course_id) ?>"><span>Student</span></a>
   </div>
 
   <div class="main">

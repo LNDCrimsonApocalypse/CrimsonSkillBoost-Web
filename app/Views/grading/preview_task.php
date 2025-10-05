@@ -265,7 +265,7 @@
   </div>
 </div>
 <div class="tabbar">
-    <a id="tab-topic" href="#"><span>Topic</span></a>
+    <a id="tab-topic" href="<?= base_url('topics') ?>/<?= urlencode(getQueryParam('course_id')) ?>"><span>Topic</span></a>
     <a id="tab-task" href="#"><span>Task</span></a>
     <a id="tab-quiz" href="#"><span>Quiz</span></a>
     <a id="tab-student" href="#"><span>Student</span></a>
@@ -804,7 +804,7 @@ document.getElementById('gradeForm').onsubmit = async function(e) {
   }
   const courseId = getQueryParam('course_id');
   if (courseId) {
-    document.getElementById('tab-topic').href = "<?= base_url('topics') ?>" + "?course_id=" + encodeURIComponent(courseId);
+    // Only update other tabs, topic tab is now static above
     document.getElementById('tab-task').href = "<?= base_url('task_list') ?>" + "?course_id=" + encodeURIComponent(courseId);
     document.getElementById('tab-quiz').href = "<?= base_url('quiz_list') ?>" + "?course_id=" + encodeURIComponent(courseId);
     document.getElementById('tab-student').href = "<?= base_url('studentprog') ?>" + "?course_id=" + encodeURIComponent(courseId);

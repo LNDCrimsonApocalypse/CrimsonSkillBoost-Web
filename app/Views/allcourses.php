@@ -309,6 +309,12 @@
       background: none;
       border: none;
       transition: color 0.2s;
+      z-index: 2000;            /* ensure it's above modal content layers */
+      pointer-events: auto;     /* make sure it receives clicks */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
     }
     .modal-close:hover {
       color: #e636a4;
@@ -688,7 +694,7 @@
    <!-- MODAL 1: Step 1 -->
 <div class="modal-overlay" id="courseModalStep1">
   <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('courseModalStep1')">&times;</span>
+    <button type="button" class="modal-close" onclick="event.stopPropagation(); (this.closest('.modal-overlay') || document.getElementById('courseModalStep1')).classList.remove('active');">&times;</button>
     <div class="modal-header">Add a Course</div>
     <div class="modal-body" style="display: flex; gap: 32px; justify-content: center;">
       <!-- Left: Year and Section -->
@@ -734,7 +740,7 @@
 <!-- MODAL 2: Step 2 -->
 <div class="modal-overlay" id="courseModalStep2">
   <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('courseModalStep2')">&times;</span>
+    <button type="button" class="modal-close" onclick="event.stopPropagation(); (this.closest('.modal-overlay') || document.getElementById('courseModalStep2')).classList.remove('active');">&times;</button>
     <div class="modal-header">Add Course Details</div>
     <div class="step active" id="step2">
       <div class="course-details-grid">
@@ -1031,7 +1037,7 @@ async function displayAllCoursesFromFirestore() {
       const sectionSem = (course.section ? course.section : '') +
         (course.semester ? ' - ' + (course.semester === "1" ? "First Semester" : course.semester === "2" ? "Second Semester" : course.semester) : '');
       return `
-        <div class="card" data-status="active">
+        <div class="card" data-status="active" data-course-id="${course.id}">
           <div class="card-image">
             <img src="default-course.jpg" alt="${course.course_name || ''}">
           </div>
@@ -1041,7 +1047,7 @@ async function displayAllCoursesFromFirestore() {
             <div class="card-subtitle">${sectionSem}</div>
             <div class="card-footer">
               <span class="card-students">
-                <i class="fa fa-users"></i> 0 students
+                <i class="fa fa-users"></i> <span class="card-students-count">0 students</span>
               </span>
               <button class="card-btn" data-course-id="${course.id}">View Info</button>
             </div>
@@ -1060,9 +1066,40 @@ async function displayAllCoursesFromFirestore() {
       };
     });
 
+    // Update student counts for all rendered cards
+    updateStudentCounts();
+
   } catch (e) {
     cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Failed to load courses.</div>';
   }
+}
+
+// Helper: get approved enrollment count for a course from Firestore
+async function getApprovedEnrollmentCount(courseId) {
+  if (!courseId) return 0;
+  try {
+    const snapshot = await firebase.firestore()
+      .collection("enrollment_requests")
+      .where("course_id", "==", courseId)
+      .where("status", "==", "approved")
+      .get();
+    return snapshot.size || 0;
+  } catch (err) {
+    return 0;
+  }
+}
+
+// Helper: update student counts for all rendered cards
+function updateStudentCounts() {
+  const cards = document.querySelectorAll('.cards-container .card[data-course-id]');
+  cards.forEach(async (card) => {
+    const cid = card.getAttribute('data-course-id');
+    const span = card.querySelector('.card-students-count');
+    if (!span) return;
+    span.textContent = '... students';
+    const count = await getApprovedEnrollmentCount(cid);
+    span.textContent = `${count} student${count !== 1 ? 's' : ''}`;
+  });
 }
 
 // --- FIREBASE: DISPLAY ONLY LOGGED-IN USER'S COURSES FROM FIRESTORE ---
@@ -1150,7 +1187,6 @@ async function displayUserCoursesFromFirestore() {
     cardsContainer.innerHTML = courses.map(course => {
       const sectionSem = (course.section ? course.section : '') +
         (course.semester ? ' - ' + (course.semester === "1" ? "First Semester" : course.semester === "2" ? "Second Semester" : course.semester) : '');
-      // Use course_code from DB, or fallback to mapping, or empty string
       const code = course.course_code || courseCodeMap[(course.course_name || '').trim().toUpperCase()] || "";
       const status = course.status === "inactive" ? "inactive" : "active";
       return `
@@ -1166,7 +1202,7 @@ async function displayUserCoursesFromFirestore() {
             <div class="card-subtitle">${sectionSem}</div>
             <div class="card-footer">
               <span class="card-students">
-                <i class="fa fa-users"></i> 0 students
+                <i class="fa fa-users"></i> <span class="card-students-count">0 students</span>
               </span>
               <button class="card-btn" data-course-id="${course.id}">View Info</button>
               ${status === "active" ? `<button class="card-btn done-btn" data-course-id="${course.id}" style="background:#bbb;color:#fff;margin-left:8px;">Done</button>` : ""}
@@ -1207,6 +1243,9 @@ async function displayUserCoursesFromFirestore() {
         }
       };
     });
+
+    // Update student counts for all rendered cards
+    updateStudentCounts();
 
   } catch (e) {
     cardsContainer.innerHTML = '<div class="empty-card" style="margin:40px auto;">Failed to load courses.</div>';
@@ -1343,9 +1382,21 @@ function filterCourses() {
     }
   });
 }
+
+// Ensure modal-close buttons are always clickable and reliably close the modal
+document.querySelectorAll('.modal-close').forEach(btn => {
+  // avoid adding duplicate listeners if this runs multiple times
+  if (!btn._closeHandlerAttached) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      const modal = this.closest('.modal-overlay');
+      if (modal) modal.classList.remove('active');
+    });
+    btn._closeHandlerAttached = true;
+  }
+});
+
   </script>
 
   </div>  
   </html>
-  </html>
-

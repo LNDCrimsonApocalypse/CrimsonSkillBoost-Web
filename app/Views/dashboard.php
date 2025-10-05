@@ -880,6 +880,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
               };
             });
+
+            // Update approved-students counts for rendered courses
+            updateApprovedCountsForCourses(courses);
+
           }
         } catch (e) {
           // Show error message
@@ -901,6 +905,36 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+/* Helper: count approved enrollment_requests and update each rendered card (dashboard) */
+async function updateApprovedCountsForCourses(coursesArray) {
+  if (!Array.isArray(coursesArray) || coursesArray.length === 0) return;
+  try {
+    const snapshot = await firebase.firestore().collection("enrollment_requests").where("status", "==", "approved").get();
+    const counts = {};
+    snapshot.forEach(doc => {
+      const d = doc.data();
+      coursesArray.forEach(c => {
+        if (!c) return;
+        if (d.course_id === c.id || d.course_id === (c.course_name || '').trim()) {
+          counts[c.id] = (counts[c.id] || 0) + 1;
+        }
+      });
+    });
+    // Update DOM for each rendered card in #cardsContainer
+    coursesArray.forEach(c => {
+      const cnt = counts[c.id] || 0;
+      const btn = document.querySelector(`#cardsContainer .card-btn[data-course-id="${c.id}"]`);
+      const el = btn ? btn.closest('.card').querySelector('.card-students') : null;
+      if (el) {
+        el.innerHTML = `<i class="fa fa-users"></i> ${cnt} student${cnt === 1 ? '' : 's'}`;
+      }
+    });
+  } catch (err) {
+    console.error('Failed to update approved counts:', err);
+  }
+}
+
+/* --- Existing code continues unchanged --- */
 // --- FIREBASE ENROLLMENT REQUESTS LOGIC (JOIN WITH COURSES) ---
 function renderEnrollmentRequestCard(req, courseName, section) {
   return `
@@ -974,19 +1008,34 @@ async function loadEnrollmentRequestsForInstructor(uid) {
 }
 
 window.updateEnrollmentRequest = async function(requestId, newStatus) {
-  if (!confirm(`Are you sure you want to ${newStatus} this enrollment request?`)) return;
-  try {
-    await firebase.firestore().collection("enrollment_requests").doc(requestId).update({
-      status: newStatus
-    });
-    const card = document.getElementById('enroll-' + requestId);
-    if (card) card.remove();
-    if (!document.querySelector('#enrollment-list .request-card')) {
-      document.getElementById('enrollment-list').innerHTML = '<div class="empty-card">No pending enrollment requests</div>';
+  if (newStatus === 'rejected') {
+    if (!confirm('Are you sure you want to reject this enrollment request? This will delete the request and allow the student to re-apply.')) return;
+    try {
+      await firebase.firestore().collection("enrollment_requests").doc(requestId).delete();
+      const card = document.getElementById('enroll-' + requestId);
+      if (card) card.remove();
+      if (!document.querySelector('#enrollment-list .request-card')) {
+        document.getElementById('enrollment-list').innerHTML = '<div class="empty-card">No pending enrollment requests</div>';
+      }
+      alert('Enrollment request rejected and deleted.');
+    } catch (e) {
+      alert('Failed to delete enrollment request: ' + e.message);
     }
-    alert(`Enrollment request ${newStatus} successfully`);
-  } catch (e) {
-    alert('Failed to update status: ' + e.message);
+  } else {
+    if (!confirm(`Are you sure you want to approve this enrollment request?`)) return;
+    try {
+      await firebase.firestore().collection("enrollment_requests").doc(requestId).update({
+        status: newStatus
+      });
+      const card = document.getElementById('enroll-' + requestId);
+      if (card) card.remove();
+      if (!document.querySelector('#enrollment-list .request-card')) {
+        document.getElementById('enrollment-list').innerHTML = '<div class="empty-card">No pending enrollment requests</div>';
+      }
+      alert(`Enrollment request ${newStatus} successfully`);
+    } catch (e) {
+      alert('Failed to update status: ' + e.message);
+    }
   }
 };
 

@@ -115,35 +115,32 @@ form input, form select {
 }
 
 .checkbox {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   margin-bottom: 1.5rem;
   display: flex;
-  align-items: flex-start;
-  gap: 0.1rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   color: #333;
+  width: 100%;
+  text-align: center;
+  flex-direction: row;
 }
-
 .checkbox input[type="checkbox"] {
-  margin-top: 3px;
+  margin: 0 8px 0 0;
+  accent-color: #e636a4;
+  width: 18px;
+  height: 18px;
 }
-
-.checkbox input {
-  margin-right: 0.5rem;
+.checkbox span {
+  display: inline-block;
+  text-align: left;
+  margin: 0;
+  line-height: 1.4;
 }
-
 .checkbox a {
-  color: #6c63ff;
-  text-decoration: none;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.form-footer {
-  margin-top: auto;
+  color: #e636a4;
+  text-decoration: underline;
 }
 
 button {
@@ -161,6 +158,14 @@ button {
 
 button:hover {
   background-color: #c75cd5;
+}
+button:disabled,
+#signupBtn:disabled {
+  background-color: #cccccc !important;
+  color: #888 !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+  border: none;
 }
 .input-container {
   position: relative;
@@ -318,18 +323,20 @@ button:hover {
     <img src="public/img/hide.png" class="toggle-eye" onclick="togglePassword('confirmPassword', this)" alt="Toggle visibility">
   </div>
 </div>
-        <label class="checkbox">
-          <input type="checkbox" id="terms" required />
-          <span>
-            By clicking here, I state that I have read and understood the
-            <a href="<?= base_url('terms') ?>"  style="color:#e636a4;text-decoration:underline;">Terms and Conditions</a>.
-          </span>
-        </label>
-        <p id="message" style="color: red; margin-bottom: 1rem;"></p>
-        <div class="form-footer">
-          <button type="submit">Sign Up</button>
-        </div>
-      </form>
+<div style="display: flex; justify-content: center; width: 100%;">
+  <label class="checkbox" style="margin-bottom: 1.5rem; max-width: 90%; font-size:14px; line-height:1.4;">
+    <input type="checkbox" id="terms" />
+    <span>
+      By clicking here, I state that I have read and understood the
+      <a href="<?= base_url('terms') ?>" style="color:#e636a4;text-decoration:underline;">Terms and Conditions</a>.
+    </span>
+  </label>
+</div>
+  <p id="message" style="color: red; margin-bottom: 1rem;"></p>
+  <div class="form-footer">
+    <button type="submit" id="signupBtn" disabled>Sign Up</button>
+  </div>
+</form>
     </div>
   </div>
     <div id="verificationSentModal" class="modal" tabindex="-1" role="dialog">
@@ -490,8 +497,14 @@ function resendVerificationEmail() {
   }
 }
 
-const user = userCredential.user;
+document.addEventListener("DOMContentLoaded", function() {
+  const terms = document.getElementById("terms");
+  const signupBtn = document.getElementById("signupBtn");
 
+  terms.addEventListener("change", function() {
+    signupBtn.disabled = !this.checked;
+  });
+});
 
   </script>
 

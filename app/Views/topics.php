@@ -603,7 +603,9 @@ outline-style: solid;
 <!-- Navbar -->
 <div class="navbar">
     <div class="navbar-logo">
-        <img src="<?= base_url('public/img/Logo.png') ?> alt="logo" class="logo"/>
+      <a href="<?= base_url('homepage') ?>">
+        <img src="<?= base_url('public/img/Logo.png') ?>" alt="logo" class="logo"/>
+      </a>
     </div>
     <div class="navbar-center">
         <a href="<?= base_url('homepage') ?>">HOME</a>
