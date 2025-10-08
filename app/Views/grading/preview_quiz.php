@@ -493,7 +493,7 @@
 
   <!-- Tabs -->
   <div class="tabbar">
-    <a id="tab-topic" href="<?= base_url('topics') ?>/<?= urlencode(getQueryParam('course_id')) ?>"><span>Topic</span></a>
+    <a id="tab-topic" href="#"><span>Topic</span></a>
     <a id="tab-task" href="#"><span>Task</span></a>
     <a id="tab-quiz" href="#"><span>Quiz</span></a>
     <a id="tab-student" href="#"><span>Student</span></a>
@@ -515,7 +515,7 @@
     <thead>
       <tr>
         <th>Student Name</th>
-        <th>Quiz Name <span style="font-size: 16px;">⏷</span></th>
+        <th>Quiz Name</th>
         <th>Grade</th>
         <th>Grade Name</th> <!-- Added column -->
         <th>Date</th>
@@ -541,7 +541,7 @@
         <div class="modal-row">
           <div class="modal-group">
             <label for="grade-name">Grade Name</label>
-            <input type="text" id="grade-name" placeholder="Grade Name" />
+            <input type="text" id="grade-name" placeholder="Grade Name" readonly />
           </div>
           <div class="modal-group">
             <label for="total-marks">Total Marks</label>
@@ -555,7 +555,7 @@
           </div>
           <div class="modal-group">
             <label for="grade-point">Grade Point</label>
-            <input type="text" id="grade-point" placeholder="Grade Point" />
+            <input type="text" id="grade-point" placeholder="Grade Point" readonly />
           </div>
         </div>
       </div>
@@ -799,7 +799,7 @@ function loadQuizQuestionsPreview(quizId, submission, previewBox) {
   }
   const courseId = getQueryParam('course_id');
   if (courseId) {
-    // Only update other tabs, topic tab is now static above
+    document.getElementById('tab-topic').href = "<?= base_url('topics') ?>/" + encodeURIComponent(courseId);
     document.getElementById('tab-task').href = "<?= base_url('task_list') ?>" + "?course_id=" + encodeURIComponent(courseId);
     document.getElementById('tab-quiz').href = "<?= base_url('quiz_list') ?>" + "?course_id=" + encodeURIComponent(courseId);
     document.getElementById('tab-student').href = "<?= base_url('studentprog') ?>" + "?course_id=" + encodeURIComponent(courseId);

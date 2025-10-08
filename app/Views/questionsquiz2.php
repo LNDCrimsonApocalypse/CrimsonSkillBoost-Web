@@ -647,6 +647,111 @@
       cursor: not-allowed;
     }
 
+    /* Due Date Modal (copied/adapted from create_task.php) */
+    #publishDueDateModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.08);
+      z-index: 4100;
+      justify-content: center;
+      align-items: center;
+    }
+    #publishDueDateModal > div {
+      background: #fff;
+      border-radius: 14px;
+      max-width: 600px;
+      width: 95vw;
+      padding: 38px 36px 32px 36px;
+      box-shadow: 0 6px 32px rgba(0,0,0,0.13);
+      position: relative;
+    }
+    #closePublishDueDateModal {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    #publishDueDateModal .due-modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #111;
+    }
+    #publishDueDateModal .due-modal-sub {
+      color: #a58cf5;
+      font-size: 1rem;
+      margin-bottom: 18px;
+      font-weight: 500;
+    }
+    #publishDueDateModal .due-modal-row {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 10px;
+    }
+    #publishDueDateModal .due-modal-col {
+      flex: 1;
+    }
+    #publishDueDateModal .due-modal-label {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: #222;
+    }
+    #publishDueDateModal .due-modal-input {
+      width: 100%;
+      font-size: 1rem;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1.2px solid #ccc;
+      margin-bottom: 8px;
+    }
+    #publishDueDateModal #quizAttempts {
+      width: 120px;
+    }
+    #publishDueDateModal .due-modal-checkbox-row {
+      margin: 18px 0 0 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #publishDueDateModal .due-modal-checkbox-row label {
+      color: #7d4ff7;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    #publishDueDateModal hr {
+      margin: 28px 0 18px 0;
+      border: 0;
+      border-top: 1.5px solid #eee;
+    }
+    #publishDueDateModal .due-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 18px;
+    }
+    #donePublishDueDateModal {
+      background: #4be04b;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+    #donePublishDueDateModal:hover {
+      background: #2fc32f;
+    }
+
   </style>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -767,6 +872,50 @@
       <div id="geminiQuestionsList" style="max-height:400px;overflow-y:auto;margin-bottom:18px;"></div>
       <div class="gemini-modal-footer">
         <button class="gemini-modal-save-btn" id="saveGeminiQuestionsBtn">Save All to Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Due Date Modal (copied/adapted from create_task.php) -->
+  <div id="publishDueDateModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.08); z-index:4100; justify-content:center; align-items:center;">
+    <div style="background:#fff; border-radius:14px; max-width:600px; width:95vw; padding:38px 36px 32px 36px; box-shadow:0 6px 32px rgba(0,0,0,0.13); position:relative;">
+      <button id="closePublishDueDateModal" style="position:absolute; top:18px; right:24px; font-size:1.5rem; background:none; border:none; cursor:pointer;">&times;</button>
+      <div style="font-size:1.5rem; font-weight:700; margin-bottom:10px;">Due date</div>
+      <div style="color:#a58cf5; font-size:1rem; margin-bottom:18px;">Set quiz deadlines before publishing</div>
+      <div style="display:flex; gap:24px; margin-bottom:10px;">
+        <div style="flex:1;">
+          <div style="font-weight:500; margin-bottom:6px;">Start date</div>
+          <div style="display:flex; align-items:center;">
+            <input type="date" id="quizStartDate" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-weight:500; margin-bottom:6px;">End date</div>
+          <div style="display:flex; align-items:center;">
+            <input type="date" id="quizEndDate" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; gap:24px; margin-bottom:10px;">
+        <input type="text" style="flex:1; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc;" placeholder="">
+        <input type="text" style="flex:1; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc;" placeholder="">
+      </div>
+      <div style="margin-bottom:18px;">
+        <label style="display:flex; align-items:center; font-size:1rem; color:#7d4ff7; font-weight:500;">
+          <input type="checkbox" id="quizAllowLate" checked style="margin-right:8px;">
+          Allow late submission for the following week
+        </label>
+      </div>
+      <hr style="margin:28px 0 18px 0; border:0; border-top:1.5px solid #eee;">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+        <span style="display:inline-block; width:14px; height:14px; background:#e0e0e0; border-radius:50%; margin-right:8px;"></span>
+        <span style="font-size:1.25rem; font-weight:700;">Options</span>
+      </div>
+      <div style="margin-bottom:8px; font-weight:500;">Number of attempts</div>
+      <input type="number" min="0" value="0" id="quizAttempts" style="width:120px; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:4px;">
+      <div style="font-size:0.95rem; color:#a58cf5; margin-bottom:18px;">Based on best attempt</div>
+      <div style="display:flex; justify-content:flex-end;">
+        <button id="donePublishDueDateModal" style="background:#4be04b; color:#fff; border:none; border-radius:8px; padding:10px 32px; font-size:1.1rem; font-weight:600; cursor:pointer;">Done</button>
       </div>
     </div>
   </div>
@@ -1038,6 +1187,54 @@
       document.getElementById('geminiQuestionsModal').classList.remove('active');
       renderQuestions();
     };
+
+    // --- Publish Quiz Button: show deadline modal first ---
+    document.getElementById('publishQuizBtn').onclick = function() {
+      // Show the publish due date modal
+      document.getElementById('publishDueDateModal').style.display = 'flex';
+    };
+
+    // Close modal logic
+    document.getElementById('closePublishDueDateModal').onclick = function() {
+      document.getElementById('publishDueDateModal').style.display = 'none';
+    };
+    document.getElementById('publishDueDateModal').onclick = function(e) {
+      if (e.target === this) this.style.display = 'none';
+    };
+
+    // When "Done" is clicked in the modal, publish the quiz and save deadlines
+    document.getElementById('donePublishDueDateModal').onclick = async function() {
+      const startDate = document.getElementById('quizStartDate').value;
+      const endDate = document.getElementById('quizEndDate').value;
+      const attempts = parseInt(document.getElementById('quizAttempts').value, 10) || 0;
+      const allowLate = document.getElementById('quizAllowLate').checked;
+
+      if (!startDate || !endDate) {
+        alert('Please set both start and end dates.');
+        return;
+      }
+      if (!course_id || !quiz_id) {
+        alert('Missing course or quiz ID.');
+        return;
+      }
+      try {
+        await dbFS.collection('quizzes').doc(quiz_id).update({
+          published: true,
+          published_at: new Date().toISOString(),
+          start_date: startDate,
+          end_date: endDate,
+          attempts: attempts,
+          allow_late: allowLate
+        });
+        document.getElementById('publishDueDateModal').style.display = 'none';
+        alert('Quiz published successfully!');
+        // Redirect to quiz_list with course_id
+        window.location.href = "<?= base_url('quiz_list') ?>" + "?course_id=" + encodeURIComponent(course_id);
+      } catch (e) {
+        alert('Failed to publish quiz: ' + e.message);
+      }
+    };
+
   </script>
 </body>
 </html>

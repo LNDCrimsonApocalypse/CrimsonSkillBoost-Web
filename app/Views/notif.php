@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Submission</title>
+  <title>Notifications</title>
   <style>
      body {
       margin: 0;
@@ -322,7 +322,7 @@ li {
     <div class="navbar-right">
       <input type="text" placeholder="Search.." />
       <img src="<?= base_url('public/img/notifications.png') ?>" alt="Notifications" class="icon" />    
-      <img src="<?= base_url('public/img/profile.png') ?>" alt="profile" class="profile"/>
+      <img src="" id="navbar-profile-pic" alt="profile" class="profile"/>
     </div>
   </div>
 
@@ -351,49 +351,126 @@ li {
 </div>
 
 <!-- Submission List -->
-<div class="submission-list">
-  <!-- Item 1 -->
-  <div class="submission-item">
-    <div class="submission-left">
-      <input type="checkbox">
-      <span class="star">★</span>
-      <span class="sender">JUAN DELA CRUZ</span>
-      <span class="label">Inbox</span>
-      <span class="message">JUAN DELA CRUZ submitted Introduction to Prog...</span>
-    </div>
-    <div class="time">9:11 PM</div>
-  </div>
-
-  <!-- Item 2 -->
-  <div class="submission-item">
-    <div class="submission-left">
-      <input type="checkbox">
-      <span class="star">☆</span>
-      <span class="sender">JUAN DELA CRUZ</span>
-      <span class="label">Inbox</span>
-      <span class="message">JUAN DELA CRUZ have 2 comments in Introduct...</span>
-    </div>
-    <div class="time">7:20 PM</div>
-  </div>
-
-  <!-- Item 3 -->
-  <div class="submission-item">
-    <div class="submission-left">
-      <input type="checkbox">
-      <span class="star">☆</span>
-      <span class="sender">JUAN DELA CRUZ</span>
-      <span class="label">Inbox</span>
-      <span class="message">JUAN DELA CRUZ submitted Introduction to Prog...</span>
-    </div>
-    <div class="time">
-      8:30 AM
-      <div class="attachment">
-        <span class="attachment-icon">📎</span>
-        diaz_jerine-Assignmnet#3pdf
-      </div>
-    </div>
-  </div>
+<div class="submission-list" id="submissionList">
+  <!-- Ungraded submissions will be loaded here -->
 </div>
+
+<!-- List of ungraded submissions -->
+<div id="ungraded-list"></div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+<script>
+const db = firebase.firestore();
+const currentUserId = window.currentUserId || "<?= isset($userId) ? $userId : '' ?>";
+
+async function loadUngradedSubmissions() {
+  const listDiv = document.getElementById('submissionList');
+  listDiv.innerHTML = "<div style='color:#888;padding:16px;'>Loading...</div>";
+  let items = [];
+  let userCache = {};
+  try {
+    const coursesSnap = await db.collection('courses').get();
+    for (const courseDoc of coursesSnap.docs) {
+      const courseId = courseDoc.id;
+      const tasksSnap = await db.collection('courses').doc(courseId).collection('tasks').get();
+      for (const taskDoc of tasksSnap.docs) {
+        const taskId = taskDoc.id;
+        const taskName = taskDoc.data().title || taskDoc.data().name || taskId;
+        const subsSnap = await db.collection('courses').doc(courseId).collection('tasks').doc(taskId)
+          .collection('submissions')
+          .get();
+        for (const subDoc of subsSnap.docs) {
+          const sub = subDoc.data();
+          if (!sub.gradeName && !sub.gradePoint) {
+            let userId = sub.userId || sub.student_id;
+            let fullName = 'Unknown';
+            if (userId) {
+              if (userCache[userId]) {
+                fullName = userCache[userId];
+              } else {
+                // Fetch user fullName from Firestore
+                try {
+                  const userDoc = await db.collection('users').doc(userId).get();
+                  fullName = userDoc.exists ? (userDoc.data().fullName || userId) : userId;
+                  userCache[userId] = fullName;
+                } catch (err) {
+                  fullName = userId;
+                }
+              }
+            }
+            items.push({
+              studentName: fullName,
+              label: 'Inbox',
+              message: `${taskName} submitted`,
+              time: sub.timestamp ? new Date(sub.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '',
+              fileName: sub.file_name || sub.fileName || '',
+              fileUrl: sub.file_url || sub.fileUrl || ''
+            });
+          }
+        }
+      }
+    }
+    if (items.length === 0) {
+      listDiv.innerHTML = "<div style='color:#888;padding:16px;'>No ungraded submissions 🎉</div>";
+    } else {
+      let html = '';
+      items.forEach(item => {
+        html += `
+        <div class="submission-item">
+          <div class="submission-left">
+            <input type="checkbox">
+            <span class="star">☆</span>
+            <span class="sender">${item.studentName}</span>
+            <span class="label">${item.label}</span>
+            <span class="message">${item.message}</span>
+          </div>
+          <div class="time">
+            ${item.time}
+            ${item.fileName ? `<div class="attachment"><span class="attachment-icon">📎</span><a href="${item.fileUrl}" target="_blank">${item.fileName}</a></div>` : ''}
+          </div>
+        </div>
+        `;
+      });
+      listDiv.innerHTML = html;
+    }
+  } catch (e) {
+    listDiv.innerHTML = "<div style='color:#c00;padding:16px;'>Error loading submissions.</div>";
+  }
+}
+
+// Fix profile picture loading
+firebase.auth().onAuthStateChanged(async function(user) {
+  if (user) {
+    try {
+      const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+      if (doc.exists) {
+        const data = doc.data();
+        const profileImg = document.getElementById("navbar-profile-pic");
+        if (profileImg) {
+          profileImg.src = data.photoURL || "<?= base_url('public/img/profile.png') ?>";
+        }
+      }
+    } catch (err) {
+      // fallback to default
+      const profileImg = document.getElementById("navbar-profile-pic");
+      if (profileImg) {
+        profileImg.src = "<?= base_url('public/img/profile.png') ?>";
+      }
+    }
+  } else {
+    // fallback to default
+    const profileImg = document.getElementById("navbar-profile-pic");
+    if (profileImg) {
+      profileImg.src = "<?= base_url('public/img/profile.png') ?>";
+    }
+  }
+});
+
+document.addEventListener('DOMContentLoaded', loadUngradedSubmissions);
+</script>
 
 </body>
 </html>
