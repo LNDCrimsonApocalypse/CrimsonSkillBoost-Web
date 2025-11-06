@@ -245,7 +245,7 @@
       </div>
       <div class="signup-card-bg">
         Don't have an account?
-        <a href="<?= base_url('register') ?>">Sign Up</a>
+        <a href="<?= base_url('terms') ?>">Sign Up</a>
       </div>
     </div>
   </div>

@@ -249,7 +249,7 @@
       </div>
       <div class="hero-buttons">
       <a href="<?= base_url('login') ?>" class="hero-btn login">Login &#8594;</a>
-       <a href="<?= base_url('register') ?>" > <button class="hero-btn signup">Sign Up &#8594;</button> </a>
+       <a href="<?= base_url('terms') ?>" > <button class="hero-btn signup">Sign Up &#8594;</button> </a>
       </div>
     </div>
     <div class="hero-phones">
