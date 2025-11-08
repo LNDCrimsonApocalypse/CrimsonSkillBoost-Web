@@ -17,8 +17,20 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-     padding: 10px 40px;
+      padding: 10px 40px;
       background: #fff;
+      position: fixed;       /* keep navbar visible on scroll */
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    }
+    /* ensure navbar images are vertically aligned */
+    .navbar-left img, .navbar-right .navbar-profile, .navbar-right .icon {
+      display: inline-block;
+      vertical-align: middle;
     }
     .navbar-left img {
       width: 56px;
@@ -56,6 +68,7 @@
       display: flex;
       align-items: center;
       gap: 22px;
+      padding-right: 64px;
     }
      .icon {
        width: 48px;
@@ -76,6 +89,7 @@
       background: #ffeaf6;
       min-height: 100vh;
       padding: 32px 0;
+      padding-top: 100px; /* offset for the fixed navbar */
     }
     .card-container {
       max-width: 1400px;
@@ -516,7 +530,7 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar-left">
-      <img src="public/img/logo.png" alt="Logo" />
+      <img src="<?= base_url('public/img/Logo.png') ?>" alt="Logo" style="cursor:pointer;" onclick="window.location.href='<?= base_url('/') ?>'" />
     </div>
     <div class="navbar-center">
      <a href="<?= base_url('/') ?>">HOME</a>
@@ -525,8 +539,9 @@
       <a href="<?= base_url('aboutus') ?>">COURSES</a>
     </div>
     <div class="navbar-right">
-      <img src="public/img/notifications.png" alt="Notifications" class="icon" onclick="window.location.href='<?= base_url('notif') ?>'" style="cursor:pointer;" />
-      <img src="imgs/profile.png" alt="Profile" class="navbar-profile" style="cursor:pointer;" onclick="window.location.href='<?= base_url('editprofile') ?>'" />
+      <img src="<?= base_url('public/img/notifications.png') ?>" alt="Notifications" class="icon" onclick="window.location.href='<?= base_url('notif') ?>'" style="cursor:pointer;" />
+      <!-- added id so JS can target the avatar and provide a default src -->
+      <img id="navbar-profile-pic" src="<?= base_url('public/img/profile.png') ?>" alt="Profile" class="navbar-profile" style="cursor:pointer;" onclick="window.location.href='<?= base_url('editprofile') ?>'" />
     </div>
   </nav>
   <!-- MAIN AREA -->
@@ -1039,7 +1054,7 @@ async function displayAllCoursesFromFirestore() {
       return `
         <div class="card" data-status="active" data-course-id="${course.id}">
           <div class="card-image">
-            <img src="default-course.jpg" alt="${course.course_name || ''}">
+            <img src="<?= base_url('public/img/default-course.jpg') ?>" alt="${course.course_name || ''}">
           </div>
           <div class="card-content">
             <div class="card-label">${(course.course_name || '').substring(0,8).toUpperCase()}</div>
@@ -1398,5 +1413,53 @@ document.querySelectorAll('.modal-close').forEach(btn => {
 
   </script>
 
+  <!-- Ensure avatar is populated after Firebase auth initializes -->
+<script>
+(async function() {
+  // Wait for firebase to initialize
+  function waitForFirebase() {
+    return new Promise(resolve => {
+      if (window.firebase && firebase.apps && firebase.apps.length) return resolve();
+      const i = setInterval(() => {
+        if (window.firebase && firebase.apps && firebase.apps.length) {
+          clearInterval(i);
+          resolve();
+        }
+      }, 50);
+    });
+  }
+  await waitForFirebase();
+
+  const defaultAvatar = '<?= base_url('public/img/profile.png') ?>';
+  const img = document.getElementById('navbar-profile-pic');
+  if (!img) return;
+
+  firebase.auth().onAuthStateChanged(async (user) => {
+    try {
+      if (!user) {
+        img.src = defaultAvatar;
+        return;
+      }
+      // Prefer photoURL on auth user, then Firestore users/{uid}.photoURL, then default
+      if (user.photoURL) {
+        img.src = user.photoURL;
+        return;
+      }
+      try {
+        const doc = await firebase.firestore().collection('users').doc(user.uid).get();
+        if (doc.exists && doc.data().photoURL) {
+          img.src = doc.data().photoURL;
+          return;
+        }
+      } catch (e) {
+        // ignore and fallback
+      }
+      img.src = defaultAvatar;
+    } catch (e) {
+      img.src = defaultAvatar;
+    }
+  });
+})();
+</script>
   </div>  
   </html>

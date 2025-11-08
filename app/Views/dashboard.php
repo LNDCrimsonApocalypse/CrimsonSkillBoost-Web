@@ -810,7 +810,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return `
           <div class="card" data-status="${status}">
             <div class="card-image">
-              <img src="default-course.jpg" alt="${course.course_name || ''}">
+              <img src="<?= base_url('public/img/default-course.jpg') ?>" alt="${course.course_name || ''}">
             </div>
             <div class="card-content">
               <div class="card-label" style="font-weight:700; color:#888; letter-spacing:2px; text-transform:uppercase;">
