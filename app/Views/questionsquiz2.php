@@ -911,9 +911,20 @@
         <span style="display:inline-block; width:14px; height:14px; background:#e0e0e0; border-radius:50%; margin-right:8px;"></span>
         <span style="font-size:1.25rem; font-weight:700;">Options</span>
       </div>
-      <div style="margin-bottom:8px; font-weight:500;">Number of attempts</div>
-      <input type="number" min="0" value="0" id="quizAttempts" style="width:120px; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:4px;">
-      <div style="font-size:0.95rem; color:#a58cf5; margin-bottom:18px;">Based on best attempt</div>
+      <div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:8px;">
+        <div style="display:flex;flex-direction:column;">
+          <div style="margin-bottom:8px; font-weight:500;">Number of attempts</div>
+          <input type="number" min="0" value="0" id="quizAttempts" style="width:120px; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:4px;">
+          <div style="font-size:0.95rem; color:#a58cf5;">Based on best attempt</div>
+        </div>
+        <div style="display:flex;flex-direction:column;flex:1;min-width:220px;">
+          <label for="requiredQuizSelect" style="font-weight:500; margin-bottom:8px;">Required quiz</label>
+          <select id="requiredQuizSelect" style="font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; width:100%;">
+            <option value="">None</option>
+          </select>
+          <div style="font-size:0.95rem; color:#888; margin-top:6px;">Select a quiz that must be completed first</div>
+        </div>
+      </div>
       <div style="display:flex; justify-content:flex-end;">
         <button id="donePublishDueDateModal" style="background:#4be04b; color:#fff; border:none; border-radius:8px; padding:10px 32px; font-size:1.1rem; font-weight:600; cursor:pointer;">Done</button>
       </div>
@@ -1208,6 +1219,7 @@
       const endDate = document.getElementById('quizEndDate').value;
       const attempts = parseInt(document.getElementById('quizAttempts').value, 10) || 0;
       const allowLate = document.getElementById('quizAllowLate').checked;
+      const requiredQuiz = (document.getElementById('requiredQuizSelect') && document.getElementById('requiredQuizSelect').value) || '';
 
       if (!startDate || !endDate) {
         alert('Please set both start and end dates.');
@@ -1224,7 +1236,8 @@
           start_date: startDate,
           end_date: endDate,
           attempts: attempts,
-          allow_late: allowLate
+          allow_late: allowLate,
+          requiredQuiz: requiredQuiz
         });
         document.getElementById('publishDueDateModal').style.display = 'none';
         alert('Quiz published successfully!');
@@ -1235,6 +1248,47 @@
       }
     };
 
+    // Load quizzes for the same course and populate the Required Quiz dropdown.
+    async function loadRequiredQuizOptions() {
+      if (!course_id || !quiz_id) return;
+      const select = document.getElementById('requiredQuizSelect');
+      if (!select) return;
+      // Clear existing options except the 'None'
+      select.innerHTML = '<option value="">None</option>';
+      try {
+        // Fetch current quiz to read existing requiredQuiz (if any)
+        let currentRequired = '';
+        try {
+          const curSnap = await dbFS.collection('quizzes').doc(quiz_id).get();
+          if (curSnap.exists) {
+            currentRequired = curSnap.data().requiredQuiz || '';
+          }
+        } catch (err) {
+          console.warn('Could not fetch current quiz:', err);
+        }
+
+        // Query quizzes for the same course (exclude current quiz)
+        const qs = await dbFS.collection('quizzes').where('course_id', '==', course_id).get();
+        qs.forEach(doc => {
+          if (doc.id === quiz_id) return; // don't include itself
+          const title = doc.data().title || '(Untitled)';
+          const opt = document.createElement('option');
+          opt.value = doc.id;
+          opt.textContent = title + (doc.id === currentRequired ? ' (current)' : '');
+          if (doc.id === currentRequired) opt.selected = true;
+          select.appendChild(opt);
+        });
+      } catch (err) {
+        console.error('Failed to load required quiz list:', err);
+      }
+    }
+
+    // Ensure the dropdown is populated after initial load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadQuestions();
+      // populate required quiz select for publish modal
+      loadRequiredQuizOptions();
+    });
   </script>
 </body>
 </html>

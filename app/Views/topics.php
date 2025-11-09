@@ -369,11 +369,11 @@ outline-style: solid;
       border-radius: 8px;
       box-shadow: 0 2px 16px rgba(0,0,0,0.10);
       border: none;
-      width: 1000px;
+      width: 1000px;         /* restored original width */
       max-width: 1000px;
-      margin: 16px auto;
-      margin-top: 40px;
-      padding: 0 0 32px 0;
+      margin: 12px auto;
+      margin-top: 20px;
+      padding: 0 0 20px 0;    /* keep the reduced vertical padding */
       display: flex;
       flex-direction: column;
       position: center;
@@ -383,12 +383,12 @@ outline-style: solid;
       z-index: 300;
     }
     .new-topic-modal-header {
-      padding: 32px 0 18px 0;
+      padding: 20px 0 12px 0;
       border-bottom: 2px solid #ececec;
       text-align: center;
     }
     .new-topic-title {
-      font-size: 2rem;
+      font-size: 1.6rem;
       font-weight: 700;
       color: #a7a1a7;
       letter-spacing: 1px;
@@ -397,8 +397,8 @@ outline-style: solid;
     .new-topic-form {
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      padding: 32px 36px 0 36px;
+      gap: 12px;
+      padding: 18px 22px 0 22px;
     }
     .topic-label {
       font-size: 1.15rem;
@@ -445,14 +445,14 @@ outline-style: solid;
       border: 1.5px solid #f75bbd;
     }
     .create-topic-btn {
-      margin: 24px auto 0 auto;
+      margin: 18px auto 0 auto;
       background: #f75bbd;
       color: #fff;
-      font-size: 1.15rem;
+      font-size: 1rem;
       font-weight: 700;
       border: none;
       border-radius: 7px;
-      padding: 12px 38px;
+      padding: 10px 28px;
       cursor: pointer;
       transition: background 0.15s;
       box-shadow: 0 2px 8px rgba(247,91,189,0.07);
@@ -468,11 +468,11 @@ outline-style: solid;
       border-radius: 8px;
       box-shadow: 0 2px 16px rgba(0,0,0,0.10);
       border: none;
-      width: 1000px;
+      width: 1000px;         /* restored original width */
       max-width: 1000px;
-      margin: 16px auto;
-      margin-top: 40px;
-      padding: 0 0 32px 0;
+      margin: 12px auto;
+      margin-top: 20px;
+      padding: 0 0 20px 0;
       display: flex;
       flex-direction: column;
       position: center;
@@ -482,7 +482,7 @@ outline-style: solid;
       z-index: 300;
     }
     .upload-topic-modal-header {
-      padding: 32px 0 18px 0;
+      padding: 20px 0 12px 0;
       border-bottom: 2px solid #ececec;
       text-align: center;
     }
@@ -496,8 +496,8 @@ outline-style: solid;
     .upload-topic-form {
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      padding: 32px 36px 0 36px;
+      gap: 12px;
+      padding: 18px 22px 0 22px;
     }
     .upload-label {
       font-size: 1.15rem;
@@ -546,14 +546,14 @@ outline-style: solid;
       color: #d12c5c;
     }
     .upload-create-btn {
-      margin: 24px auto 0 auto;
+      margin: 18px auto 0 auto;
       background: #f75bbd;
       color: #fff;
-      font-size: 1.15rem;
+      font-size: 1rem;
       font-weight: 700;
       border: none;
       border-radius: 7px;
-      padding: 12px 38px;
+      padding: 10px 28px;
       cursor: pointer;
       transition: background 0.15s;
       box-shadow: 0 2px 8px rgba(247,91,189,0.07);
@@ -656,6 +656,13 @@ outline-style: solid;
         <label class="topic-label" for="topicTitle">Topic Title</label>
         <input class="topic-input" id="topicTitle" name="topicTitle" maxlength="32" type="text" autocomplete="off" />
         <div class="topic-hint">The header must contain a maximum of 32 characters</div>
+
+        <!-- Required Topic (optional) -->
+        <label class="topic-label" for="requiredTopicSelect">Required Topic (optional)</label>
+        <select id="requiredTopicSelect" class="topic-input" style="height:42px;padding:8px;">
+          <option value="">None</option>
+        </select>
+
         <label class="topic-label" for="topicDesc">Description</label>
         <textarea class="topic-textarea" id="topicDesc" name="topicDesc" rows="5" placeholder="Enter a description"></textarea>
         <button type="submit" class="create-topic-btn">Create Topic</button>
@@ -672,6 +679,13 @@ outline-style: solid;
         <label class="upload-label" for="uploadTopicTitle">Topic Title</label>
         <input class="upload-input" id="uploadTopicTitle" name="uploadTopicTitle" maxlength="32" type="text" autocomplete="off" />
         <div class="upload-hint">The header must contain a maximum of 32 characters</div>
+
+        <!-- Required Topic (optional) -->
+        <label class="upload-label" for="uploadRequiredTopicSelect">Required Topic (optional)</label>
+        <select id="uploadRequiredTopicSelect" class="upload-input" style="height:42px;padding:8px;">
+          <option value="">None</option>
+        </select>
+
         <label class="upload-label" for="uploadFiles">Upload Files</label>
         <div class="upload-hint">Accepted format: PDF only (Max size: 20MB)</div>
         <div class="upload-dropzone" id="uploadDropzone">
@@ -763,19 +777,36 @@ firebase.auth().onAuthStateChanged(async function(user) {
                 if (snapshot.empty) {
                     topicsCards.innerHTML = "<div style='padding:20px;color:#888;'>No topics found for this course.</div>";
                 } else {
-                    topicsCards.innerHTML = '';
+                    // Build a map of topics so we can populate "Required Topic" selects and lookup titles
+                    const topics = [];
                     snapshot.forEach(function(doc) {
                         const data = doc.data();
-                        const lessonUrl = "<?= base_url('lesson_view') ?>" + "/" + encodeURIComponent(doc.id) + "?course_id=<?= urlencode($course['id']) ?>";
-                        // Add data attributes for edit
+                        topics.push({ id: doc.id, title: data.title || doc.id, description: data.description || '', required: data.requiredTopic || '' });
+                    });
+                    // Populate required-topic selects (new & upload)
+                    const reqSelect = document.getElementById('requiredTopicSelect');
+                    const uploadReqSelect = document.getElementById('uploadRequiredTopicSelect');
+                    if (reqSelect) {
+                      reqSelect.innerHTML = '<option value="">None</option>' + topics.map(t => `<option value="${t.id}">${t.title}</option>`).join('');
+                    }
+                    if (uploadReqSelect) {
+                      uploadReqSelect.innerHTML = '<option value="">None</option>' + topics.map(t => `<option value="${t.id}">${t.title}</option>`).join('');
+                    }
+                    // Render cards (use map to lookup required-topic title)
+                    topicsCards.innerHTML = '';
+                    const topicsById = Object.fromEntries(topics.map(t => [t.id, t]));
+                    topics.forEach(function(t) {
+                        const lessonUrl = "<?= base_url('lesson_view') ?>" + "/" + encodeURIComponent(t.id) + "?course_id=<?= urlencode($course['id']) ?>";
+                        const requiredTitle = t.required ? (topicsById[t.required] ? topicsById[t.required].title : t.required) : '';
                         topicsCards.innerHTML += `
-                            <div class="card" data-topic-id="${doc.id}" data-title="${encodeURIComponent(data.title || '')}" data-desc="${encodeURIComponent(data.description || '')}">
+                            <div class="card" data-topic-id="${t.id}" data-title="${encodeURIComponent(t.title)}" data-desc="${encodeURIComponent(t.description)}" data-required="${t.required}">
                                 <div class="card-content">
                                     <div class="card-title">
-                                      ${data.title || doc.id}
-                                      <i class="edit-topic-btn" style="cursor:pointer;" title="Edit" data-topic-id="${doc.id}">✎</i>
+                                      ${t.title}
+                                      <i class="edit-topic-btn" style="cursor:pointer;" title="Edit" data-topic-id="${t.id}">✎</i>
                                     </div>
-                                    <div class="card-desc">${truncateText(data.description)}</div>
+                                    ${ requiredTitle ? `<div style="margin-top:6px;"><span style="display:inline-block;background:#fff;border-radius:14px;padding:4px 10px;font-weight:700;color:#e636a4;border:1px solid rgba(230,54,164,0.12);">Required: ${requiredTitle}</span></div>` : '' }
+                                    <div class="card-desc" style="margin-top:8px;">${truncateText(t.description)}</div>
                                 </div>
                                 <div class="card-footer">
                                     <a href="${lessonUrl}" class="view-btn">View Info</a>
@@ -792,7 +823,8 @@ firebase.auth().onAuthStateChanged(async function(user) {
                             const topicId = card.getAttribute('data-topic-id');
                             const title = decodeURIComponent(card.getAttribute('data-title') || '');
                             const desc = decodeURIComponent(card.getAttribute('data-desc') || '');
-                            openEditTopicModal(topicId, title, desc);
+                            const required = card.getAttribute('data-required') || '';
+                            openEditTopicModal(topicId, title, desc, required);
                         };
                     });
                 }
@@ -809,6 +841,12 @@ firebase.auth().onAuthStateChanged(async function(user) {
       // Open the modal and pre-fill fields
       document.getElementById('topicTitle').value = title || '';
       document.getElementById('topicDesc').value = desc || '';
+      // prefill requiredTopic select if available
+      const reqSelect = document.getElementById('requiredTopicSelect');
+      if (reqSelect) {
+        // value will be set by openEditTopicModal caller where we pass the required id
+        // (we will set it below after calling this function)
+      }
       document.querySelector('.new-topic-title').textContent = "EDIT TOPIC";
       document.querySelector('.create-topic-btn').textContent = "Save Changes";
       document.getElementById('newTopicModal').classList.add('show');
@@ -826,11 +864,25 @@ firebase.auth().onAuthStateChanged(async function(user) {
       newTopicModal.classList.add('show');
     };
 
+    // Overload openEditTopicModal to set required select value (called earlier)
+    function openEditTopicModal(topicId, title, desc, requiredId) {
+      editingTopicId = topicId;
+      document.getElementById('topicTitle').value = title || '';
+      document.getElementById('topicDesc').value = desc || '';
+      // set required select if present
+      const reqSelect = document.getElementById('requiredTopicSelect');
+      if (reqSelect) reqSelect.value = requiredId || '';
+      document.querySelector('.new-topic-title').textContent = "EDIT TOPIC";
+      document.querySelector('.create-topic-btn').textContent = "Save Changes";
+      document.getElementById('newTopicModal').classList.add('show');
+    }
+
     // --- FIREBASE NEW/EDIT TOPIC LOGIC (add or update subcollection) ---
     document.querySelector('.new-topic-form').onsubmit = function(e) {
       e.preventDefault();
       const topicTitle = document.getElementById('topicTitle').value.trim();
       const topicDesc = document.getElementById('topicDesc').value.trim();
+      const requiredTopic = document.getElementById('requiredTopicSelect') ? document.getElementById('requiredTopicSelect').value : '';
       const courseId = "<?= esc($course['id']) ?>";
       if (!topicTitle) {
         alert("Topic title is required.");
@@ -853,6 +905,7 @@ firebase.auth().onAuthStateChanged(async function(user) {
           topicsRef.doc(editingTopicId).update({
             title: topicTitle,
             description: topicDesc,
+            requiredTopic: requiredTopic || '',
             updated_by: user.uid,
             updated_at: firebase.firestore.FieldValue.serverTimestamp()
           })
@@ -873,6 +926,7 @@ firebase.auth().onAuthStateChanged(async function(user) {
           topicsRef.add({
             title: topicTitle,
             description: topicDesc,
+            requiredTopic: requiredTopic || '',
             created_by: user.uid,
             created_at: firebase.firestore.FieldValue.serverTimestamp()
           })
@@ -947,6 +1001,7 @@ uploadDropzone.addEventListener('drop', e => {
 uploadForm.onsubmit = function(e) {
   e.preventDefault();
   const topicTitle = uploadTitleInput.value.trim();
+  const requiredTopic = document.getElementById('uploadRequiredTopicSelect') ? document.getElementById('uploadRequiredTopicSelect').value : '';
   const files = Array.from(uploadFileInput.files);
   const courseId = "<?= esc($course['id']) ?>";
   if (!topicTitle) {
@@ -993,9 +1048,10 @@ uploadForm.onsubmit = function(e) {
         return topicsRef.add({
           title: topicTitle,
           description: desc,
-          created_by: user.uid,
-          created_at: firebase.firestore.FieldValue.serverTimestamp()
-        });
+          requiredTopic: requiredTopic || '',
+           created_by: user.uid,
+           created_at: firebase.firestore.FieldValue.serverTimestamp()
+         });
       })
       .then(() => {
         btn.disabled = false;

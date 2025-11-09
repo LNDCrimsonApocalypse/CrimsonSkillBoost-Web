@@ -112,13 +112,42 @@
       font-weight: 700;
       background: #a892e6;
       color: #3d2067;
-      padding: 10px 22px;
+      /* make it a single header row with title left, action right */
+      padding: 10px 18px;
       border-radius: 12px 12px 0 0;
       margin: 0;
       letter-spacing: 0.2px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: space-between;
+    }
+    /* action button when placed inside the purple header */
+    .section-title .action-btn {
+      background: #fff;            /* white pill inside purple bar */
+      color: #e636a4;             /* pink text for contrast */
+      padding: 8px 14px;
+      border-radius: 18px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: inline-block;
+      border: 1px solid rgba(230,54,164,0.12);
+      box-shadow: 0 2px 6px rgba(230,54,164,0.06);
+      transition: background 0.15s, transform 0.08s;
+    }
+    .section-title .action-btn:hover {
+      background: #fff;
+      transform: translateY(-1px);
+    }
+    @media (max-width: 700px) {
+      .section-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .section-title .action-btn {
+        margin-left: 0;
+      }
     }
     .section-content {
       background: #fff;
@@ -274,6 +303,29 @@
           <li>Loading topics...</li>
         </ul>
       </div>
+
+      <!-- Quizzes Section -->
+      <div class="section-block">
+        <div class="section-title">
+          <span>Quizzes</span>
+          <a class="action-btn" href="<?= base_url('quiz') . '?course_id=' . urlencode($course['id']) ?>">Create Quiz</a>
+        </div>
+        <ul class="topic-list" id="quizzesList">
+          <li>Loading quizzes...</li>
+        </ul>
+      </div>
+
+      <!-- Tasks Section -->
+      <div class="section-block">
+        <div class="section-title">
+          <span>Tasks</span>
+          <a class="action-btn" href="<?= base_url('create_task') . '?course_id=' . urlencode($course['id']) ?>">Create Task</a>
+        </div>
+        <ul class="topic-list" id="tasksList">
+          <li>Loading tasks...</li>
+        </ul>
+      </div>
+
       <?php if (!empty($course['requirements'])): ?>
       <div class="section-block">
         <div class="section-title">Requirements</div>
@@ -330,6 +382,12 @@
   document.addEventListener("DOMContentLoaded", function() {
     const courseId = "<?= esc($course['id']) ?>";
     const topicList = document.getElementById('topicList');
+    const quizzesList = document.getElementById('quizzesList');
+    const tasksList = document.getElementById('tasksList');
+    const quizBase = "<?= base_url('questionsquiz2') ?>";
+    const taskPreviewBase = "<?= base_url('grading/preview_task') ?>";
+
+    // TOPICS (existing)
     firebase.firestore().collection('courses').doc(courseId).collection('topics').get()
       .then(snapshot => {
         if (snapshot.empty) {
@@ -350,6 +408,57 @@
       .catch(() => {
         topicList.innerHTML = "<li>Error loading topics.</li>";
       });
+
+    // QUIZZES
+    if (quizzesList) {
+      firebase.firestore().collection('quizzes').where('course_id', '==', courseId).get()
+        .then(snapshot => {
+          if (snapshot.empty) {
+            quizzesList.innerHTML = "<li>No quizzes found.</li>";
+            return;
+          }
+          quizzesList.innerHTML = "";
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            const title = data.title || doc.id;
+            const url = quizBase + "?course_id=" + encodeURIComponent(courseId) + "&quiz_id=" + encodeURIComponent(doc.id);
+            const li = document.createElement('li');
+            li.className = "topic-item";
+            li.innerHTML = `<a href="${url}" style="text-decoration:none;color:#e636a4;font-weight:bold;">${title}</a>`;
+            quizzesList.appendChild(li);
+          });
+        })
+        .catch(err => {
+          console.error('Quizzes load error', err);
+          quizzesList.innerHTML = "<li>Error loading quizzes.</li>";
+        });
+    }
+
+    // TASKS
+    if (tasksList) {
+      firebase.firestore().collection('courses').doc(courseId).collection('tasks').get()
+        .then(snapshot => {
+          if (snapshot.empty) {
+            tasksList.innerHTML = "<li>No tasks found.</li>";
+            return;
+          }
+          tasksList.innerHTML = "";
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            const title = data.title || doc.id;
+            const url = taskPreviewBase + "?course_id=" + encodeURIComponent(courseId) + "&task_id=" + encodeURIComponent(doc.id);
+            const li = document.createElement('li');
+            li.className = "topic-item";
+            li.innerHTML = `<a href="${url}" style="text-decoration:none;color:#e636a4;font-weight:bold;">${title}</a>`;
+            tasksList.appendChild(li);
+          });
+        })
+        .catch(err => {
+          console.error('Tasks load error', err);
+          tasksList.innerHTML = "<li>Error loading tasks.</li>";
+        });
+    }
+
   });
   </script>
 </body>
