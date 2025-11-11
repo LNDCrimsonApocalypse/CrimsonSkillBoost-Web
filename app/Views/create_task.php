@@ -498,20 +498,21 @@ li {
         <div style="flex:1;">
           <div style="font-weight:500; margin-bottom:6px;">Start date</div>
           <div style="display:flex; align-items:center;">
-            <input type="date" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
+            <input type="date" id="modalStartDate" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
           </div>
+          <div style="font-weight:500; margin-bottom:6px;">Start time</div>
+          <input type="time" id="modalStartTime" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
         </div>
         <div style="flex:1;">
           <div style="font-weight:500; margin-bottom:6px;">End date</div>
           <div style="display:flex; align-items:center;">
-            <input type="date" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
+            <input type="date" id="modalEndDate" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
           </div>
+          <div style="font-weight:500; margin-bottom:6px;">End time</div>
+          <input type="time" id="modalEndTime" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
         </div>
       </div>
-      <div style="display:flex; gap:24px; margin-bottom:10px;">
-        <input type="text" style="flex:1; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc;" placeholder="">
-        <input type="text" style="flex:1; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc;" placeholder="">
-      </div>
+      <!-- removed duplicate attempts block; required task will appear under Options -->
       <div style="margin-bottom:18px;">
         <label style="display:flex; align-items:center; font-size:1rem; color:#7d4ff7; font-weight:500;">
           <input type="checkbox" checked style="margin-right:8px;">
@@ -523,9 +524,20 @@ li {
         <span style="display:inline-block; width:14px; height:14px; background:#e0e0e0; border-radius:50%; margin-right:8px;"></span>
         <span style="font-size:1.25rem; font-weight:700;">Options</span>
       </div>
-      <div style="margin-bottom:8px; font-weight:500;">Number of attempts</div>
-      <input type="number" min="0" value="0" style="width:120px; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:4px;">
-      <div style="font-size:0.95rem; color:#a58cf5; margin-bottom:18px;">Based on best attempt</div>
+      <div style="display:flex; gap:24px; margin-bottom:18px; align-items:flex-start;">
+        <div style="flex:1;">
+          <div style="margin-bottom:8px; font-weight:500;">Number of attempts</div>
+          <input id="modalAttempts" type="number" min="0" value="0" style="width:120px; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:4px;">
+          <div style="font-size:0.95rem; color:#a58cf5; margin-top:6px;">Based on best attempt</div>
+        </div>
+        <div style="flex:1;">
+          <div style="margin-bottom:8px; font-weight:500;">Required task (optional)</div>
+          <select id="dueRequiredTaskSelect" style="width:100%; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-top:6px;">
+            <option value="">None</option>
+          </select>
+          <div style="font-size:0.95rem; color:#888; margin-top:6px;">Select a task that must be completed first</div>
+        </div>
+      </div>
       <div style="display:flex; justify-content:flex-end;">
         <button id="doneDueDateModal" style="background:#4be04b; color:#fff; border:none; border-radius:8px; padding:10px 32px; font-size:1.1rem; font-weight:600; cursor:pointer;">Done</button>
       </div>
@@ -554,8 +566,84 @@ li {
       if (e.target === this) this.classList.remove('active');
     });
 
+    // Utility: get course_id from URL
+    function getCourseId() {
+      return (new URLSearchParams(window.location.search)).get('course_id') || null;
+    }
+
+    // Load tasks for same course and populate Required Task select in the due modal
+    async function loadRequiredTaskOptions() {
+      const courseId = getCourseId();
+      if (!courseId) return;
+      try {
+        const select = document.getElementById('dueRequiredTaskSelect');
+        if (!select) return;
+        select.innerHTML = '<option value="">None</option>';
+        // determine current task id (if editing) and currentRequired value
+        const task_id = new URLSearchParams(window.location.search).get('task_id') || '';
+        let currentRequired = '';
+        try {
+          if (task_id) {
+            // try to read task from course subcollection first
+            let curSnap = null;
+            try {
+              curSnap = await firebase.firestore().collection('courses').doc(courseId).collection('tasks').doc(task_id).get();
+            } catch (e) { curSnap = null; }
+            if (!curSnap || !curSnap.exists) {
+              try { curSnap = await firebase.firestore().collection('tasks').doc(task_id).get(); } catch (e) { curSnap = null; }
+            }
+            if (curSnap && curSnap.exists) {
+              const tdata = curSnap.data() || {};
+              currentRequired = tdata.requiredTask || '';
+            }
+          }
+        } catch (e) { console.warn('Could not fetch current task:', e); }
+
+        // Try to load tasks from course subcollection first
+        let qs = null;
+        try {
+          qs = await firebase.firestore().collection('courses').doc(courseId).collection('tasks').get();
+        } catch (e) { qs = null; }
+
+        if (qs && !qs.empty) {
+          qs.forEach(doc => {
+            if (doc.id === task_id) return; // don't include itself
+            const data = doc.data() || {};
+            const title = data.title || data.task_name || '(Untitled)';
+            const opt = document.createElement('option');
+            opt.value = doc.id;
+            opt.textContent = title + (doc.id === currentRequired ? ' (current)' : '');
+            if (doc.id === currentRequired) opt.selected = true;
+            select.appendChild(opt);
+          });
+        } else {
+          // fallback to root tasks collection filtered by course_id
+          try {
+            const qs2 = await firebase.firestore().collection('tasks').where('course_id', '==', courseId).get();
+            qs2.forEach(doc => {
+              if (doc.id === task_id) return;
+              const data = doc.data() || {};
+              const title = data.title || data.task_name || '(Untitled)';
+              const opt = document.createElement('option');
+              opt.value = doc.id;
+              opt.textContent = title + (doc.id === currentRequired ? ' (current)' : '');
+              if (doc.id === currentRequired) opt.selected = true;
+              select.appendChild(opt);
+            });
+          } catch (err) { console.error('Failed to load required task list fallback:', err); }
+        }
+        // if server passed requiredTask, ensure it's selected
+        try {
+          const pre = "<?= isset($taskData['requiredTask']) ? esc($taskData['requiredTask']) : '' ?>";
+          if (pre) { select.value = pre; }
+        } catch (e) {}
+      } catch (err) {
+        console.warn('Failed to load required tasks:', err);
+      }
+    }
+
     // Show Due Date Modal on NEXT
-    document.getElementById('openDueDateModal').addEventListener('click', function() {
+    document.getElementById('openDueDateModal').addEventListener('click', async function() {
       // Validate task name before proceeding
       const taskName = document.getElementById('taskName').value.trim();
       if (!taskName) {
@@ -563,7 +651,11 @@ li {
         return;
       }
       document.getElementById('addContentModal').classList.remove('active');
-      document.getElementById('dueDateModal').style.display = 'flex';
+      // populate required-task options right before showing modal
+      try { await loadRequiredTaskOptions(); } catch (e) { /* ignore */ }
+      // reset or initialize modal fields if desired
+      const modal = document.getElementById('dueDateModal');
+      if (modal) modal.style.display = 'flex';
     });
 
     document.getElementById('closeDueDateModal').addEventListener('click', function() {
@@ -574,13 +666,13 @@ li {
     document.getElementById('doneDueDateModal').addEventListener('click', async function() {
       // Collect all task info
       const taskName = document.getElementById('taskName').value.trim();
-      // Find the due date modal's inputs
       const dueModal = document.getElementById('dueDateModal');
-      const dateInputs = dueModal.querySelectorAll('input[type="date"]');
-      const startDate = dateInputs[0] ? dateInputs[0].value : '';
-      const endDate = dateInputs[1] ? dateInputs[1].value : '';
-      const attemptsInput = dueModal.querySelector('input[type="number"]');
-      const attempts = attemptsInput ? parseInt(attemptsInput.value, 10) : 0;
+      const startDate = document.getElementById('modalStartDate') ? document.getElementById('modalStartDate').value : '';
+      const startTime = document.getElementById('modalStartTime') ? document.getElementById('modalStartTime').value : '';
+      const endDate = document.getElementById('modalEndDate') ? document.getElementById('modalEndDate').value : '';
+      const endTime = document.getElementById('modalEndTime') ? document.getElementById('modalEndTime').value : '';
+      const attempts = parseInt(document.getElementById('modalAttempts')?.value || 0, 10) || 0;
+      const requiredTask = document.getElementById('dueRequiredTaskSelect') ? document.getElementById('dueRequiredTaskSelect').value : '';
       const allowLate = dueModal.querySelector('input[type="checkbox"]')?.checked || false;
 
       if (!taskName) {
@@ -617,10 +709,15 @@ li {
         description: '', // Add description field if you want
         created_at: new Date().toISOString(),
         course_id: courseId,
-        start_date: startDate,
-        end_date: endDate,
+        start_date: startDate || null,
+        start_time: startTime || null,
+        start_datetime: (startDate && startTime) ? new Date(startDate + 'T' + startTime + ':00').toISOString() : null,
+        end_date: endDate || null,
+        end_time: endTime || null,
+        end_datetime: (endDate && endTime) ? new Date(endDate + 'T' + endTime + ':00').toISOString() : null,
         attempts: attempts,
         allow_late: allowLate,
+        requiredTask: requiredTask || '',
         ...fileData
       };
       try {

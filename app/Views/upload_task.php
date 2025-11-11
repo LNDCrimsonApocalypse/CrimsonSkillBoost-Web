@@ -289,6 +289,32 @@
         <label>Description (optional):</label>
         <textarea name="description" rows="4" placeholder="Enter task description"><?= old('description') ?></textarea>
 
+        <div style="display:flex; gap:16px; margin-bottom:16px;">
+            <div style="flex:1;">
+                <label>Start date:</label>
+                <input type="date" id="uploadStartDate" name="start_date" value="<?= esc($taskData['start_date'] ?? '') ?>">
+            </div>
+            <div style="flex:1;">
+                <label>Start time:</label>
+                <input type="time" id="uploadStartTime" name="start_time" value="<?= esc($taskData['start_time'] ?? '') ?>">
+            </div>
+        </div>
+        <div style="display:flex; gap:16px; margin-bottom:16px;">
+            <div style="flex:1;">
+                <label>End date:</label>
+                <input type="date" id="uploadEndDate" name="end_date" value="<?= esc($taskData['end_date'] ?? '') ?>">
+            </div>
+            <div style="flex:1;">
+                <label>End time:</label>
+                <input type="time" id="uploadEndTime" name="end_time" value="<?= esc($taskData['end_time'] ?? '') ?>">
+            </div>
+        </div>
+
+        <label>Required Task (optional):</label>
+        <select name="requiredTask" id="requiredTaskSelect">
+            <option value="">None</option>
+        </select>
+
         <div class="import-section">
             <img src="https://via.placeholder.com/150x100.png?text=Upload+Preview" alt="Upload Preview">
             <p><strong>Import your own content</strong></p>
@@ -302,9 +328,303 @@
                 <span></span>
                 <span class="btn-inner">ADD</span>
             </button>
+            <button type="button" id="openDueModalBtn" class="btn" style="margin-left:8px;background:#e8cfff;color:#8a00cf;border-radius:20px;padding:12px;">
+                <span></span>
+                <span class="btn-inner">Set Due Date</span>
+            </button>
         </div>
+        <!-- Hidden ISO datetime fields (populated on submit) -->
+        <input type="hidden" id="startDateTimeIso" name="start_datetime" value="<?= esc($taskData['start_datetime'] ?? '') ?>">
+        <input type="hidden" id="endDateTimeIso" name="end_datetime" value="<?= esc($taskData['end_datetime'] ?? '') ?>">
     </form>
 
+                <!-- Publish-style Due Date Modal (copied/adapted from questionsquiz2.php) -->
+                <div id="publishTaskDueDateModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.08); z-index:5100; justify-content:center; align-items:center;">
+                    <div style="background:#fff; border-radius:14px; max-width:600px; width:95vw; padding:28px 28px 32px 28px; box-shadow:0 6px 32px rgba(0,0,0,0.13); position:relative;">
+                        <button id="closePublishTaskDueDateModal" style="position:absolute; top:18px; right:24px; font-size:1.5rem; background:none; border:none; cursor:pointer;">&times;</button>
+                        <div style="font-size:1.5rem; font-weight:700; margin-bottom:10px;">Due date</div>
+                        <div style="color:#a58cf5; font-size:1rem; margin-bottom:18px; font-weight:500;">Set task deadlines before adding</div>
+                        <div style="display:flex; gap:24px; margin-bottom:10px;">
+                            <div style="flex:1;">
+                                <div style="font-weight:500; margin-bottom:6px;">Start date</div>
+                                <input type="date" id="taskStartDate" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
+                                <div style="font-weight:500; margin-bottom:6px;">Start time</div>
+                                <input type="time" id="taskStartTime" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
+                            </div>
+                            <div style="flex:1;">
+                                <div style="font-weight:500; margin-bottom:6px;">End date</div>
+                                <input type="date" id="taskEndDate" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
+                                <div style="font-weight:500; margin-bottom:6px;">End time</div>
+                                <input type="time" id="taskEndTime" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:24px; margin-bottom:10px; align-items:center;">
+                            <div style="flex:1;">
+                                <div style="font-weight:500; margin-bottom:6px;">Number of attempts</div>
+                                <input type="number" id="taskAttempts" min="0" value="0" style="width:120px; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc;">
+                                <div style="font-size:0.95rem; color:#a58cf5; margin-top:6px;">Based on best attempt</div>
+                            </div>
+                            <div style="flex:1;">
+                                <label style="font-weight:500; margin-bottom:6px; display:block;">Required task</label>
+                                <select id="publishRequiredTaskSelect" style="width:100%; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc;">
+                                    <option value="">None</option>
+                                </select>
+                                <div style="font-size:0.95rem; color:#888; margin-top:6px;">Select a task that must be completed first</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; justify-content:flex-end;">
+                            <button id="donePublishTaskDueDateModal" style="background:#4be04b; color:#fff; border:none; border-radius:8px; padding:10px 32px; font-size:1.1rem; font-weight:600; cursor:pointer;">Done</button>
+                        </div>
+                    </div>
+                </div>
+
+    <!-- Firebase scripts (used to populate Required Task dropdown) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="<?= base_url('public/js/firebase-config.js') ?>"></script>
+    <script>
+        // Helper to read URL params
+        function getParam(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name) || '';
+        }
+        const course_id = getParam('course_id') || "<?= isset($course_id) ? $course_id : '' ?>";
+
+        // Initialize Firestore (if not already)
+        if (!window.firebase) {
+            console.warn('Firebase not loaded');
+        }
+        if (window.firebase && !firebase.apps.length) {
+            try { firebase.initializeApp(firebaseConfig); } catch (e) { /* already initialized elsewhere */ }
+        }
+        const dbFS = (window.firebase && firebase.firestore()) || null;
+
+        // Load tasks for the same course and populate the Required Task dropdown (mirrors questionsquiz2 behavior)
+        async function loadRequiredTaskOptions() {
+            if (!course_id) return;
+            const select = document.getElementById('requiredTaskSelect');
+            const modalSelect = document.getElementById('publishRequiredTaskSelect');
+            if (!select || !dbFS) return;
+            select.innerHTML = '<option value="">None</option>';
+            if (modalSelect) modalSelect.innerHTML = '<option value="">None</option>';
+
+            // determine current task id (if editing)
+            const task_id = new URLSearchParams(window.location.search).get('task_id') || "<?= isset($task_id) ? $task_id : '' ?>";
+            let currentRequired = '';
+            try {
+                if (task_id) {
+                    const curSnap = await dbFS.collection('tasks').doc(task_id).get();
+                    if (curSnap.exists) {
+                        const tdata = curSnap.data() || {};
+                        currentRequired = tdata.requiredTask || '';
+                        // populate date/time inputs if present
+                        try { populateDateTimeInputs(tdata); } catch (e) { console.warn('populateDateTimeInputs error', e); }
+                    }
+                }
+            } catch (err) {
+                console.warn('Could not fetch current task:', err);
+            }
+
+            try {
+                const qs = await dbFS.collection('tasks').where('course_id', '==', course_id).get();
+                qs.forEach(doc => {
+                    if (doc.id === task_id) return; // don't include itself
+                    const title = doc.data().title || doc.data().task_name || '(Untitled)';
+                    const opt = document.createElement('option');
+                    opt.value = doc.id;
+                    opt.textContent = title + (doc.id === currentRequired ? ' (current)' : '');
+                    if (doc.id === currentRequired) opt.selected = true;
+                    select.appendChild(opt);
+                    if (modalSelect) {
+                        const opt2 = opt.cloneNode(true);
+                        modalSelect.appendChild(opt2);
+                    }
+                });
+                // if server passed requiredTask, ensure it's selected
+                try {
+                    const pre = "<?= isset($taskData['requiredTask']) ? esc($taskData['requiredTask']) : '' ?>";
+                    if (pre) { select.value = pre; if (modalSelect) modalSelect.value = pre; }
+                } catch (e) {}
+            } catch (err) {
+                console.error('Failed to load required task list:', err);
+            }
+        }
+
+        // Helper: parse ISO or separate fields and populate inputs (copied from questionsquiz2)
+        function parseISOToLocalParts(iso) {
+            try {
+                if (!iso) return { date: '', time: '' };
+                if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) return { date: iso, time: '' };
+                const d = new Date(iso);
+                if (isNaN(d)) return { date: '', time: '' };
+                const pad = n => String(n).padStart(2, '0');
+                const date = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+                const time = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                return { date, time };
+            } catch (e) { return { date: '', time: '' }; }
+        }
+
+        function populateDateTimeInputs(tdata) {
+            const sDateEl = document.getElementById('uploadStartDate');
+            const sTimeEl = document.getElementById('uploadStartTime');
+            const eDateEl = document.getElementById('uploadEndDate');
+            const eTimeEl = document.getElementById('uploadEndTime');
+            const modalSDate = document.getElementById('taskStartDate');
+            const modalSTime = document.getElementById('taskStartTime');
+            const modalEDate = document.getElementById('taskEndDate');
+            const modalETime = document.getElementById('taskEndTime');
+
+            let startDate = tdata.start_date || '';
+            let startTime = tdata.start_time || '';
+            if (!startDate && tdata.start_datetime) {
+                const parts = parseISOToLocalParts(tdata.start_datetime);
+                startDate = parts.date; startTime = startTime || parts.time;
+            } else if (startDate && startDate.includes('T')) {
+                const parts = parseISOToLocalParts(startDate);
+                startDate = parts.date; startTime = startTime || parts.time;
+            }
+
+            let endDate = tdata.end_date || '';
+            let endTime = tdata.end_time || '';
+            if (!endDate && tdata.end_datetime) {
+                const parts = parseISOToLocalParts(tdata.end_datetime);
+                endDate = parts.date; endTime = endTime || parts.time;
+            } else if (endDate && endDate.includes('T')) {
+                const parts = parseISOToLocalParts(endDate);
+                endDate = parts.date; endTime = endTime || parts.time;
+            }
+
+            if (sDateEl && startDate) sDateEl.value = startDate;
+            if (sTimeEl && startTime) sTimeEl.value = startTime;
+            if (eDateEl && endDate) eDateEl.value = endDate;
+            if (eTimeEl && endTime) eTimeEl.value = endTime;
+
+            if (modalSDate && startDate) modalSDate.value = startDate;
+            if (modalSTime && startTime) modalSTime.value = startTime;
+            if (modalEDate && endDate) modalEDate.value = endDate;
+            if (modalETime && endTime) modalETime.value = endTime;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRequiredTaskOptions();
+        });
+    </script>
+    <script>
+        // Publish-style modal logic: open, populate, save to form and optionally to Firestore
+        (function(){
+            const openBtn = document.getElementById('openDueModalBtn');
+            const modal = document.getElementById('publishTaskDueDateModal');
+            const closeBtn = document.getElementById('closePublishTaskDueDateModal');
+            const doneBtn = document.getElementById('donePublishTaskDueDateModal');
+            const publishRequiredSelect = document.getElementById('publishRequiredTaskSelect');
+
+            const task_id = (function(){
+                const p = new URLSearchParams(window.location.search).get('task_id');
+                return p || "<?= isset($task_id) ? $task_id : '' ?>";
+            })();
+
+            function showModal() {
+                // copy values from inline inputs into modal
+                const sDate = document.getElementById('uploadStartDate')?.value || '';
+                const sTime = document.getElementById('uploadStartTime')?.value || '';
+                const eDate = document.getElementById('uploadEndDate')?.value || '';
+                const eTime = document.getElementById('uploadEndTime')?.value || '';
+                const attempts = document.getElementById('taskAttempts')?.value || document.getElementById('taskAttempts')?.value || 0;
+                if (document.getElementById('taskStartDate')) document.getElementById('taskStartDate').value = sDate;
+                if (document.getElementById('taskStartTime')) document.getElementById('taskStartTime').value = sTime;
+                if (document.getElementById('taskEndDate')) document.getElementById('taskEndDate').value = eDate;
+                if (document.getElementById('taskEndTime')) document.getElementById('taskEndTime').value = eTime;
+                if (document.getElementById('taskAttempts')) document.getElementById('taskAttempts').value = attempts;
+
+                // populate required-task select (copy options from form-level select if present)
+                try {
+                    const master = document.getElementById('requiredTaskSelect');
+                    if (master && publishRequiredSelect) {
+                        publishRequiredSelect.innerHTML = master.innerHTML;
+                        // if server preselected value, keep it
+                        try { const pre = "<?= isset($taskData['requiredTask']) ? esc($taskData['requiredTask']) : '' ?>"; if (pre) publishRequiredSelect.value = pre; } catch (e) {}
+                    }
+                } catch (e) { /* ignore */ }
+
+                if (modal) modal.style.display = 'flex';
+            }
+            function hideModal() { if (modal) modal.style.display = 'none'; }
+
+            if (openBtn) openBtn.addEventListener('click', showModal);
+            if (closeBtn) closeBtn.addEventListener('click', hideModal);
+            if (modal) modal.addEventListener('click', function(e){ if (e.target === modal) hideModal(); });
+
+            if (doneBtn) doneBtn.addEventListener('click', async function(){
+                const sDate = document.getElementById('taskStartDate')?.value || '';
+                const sTime = document.getElementById('taskStartTime')?.value || '';
+                const eDate = document.getElementById('taskEndDate')?.value || '';
+                const eTime = document.getElementById('taskEndTime')?.value || '';
+                const attempts = parseInt(document.getElementById('taskAttempts')?.value || 0, 10) || 0;
+                const requiredTask = (publishRequiredSelect && publishRequiredSelect.value) || '';
+
+                // Copy back to form fields
+                if (document.getElementById('uploadStartDate')) document.getElementById('uploadStartDate').value = sDate;
+                if (document.getElementById('uploadStartTime')) document.getElementById('uploadStartTime').value = sTime;
+                if (document.getElementById('uploadEndDate')) document.getElementById('uploadEndDate').value = eDate;
+                if (document.getElementById('uploadEndTime')) document.getElementById('uploadEndTime').value = eTime;
+                if (document.getElementById('requiredTaskSelect')) document.getElementById('requiredTaskSelect').value = requiredTask;
+                // set hidden ISO fields
+                try {
+                    const startIsoEl = document.getElementById('startDateTimeIso');
+                    const endIsoEl = document.getElementById('endDateTimeIso');
+                    if (sDate && sTime && startIsoEl) startIsoEl.value = new Date(sDate + 'T' + sTime + ':00').toISOString();
+                    if (eDate && eTime && endIsoEl) endIsoEl.value = new Date(eDate + 'T' + eTime + ':00').toISOString();
+                } catch (err) { console.warn('Failed to set ISO datetimes from modal', err); }
+
+                // If an existing task_id is present, update Firestore doc for tasks collection as well
+                if (task_id && dbFS) {
+                    try {
+                        await dbFS.collection('tasks').doc(task_id).update({
+                            start_date: sDate || null,
+                            start_time: sTime || null,
+                            start_datetime: (sDate && sTime) ? new Date(sDate + 'T' + sTime + ':00').toISOString() : null,
+                            end_date: eDate || null,
+                            end_time: eTime || null,
+                            end_datetime: (eDate && eTime) ? new Date(eDate + 'T' + eTime + ':00').toISOString() : null,
+                            attempts: attempts,
+                            requiredTask: requiredTask || ''
+                        });
+                    } catch (err) {
+                        console.error('Failed to update task document in Firestore:', err);
+                    }
+                }
+
+                hideModal();
+            });
+        })();
+    </script>
+    <script>
+        // Before form submit, combine date + time into ISO datetimes and set hidden inputs
+        (function() {
+            const form = document.querySelector('form.modal');
+            if (!form) return;
+            form.addEventListener('submit', function(e) {
+                try {
+                    const sDate = document.getElementById('uploadStartDate')?.value || '';
+                    const sTime = document.getElementById('uploadStartTime')?.value || '';
+                    const eDate = document.getElementById('uploadEndDate')?.value || '';
+                    const eTime = document.getElementById('uploadEndTime')?.value || '';
+                    const startIsoEl = document.getElementById('startDateTimeIso');
+                    const endIsoEl = document.getElementById('endDateTimeIso');
+
+                    if (sDate && sTime && startIsoEl) {
+                        startIsoEl.value = new Date(sDate + 'T' + sTime + ':00').toISOString();
+                    }
+                    if (eDate && eTime && endIsoEl) {
+                        endIsoEl.value = new Date(eDate + 'T' + eTime + ':00').toISOString();
+                    }
+                } catch (err) {
+                    console.warn('Failed to prepare datetime fields', err);
+                }
+                // allow form to submit
+            });
+        })();
+    </script>
     <script>
         // Add file name display functionality
         document.getElementById('import_content').addEventListener('change', function(e) {

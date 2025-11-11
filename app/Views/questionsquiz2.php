@@ -839,13 +839,13 @@
       <div class="due-modal-row">
         <div class="due-modal-col">
           <label class="due-modal-label">Start date</label>
-          <input type="date" class="due-modal-input" />
-          <input type="text" class="due-modal-input" />
+          <input type="date" id="dueStartDate" class="due-modal-input" />
+          <input type="time" id="dueStartTime" class="due-modal-input" />
         </div>
         <div class="due-modal-col">
           <label class="due-modal-label">End date</label>
-          <input type="date" class="due-modal-input" />
-          <input type="text" class="due-modal-input" />
+          <input type="date" id="dueEndDate" class="due-modal-input" />
+          <input type="time" id="dueEndTime" class="due-modal-input" />
         </div>
       </div>
       <div class="due-modal-checkbox-row">
@@ -896,9 +896,15 @@
           </div>
         </div>
       </div>
-      <div style="display:flex; gap:24px; margin-bottom:10px;">
-        <input type="text" style="flex:1; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc;" placeholder="">
-        <input type="text" style="flex:1; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc;" placeholder="">
+      <div style="display:flex; gap:24px; margin-bottom:10px; align-items:center;">
+        <div style="flex:1;">
+          <div style="font-weight:500; margin-bottom:6px;">Start time</div>
+          <input type="time" id="quizStartTime" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
+        </div>
+        <div style="flex:1;">
+          <div style="font-weight:500; margin-bottom:6px;">End time</div>
+          <input type="time" id="quizEndTime" style="width:100%; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:8px;">
+        </div>
       </div>
       <div style="margin-bottom:18px;">
         <label style="display:flex; align-items:center; font-size:1rem; color:#7d4ff7; font-weight:500;">
@@ -976,6 +982,41 @@
     }
     const dbFS = firebase.firestore();
 
+    // Enable/disable publish button based on number of questions
+    async function updatePublishButtonState(count) {
+      const btn = document.getElementById('publishQuizBtn');
+      if (!btn) return;
+      // If count not provided yet, fetch it
+      if (typeof count === 'undefined') {
+        if (!quiz_id) {
+          btn.disabled = true;
+          btn.title = 'No quiz selected';
+          btn.style.opacity = '0.6';
+          return;
+        }
+        try {
+          const snap = await dbFS.collection('quizzes').doc(quiz_id).collection('questions').get();
+          return updatePublishButtonState(snap.size);
+        } catch (err) {
+          console.warn('Could not determine question count', err);
+          // keep button enabled to avoid blocking in case of error
+          btn.disabled = false;
+          btn.title = 'Publish quiz';
+          btn.style.opacity = '1';
+          return;
+        }
+      }
+      if (count < 5) {
+        btn.disabled = true;
+        btn.title = `At least 5 questions required to publish (currently ${count})`;
+        btn.style.opacity = '0.6';
+      } else {
+        btn.disabled = false;
+        btn.title = 'Publish quiz';
+        btn.style.opacity = '1';
+      }
+    }
+
     function getParam(name) {
       const params = new URLSearchParams(window.location.search);
       return params.get(name) || '';
@@ -992,6 +1033,8 @@
         count.innerHTML = "<strong>0 question</strong> (0 point)";
         list.innerHTML = "<div style='color:#888;padding:20px;'>No quiz selected.</div>";
         console.warn("Quiz ID is missing.");
+        // ensure publish button disabled when no quiz
+        updatePublishButtonState(0);
         return;
       }
       try {
@@ -999,6 +1042,7 @@
         if (snap.empty) {
           count.innerHTML = "<strong>0 question</strong> (0 point)";
           list.innerHTML = "<div style='color:#888;padding:20px;'>No questions found for this quiz.</div>";
+          updatePublishButtonState(0);
           return;
         }
         snap.forEach((doc, idx) => {
@@ -1028,6 +1072,8 @@
           list.innerHTML += html;
         });
         count.innerHTML = `<strong>${total} question${total !== 1 ? 's' : ''}</strong> (${totalPoints} point${totalPoints !== 1 ? 's' : ''})`;
+        // update publish button state based on current total
+        updatePublishButtonState(total);
 
         // Attach event listeners for edit, delete, and point change
         document.querySelectorAll('.delete-btn').forEach(btn => {
@@ -1057,6 +1103,7 @@
         count.innerHTML = "<strong>0 question</strong> (0 point)";
         list.innerHTML = "<div style='color:#c00;padding:20px;'>Error loading questions: " + err.message + "</div>";
         console.error("Firestore error:", err);
+        updatePublishButtonState(0);
       }
     }
 
@@ -1068,10 +1115,6 @@
       window.location.href = "<?= base_url('questionsquiz') ?>?course_id=" + course_id + "&quiz_id=" + quiz_id;
     };
 
-    document.addEventListener('DOMContentLoaded', function() {
-      loadQuestions();
-    });
-
     // --- Publish Quiz Button ---
     document.getElementById('publishQuizBtn').onclick = async function() {
       if (!course_id || !quiz_id) {
@@ -1079,13 +1122,18 @@
         return;
       }
       try {
-        await dbFS.collection('quizzes').doc(quiz_id).update({
-          published: true,
-          published_at: new Date().toISOString()
-        });
-        alert('Quiz published successfully!');
-      } catch (e) {
-        alert('Failed to publish quiz: ' + e.message);
+        const snap = await dbFS.collection('quizzes').doc(quiz_id).collection('questions').get();
+        const qCount = snap.size;
+        if (qCount < 5) {
+          alert(`You need at least 5 questions to publish this quiz. Currently: ${qCount}`);
+          updatePublishButtonState(qCount);
+          return;
+        }
+        // open publish modal
+        document.getElementById('publishDueDateModal').style.display = 'flex';
+      } catch (err) {
+        console.error('Failed to verify question count before publishing', err);
+        alert('Unable to verify quiz questions. Try again later.');
       }
     };
 
@@ -1199,10 +1247,26 @@
       renderQuestions();
     };
 
-    // --- Publish Quiz Button: show deadline modal first ---
-    document.getElementById('publishQuizBtn').onclick = function() {
-      // Show the publish due date modal
-      document.getElementById('publishDueDateModal').style.display = 'flex';
+    // --- Publish Quiz Button: show deadline modal first (requires >=5 questions) ---
+    document.getElementById('publishQuizBtn').onclick = async function() {
+      if (!course_id || !quiz_id) {
+        alert('Missing course or quiz ID.');
+        return;
+      }
+      try {
+        const snap = await dbFS.collection('quizzes').doc(quiz_id).collection('questions').get();
+        const qCount = snap.size;
+        if (qCount < 5) {
+          alert(`You need at least 5 questions to publish this quiz. Currently: ${qCount}`);
+          updatePublishButtonState(qCount);
+          return;
+        }
+        // open publish modal
+        document.getElementById('publishDueDateModal').style.display = 'flex';
+      } catch (err) {
+        console.error('Failed to verify question count before publishing', err);
+        alert('Unable to verify quiz questions. Try again later.');
+      }
     };
 
     // Close modal logic
@@ -1216,7 +1280,9 @@
     // When "Done" is clicked in the modal, publish the quiz and save deadlines
     document.getElementById('donePublishDueDateModal').onclick = async function() {
       const startDate = document.getElementById('quizStartDate').value;
+      const startTime = (document.getElementById('quizStartTime') && document.getElementById('quizStartTime').value) || '';
       const endDate = document.getElementById('quizEndDate').value;
+      const endTime = (document.getElementById('quizEndTime') && document.getElementById('quizEndTime').value) || '';
       const attempts = parseInt(document.getElementById('quizAttempts').value, 10) || 0;
       const allowLate = document.getElementById('quizAllowLate').checked;
       const requiredQuiz = (document.getElementById('requiredQuizSelect') && document.getElementById('requiredQuizSelect').value) || '';
@@ -1225,16 +1291,29 @@
         alert('Please set both start and end dates.');
         return;
       }
+      // Require times as well for clarity
+      if (!startTime || !endTime) {
+        alert('Please set both start and end times.');
+        return;
+      }
       if (!course_id || !quiz_id) {
         alert('Missing course or quiz ID.');
         return;
       }
       try {
+        // Combine date + time into ISO datetimes (local -> stored as ISO)
+        const startISO = new Date(startDate + 'T' + startTime + ':00').toISOString();
+        const endISO = new Date(endDate + 'T' + endTime + ':00').toISOString();
+
         await dbFS.collection('quizzes').doc(quiz_id).update({
           published: true,
           published_at: new Date().toISOString(),
           start_date: startDate,
+          start_time: startTime,
+          start_datetime: startISO,
           end_date: endDate,
+          end_time: endTime,
+          end_datetime: endISO,
           attempts: attempts,
           allow_late: allowLate,
           requiredQuiz: requiredQuiz
@@ -1261,7 +1340,14 @@
         try {
           const curSnap = await dbFS.collection('quizzes').doc(quiz_id).get();
           if (curSnap.exists) {
-            currentRequired = curSnap.data().requiredQuiz || '';
+            const qdata = curSnap.data() || {};
+            currentRequired = qdata.requiredQuiz || '';
+            // Populate date/time inputs if present
+            try {
+              populateDateTimeInputs(qdata);
+            } catch (e) {
+              console.warn('Failed to populate date/time inputs:', e);
+            }
           }
         } catch (err) {
           console.warn('Could not fetch current quiz:', err);
@@ -1281,6 +1367,69 @@
       } catch (err) {
         console.error('Failed to load required quiz list:', err);
       }
+    }
+
+    // Helper: parse ISO or separate fields and populate inputs
+    function parseISOToLocalParts(iso) {
+      try {
+        if (!iso) return { date: '', time: '' };
+        // If it's already in YYYY-MM-DD format
+        if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) return { date: iso, time: '' };
+        // If it's in YYYY-MM-DDTHH:MM(:SS)? form (local or UTC)
+        const d = new Date(iso);
+        if (isNaN(d)) return { date: '', time: '' };
+        const pad = n => String(n).padStart(2, '0');
+        const date = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+        const time = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        return { date, time };
+      } catch (e) {
+        return { date: '', time: '' };
+      }
+    }
+
+    function populateDateTimeInputs(qdata) {
+      // qdata may contain: start_date (YYYY-MM-DD or ISO), start_time (HH:MM), start_datetime (ISO), same for end
+      const sDateEl = document.getElementById('quizStartDate');
+      const sTimeEl = document.getElementById('quizStartTime');
+      const eDateEl = document.getElementById('quizEndDate');
+      const eTimeEl = document.getElementById('quizEndTime');
+      const dueSDateEl = document.getElementById('dueStartDate');
+      const dueSTimeEl = document.getElementById('dueStartTime');
+      const dueEDateEl = document.getElementById('dueEndDate');
+      const dueETimeEl = document.getElementById('dueEndTime');
+
+      // Start
+      let startDate = qdata.start_date || '';
+      let startTime = qdata.start_time || '';
+      if (!startDate && qdata.start_datetime) {
+        const parts = parseISOToLocalParts(qdata.start_datetime);
+        startDate = parts.date; startTime = startTime || parts.time;
+      } else if (startDate && startDate.includes('T')) {
+        const parts = parseISOToLocalParts(startDate);
+        startDate = parts.date; startTime = startTime || parts.time;
+      }
+
+      // End
+      let endDate = qdata.end_date || '';
+      let endTime = qdata.end_time || '';
+      if (!endDate && qdata.end_datetime) {
+        const parts = parseISOToLocalParts(qdata.end_datetime);
+        endDate = parts.date; endTime = endTime || parts.time;
+      } else if (endDate && endDate.includes('T')) {
+        const parts = parseISOToLocalParts(endDate);
+        endDate = parts.date; endTime = endTime || parts.time;
+      }
+
+      if (sDateEl && startDate) sDateEl.value = startDate;
+      if (sTimeEl && startTime) sTimeEl.value = startTime;
+      if (eDateEl && endDate) eDateEl.value = endDate;
+      if (eTimeEl && endTime) eTimeEl.value = endTime;
+
+      // Also populate the small due modal inputs if present
+      if (dueSDateEl && startDate) dueSDateEl.value = startDate;
+      if (dueSTimeEl && startTime) dueSTimeEl.value = startTime;
+      if (dueEDateEl && endDate) dueEDateEl.value = endDate;
+      if (dueETimeEl && endTime) dueETimeEl.value = endTime;
     }
 
     // Ensure the dropdown is populated after initial load
