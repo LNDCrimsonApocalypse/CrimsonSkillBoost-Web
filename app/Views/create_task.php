@@ -471,6 +471,7 @@ li {
         <input id="taskName" type="text" class="add-content-modal-input">
         <span class="add-content-modal-clear" id="clearTaskModal">Clear all</span>
       </div>
+      <!-- Required topic moved to Due Date modal (will be populated there) -->
       <div class="add-content-modal-note">
         Accepted formats: PDF, PNG, PPT, SLIDE, JPG, ZIP (Max size: 50MB)
       </div>
@@ -530,12 +531,19 @@ li {
           <input id="modalAttempts" type="number" min="0" value="0" style="width:120px; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:4px;">
           <div style="font-size:0.95rem; color:#a58cf5; margin-top:6px;">Based on best attempt</div>
         </div>
-        <div style="flex:1;">
+        <div style="flex:1; display:flex; flex-direction:column;">
           <div style="margin-bottom:8px; font-weight:500;">Required task (optional)</div>
           <select id="dueRequiredTaskSelect" style="width:100%; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-top:6px;">
             <option value="">None</option>
           </select>
           <div style="font-size:0.95rem; color:#888; margin-top:6px;">Select a task that must be completed first</div>
+
+          <!-- Moved here: Required topic (optional) -->
+          <div style="margin-top:12px; font-weight:500;">Required topic (optional)</div>
+          <select id="taskRequiredTopicSelect" style="width:100%; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-top:6px;">
+            <option value="">None</option>
+          </select>
+          <div id="taskRequiredTopicTitle" style="font-size:0.95rem; color:#666; margin-top:6px;">&nbsp;</div>
         </div>
       </div>
       <div style="display:flex; justify-content:flex-end;">
@@ -571,14 +579,14 @@ li {
       return (new URLSearchParams(window.location.search)).get('course_id') || null;
     }
 
-    // Load tasks for same course and populate Required Task select in the due modal
+    // Load tasks and topics for the same course and populate the Required Task and Required Topic selects
     async function loadRequiredTaskOptions() {
       const courseId = getCourseId();
       if (!courseId) return;
       try {
         const select = document.getElementById('dueRequiredTaskSelect');
-        if (!select) return;
-        select.innerHTML = '<option value="">None</option>';
+        if (select) select.innerHTML = '<option value="">None</option>';
+
         // determine current task id (if editing) and currentRequired value
         const task_id = new URLSearchParams(window.location.search).get('task_id') || '';
         let currentRequired = '';
@@ -595,17 +603,18 @@ li {
             if (curSnap && curSnap.exists) {
               const tdata = curSnap.data() || {};
               currentRequired = tdata.requiredTask || '';
+              // also preselect topic if present
+              if (tdata.requiredTopic && document.getElementById('taskRequiredTopicSelect')) {
+                // will set after loading topics
+              }
             }
           }
         } catch (e) { console.warn('Could not fetch current task:', e); }
 
-        // Try to load tasks from course subcollection first
+        // Load tasks for requiredTask select: try course subcollection first
         let qs = null;
-        try {
-          qs = await firebase.firestore().collection('courses').doc(courseId).collection('tasks').get();
-        } catch (e) { qs = null; }
-
-        if (qs && !qs.empty) {
+        try { qs = await firebase.firestore().collection('courses').doc(courseId).collection('tasks').get(); } catch (e) { qs = null; }
+        if (qs && !qs.empty && select) {
           qs.forEach(doc => {
             if (doc.id === task_id) return; // don't include itself
             const data = doc.data() || {};
@@ -616,8 +625,7 @@ li {
             if (doc.id === currentRequired) opt.selected = true;
             select.appendChild(opt);
           });
-        } else {
-          // fallback to root tasks collection filtered by course_id
+        } else if (select) {
           try {
             const qs2 = await firebase.firestore().collection('tasks').where('course_id', '==', courseId).get();
             qs2.forEach(doc => {
@@ -632,13 +640,51 @@ li {
             });
           } catch (err) { console.error('Failed to load required task list fallback:', err); }
         }
-        // if server passed requiredTask, ensure it's selected
+
+        // Populate topic select in Add Content modal
         try {
-          const pre = "<?= isset($taskData['requiredTask']) ? esc($taskData['requiredTask']) : '' ?>";
-          if (pre) { select.value = pre; }
-        } catch (e) {}
+          const topicSelect = document.getElementById('taskRequiredTopicSelect');
+          const topicTitleEl = document.getElementById('taskRequiredTopicTitle');
+          if (topicSelect) {
+            topicSelect.innerHTML = '<option value="">None</option>';
+            // Try course subcollection first
+            let tqs = null;
+            try { tqs = await firebase.firestore().collection('courses').doc(courseId).collection('topics').get(); } catch (e) { tqs = null; }
+            if (tqs && !tqs.empty) {
+              tqs.forEach(doc => {
+                const d = doc.data() || {};
+                const opt = document.createElement('option');
+                opt.value = doc.id;
+                opt.textContent = d.title || d.name || '(Untitled topic)';
+                topicSelect.appendChild(opt);
+              });
+            } else {
+              try {
+                const tqs2 = await firebase.firestore().collection('topics').where('course_id', '==', courseId).get();
+                tqs2.forEach(doc => {
+                  const d = doc.data() || {};
+                  const opt = document.createElement('option');
+                  opt.value = doc.id;
+                  opt.textContent = d.title || d.name || '(Untitled topic)';
+                  topicSelect.appendChild(opt);
+                });
+              } catch (err) { console.warn('Failed to load topics fallback:', err); }
+            }
+            // If taskData passed from server includes requiredTopic, set it
+            try {
+              const preTopic = "<?= isset($taskData['requiredTopic']) ? esc($taskData['requiredTopic']) : '' ?>";
+              if (preTopic) topicSelect.value = preTopic;
+            } catch (e) {}
+            // update title display
+            if (topicTitleEl) topicTitleEl.textContent = topicSelect.options[topicSelect.selectedIndex]?.text || '';
+            // update on change
+            topicSelect.onchange = function() {
+              if (topicTitleEl) topicTitleEl.textContent = this.options[this.selectedIndex]?.text || '';
+            };
+          }
+        } catch (e) { console.warn('Failed to populate topic select', e); }
       } catch (err) {
-        console.warn('Failed to load required tasks:', err);
+        console.warn('Failed to load required tasks/topics:', err);
       }
     }
 
@@ -671,8 +717,9 @@ li {
       const startTime = document.getElementById('modalStartTime') ? document.getElementById('modalStartTime').value : '';
       const endDate = document.getElementById('modalEndDate') ? document.getElementById('modalEndDate').value : '';
       const endTime = document.getElementById('modalEndTime') ? document.getElementById('modalEndTime').value : '';
-      const attempts = parseInt(document.getElementById('modalAttempts')?.value || 0, 10) || 0;
-      const requiredTask = document.getElementById('dueRequiredTaskSelect') ? document.getElementById('dueRequiredTaskSelect').value : '';
+  const attempts = parseInt(document.getElementById('modalAttempts')?.value || 0, 10) || 0;
+  const requiredTask = document.getElementById('dueRequiredTaskSelect') ? document.getElementById('dueRequiredTaskSelect').value : '';
+  const requiredTopic = document.getElementById('taskRequiredTopicSelect') ? document.getElementById('taskRequiredTopicSelect').value : '';
       const allowLate = dueModal.querySelector('input[type="checkbox"]')?.checked || false;
 
       if (!taskName) {
@@ -718,6 +765,7 @@ li {
         attempts: attempts,
         allow_late: allowLate,
         requiredTask: requiredTask || '',
+        requiredTopic: requiredTopic || '',
         ...fileData
       };
       try {

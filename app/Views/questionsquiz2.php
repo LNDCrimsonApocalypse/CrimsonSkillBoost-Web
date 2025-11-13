@@ -812,6 +812,13 @@
         <input id="quizName" type="text" class="upload-modal-input">
         <span class="upload-modal-clear" onclick="document.getElementById('quizName').value=''">Clear all</span>
       </div>
+      <div style="margin-top:10px;">
+        <label for="quizRequiredTopicSelect" class="upload-modal-label">Required topic (optional):</label>
+        <select id="quizRequiredTopicSelect" class="upload-modal-input" style="padding:8px 10px; width:100%;">
+          <option value="">None</option>
+        </select>
+        <div id="quizRequiredTopicTitle" style="color:#666; font-size:0.95rem; margin-top:6px;">&nbsp;</div>
+      </div>
       <div class="upload-modal-note">
         Accepted formats: PDF, PNG, PPT, SLIDE, JPG, ZIP (Max size: 50MB)
       </div>
@@ -923,12 +930,21 @@
           <input type="number" min="0" value="0" id="quizAttempts" style="width:120px; font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; margin-bottom:4px;">
           <div style="font-size:0.95rem; color:#a58cf5;">Based on best attempt</div>
         </div>
-        <div style="display:flex;flex-direction:column;flex:1;min-width:220px;">
-          <label for="requiredQuizSelect" style="font-weight:500; margin-bottom:8px;">Required quiz</label>
-          <select id="requiredQuizSelect" style="font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; width:100%;">
-            <option value="">None</option>
-          </select>
-          <div style="font-size:0.95rem; color:#888; margin-top:6px;">Select a quiz that must be completed first</div>
+        <div style="display:flex;gap:12px;width:100%;align-items:flex-start;">
+          <div style="display:flex;flex-direction:column;flex:1;min-width:220px;">
+            <label for="requiredQuizSelect" style="font-weight:500; margin-bottom:8px;">Required quiz</label>
+            <select id="requiredQuizSelect" style="font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; width:100%;">
+              <option value="">None</option>
+            </select>
+            <div style="font-size:0.95rem; color:#888; margin-top:6px;">Select a quiz that must be completed first</div>
+          </div>
+          <div style="display:flex;flex-direction:column;flex:1;min-width:220px;">
+            <label for="publishRequiredTopicSelect" style="font-weight:500; margin-bottom:8px;">Required topic</label>
+            <select id="publishRequiredTopicSelect" style="font-size:1rem; padding:8px 10px; border-radius:6px; border:1.2px solid #ccc; width:100%;">
+              <option value="">None</option>
+            </select>
+            <div id="publishRequiredTopicHint" style="font-size:0.95rem; color:#888; margin-top:6px;">Required topic before being unlocked</div>
+          </div>
         </div>
       </div>
       <div style="display:flex; justify-content:flex-end;">
@@ -1283,9 +1299,10 @@
       const startTime = (document.getElementById('quizStartTime') && document.getElementById('quizStartTime').value) || '';
       const endDate = document.getElementById('quizEndDate').value;
       const endTime = (document.getElementById('quizEndTime') && document.getElementById('quizEndTime').value) || '';
-      const attempts = parseInt(document.getElementById('quizAttempts').value, 10) || 0;
-      const allowLate = document.getElementById('quizAllowLate').checked;
-      const requiredQuiz = (document.getElementById('requiredQuizSelect') && document.getElementById('requiredQuizSelect').value) || '';
+  const attempts = parseInt(document.getElementById('quizAttempts').value, 10) || 0;
+  const allowLate = document.getElementById('quizAllowLate').checked;
+  const requiredQuiz = (document.getElementById('requiredQuizSelect') && document.getElementById('requiredQuizSelect').value) || '';
+  const requiredTopic = (document.getElementById('publishRequiredTopicSelect') && document.getElementById('publishRequiredTopicSelect').value) || (document.getElementById('quizRequiredTopicSelect') && document.getElementById('quizRequiredTopicSelect').value) || '';
 
       if (!startDate || !endDate) {
         alert('Please set both start and end dates.');
@@ -1316,7 +1333,8 @@
           end_datetime: endISO,
           attempts: attempts,
           allow_late: allowLate,
-          requiredQuiz: requiredQuiz
+          requiredQuiz: requiredQuiz,
+          requiredTopic: requiredTopic || ''
         });
         document.getElementById('publishDueDateModal').style.display = 'none';
         alert('Quiz published successfully!');
@@ -1366,6 +1384,74 @@
         });
       } catch (err) {
         console.error('Failed to load required quiz list:', err);
+      }
+    }
+
+    // Load topics for the same course and populate the Required Topic dropdowns (upload + publish)
+    async function loadRequiredTopicOptions() {
+      if (!course_id) return;
+      const uploadSelect = document.getElementById('quizRequiredTopicSelect');
+      const uploadTitleEl = document.getElementById('quizRequiredTopicTitle');
+      const publishSelect = document.getElementById('publishRequiredTopicSelect');
+      const publishHintEl = document.getElementById('publishRequiredTopicHint');
+      if (!uploadSelect && !publishSelect) return;
+
+      // initialize
+      if (uploadSelect) uploadSelect.innerHTML = '<option value="">None</option>';
+      if (publishSelect) publishSelect.innerHTML = '<option value="">None</option>';
+
+      try {
+        // fetch current quiz to read existing requiredTopic
+        let currentRequiredTopic = '';
+        try {
+          if (quiz_id) {
+            const curSnap = await dbFS.collection('quizzes').doc(quiz_id).get();
+            if (curSnap.exists) {
+              currentRequiredTopic = (curSnap.data() || {}).requiredTopic || '';
+            }
+          }
+        } catch (e) { /* ignore */ }
+
+        // Try course subcollection first
+        let tqs = null;
+        try { tqs = await dbFS.collection('courses').doc(course_id).collection('topics').get(); } catch (e) { tqs = null; }
+        const addOption = (doc) => {
+          const d = doc.data() || {};
+          const id = doc.id;
+          const text = d.title || d.name || '(Untitled topic)';
+          if (uploadSelect) {
+            const opt = document.createElement('option');
+            opt.value = id; opt.textContent = text;
+            if (id === currentRequiredTopic) opt.selected = true;
+            uploadSelect.appendChild(opt);
+          }
+          if (publishSelect) {
+            const opt2 = document.createElement('option');
+            opt2.value = id; opt2.textContent = text;
+            if (id === currentRequiredTopic) opt2.selected = true;
+            publishSelect.appendChild(opt2);
+          }
+        };
+
+        if (tqs && !tqs.empty) {
+          tqs.forEach(addOption);
+        } else {
+          try {
+            const tqs2 = await dbFS.collection('topics').where('course_id', '==', course_id).get();
+            tqs2.forEach(addOption);
+          } catch (err) { console.warn('Failed to load topics fallback:', err); }
+        }
+
+        // set title/hints
+  if (uploadSelect && uploadTitleEl) uploadTitleEl.textContent = uploadSelect.options[uploadSelect.selectedIndex]?.text || '';
+  // Use static hint phrasing per design: do not prepend the topic title with a phrase
+  if (publishSelect && publishHintEl) publishHintEl.textContent = 'Required topic before being unlocked';
+
+  if (uploadSelect) uploadSelect.onchange = function() { if (uploadTitleEl) uploadTitleEl.textContent = this.options[this.selectedIndex]?.text || ''; };
+  if (publishSelect) publishSelect.onchange = function() { if (publishHintEl) publishHintEl.textContent = 'Required topic before being unlocked'; };
+
+      } catch (err) {
+        console.error('Failed to load required topics:', err);
       }
     }
 
@@ -1436,7 +1522,9 @@
     document.addEventListener('DOMContentLoaded', function() {
       loadQuestions();
       // populate required quiz select for publish modal
-      loadRequiredQuizOptions();
+        loadRequiredQuizOptions();
+        // populate required topic select for upload modal
+        loadRequiredTopicOptions();
     });
   </script>
 </body>
